@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "assets/*": ["assets/*"],
+      "components/*": ["components/*"],
+      "config": ["config.js"],
+      "contexts/*": ["contexts/*"],
+      "hooks/*": ["hooks/*"],
+      "layout/*": ["layout/*"],
+      "pages/*": ["pages/*"],
+      "routes/*": ["routes/*"],
+      "store/*": ["store/*"],
+      "themes/*": ["themes/*"],
+      "utils/*": ["utils/*"]
+    },
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build", "dist"]
+}

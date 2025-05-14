@@ -1,0 +1,314 @@
+{
+  "metadata": {
+    "current": {
+      "lastUpdated": "2024-02-19T12:55:06",
+      "dataType": "Current Data",
+      "description": "Current Overview",
+      "period": "Current Week"
+    },
+    "historical": {
+      "lastUpdated": "2024-02-19T12:54:47",
+      "dataType": "Historical Data",
+      "description": "Historical Overview",
+      "period": "Last 6 months"
+    }
+  },
+  "reconCounts": {
+    "current": {
+      "fullMatch": 17562,
+      "tolerance": 892,
+      "nearMatch": 945,
+      "skipped": 198,
+      "axysNotInGeneva": 458,
+      "genevaNotInAxys": 174,
+      "total": 29954,
+      "totalMissing": 632,
+      "genevaRawRowCount": 28954,
+      "axysRawRowCount": 29954,
+      "fullMatchPercentageAxys": 58.6,
+      "fullMatchPercentageGeneva": 60.7,
+      "percentages": {
+        "fullMatch": 58.6,
+        "tolerance": 3.0,
+        "nearMatch": 3.2,
+        "missing": 2.1,
+        "skipped": 0.7
+      }
+    },
+    "historical": {
+      "fullMatch": 15234,
+      "tolerance": 1132,
+      "nearMatch": 1077,
+      "skipped": 245,
+      "axysNotInGeneva": 669,
+      "genevaNotInAxys": 203,
+      "total": 29087,
+      "totalMissing": 872,
+      "genevaRawRowCount": 27087,
+      "axysRawRowCount": 29087,
+      "fullMatchPercentageAxys": 52.4,
+      "fullMatchPercentageGeneva": 56.2,
+      "percentages": {
+        "fullMatch": 52.4,
+        "tolerance": 3.9,
+        "nearMatch": 3.7,
+        "missing": 3.0,
+        "skipped": 0.8
+      }
+    }
+  },
+  "monthlyTrend": {
+    "historical": [
+      {
+        "date": "2023-07-01T00:00:00.000Z",
+        "weekNumber": null,
+        "fullMatchTrend": 52.4,
+        "totalRecords": 29087,
+        "formattedDate": "Jul 2023"
+      },
+      {
+        "date": "2023-08-01T00:00:00.000Z",
+        "weekNumber": null,
+        "fullMatchTrend": 53.1,
+        "totalRecords": 29156,
+        "formattedDate": "Aug 2023"
+      },
+      {
+        "date": "2023-09-01T00:00:00.000Z",
+        "weekNumber": null,
+        "fullMatchTrend": 53.8,
+        "totalRecords": 29234,
+        "formattedDate": "Sep 2023"
+      },
+      {
+        "date": "2023-10-01T00:00:00.000Z",
+        "weekNumber": null,
+        "fullMatchTrend": 54.5,
+        "totalRecords": 29345,
+        "formattedDate": "Oct 2023"
+      },
+      {
+        "date": "2023-11-01T00:00:00.000Z",
+        "weekNumber": null,
+        "fullMatchTrend": 55.2,
+        "totalRecords": 29567,
+        "formattedDate": "Nov 2023"
+      },
+      {
+        "date": "2023-12-01T00:00:00.000Z",
+        "weekNumber": null,
+        "fullMatchTrend": 56.2,
+        "totalRecords": 29789,
+        "formattedDate": "Dec 2023"
+      }
+    ],
+    "current": [
+      {
+        "date": "2024-01-01T00:00:00.000Z",
+        "weekNumber": 1,
+        "fullMatchTrend": 58.6,
+        "totalRecords": 29954,
+        "formattedDate": "Week 1"
+      },
+      {
+        "date": "2024-01-08T00:00:00.000Z",
+        "weekNumber": 2,
+        "fullMatchTrend": 59.3,
+        "totalRecords": 29954,
+        "formattedDate": "Week 2"
+      },
+      {
+        "date": "2024-01-15T00:00:00.000Z",
+        "weekNumber": 3,
+        "fullMatchTrend": 60.0,
+        "totalRecords": 29954,
+        "formattedDate": "Week 3"
+      },
+      {
+        "date": "2024-01-22T00:00:00.000Z",
+        "weekNumber": 4,
+        "fullMatchTrend": 60.7,
+        "totalRecords": 29954,
+        "formattedDate": "Week 4"
+      }
+    ]
+  },
+  "dashboardData": {
+    "fullMatchPercentage": {
+      "historical": {
+        "series": [
+          {
+            "name": "Match Percentage",
+            "data": [52.4, 56.2]
+          }
+        ],
+        "categories": ["Custodian", "APX"]
+      },
+      "current": {
+        "series": [
+          {
+            "name": "Match Percentage",
+            "data": [58.6, 60.7]
+          }
+        ],
+        "categories": ["Custodian", "APX"]
+      }
+    },
+    "fullMatchTrend": {
+      "historical": {
+        "series": [
+          {
+            "name": "Full Match Percentage",
+            "data": [52.4, 53.1, 53.8, 54.5, 55.2, 56.2]
+          },
+          {
+            "name": "Near Match Percentage",
+            "data": [3.7, 3.7, 3.7, 3.7, 3.7, 3.7]
+          }
+        ],
+        "categories": ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      },
+      "current": {
+        "series": [
+          {
+            "name": "Reconciliation Status",
+            "data": [58.6, 3.0, 3.2, 2.1, 0.7]
+          }
+        ],
+        "categories": ["Full Match", "Tolerance", "Near Match", "Missing", "Skipped"]
+      }
+    },
+    "issuesSummary": {
+      "current": [
+        {
+          "id": 1,
+          "issueType": "Missing Data",
+          "count": 632,
+          "percentage": 2.1
+        },
+        {
+          "id": 2,
+          "issueType": "Tolerance Exceeded",
+          "count": 892,
+          "percentage": 3.0
+        },
+        {
+          "id": 3,
+          "issueType": "Mismatches",
+          "count": 945,
+          "percentage": 3.2
+        }
+      ],
+      "historical": [
+        {
+          "id": 1,
+          "issueType": "Missing Data",
+          "count": 872,
+          "percentage": 3.0
+        },
+        {
+          "id": 2,
+          "issueType": "Tolerance Exceeded",
+          "count": 1132,
+          "percentage": 3.9
+        },
+        {
+          "id": 3,
+          "issueType": "Mismatches",
+          "count": 1077,
+          "percentage": 3.7
+        }
+      ]
+    },
+    "missingSummary": {
+      "historical": {
+        "axysOnly": 669,
+        "genevaOnly": 203,
+        "total": 872,
+        "percentage": 3.0
+      },
+      "current": {
+        "axysOnly": 458,
+        "genevaOnly": 174,
+        "total": 632,
+        "percentage": 2.1
+      }
+    },
+    "analyticsSummary": {
+      "historical": {
+        "fullMatch": {
+          "count": 15234,
+          "percentage": 52.4,
+          "axysPercentage": 52.4,
+          "genevaPercentage": 56.2
+        },
+        "tolerance": {
+          "count": 1132,
+          "percentage": 3.9
+        },
+        "nearMatch": {
+          "count": 1077,
+          "percentage": 3.7
+        },
+        "missing": {
+          "count": 872,
+          "percentage": 3.0,
+          "axysCount": 669,
+          "genevaCount": 203
+        },
+        "skipped": {
+          "count": 245,
+          "percentage": 0.8
+        },
+        "total": 29087
+      },
+      "current": {
+        "fullMatch": {
+          "count": 17562,
+          "percentage": 58.6,
+          "axysPercentage": 58.6,
+          "genevaPercentage": 60.7
+        },
+        "tolerance": {
+          "count": 892,
+          "percentage": 3.0
+        },
+        "nearMatch": {
+          "count": 945,
+          "percentage": 3.2
+        },
+        "missing": {
+          "count": 632,
+          "percentage": 2.1,
+          "axysCount": 458,
+          "genevaCount": 174
+        },
+        "skipped": {
+          "count": 198,
+          "percentage": 0.7
+        },
+        "total": 29954
+      }
+    },
+    "reportAreaChart": {
+      "historical": {
+        "series": [
+          {
+            "name": "Reconciliation Rate",
+            "data": [52.4, 53.1, 53.8, 54.5, 55.2, 56.2, 56.8, 57.4, 58.0, 58.6, 59.3, 60.7]
+          }
+        ],
+        "categories": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      },
+      "current": {
+        "series": [
+          {
+            "name": "Reconciliation Rate",
+            "data": [58.6, 59.3, 60.0, 60.7]
+          }
+        ],
+        "categories": ["Week 1", "Week 2", "Week 3", "Week 4"]
+      }
+    }
+  }
+}
