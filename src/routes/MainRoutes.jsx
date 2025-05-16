@@ -18,6 +18,7 @@ const UploadFiles = Loadable(lazy(() => import('pages/Upload/UploadFiles')));
 const Changelog = Loadable(lazy(() => import('pages/Changelog/Changelog')));
 const Profile = Loadable(lazy(() => import('pages/Profile')));
 const AccountSettings = Loadable(lazy(() => import('pages/AccountSettings')));
+const UnderConstruction = Loadable(lazy(() => import('pages/UnderConstruction')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -41,37 +42,41 @@ const MainRoutes = {
       path: 'user-management',
       element: (
         <RoleBasedGuard roles={['admin']}>
-          <UserManagement />
+          <Navigate to="/under-construction" replace />
         </RoleBasedGuard>
       )
     },
     {
       path: 'upload-file',
-      element: <UploadFiles />
+      element: <Navigate to="/under-construction" replace />
     },
     {
       path: 'view-data',
-      element: <Viewdata />
+      element: <Navigate to="/under-construction" replace />
     },
     {
       path: 'generated-reports',
-      element: <GeneratedReports />
+      element: <Navigate to="/under-construction" replace />
     },
     {
       path: 'mapping-data',
-      element: <MappingData />
+      element: <Navigate to="/under-construction" replace />
     },
     {
       path: 'changelog',
-      element: <Changelog />
+      element: <Navigate to="/under-construction" replace />
     },
     {
       path: 'profile',
-      element: <Profile />
+      element: <Navigate to="/under-construction" replace />
     },
     {
       path: 'account-settings',
-      element: <AccountSettings />
+      element: <Navigate to="/under-construction" replace />
+    },
+    {
+      path: 'under-construction',
+      element: <UnderConstruction />
     }
   ]
 };
