@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
-import { Box, Typography, useTheme, Alert } from '@mui/material';
+import { Icon } from '@iconify/react';
+import { Alert, Box, Typography, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Icon } from '@iconify/react';
 
 import UploadFileImg from 'assets/images/upload-file.svg';
 import bytesToSize from 'utils/bytesToSize';
@@ -14,6 +14,7 @@ function FilesDropzone({ onFilesAdded, accept = [], maxSize = null, multiple = t
 
   // Convert file extensions to proper accept object format for react-dropzone
   const getAcceptObject = (extensions) => {
+    if (!Array.isArray(extensions)) return {};
     const acceptObj = {};
     extensions.forEach((ext) => {
       switch (ext.toLowerCase()) {

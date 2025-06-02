@@ -5,7 +5,6 @@ import { Navigate } from 'react-router';
 import Loadable from 'components/Loader/Loadable';
 import DashboardLayout from 'layout/Dashboard';
 
-import AuthGuard from './Guard/AuthGuard';
 import RoleBasedGuard from './Guard/RoleBasedGuard';
 
 // Lazy load components
@@ -15,6 +14,7 @@ const Viewdata = Loadable(lazy(() => import('pages/ViewData')));
 const GeneratedReports = Loadable(lazy(() => import('pages/GeneratedReports')));
 const MappingData = Loadable(lazy(() => import('pages/MappingData/MappingData')));
 const UploadFiles = Loadable(lazy(() => import('pages/Upload/UploadFiles')));
+const ModernUploadFiles = Loadable(lazy(() => import('pages/Upload/ModernUploadFiles')));
 const Changelog = Loadable(lazy(() => import('pages/Changelog/Changelog')));
 const Profile = Loadable(lazy(() => import('pages/Profile')));
 const AccountSettings = Loadable(lazy(() => import('pages/AccountSettings')));
@@ -25,9 +25,9 @@ const UnderConstruction = Loadable(lazy(() => import('pages/UnderConstruction'))
 const MainRoutes = {
   path: '/',
   element: (
-    <AuthGuard>
-      <DashboardLayout />
-    </AuthGuard>
+    // <AuthGuard>
+    <DashboardLayout />
+    // </AuthGuard>
   ),
   children: [
     {
@@ -48,7 +48,7 @@ const MainRoutes = {
     },
     {
       path: 'upload-file',
-      element: <Navigate to="/under-construction" replace />
+      element: <ModernUploadFiles />
     },
     {
       path: 'view-data',
