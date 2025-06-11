@@ -1,0 +1,195 @@
+// ==============================|| PRESET THEME - GIB ||============================== //
+
+const Gib = {
+  type: 'light',
+  paper: '#ffffff',
+  backgroundDefault: '#f5f3f1',
+  darkPaper: '#111936',
+  darkBackground: '#151c2c', // Deep navy for dark mode
+
+  // Primary
+  primary: {
+    lighter: '#e9e9e9',
+    light: '#888a8e',
+    main: '#53565a', // Dark Gray - primary brand color
+    dark: '#424448',
+    darker: '#323438',
+    100: '#e9e9e9',
+    200: '#d3d3d3',
+    300: '#bcbcbc',
+    400: '#a6a6a6',
+    500: '#8f8f8f',
+    600: '#53565a',
+    700: '#424448',
+    800: '#323438',
+    900: '#212328',
+    contrastText: '#ffffff'
+  },
+
+  // Secondary
+  secondary: {
+    lighter: '#fff8e1',
+    light: '#ffe082',
+    main: '#ffc72c', // Gold/Yellow - used for accents and highlights
+    dark: '#ffb300',
+    darker: '#ff8f00',
+    100: '#fff8e1',
+    200: '#ffecb3',
+    300: '#ffe082',
+    400: '#ffd54f',
+    500: '#ffca28',
+    600: '#ffc72c',
+    700: '#ffb300',
+    800: '#ffa000',
+    900: '#ff8f00',
+    contrastText: 'rgba(0, 0, 0, 0.87)'
+  },
+
+  // Tertiary
+  tertiary: {
+    lighter: '#f4ebf5',
+    light: '#e4d0e8',
+    main: '#decade', // Lavender - tertiary brand color
+    dark: '#c0a6c7',
+    darker: '#a88ab1',
+    100: '#f4ebf5',
+    200: '#e4d0e8',
+    300: '#decade',
+    400: '#c0a6c7',
+    500: '#b195bc',
+    600: '#a088ae',
+    700: '#8f77a0',
+    800: '#7e6791',
+    900: '#6d5683',
+    contrastText: 'rgba(0, 0, 0, 0.87)'
+  },
+
+  // Success
+  success: {
+    lighter: '#e8f5e9',
+    light: '#66bb6a',
+    main: '#4caf50',
+    dark: '#43a047',
+    darker: '#2e7d32',
+    100: '#e8f5e9',
+    200: '#c8e6c9',
+    300: '#a5d6a7',
+    400: '#81c784',
+    500: '#66bb6a',
+    600: '#4caf50',
+    700: '#43a047',
+    800: '#388e3c',
+    900: '#2e7d32',
+    contrastText: '#ffffff'
+  },
+
+  // Error
+  error: {
+    lighter: '#f9e4e4',
+    light: '#ef5350',
+    main: '#f44336',
+    dark: '#e53935',
+    darker: '#c62828',
+    100: '#ffebee',
+    200: '#ffcdd2',
+    300: '#ef9a9a',
+    400: '#e57373',
+    500: '#ef5350',
+    600: '#f44336',
+    700: '#e53935',
+    800: '#d32f2f',
+    900: '#c62828',
+    contrastText: '#ffffff'
+  },
+
+  // Warning
+  warning: {
+    lighter: '#fff3e0',
+    light: '#ffb74d',
+    main: '#ff9800',
+    dark: '#f57c00',
+    darker: '#e65100',
+    100: '#fff3e0',
+    200: '#ffe0b2',
+    300: '#ffcc80',
+    400: '#ffb74d',
+    500: '#ffa726',
+    600: '#ff9800',
+    700: '#fb8c00',
+    800: '#f57c00',
+    900: '#e65100',
+    contrastText: 'rgba(0, 0, 0, 0.87)'
+  },
+
+  // Info
+  info: {
+    lighter: '#e3f2fd',
+    light: '#64b5f6',
+    main: '#2196f3',
+    dark: '#1976d2',
+    darker: '#0d47a1',
+    100: '#e3f2fd',
+    200: '#bbdefb',
+    300: '#90caf9',
+    400: '#64b5f6',
+    500: '#42a5f5',
+    600: '#2196f3',
+    700: '#1976d2',
+    800: '#1565c0',
+    900: '#0d47a1',
+    contrastText: '#ffffff'
+  },
+
+  // Grey
+  grey: {
+    0: '#ffffff',
+    50: '#fafafa',
+    100: '#f5f5f5',
+    200: '#eeeeee',
+    300: '#e0e0e0',
+    400: '#bdbdbd',
+    500: '#9e9e9e',
+    600: '#757575',
+    700: '#616161',
+    800: '#424242',
+    900: '#212121',
+    A100: '#f5f5f5',
+    A200: '#eeeeee',
+    A400: '#bdbdbd',
+    A700: '#616161'
+  },
+
+  // Text
+  text: {
+    primary: 'rgba(0, 0, 0, 0.87)',
+    secondary: 'rgba(0, 0, 0, 0.6)',
+    disabled: 'rgba(0, 0, 0, 0.38)',
+    hint: 'rgba(0, 0, 0, 0.38)'
+  },
+
+  // Action
+  action: {
+    active: 'rgba(0, 0, 0, 0.54)',
+    hover: 'rgba(0, 0, 0, 0.04)',
+    selected: 'rgba(0, 0, 0, 0.08)',
+    disabled: 'rgba(0, 0, 0, 0.26)',
+    disabledBackground: 'rgba(0, 0, 0, 0.12)',
+    focus: 'rgba(0, 0, 0, 0.12)',
+    hoverOpacity: 0.04,
+    selectedOpacity: 0.08,
+    disabledOpacity: 0.38,
+    focusOpacity: 0.12,
+    activatedOpacity: 0.12
+  },
+
+  // Divider
+  divider: 'rgba(0, 0, 0, 0.12)',
+
+  // Background
+  background: {
+    paper: '#ffffff',
+    default: '#f5f3f1'
+  }
+};
+
+export { Gib };

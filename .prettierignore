@@ -1,0 +1,97 @@
+# Build output
+build/
+dist/
+out/
+.next/
+.nuxt/
+.output/
+
+# Dependencies
+node_modules/
+bower_components/
+jspm_packages/
+.pnp/
+.pnp.js
+
+# Package files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Cache and logs
+.cache/
+.temp/
+.tmp/
+logs/
+*.log
+.eslintcache
+.stylelintcache
+.parcel-cache
+.webpack/
+.rollup.cache/
+.vite/
+
+# Coverage reports
+coverage/
+.nyc_output/
+*.lcov
+
+# Test files
+__tests__/
+__mocks__/
+test/
+tests/
+cypress/
+e2e/
+
+# Documentation
+CHANGELOG.md
+LICENSE
+*.md
+
+# Config files
+*.config.js
+*.config.ts
+*.config.json
+!vite.config.mjs
+tsconfig.json
+.eslintrc*
+.prettierrc*
+.babelrc*
+
+# Environment files
+.env*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+.history/
+
+# Generated files
+*.min.js
+*.min.css
+*.map
+*.d.ts
+*.tsbuildinfo
+
+# Assets
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.woff
+*.woff2
+*.eot
+*.ttf
+*.otf
+
+# Misc
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+*.swo

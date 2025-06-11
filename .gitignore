@@ -1,0 +1,95 @@
+# Dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+*.lcov
+.nyc_output
+
+# Production
+/dist
+/build
+
+# Environment Files
+# .env
+# .env.*
+# .env.local
+# .env.*.local
+# .env.development
+# .env.production
+# .env.qa
+# .env.uat
+# .env.development.local
+# .env.test.local
+# .env.production.local
+
+# IDE
+.idea/
+.vscode/
+.vscode/chrome-debug-profile*
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Cache
+.cache/
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+.npm
+.yarn-integrity
+
+# Misc
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+*.swo
+
+# Deployment
+.vercel
+.netlify
+.firebase
+.deployment
+
+# Build tools
+.grunt
+bower_components
+
+# Debug
+.debug/
+
+# TypeScript
+typings/
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+.tmp/
+
+# # Local env files
+# .env.local
+# .env.*.local
+
+# Serverless
+.serverless/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS
+.tern-port
+
+# Project specific
+.unimportedrc.json
+tsconfig.tsbuildinfo
