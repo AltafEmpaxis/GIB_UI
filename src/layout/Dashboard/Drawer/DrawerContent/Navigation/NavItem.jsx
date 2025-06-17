@@ -9,10 +9,10 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
   const { icon, id, title, url, chip } = item;
   const isDark = theme.palette.mode === 'dark';
 
-  const itemIcon = item?.icon ? <item.icon /> : <Icon icon={icon} width={20} height={20} />;
+  const itemIcon = item?.icon ? <item.icon /> : <Icon icon={icon} width={22} height={22} />;
 
-  const textColor = theme.palette.mode === 'dark' ? 'grey.400' : 'text.primary';
-  const iconSelectedColor = theme.palette.mode === 'dark' ? 'text.primary' : 'primary.main';
+  const textColor = isDark ? 'grey.400' : 'text.primary';
+  const iconSelectedColor = isDark ? 'primary.light' : 'primary.main';
   const isSelected = selected && selectedLevel === level;
 
   return (
@@ -28,20 +28,38 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
       sx={{
         pl: level * 1.75,
         py: 0.75,
-        mb: 0.25,
-        borderRadius: 0.5,
+        mb: 0.5,
+        borderRadius: 1.5,
         backgroundColor: 'transparent',
         color: isSelected ? iconSelectedColor : textColor,
+        transition: 'all 0.18s ease-in-out',
         '&:hover': {
-          bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.main, 0.12),
-          color: theme.palette.secondary.main
+          bgcolor: isDark
+            ? alpha(theme.palette.primary.main, isSelected ? 0.25 : 0.1)
+            : alpha(theme.palette.primary.lighter, isSelected ? 0.7 : 0.4),
+          color: isSelected ? iconSelectedColor : theme.palette.primary.main
         },
+        '&::after': isSelected
+          ? {
+              content: '""',
+              position: 'absolute',
+              right: 0,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 4,
+              height: '60%',
+              borderRadius: '2px 0 0 2px',
+              background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.7)})`,
+              boxShadow: isDark
+                ? `0 0 5px ${alpha(theme.palette.primary.main, 0.5)}`
+                : `0 0 12px ${alpha(theme.palette.primary.light, 0.7)}`
+            }
+          : {},
         '&.Mui-selected': {
-          bgcolor: isDark ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.primary.main, 0.12),
-          borderRight: `2px solid ${theme.palette.primary.main}`,
+          bgcolor: isDark ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.lighter, 0.5),
           color: iconSelectedColor,
           '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.3) : alpha(theme.palette.primary.main, 0.18),
+            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.25) : alpha(theme.palette.primary.lighter, 0.7),
             color: iconSelectedColor
           }
         }
@@ -49,10 +67,12 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
     >
       <ListItemIcon
         sx={{
-          minWidth: 28,
+          minWidth: 30,
           color: 'inherit',
+          fontSize: isSelected ? '1.125rem' : '1rem',
+          transition: 'all 0.18s ease-in-out',
           ...(!item?.icon && {
-            borderRadius: 1,
+            borderRadius: 1.5,
             width: 36,
             height: 36,
             display: 'flex',
@@ -72,11 +92,18 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
             variant="body2"
             color="inherit"
             sx={{
-              fontWeight: isSelected ? 500 : 400,
+              fontWeight: isSelected ? 600 : 400,
               fontSize: '0.875rem',
               lineHeight: '1.5',
               textAlign: 'left',
-              transition: 'all .2s ease-in-out'
+              transition: 'all 0.18s ease-in-out',
+              ...(isSelected && {
+                background: isDark
+                  ? `-webkit-linear-gradient(${theme.palette.primary.light}, ${alpha(theme.palette.primary.main, 0.9)})`
+                  : `-webkit-linear-gradient(${theme.palette.primary.dark}, ${theme.palette.primary.main})`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              })
             }}
           >
             {title}
@@ -96,6 +123,10 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
             fontSize: '0.75rem',
             '& .MuiChip-label': {
               px: 1.25
+            },
+            '& .MuiChip-root': {
+              height: 20,
+              boxShadow: isDark ? 'none' : `0 2px 4px ${alpha(theme.palette.grey[300], 0.35)}`
             }
           }}
         />

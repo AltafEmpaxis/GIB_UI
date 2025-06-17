@@ -1,7 +1,7 @@
 // theme constant
 export const DRAWER_WIDTH = 260;
 export const HEADER_HEIGHT = 70;
-export const gridSpacing = 3;
+export const GRID_SPACING = 1;
 
 // ==============================|| THEME CONFIG  ||============================== //
 

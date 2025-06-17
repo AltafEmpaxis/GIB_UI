@@ -35,7 +35,7 @@ const MainCard = forwardRef(
 
     return (
       <Card
-        elevation={elevation !== undefined ? elevation : 1}
+        // elevation={elevation !== undefined ? elevation : 1}
         ref={ref}
         {...others}
         sx={{

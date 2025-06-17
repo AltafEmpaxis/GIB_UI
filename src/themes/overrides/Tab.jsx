@@ -14,10 +14,10 @@ export default function Tab(theme) {
           textAlign: 'center',
           padding: theme.spacing(1.5, 3),
           fontWeight: theme.typography.fontWeightMedium,
+          borderRadius: theme.shape.borderRadius,
           '&:hover': {
             backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.1) : theme.palette.primary.lighter,
-            color: isDark ? theme.palette.primary.lighter : theme.palette.primary.main,
-            borderRadius: theme.shape.borderRadius
+            color: isDark ? theme.palette.primary.lighter : theme.palette.primary.main
           },
           '&.Mui-selected': {
             color: isDark ? theme.palette.primary.lighter : theme.palette.primary.main,

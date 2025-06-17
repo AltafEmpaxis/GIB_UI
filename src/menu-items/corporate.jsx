@@ -2,7 +2,7 @@ import { Icon } from '@iconify/react';
 
 // icons
 const icons = {
-  CorporateOutlined: () => <Icon icon="solar:building-bold-duotone" width="19" height="19" />
+  CorporateOutlined: () => <Icon icon="hugeicons:corporate" width="19" height="19" />
 };
 
 // ==============================|| MENU ITEMS - CORPORATE ACTION ||============================== //

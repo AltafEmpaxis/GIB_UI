@@ -1,10 +1,13 @@
-import { Box, List, Typography } from '@mui/material';
+import { Box, List, Typography, alpha, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import NavCollapse from './NavCollapse';
 import NavItem from './NavItem';
 
 const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSelectedLevel }) => {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
   const items = item.children?.map((menu) => {
     switch (menu.type) {
       case 'collapse':
@@ -46,22 +49,35 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
         item.title && (
           <Box
             sx={{
-              pl: 1.5,
-              mb: 0.5,
+              pl: { xs: 1.5, md: 2 },
+              mb: 1,
               display: 'flex',
               alignItems: 'center',
-              height: 25
+              height: 26
             }}
           >
             <Typography
               variant="subtitle2"
               sx={{
-                color: 'text.secondary',
-                fontSize: '0.65rem',
-                fontWeight: 500,
+                color: isDark ? alpha(theme.palette.primary.light, 0.7) : theme.palette.primary.main,
+                fontSize: '0.7rem',
+                fontWeight: 600,
                 lineHeight: '1.2',
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.6px',
+                position: 'relative',
+                overflow: 'hidden',
+                '&:after': {
+                  content: '""',
+                  position: 'absolute',
+                  height: '1px',
+                  width: '24px',
+                  left: 'calc(100% + 10px)',
+                  top: '50%',
+                  background: isDark
+                    ? `linear-gradient(90deg, ${alpha(theme.palette.primary.light, 0.4)}, ${alpha(theme.palette.primary.light, 0)})`
+                    : `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.5)}, ${alpha(theme.palette.primary.main, 0)})`
+                }
               }}
             >
               {item.title}
@@ -70,15 +86,19 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
         )
       }
       sx={{
-        mb: 1,
+        mb: 1.5,
         py: 0,
         '& .MuiListItemButton-root': {
           height: 44,
+          transition: 'all 0.2s ease-in-out',
           '&.Mui-selected': {
             bgcolor: 'transparent',
             '&:hover': {
-              bgcolor: 'primary.lighter'
+              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.lighter, 0.6)
             }
+          },
+          '&:hover': {
+            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.08) : alpha(theme.palette.primary.lighter, 0.4)
           }
         }
       }}

@@ -1,8 +1,4 @@
-import BugReportIcon from '@mui/icons-material/BugReport';
-import BuildIcon from '@mui/icons-material/Build';
-import CodeIcon from '@mui/icons-material/Code';
-import NewReleasesIcon from '@mui/icons-material/NewReleases';
-import VerifiedIcon from '@mui/icons-material/Verified';
+import { Icon } from '@iconify/react';
 import { Box, Chip, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -16,31 +12,31 @@ const DrawerFooter = ({ open }) => {
     development: {
       label: 'DEV',
       color: 'info',
-      icon: <CodeIcon />,
+      icon: <Icon icon="solar:code-square-bold-duotone" width={16} height={16} />,
       description: 'Development Build'
     },
     production: {
       label: 'PROD',
       color: 'success',
-      icon: <VerifiedIcon />,
+      icon: <Icon icon="solar:check-circle-bold-duotone" width={16} height={16} />,
       description: 'Production Release'
     },
     qa: {
       label: 'QA',
       color: 'warning',
-      icon: <BugReportIcon />,
+      icon: <Icon icon="solar:bug-bold-duotone" width={16} height={16} />,
       description: 'Quality Assurance'
     },
     uat: {
       label: 'UAT',
       color: 'secondary',
-      icon: <BuildIcon />,
+      icon: <Icon icon="solar:test-tube-bold-duotone" width={16} height={16} />,
       description: 'User Acceptance'
     },
     hotfix: {
       label: 'HOTFIX',
       color: 'error',
-      icon: <NewReleasesIcon />,
+      icon: <Icon icon="solar:alarm-bold-duotone" width={16} height={16} />,
       description: 'Emergency Fix'
     }
   };
@@ -50,7 +46,7 @@ const DrawerFooter = ({ open }) => {
   const envConfig = ENV_CONFIG[mode] || {
     label: mode.toUpperCase(),
     color: 'default',
-    icon: <CodeIcon />,
+    icon: <Icon icon="solar:code-bold-duotone" width={16} height={16} />,
     description: 'Custom Environment'
   };
 
@@ -77,7 +73,8 @@ const DrawerFooter = ({ open }) => {
           justifyContent: 'center',
           alignItems: 'center',
           height: '100%',
-          px: 2
+          px: 2,
+          position: 'relative'
         }}
       >
         {open ? (

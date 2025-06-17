@@ -8,9 +8,15 @@ import DashboardLayout from 'layout/Dashboard';
 import RoleBasedGuard from './Guard/RoleBasedGuard';
 
 // Lazy load components
-const Home = Loadable(lazy(() => import('pages/home/home')));
+const Home = Loadable(lazy(() => import('pages/home')));
+const DashboardDefault = Loadable(lazy(() => import('pages/dashboard2')));
+// Dashboard Activity Components
+const ReconToolActivity = Loadable(lazy(() => import('pages/dashboard/RecentReconActivity')));
+const PortfolioActivity = Loadable(lazy(() => import('pages/dashboard/PortfolioSecuritiesActivity')));
+const CorporateActionActivity = Loadable(lazy(() => import('pages/dashboard/CorporateActionActivity')));
+const TradesActivity = Loadable(lazy(() => import('pages/dashboard/TradesActivity')));
+// TODO: Remove these components
 const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const Viewdata = Loadable(lazy(() => import('pages/ViewData')));
 const GeneratedReports = Loadable(lazy(() => import('pages/GeneratedReports')));
 const MappingData = Loadable(lazy(() => import('pages/MappingData/MappingData')));
@@ -44,6 +50,22 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
+      path: 'dashboard/recon-tool-activity',
+      element: <ReconToolActivity />
+    },
+    {
+      path: 'dashboard/portfolio-activity',
+      element: <PortfolioActivity />
+    },
+    {
+      path: 'dashboard/corporate-activity',
+      element: <CorporateActionActivity />
+    },
+    {
+      path: 'dashboard/posting-activity',
+      element: <TradesActivity />
+    },
+    {
       path: 'user-management',
       element: (
         <RoleBasedGuard roles={['admin']}>
@@ -53,6 +75,10 @@ const MainRoutes = {
     },
     {
       path: 'upload-file',
+      element: <ModernUploadFiles />
+    },
+    {
+      path: 'recon-tool',
       element: <ModernUploadFiles />
     },
     {

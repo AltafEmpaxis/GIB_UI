@@ -60,43 +60,6 @@ export default function GlobalStyles() {
               }
           },
 
-          // Legend Styles with theme colors
-          '& .apexcharts-legend': {
-            display: 'flex !important',
-            padding: `${theme.spacing(1)} !important`,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor:
-              theme.palette.mode === 'dark'
-                ? alpha(theme.palette.background.paper, 0.9)
-                : alpha(theme.palette.background.paper, 0.95),
-            backdropFilter: 'blur(8px)',
-
-            '& .apexcharts-legend-series': {
-              display: 'flex !important',
-              alignItems: 'center',
-              margin: `${theme.spacing(0.5)} ${theme.spacing(1)} !important`,
-
-              '& .apexcharts-legend-marker': {
-                width: '15px !important',
-                height: '15px !important',
-                borderRadius: '50%',
-                marginRight: theme.spacing(1),
-                transition: 'transform 0.2s ease-in-out',
-                '&:hover': {
-                  transform: 'scale(1.2)'
-                }
-              },
-
-              '& .apexcharts-legend-text': {
-                color: theme.palette.mode === 'dark' ? theme.palette.grey[300] : theme.palette.grey[800],
-                ...theme.typography.subtitle2,
-                marginLeft: theme.spacing(0.5),
-                transition: 'color 0.2s ease-in-out'
-              }
-            }
-          },
-
           // Enhanced Title & Text styles
           '& .apexcharts-title-text': {
             fill: theme.palette.text.primary,

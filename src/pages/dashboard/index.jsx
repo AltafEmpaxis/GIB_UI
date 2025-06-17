@@ -1,365 +1,258 @@
-// material-ui
-import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Grid from '@mui/material/Grid';
-import Skeleton from '@mui/material/Skeleton';
-import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
-import Typography from '@mui/material/Typography';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+// import { useEffect, useState } from 'react';
+// import { motion } from 'framer-motion';
 
-// project import
-import Analytics from 'components/cards/statistics/Analytics';
-import MainCard from 'components/MainCard';
-import useAuth from 'hooks/useAuth';
-import axios, { endpoints } from 'utils/axios';
-import { fNumber, fRoundPercent } from 'utils/formatNumber';
-import { analyticsSummaryData } from './mockData';
+// // material-ui
+// import { Grid, Box, useMediaQuery, Typography, Tabs, Tab, Divider, IconButton, Button } from '@mui/material';
+// import { alpha, useTheme } from '@mui/material/styles';
+// import { Icon } from '@iconify/react';
 
-// dashboard components
-import FullMatchPercentageOverview from './FullMatchPercentageOverview';
-import FullMatchTrend from './FullMatchTrend';
-import IssuesSummaryTable from './IssuesSummaryTable';
-import WelcomeCard from './WelcomeCard';
+// // project imports
+// import MainCard from 'components/MainCard';
+// import { GRID_SPACING } from 'config';
+// import WelcomeCard from './WelcomeCard';
+// import RecentReconActivity from './RecentReconActivity';
+// import PortfolioSecuritiesActivity from './PortfolioSecuritiesActivity';
+// import CorporateActionActivity from './CorporateActionActivity';
+// import TradesActivity from './TradesActivity';
+// import PerformanceMetrics from './PerformanceMetrics';
+// import PortfolioDistribution from './PortfolioDistribution';
+// import TradingVolumeChart from './TradingVolumeChart';
+// import MarketOverview from './MarketOverview';
+// import KeyAccountsWidget from './KeyAccountsWidget';
+// import QuickTasksWidget from './QuickTasksWidget';
 
-// ==============================|| DASHBOARD - DEFAULT ||============================== //
+// // Tab content components
+// import PortfoliosTab from './tabs/PortfoliosTab';
+// import TradesTab from './tabs/TradesTab';
+// import ReportsTab from './tabs/ReportsTab';
 
-export default function DashboardDefault() {
-  const [showHistorical, setShowHistorical] = useState(false);
-  const { user } = useAuth();
+// const Dashboard = () => {
+//   const theme = useTheme();
+//   const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
+//   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+//   const [isLoading, setLoading] = useState(true);
+//   const [activeTab, setActiveTab] = useState(0);
 
-  const {
-    data: apiData,
-    isLoading,
-    error,
-    refetch,
-    isFetching
-  } = useQuery({
-    queryKey: ['reconCounts', showHistorical, user?.user_id],
-    queryFn: async () => {
-      const response = await axios.get(endpoints.getReconCounts, {
-        params: {
-          userId: user?.user_id,
-          historical: showHistorical
-        }
-      });
-      return response.data;
-    },
-    retry: 2,
-    retryDelay: 3000,
-    onError: (err) => {
-      console.error('Failed to fetch reconciliation statistics:', err);
-    }
-  });
+//   useEffect(() => {
+//     // Simulate API loading
+//     const timer = setTimeout(() => {
+//       setLoading(false);
+//     }, 1000);
 
-  const handleHistoricalToggle = (e) => {
-    setShowHistorical(e.target.checked);
-  };
+//     return () => clearTimeout(timer);
+//   }, []);
 
-  if (isLoading) {
-    return (
-      <Grid container spacing={1}>
-        {/* Header - Always shown */}
-        <Grid item xs={12}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
-            <Typography variant="h3">Reconciliation Summary</Typography>
-            <FormControlLabel
-              control={<Switch checked={showHistorical} onChange={handleHistoricalToggle} disabled={true} />}
-              label={showHistorical ? 'Historical Data' : 'Current Data'}
-            />
-          </Stack>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-            {showHistorical ? 'Historical Overview' : 'Current Overview'} - {new Date().toLocaleString()}
-          </Typography>
-        </Grid>
+//   const handleChangeTab = (event, newValue) => {
+//     setActiveTab(newValue);
+//   };
 
-        {/* Welcome Card - Always shown */}
-        <Grid item xs={12}>
-          <WelcomeCard />
-        </Grid>
+//   const containerVariant = {
+//     hidden: { opacity: 0 },
+//     visible: {
+//       opacity: 1,
+//       transition: {
+//         staggerChildren: 0.08
+//       }
+//     }
+//   };
 
-        {/* Analytics Cards Skeleton */}
-        <Grid item xs={12}>
-          <Grid container spacing={1}>
-            {[1, 2, 3, 4, 5].map((item) => (
-              <Grid item xs={12} sm={6} md={4} lg={2.4} key={item}>
-                <MainCard contentSX={{ p: 1.5 }}>
-                  <Stack spacing={0.5}>
-                    <Skeleton variant="text" width={80} height={16} />
-                    <Skeleton variant="text" width={50} height={32} />
-                    <Skeleton variant="text" width={120} height={16} />
-                  </Stack>
-                </MainCard>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
+//   const itemVariant = {
+//     hidden: { y: 20, opacity: 0 },
+//     visible: {
+//       y: 0,
+//       opacity: 1,
+//       transition: {
+//         type: 'spring',
+//         stiffness: 100,
+//         damping: 15
+//       }
+//     }
+//   };
 
-        {/* Charts and Tables Skeleton */}
-        <Grid item xs={12}>
-          <Grid container spacing={1}>
-            {/* Main Chart Skeleton */}
-            <Grid item xs={12} md={8}>
-              <MainCard contentSX={{ p: 1.5, pb: 1 }}>
-                <Skeleton variant="text" width={200} height={24} sx={{ mb: 1.5 }} />
-                <Skeleton variant="rectangular" height={320} sx={{ borderRadius: 1 }} />
-              </MainCard>
-            </Grid>
-            {/* Overview Box Skeleton */}
-            <Grid item xs={12} md={4}>
-              <MainCard contentSX={{ p: 1.5, height: '100%' }}>
-                <Skeleton variant="text" width={150} height={24} sx={{ mb: 1.5 }} />
-                <Stack spacing={2} sx={{ height: '100%', justifyContent: 'center' }}>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Stack spacing={0.5}>
-                      <Skeleton variant="text" width={60} height={20} />
-                      <Skeleton variant="text" width={45} height={32} />
-                    </Stack>
-                    <Stack spacing={0.5}>
-                      <Skeleton variant="text" width={60} height={20} />
-                      <Skeleton variant="text" width={45} height={32} />
-                    </Stack>
-                  </Stack>
-                  <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 1 }} />
-                </Stack>
-              </MainCard>
-            </Grid>
-            {/* Bottom Charts Skeleton */}
-            <Grid item xs={12} md={6}>
-              <MainCard contentSX={{ p: 1.5, pb: 1 }}>
-                <Skeleton variant="text" width={180} height={24} sx={{ mb: 1.5 }} />
-                <Skeleton variant="rectangular" height={250} sx={{ borderRadius: 1 }} />
-              </MainCard>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <MainCard contentSX={{ p: 1.5, pb: 1 }}>
-                <Skeleton variant="text" width={180} height={24} sx={{ mb: 1.5 }} />
-                <Skeleton variant="rectangular" height={250} sx={{ borderRadius: 1 }} />
-              </MainCard>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    );
-  }
+//   return (
+//     <Box>
+//       {/* Dashboard Header */}
+//       <Box
+//         sx={{
+//           display: 'flex',
+//           flexDirection: matchDownSM ? 'column' : 'row',
+//           alignItems: matchDownSM ? 'flex-start' : 'center',
+//           justifyContent: 'space-between',
+//           mb: 1.5
+//         }}
+//       >
+//         <Box>
+//           <Typography
+//             variant="h3"
+//             sx={{
+//               fontWeight: 700,
+//               color: theme.palette.mode === 'dark' ? 'text.primary' : 'primary.dark',
+//               mb: 0.5
+//             }}
+//           >
+//             GIB Investment Dashboard
+//           </Typography>
+//           <Typography variant="body1" color="textSecondary">
+//             {new Date().toLocaleDateString('en-SA', {
+//               weekday: 'long',
+//               year: 'numeric',
+//               month: 'long',
+//               day: 'numeric'
+//             })}
+//           </Typography>
+//         </Box>
 
-  if (error) {
-    return (
-      <Box sx={{ width: '100%', p: 2 }}>
-        <Alert
-          severity="error"
-          sx={{ mb: 2 }}
-          action={
-            <Button color="inherit" size="small" onClick={refetch}>
-              Try Again
-            </Button>
-          }
-        >
-          {error?.response?.data?.message || error?.message || 'Failed to fetch dashboard data'}
-        </Alert>
-      </Box>
-    );
-  }
+//         <Box sx={{ display: 'flex', mt: matchDownSM ? 1 : 0 }}>
+//           <Button
+//             variant="contained"
+//             startIcon={<Icon icon="solar:add-circle-bold-duotone" />}
+//             sx={{
+//               mr: 2,
+//               backgroundColor: theme.palette.primary.main,
+//               px: 2,
+//               py: 1
+//             }}
+//           >
+//             New Trade
+//           </Button>
 
-  if (!apiData) {
-    return (
-      <Alert
-        severity="warning"
-        sx={{ mb: 2 }}
-        action={
-          <Button color="inherit" size="small" onClick={refetch}>
-            Retry
-          </Button>
-        }
-      >
-        No data available. Please try again later.
-      </Alert>
-    );
-  }
+//           <IconButton
+//             sx={{
+//               mr: 1.5,
+//               width: 40,
+//               height: 40,
+//               background: alpha(theme.palette.primary.main, 0.1),
+//               '&:hover': {
+//                 background: alpha(theme.palette.primary.main, 0.2)
+//               }
+//             }}
+//           >
+//             <Icon icon="solar:calendar-mark-bold-duotone" width={22} height={22} />
+//           </IconButton>
 
-  const mockStats = showHistorical ? analyticsSummaryData.historical : analyticsSummaryData.current;
+//           <IconButton
+//             sx={{
+//               width: 40,
+//               height: 40,
+//               background: alpha(theme.palette.primary.main, 0.1),
+//               '&:hover': {
+//                 background: alpha(theme.palette.primary.main, 0.2)
+//               }
+//             }}
+//           >
+//             <Icon icon="solar:settings-bold-duotone" width={22} height={22} />
+//           </IconButton>
+//         </Box>
+//       </Box>
 
-  // Calculate percentages from API data
-  const fullMatchPercent = Math.round((apiData.fullMatch / apiData.total) * 10000) / 100;
-  const tolerancePercent = Math.round((apiData.tolerance / apiData.total) * 10000) / 100;
-  const nearMatchPercent = Math.round((apiData.nearMatch / apiData.total) * 10000) / 100;
-  const missingPercent = Math.round((apiData.totalMissing / apiData.total) * 10000) / 100;
-  const skippedPercent = Math.round((apiData.skipped / apiData.total) * 10000) / 100;
+//       {/* Main Dashboard Content */}
+//       <Box
+//         component={motion.div}
+//         variants={containerVariant}
+//         initial="hidden"
+//         animate="visible"
+//         sx={{
+//           background: alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.8 : 1),
+//           borderRadius: 3,
+//           boxShadow: theme.palette.mode === 'dark' ? '0 8px 40px rgba(0,0,0,0.1)' : '0 4px 20px rgba(0,0,0,0.08)',
+//           overflow: 'hidden'
+//         }}
+//       >
+//         {/* Welcome Card - Top Section */}
+//         <Box component={motion.div} variants={itemVariant} sx={{ m: 1 }}>
+//           <WelcomeCard isLoading={isLoading} />
+//         </Box>
 
-  return (
-    <>
-      <title>Dashboard - Reconciliation Summary</title>
-      <meta name="description" content="Dashboard - View and analyze various reconciliation reports" />
-      <meta property="og:title" content="Dashboard - Reconciliation Summary" />
-      <meta property="og:description" content="Dashboard - View and analyze various reconciliation reports" />
-      <Grid container rowSpacing={1} columnSpacing={1}>
-        {/* Title Section with Switch */}
-        <Grid item xs={12}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-            <Typography variant="h3">
-              Reconciliation Summary
-              {isFetching && (
-                <Typography component="span" variant="caption" color="text.secondary" sx={{ ml: 1 }}>
-                  (Refreshing...)
-                </Typography>
-              )}
-            </Typography>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={showHistorical}
-                  onChange={handleHistoricalToggle}
-                  color="primary"
-                  disabled={isFetching}
-                />
-              }
-              label={
-                <Typography variant="subtitle1" color="text.secondary">
-                  {showHistorical ? 'Historical Data' : 'Current Data'}
-                </Typography>
-              }
-              sx={{
-                ml: 2,
-                '& .MuiFormControlLabel-label': {
-                  minWidth: '100px'
-                }
-              }}
-            />
-          </Stack>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
-            {showHistorical ? 'Historical Overview' : 'Current Overview'} - {new Date().toLocaleString()}
-          </Typography>
-        </Grid>
+//         {/* Dashboard Tabs */}
+//         <Box sx={{ borderBottom: 1, borderColor: 'divider', px: { xs: 1, md: 1.5 }, mb: 0 }}>
+//           <Tabs
+//             value={activeTab}
+//             onChange={handleChangeTab}
+//             variant="scrollable"
+//             scrollButtons="auto"
+//             aria-label="dashboard tabs"
+//             sx={{
+//               '& .MuiTab-root': {
+//                 py: 2,
+//                 px: { xs: 1, md: 1.5 },
+//                 fontSize: '0.875rem',
+//                 fontWeight: 500,
+//                 minHeight: 48
+//               }
+//             }}
+//           >
+//             <Tab label="Overview" icon={<Icon icon="solar:home-bold-duotone" />} iconPosition="start" />
+//             <Tab label="Portfolios" icon={<Icon icon="solar:folder-bold-duotone" />} iconPosition="start" />
+//             <Tab label="Trades" icon={<Icon icon="solar:document-add-bold-duotone" />} iconPosition="start" />
+//             <Tab label="Reports" icon={<Icon icon="solar:chart-bold-duotone" />} iconPosition="start" />
+//           </Tabs>
+//         </Box>
 
-        {/* Welcome Section */}
-        <Grid item xs={12}>
-          <WelcomeCard />
-        </Grid>
+//         {/* Tab Content */}
+//         <Box sx={{ p: { xs: 1, md: 1.5 } }}>
+//           {/* Overview Tab */}
+//           {activeTab === 0 && (
+//             <Grid container spacing={matchDownMD ? 1 : 1.5}>
+//               {/* Performance Metrics */}
+//               <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                 <PerformanceMetrics isLoading={isLoading} />
+//               </Grid>
 
-        {/* Analytics Cards Section - Using API Data */}
-        <Grid item xs={12}>
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={6} md={4} lg={2.4}>
-              <Analytics
-                title="Full Match"
-                count={fNumber(apiData.fullMatch)}
-                percentage={fullMatchPercent}
-                color="success"
-                extra={`Custodian: ${fRoundPercent(apiData.fullMatchPercentageAxys)}, APX: ${fRoundPercent(apiData.fullMatchPercentageGeneva)}`}
-                showChip={!showHistorical}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={2.4}>
-              <Analytics
-                title="Tolerance"
-                count={fNumber(apiData.tolerance)}
-                percentage={tolerancePercent}
-                color="warning"
-                extra={`Tolerance Exceeded: ${fNumber(apiData.tolerance)}`}
-                showChip={!showHistorical}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={2.4}>
-              <Analytics
-                title="Near Match"
-                count={fNumber(apiData.nearMatch)}
-                percentage={nearMatchPercent}
-                color="info"
-                extra={`Mismatches Found: ${fNumber(apiData.nearMatch)}`}
-                showChip={!showHistorical}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={2.4}>
-              <Analytics
-                title="Missing"
-                count={fNumber(apiData.totalMissing)}
-                percentage={missingPercent}
-                isLoss
-                color="error"
-                extra={`Custodian: ${fNumber(apiData.axysNotInGeneva)}, APX: ${fNumber(apiData.genevaNotInAxys)}`}
-                showChip={!showHistorical}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4} lg={2.4}>
-              <Analytics
-                title="Skipped"
-                count={fNumber(apiData.skipped)}
-                percentage={skippedPercent}
-                color="secondary"
-                extra={`Records Skipped: ${fNumber(apiData.skipped)}`}
-                showChip={!showHistorical}
-              />
-            </Grid>
-          </Grid>
-        </Grid>
+//               {/* Main Content - Two Column Layout */}
+//               <Grid container item spacing={matchDownMD ? 1 : 1.5} xs={12}>
+//                 {/* Left Column - 8 units wide */}
+//                 <Grid item xs={12} lg={8} container spacing={matchDownMD ? 1 : 1.5}>
+//                   <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                     <TradingVolumeChart isLoading={isLoading} />
+//                   </Grid>
 
-        {/* Rest of the components using mock data */}
-        <Grid item xs={12}>
-          <Grid container spacing={1}>
-            {/* Left Column */}
-            <Grid item xs={12} md={8}>
-              <MainCard contentSX={{ px: '0px !important', pb: '0px !important' }}>
-                <Typography variant="h5" sx={{ mb: 2, px: 2 }}>
-                  Full Match Percentage Overview (Custodian vs. APX)
-                </Typography>
-                <FullMatchPercentageOverview showHistorical={showHistorical} />
-              </MainCard>
-            </Grid>
+//                   <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                     <MarketOverview isLoading={isLoading} />
+//                   </Grid>
 
-            {/* Right Column */}
-            <Grid item xs={12} md={4}>
-              <Stack spacing={1}>
-                <MainCard contentSX={{ minHeight: '325px' }}>
-                  <Typography variant="h5" sx={{ mb: 2 }}>
-                    Full Match Overview
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
-                    {showHistorical ? 'Historical' : 'Current'} Statistics
-                  </Typography>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Box>
-                      <Typography variant="h6">Custodian</Typography>
-                      <Typography variant="h4" color="success.main">
-                        {fRoundPercent(mockStats.fullMatch.axysPercentage)}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="h6">APX</Typography>
-                      <Typography variant="h4" color="info.main">
-                        {fRoundPercent(mockStats.fullMatch.genevaPercentage)}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </MainCard>
-                {/* <MissingSummary showHistorical={showHistorical} /> */}
-              </Stack>
-            </Grid>
+//                   {/* Recent Activity - Split into two */}
+//                   <Grid item xs={12} md={6} component={motion.div} variants={itemVariant}>
+//                     <RecentReconActivity isLoading={isLoading} />
+//                   </Grid>
+//                   <Grid item xs={12} md={6} component={motion.div} variants={itemVariant}>
+//                     <CorporateActionActivity isLoading={isLoading} />
+//                   </Grid>
+//                 </Grid>
 
-            {/* Reconciliation Issues Summary */}
-            <Grid item xs={12} md={6}>
-              <MainCard contentSX={{ px: '0px !important', pb: '0px !important' }}>
-                <Typography variant="h5" sx={{ mb: 2, px: 2 }}>
-                  Reconciliation Issues Summary
-                </Typography>
-                <IssuesSummaryTable showHistorical={showHistorical} />
-              </MainCard>
-            </Grid>
+//                 {/* Right Column - 4 units wide */}
+//                 <Grid item xs={12} lg={4} container spacing={matchDownMD ? 1 : 1.5}>
+//                   <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                     <PortfolioDistribution isLoading={isLoading} />
+//                   </Grid>
 
-            {/* Full Match Trend Section */}
-            <Grid item xs={12} md={6}>
-              <MainCard contentSX={{ px: '0px !important', pb: '0px !important' }}>
-                <Typography variant="h5" sx={{ mb: 2, px: 2 }}>
-                  {showHistorical ? 'Full Match Trend' : 'Category-Wise Reconciliation Overview (%)'}
-                </Typography>
-                <FullMatchTrend showHistorical={showHistorical} />
-              </MainCard>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    </>
-  );
-}
+//                   <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                     <KeyAccountsWidget isLoading={isLoading} />
+//                   </Grid>
+
+//                   <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                     <QuickTasksWidget isLoading={isLoading} />
+//                   </Grid>
+
+//                   <Grid item xs={12} component={motion.div} variants={itemVariant}>
+//                     <TradesActivity isLoading={isLoading} />
+//                   </Grid>
+//                 </Grid>
+//               </Grid>
+//             </Grid>
+//           )}
+
+//           {/* Portfolios Tab */}
+//           {activeTab === 1 && <PortfoliosTab isLoading={isLoading} />}
+
+//           {/* Trades Tab */}
+//           {activeTab === 2 && <TradesTab isLoading={isLoading} />}
+
+//           {/* Reports Tab */}
+//           {activeTab === 3 && <ReportsTab isLoading={isLoading} />}
+//         </Box>
+//       </Box>
+//     </Box>
+//   );
+// };
+
+// export default Dashboard;

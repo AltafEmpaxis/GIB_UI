@@ -89,6 +89,7 @@
     "rehype-rewrite": "^4.0.2",
     "simplebar-react": "^3.3.0",
     "sweetalert2": "^11.17.2",
+    "swiper": "^11.2.8",
     "xlsx": "^0.18.5",
     "yup": "^1.6.1"
   },

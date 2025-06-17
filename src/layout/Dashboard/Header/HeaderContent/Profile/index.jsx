@@ -7,58 +7,29 @@ import {
   ButtonBase,
   CardContent,
   ClickAwayListener,
-  Fade,
+  Divider,
   Grid2,
   Paper,
   Popper,
   Stack,
-  Tab,
-  Tabs,
   Typography
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 
 // project import
 import MainCard from 'components/MainCard';
+import Transitions from 'components/@extended/Transitions';
 import useAuth from 'hooks/useAuth';
 
 import ProfileTab from './ProfileTab';
-
-function TabPanel({ children, value, index, ...other }) {
-  return (
-    <Box
-      role="tabpanel"
-      hidden={value !== index}
-      id={`profile-tabpanel-${index}`}
-      aria-labelledby={`profile-tab-${index}`}
-      {...other}
-    >
-      {value === index && children}
-    </Box>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired
-};
-
-function a11yProps(index) {
-  return {
-    id: `profile-tab-${index}`,
-    'aria-controls': `profile-tabpanel-${index}`
-  };
-}
 
 const Profile = () => {
   const theme = useTheme();
   const { logout, user } = useAuth();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(0);
   const isDark = theme.palette.mode === 'dark';
 
   // Get display name based on available user info
@@ -125,8 +96,12 @@ const Profile = () => {
     setOpen(false);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  // Generate gradient based on theme
+  const getAvatarGradient = () => {
+    if (isDark) {
+      return `linear-gradient(135deg, ${alpha(theme.palette.primary.dark, 0.8)}, ${alpha(theme.palette.primary.main, 0.4)})`;
+    }
+    return `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.7)}, ${alpha(theme.palette.secondary.main, 0.4)})`;
   };
 
   return (
@@ -134,11 +109,28 @@ const Profile = () => {
       <ButtonBase
         sx={{
           p: 0.25,
-          bgcolor: open ? theme.palette.action.hover : 'transparent',
-          borderRadius: 1,
+          bgcolor: open ? alpha(theme.palette.primary.main, 0.12) : 'transparent',
+          borderRadius: 1.5,
+          transition: 'all 0.2s ease-in-out',
           '&:hover': {
-            bgcolor: theme.palette.action.hover
-          }
+            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.18) : alpha(theme.palette.primary.lighter, 0.5),
+            transform: 'translateY(-2px)'
+          },
+          ...(open && {
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: -10,
+              left: '50%',
+              transform: 'translateX(-50%) rotate(45deg)',
+              width: 14,
+              height: 14,
+              bgcolor: isDark ? alpha(theme.palette.background.paper, 0.9) : theme.palette.background.paper,
+              borderLeft: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+              borderTop: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+              zIndex: 1201
+            }
+          })
         }}
         aria-label="open profile"
         ref={anchorRef}
@@ -151,27 +143,57 @@ const Profile = () => {
             <Avatar
               src={user.image}
               sx={{
-                ...theme.typography.mediumAvatar,
-                bgcolor: isDark ? 'dark.800' : 'primary.light',
-                color: isDark ? 'primary.main' : 'primary.dark'
+                width: 36,
+                height: 36,
+                background: getAvatarGradient(),
+                color: '#fff',
+                border: `2px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all 0.25s ease-in-out',
+                '&:hover': {
+                  boxShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}`,
+                  transform: 'scale(1.05)'
+                }
               }}
               aria-label="profile user"
             />
           ) : (
             <Avatar
               sx={{
-                ...theme.typography.mediumAvatar,
-                bgcolor: isDark ? 'dark.800' : 'primary.light',
-                color: isDark ? 'primary.main' : 'primary.dark'
+                width: 36,
+                height: 36,
+                background: getAvatarGradient(),
+                color: '#fff',
+                border: `2px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all 0.25s ease-in-out',
+                '&:hover': {
+                  boxShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}`,
+                  transform: 'scale(1.05)'
+                }
               }}
               aria-label="profile user"
             >
               {getInitials()}
             </Avatar>
           )}
-          <Typography variant="subtitle1" color="textPrimary">
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: open ? theme.palette.primary.main : theme.palette.text.primary,
+              fontWeight: open ? 600 : 500,
+              transition: 'all 0.2s ease-in-out'
+            }}
+          >
             {getDisplayName()}
           </Typography>
+          <Box
+            sx={{
+              color: theme.palette.text.secondary,
+              transition: 'transform 0.3s ease-in-out',
+              transform: open ? 'rotate(-180deg)' : 'rotate(0deg)'
+            }}
+          >
+            <Icon icon="solar:alt-arrow-down-bold-duotone" width={16} height={16} />
+          </Box>
         </Stack>
       </ButtonBase>
 
@@ -179,125 +201,120 @@ const Profile = () => {
         placement="bottom-end"
         open={open}
         anchorEl={anchorRef.current}
+        role={undefined}
         transition
         disablePortal
+        popperOptions={{
+          modifiers: [
+            {
+              name: 'offset',
+              options: {
+                offset: [0, 14]
+              }
+            }
+          ]
+        }}
         sx={{ zIndex: theme.zIndex.popup }}
       >
         {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
+          <Transitions type="fade" in={open} {...TransitionProps} sx={{ transformOrigin: 'top right' }}>
             <Paper
               sx={{
-                boxShadow: theme.customShadows.z1,
-                mt: 1.5,
-                borderRadius: theme.shape.borderRadius,
-                border: `1px solid ${theme.palette.divider}`
+                boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.2)' : '0 8px 24px rgba(0,0,0,0.1)',
+                borderRadius: 2,
+                border: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+                background: isDark
+                  ? `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`
+                  : `linear-gradient(${alpha(theme.palette.background.paper, 0.98)}, ${alpha(theme.palette.background.paper, 1)})`,
+                backdropFilter: 'blur(8px)',
+                width: 290,
+                overflow: 'hidden'
               }}
+              elevation={0}
             >
               <ClickAwayListener onClickAway={handleClose}>
-                <MainCard
-                  elevation={0}
-                  border={false}
-                  content={false}
-                  sx={{
-                    bgcolor: theme.palette.background.paper,
-                    border: `1px solid ${theme.palette.divider}`,
-                    p: 0
-                  }}
-                >
-                  <CardContent sx={{ px: 2.5, pt: 3 }}>
+                <MainCard elevation={0} border={false} content={false} sx={{ p: 0 }}>
+                  <CardContent>
                     <Grid2 container justifyContent="space-between" alignItems="center">
                       <Grid2>
-                        <Stack direction="row" spacing={1.25} alignItems="center">
+                        <Stack direction="row" spacing={1.5} alignItems="center">
                           {user?.image ? (
                             <Avatar
                               src={user.image}
                               sx={{
-                                width: 36,
-                                height: 36,
-                                border: `2px solid ${theme.palette.primary.main}`
+                                width: 48,
+                                height: 48,
+                                background: getAvatarGradient(),
+                                border: `3px solid ${theme.palette.background.paper}`,
+                                boxShadow: `0 0 0 2px ${theme.palette.primary.main}, 0 4px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
+                                transition: 'all 0.3s ease-in-out'
                               }}
                             />
                           ) : (
                             <Avatar
                               sx={{
-                                width: 36,
-                                height: 36,
-                                border: `2px solid ${theme.palette.primary.main}`,
-                                bgcolor: isDark ? 'dark.800' : 'primary.light',
-                                color: isDark ? 'primary.main' : 'primary.dark'
+                                width: 48,
+                                height: 48,
+                                background: getAvatarGradient(),
+                                border: `3px solid ${theme.palette.background.paper}`,
+                                boxShadow: `0 0 0 2px ${theme.palette.primary.main}, 0 4px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
+                                color: '#fff',
+                                transition: 'all 0.3s ease-in-out',
+                                fontSize: '1.25rem',
+                                fontWeight: 700
                               }}
                             >
                               {getInitials()}
                             </Avatar>
                           )}
                           <Stack>
-                            <Typography variant="subtitle1">{getDisplayName()}</Typography>
-                            <Typography variant="body2" color="textSecondary">
-                              {getUserRole()}
+                            <Typography
+                              variant="h6"
+                              sx={{
+                                fontWeight: 600,
+                                color: theme.palette.text.primary,
+                                lineHeight: 1.2
+                              }}
+                            >
+                              {getDisplayName()}
                             </Typography>
+                            <Stack direction="row" spacing={0.5} alignItems="center">
+                              <Icon
+                                icon="solar:shield-user-bold-duotone"
+                                width={14}
+                                height={14}
+                                color={isDark ? theme.palette.primary.light : theme.palette.primary.main}
+                              />
+                              <Typography
+                                variant="caption"
+                                sx={{
+                                  color: isDark ? theme.palette.primary.light : theme.palette.primary.main,
+                                  fontWeight: 500
+                                }}
+                              >
+                                {getUserRole()}
+                              </Typography>
+                            </Stack>
                           </Stack>
                         </Stack>
                       </Grid2>
                     </Grid2>
                   </CardContent>
 
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 1 }}>
-                    <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
-                      <Tab
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          textTransform: 'capitalize',
-                          minHeight: 48
-                        }}
-                        icon={
-                          <Icon
-                            icon="solar:user-bold-duotone"
-                            width={24}
-                            height={24}
-                            style={{ marginBottom: 0, marginRight: 8 }}
-                          />
-                        }
-                        label="Profile"
-                        {...a11yProps(0)}
-                      />
-                      {/* <Tab
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          textTransform: 'capitalize',
-                          minHeight: 48
-                        }}
-                        icon={
-                          <Icon
-                            icon="solar:settings-bold-duotone"
-                            width={24}
-                            height={24}
-                            style={{ marginBottom: 0, marginRight: 8 }}
-                          />
-                        }
-                        label="Setting"
-                        {...a11yProps(1)}
-                      /> */}
-                    </Tabs>
-                  </Box>
+                  <Divider
+                    sx={{
+                      opacity: 0.7,
+                      borderColor: alpha(theme.palette.divider, 0.2)
+                    }}
+                  />
 
                   <Box sx={{ p: 0 }}>
-                    <TabPanel value={value} index={0} dir={theme.direction}>
-                      <ProfileTab handleLogout={handleLogout} />
-                    </TabPanel>
-                    {/* <TabPanel value={value} index={1} dir={theme.direction}>
-                      <SettingTab />
-                    </TabPanel> */}
+                    <ProfileTab handleLogout={handleLogout} />
                   </Box>
                 </MainCard>
               </ClickAwayListener>
             </Paper>
-          </Fade>
+          </Transitions>
         )}
       </Popper>
     </Box>
