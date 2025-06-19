@@ -21,89 +21,85 @@ import PropTypes from 'prop-types';
 
 // project imports
 import MainCard from 'components/MainCard';
-import mockData from './dashbord-mockData.json';
+import mockData from '../dashbord-mockData.json';
 
-const TradesActivity = ({ isLoading }) => {
+const PortfolioSecuritiesActivity = ({ isLoading }) => {
   const theme = useTheme();
 
   // Use mock data from the JSON file, or fallback to hardcoded if unavailable
-  const activities = mockData?.tradesActivity || [
+  const activities = mockData?.portfolioActivity || [
     {
       id: 1,
-      action: 'Buy Order Executed',
-      security: 'ARAMCO - Saudi Arabian Oil Co. (2222.SE)',
-      details: '250 shares @ 31.15 SAR',
-      time: '5 minutes ago',
-      user: 'Trading Desk',
-      type: 'buy',
-      status: 'completed'
+      activity: 'New Portfolio Created',
+      name: 'GIB Saudi Equity Fund',
+      time: '30 minutes ago',
+      user: 'Noura Al-Zahrani',
+      category: 'portfolio',
+      type: 'create'
     },
     {
       id: 2,
-      action: 'Sell Order Executed',
-      security: 'ALRAJHI - Al Rajhi Bank (1120.SE)',
-      details: '150 shares @ 85.70 SAR',
-      time: '30 minutes ago',
-      user: 'Yousef Al-Qahtani',
-      type: 'sell',
-      status: 'completed'
+      activity: 'Security Added',
+      name: 'ARAMCO - Saudi Arabian Oil Co. (2222.SE)',
+      time: '1 hour ago',
+      user: 'Khalid Al-Otaibi',
+      category: 'security',
+      type: 'add'
     },
     {
       id: 3,
-      action: 'Trade Rejected',
-      security: 'SABB - Saudi British Bank (1060.SE)',
-      details: 'Insufficient funds',
-      time: '1 hour ago',
-      user: 'System',
-      type: 'buy',
-      status: 'rejected'
+      activity: 'Portfolio Updated',
+      name: 'GIB Sukuk Fund',
+      time: '2 hours ago',
+      user: 'Ahmad Al-Farsi',
+      category: 'portfolio',
+      type: 'update'
     },
     {
       id: 4,
-      action: 'Block Trade Posted',
-      security: 'TASI - Tadawul All Share Index',
-      details: '10,000 shares @ Index Value',
-      time: '2 hours ago',
-      user: 'Institutional Desk',
-      type: 'block',
-      status: 'completed'
+      activity: 'Security Modified',
+      name: 'SABB - Saudi British Bank (1060.SE)',
+      time: '3 hours ago',
+      user: 'Layla Al-Ghamdi',
+      category: 'security',
+      type: 'update'
     }
   ];
 
-  const getStatusColor = (status, type) => {
-    if (status === 'rejected') {
-      return theme.palette.error;
-    } else if (status === 'pending') {
-      return theme.palette.warning;
-    } else if (type === 'buy') {
-      return theme.palette.success;
-    } else if (type === 'sell') {
-      return theme.palette.primary;
+  const getActivityIcon = (category, type) => {
+    if (category === 'portfolio') {
+      switch (type) {
+        case 'create':
+          return 'solar:add-folder-bold-duotone';
+        case 'update':
+          return 'solar:folder-check-bold-duotone';
+        case 'delete':
+          return 'solar:folder-remove-bold-duotone';
+        default:
+          return 'solar:folder-bold-duotone';
+      }
     } else {
-      return theme.palette.info;
+      switch (type) {
+        case 'add':
+          return 'solar:add-circle-bold-duotone';
+        case 'update':
+          return 'solar:pen-bold-duotone';
+        case 'delete':
+          return 'solar:trash-bin-bold-duotone';
+        default:
+          return 'solar:document-bold-duotone';
+      }
     }
   };
 
-  const getActionIcon = (type, status) => {
-    if (status === 'rejected') {
-      return 'solar:close-circle-bold-duotone';
-    } else if (status === 'pending') {
-      return 'solar:clock-circle-bold-duotone';
-    } else if (type === 'buy') {
-      return 'solar:arrow-down-bold-duotone';
-    } else if (type === 'sell') {
-      return 'solar:arrow-up-bold-duotone';
-    } else if (type === 'block') {
-      return 'solar:widget-3-bold-duotone';
-    } else {
-      return 'solar:dollar-minimalistic-bold-duotone';
-    }
+  const getActivityColor = (category) => {
+    return category === 'portfolio' ? theme.palette.primary : theme.palette.info;
   };
 
   if (isLoading) {
     return (
       <MainCard
-        title="Saudi Market Trades"
+        title="Portfolio & Securities Management"
         sx={{
           height: '100%',
           '& .MuiCardContent-root': { p: 0 }
@@ -127,12 +123,9 @@ const TradesActivity = ({ isLoading }) => {
                 <ListItemText
                   primary={<Skeleton variant="text" width="60%" height={24} />}
                   secondary={
-                    <Stack spacing={0.5} mt={0.5}>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} mt={0.5}>
                       <Skeleton variant="text" width="40%" height={20} />
-                      <Stack direction="row" justifyContent="space-between" spacing={1}>
-                        <Skeleton variant="text" width="50%" height={20} />
-                        <Skeleton variant="rectangular" width={60} height={24} sx={{ borderRadius: 1 }} />
-                      </Stack>
+                      <Skeleton variant="rectangular" width={60} height={24} sx={{ borderRadius: 1 }} />
                     </Stack>
                   }
                 />
@@ -146,7 +139,7 @@ const TradesActivity = ({ isLoading }) => {
 
   return (
     <MainCard
-      title="Saudi Market Trades"
+      title="Portfolio & Securities Management"
       secondary={
         <IconButton
           color="primary"
@@ -167,8 +160,8 @@ const TradesActivity = ({ isLoading }) => {
       <CardContent>
         <List sx={{ py: 0 }}>
           {activities.map((activity, index) => {
-            const statusColor = getStatusColor(activity.status, activity.type);
-            const iconName = getActionIcon(activity.type, activity.status);
+            const activityColor = getActivityColor(activity.category);
+            const iconName = getActivityIcon(activity.category, activity.type);
             return (
               <ListItem
                 key={activity.id}
@@ -190,8 +183,8 @@ const TradesActivity = ({ isLoading }) => {
                 <ListItemAvatar sx={{ minWidth: 45 }}>
                   <Avatar
                     sx={{
-                      color: statusColor.main,
-                      bgcolor: statusColor.lighter,
+                      color: activityColor.main,
+                      bgcolor: activityColor.lighter,
                       width: 36,
                       height: 36
                     }}
@@ -202,30 +195,25 @@ const TradesActivity = ({ isLoading }) => {
                 <ListItemText
                   primary={
                     <Typography variant="subtitle1">
-                      {activity.action}
+                      {activity.activity}
                       <Typography component="span" variant="caption" sx={{ ml: 1 }}>
                         • {activity.time}
                       </Typography>
                     </Typography>
                   }
                   secondary={
-                    <Stack spacing={0.5} mt={0.5}>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} mt={0.5}>
                       <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 500 }}>
-                        {activity.security}
+                        {activity.name}
                       </Typography>
-                      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                        <Typography variant="caption" color="textSecondary">
-                          {activity.details}
-                        </Typography>
-                        <Chip
-                          label={activity.user}
-                          size="small"
-                          sx={{
-                            bgcolor: theme.palette.mode === 'dark' ? 'background.default' : 'grey.50',
-                            borderRadius: '4px'
-                          }}
-                        />
-                      </Stack>
+                      <Chip
+                        label={activity.user}
+                        size="small"
+                        sx={{
+                          bgcolor: theme.palette.mode === 'dark' ? 'background.default' : 'grey.50',
+                          borderRadius: '4px'
+                        }}
+                      />
                     </Stack>
                   }
                 />
@@ -248,7 +236,7 @@ const TradesActivity = ({ isLoading }) => {
           <Button
             variant="text"
             color="primary"
-            endIcon={<Icon icon="solar:chart-bold-duotone" />}
+            endIcon={<Icon icon="solar:alt-arrow-right-bold" />}
             sx={{
               fontWeight: 500,
               '&:hover': {
@@ -256,7 +244,7 @@ const TradesActivity = ({ isLoading }) => {
               }
             }}
           >
-            View All Trades
+            View All Portfolio Activities
           </Button>
         </Box>
       </CardContent>
@@ -264,8 +252,8 @@ const TradesActivity = ({ isLoading }) => {
   );
 };
 
-TradesActivity.propTypes = {
+PortfolioSecuritiesActivity.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default TradesActivity;
+export default PortfolioSecuritiesActivity;

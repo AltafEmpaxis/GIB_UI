@@ -37,12 +37,13 @@ import useAuth from 'hooks/useAuth';
 
 // mock data
 import dashboardData from './dashbord-mockData.json';
+import { GRID_SPACING } from 'config';
 
 const GIBDashboard = () => {
   const theme = useTheme();
 
   const [isLoading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState(0);
+
   useEffect(() => {
     // Simulate API loading
     const timer = setTimeout(() => {
@@ -51,31 +52,6 @@ const GIBDashboard = () => {
 
     return () => clearTimeout(timer);
   }, []);
-
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
-
-  // Theme-based colors
-  const neutralGray = theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[200];
-
-  // Activity summary counts
-  const activityCounts = {
-    recon: dashboardData.reconActivity.length,
-    securities: dashboardData.portfolioActivity.length,
-    corporateActions: dashboardData.corporateActions.length,
-    trades: dashboardData.tradesActivity.length
-  };
-
-  // Side menu items with enhanced icons
-  const sideMenuItems = useMemo(
-    () => [
-      { name: 'Upload Files', icon: 'solar:upload-minimalistic-bold-duotone', color: theme.palette.success.main },
-      { name: 'Analytics', icon: 'solar:chart-bold-duotone', active: true, color: theme.palette.primary.main },
-      { name: 'Settings', icon: 'solar:tuning-bold-duotone', align: 'right', color: theme.palette.warning.main }
-    ],
-    [theme.palette.primary.main, theme.palette.success.main, theme.palette.warning.main]
-  );
 
   // Enhanced Chart Options - Collection Trend Line Chart
   const collectionTrendOptions = {
@@ -360,127 +336,7 @@ const GIBDashboard = () => {
     >
       <Grid container>
         {/* Main Content Area */}
-        <Grid item xs={12} lg={9} sx={{ p: 3 }}>
-          {/* Modern Header */}
-
-          {/* Modern Interactive Navigation Bar */}
-          <Card
-            sx={{
-              mb: 4,
-              borderRadius: 3,
-              boxShadow: theme.customShadows?.z1 || '0 8px 24px rgba(0,0,0,0.07)',
-              bgcolor: theme.palette.background.paper,
-              overflow: 'hidden',
-              border: `1px solid ${alpha(theme.palette.divider, 0.8)}`
-            }}
-          >
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{
-                px: 3,
-                py: 1.75,
-                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.5)}`
-              }}
-            >
-              {sideMenuItems
-                .filter((item) => !item.align)
-                .map((item, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      px: 2.5,
-                      py: 1.25,
-                      borderRadius: 2,
-                      bgcolor: item.active ? alpha(item.color, 0.12) : 'transparent',
-                      color: item.active ? item.color : theme.palette.text.secondary,
-                      transition: 'all 0.2s ease',
-                      '&:hover': {
-                        bgcolor: alpha(item.color, 0.1)
-                      }
-                    }}
-                  >
-                    <Icon
-                      icon={item.icon}
-                      width={22}
-                      height={22}
-                      style={{
-                        marginRight: '10px',
-                        color: item.active ? item.color : theme.palette.text.secondary
-                      }}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        fontWeight: item.active ? 600 : 500,
-                        letterSpacing: item.active ? '0.015em' : 'normal'
-                      }}
-                    >
-                      {item.name}
-                    </Typography>
-                    {item.active && (
-                      <Box
-                        sx={{
-                          ml: 1,
-                          width: 6,
-                          height: 6,
-                          borderRadius: '50%',
-                          bgcolor: item.color
-                        }}
-                      />
-                    )}
-                  </Box>
-                ))}
-
-              <Box>
-                {sideMenuItems
-                  .filter((item) => item.align === 'right')
-                  .map((item, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                        px: 2.5,
-                        py: 1.25,
-                        borderRadius: 2,
-                        bgcolor: item.active ? alpha(item.color, 0.12) : 'transparent',
-                        color: item.active ? item.color : theme.palette.text.secondary,
-                        transition: 'all 0.2s ease',
-                        '&:hover': {
-                          bgcolor: alpha(item.color, 0.08)
-                        }
-                      }}
-                    >
-                      <Icon
-                        icon={item.icon}
-                        width={22}
-                        height={22}
-                        style={{
-                          marginRight: '10px',
-                          color: item.color
-                        }}
-                      />
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontWeight: item.active ? 600 : 500,
-                          letterSpacing: '0.01em'
-                        }}
-                      >
-                        {item.name}
-                      </Typography>
-                    </Box>
-                  ))}
-              </Box>
-            </Stack>
-          </Card>
-
+        <Grid item xs={12} lg={9} sx={{ py: 3, px: 2 }}>
           {/* Financial Summary Section */}
           <Box sx={{ mb: 3 }}>
             <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
@@ -501,7 +357,7 @@ const GIBDashboard = () => {
               />
             </Stack>
 
-            <Grid container spacing={3}>
+            <Grid container spacing={GRID_SPACING}>
               <Grid item xs={12} md={8}>
                 {/* Collection Trend Chart - Enhanced */}
                 <Card
@@ -686,13 +542,7 @@ const GIBDashboard = () => {
                     <Card
                       sx={{
                         p: 2.5,
-                        boxShadow: theme.customShadows?.z1 || '0 8px 25px rgba(0,0,0,0.07)',
-                        borderRadius: 3,
-                        bgcolor:
-                          theme.palette.mode === 'dark'
-                            ? alpha(theme.palette.primary.main, 0.3)
-                            : alpha(theme.palette.grey[100], 0.5),
-                        border: `1px solid ${alpha(theme.palette.divider, 0.8)}`
+                        borderRadius: 3
                       }}
                     >
                       <Stack spacing={2.5}>
@@ -791,7 +641,7 @@ const GIBDashboard = () => {
 
           {/* Top Sales Agent & Cash at Bank - Enhanced Section */}
           <Box sx={{ mb: 4 }}>
-            <Grid container spacing={3}>
+            <Grid container spacing={GRID_SPACING}>
               <Grid item xs={12} md={6}>
                 <Card
                   sx={{
@@ -1116,7 +966,7 @@ const GIBDashboard = () => {
 
           {/* Data Analysis & Monthly Invoices - Enhanced Section */}
           <Box sx={{ mb: 3 }}>
-            <Grid container spacing={3}>
+            <Grid container spacing={GRID_SPACING}>
               {/* Data Analysis - Enhanced */}
               <Grid item xs={12} md={6}>
                 <Card
@@ -1488,7 +1338,7 @@ const GIBDashboard = () => {
             boxShadow: '-4px 0 20px rgba(0,0,0,0.1)'
           }}
         >
-          <Stack spacing={3}>
+          <Stack spacing={GRID_SPACING}>
             {/* Sidebar Top Spacing */}
             <Box sx={{ mb: 2 }}></Box>
 

@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
-
 // material-ui
 import { Icon } from '@iconify/react';
 import { alpha, Avatar, Box, Card, CardContent, Chip, Grid, Paper, Stack, Typography, useTheme } from '@mui/material';
-import { motion } from 'framer-motion';
 
 // project imports
 import MainCard from 'components/MainCard';
@@ -18,36 +15,16 @@ import WelcomeCard from './WelcomeCard';
 const Home = () => {
   const theme = useTheme();
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.4, ease: 'easeOut' }
-    }
-  };
-
   return (
-    <Box component={motion.div} initial="hidden" animate="visible" variants={containerVariants}>
+    <Card sx={{ p: 1, borderRadius: 2 }}>
       <Grid container spacing={GRID_SPACING}>
         {/* Welcome Message */}
-        <Grid item xs={12} component={motion.div} variants={itemVariants}>
+        <Grid item xs={12}>
           <WelcomeCard />
         </Grid>
 
         {/* Mission & Vision */}
-        <Grid item xs={12} md={6} component={motion.div} variants={itemVariants}>
+        <Grid item xs={12} md={6}>
           <MainCard
             sx={{
               height: '100%',
@@ -151,12 +128,12 @@ const Home = () => {
         </Grid>
 
         {/* Date, Time & Weather */}
-        <Grid item xs={12} md={6} component={motion.div} variants={itemVariants}>
+        <Grid item xs={12} md={6}>
           <DateTimeWeather />
         </Grid>
 
         {/* Live Market Feed */}
-        <Grid item xs={12} md={8} component={motion.div} variants={itemVariants}>
+        <Grid item xs={12} md={8}>
           <MainCard
             sx={{
               height: '100%',
@@ -198,12 +175,12 @@ const Home = () => {
         </Grid>
 
         {/* Leadership Insights */}
-        <Grid item xs={12} md={4} component={motion.div} variants={itemVariants}>
+        <Grid item xs={12} md={4}>
           <LeadershipCard />
         </Grid>
 
         {/* Internal Updates */}
-        <Grid item xs={12} component={motion.div} variants={itemVariants}>
+        <Grid item xs={12}>
           <MainCard
             sx={{
               borderRadius: 2,
@@ -273,8 +250,6 @@ const Home = () => {
             <Grid container spacing={3} sx={{ position: 'relative', zIndex: 1 }}>
               <Grid item xs={12} md={4}>
                 <Card
-                  component={motion.div}
-                  whileHover={{ y: -8, boxShadow: theme.shadows[5] }}
                   sx={{
                     borderRadius: 3,
                     overflow: 'hidden',
@@ -416,8 +391,6 @@ const Home = () => {
 
               <Grid item xs={12} md={4}>
                 <Card
-                  component={motion.div}
-                  whileHover={{ y: -8, boxShadow: theme.shadows[5] }}
                   sx={{
                     borderRadius: 3,
                     overflow: 'hidden',
@@ -613,7 +586,6 @@ const Home = () => {
 
               <Grid item xs={12} md={4}>
                 <Card
-                  component={motion.div}
                   whileHover={{ y: -8, boxShadow: theme.shadows[5] }}
                   sx={{
                     borderRadius: 3,
@@ -807,7 +779,7 @@ const Home = () => {
           </MainCard>
         </Grid>
       </Grid>
-    </Box>
+    </Card>
   );
 };
 

@@ -23,7 +23,7 @@ import PropTypes from 'prop-types';
 
 // project imports
 import MainCard from 'components/MainCard';
-import mockData from './dashbord-mockData.json';
+import mockData from '../dashbord-mockData.json';
 
 const RecentReconActivity = ({ isLoading }) => {
   const theme = useTheme();

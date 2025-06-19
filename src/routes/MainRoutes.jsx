@@ -9,12 +9,14 @@ import RoleBasedGuard from './Guard/RoleBasedGuard';
 
 // Lazy load components
 const Home = Loadable(lazy(() => import('pages/home')));
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard2')));
+const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
+const DashboardDefault2 = Loadable(lazy(() => import('pages/dashboard2')));
+
 // Dashboard Activity Components
-const ReconToolActivity = Loadable(lazy(() => import('pages/dashboard/RecentReconActivity')));
-const PortfolioActivity = Loadable(lazy(() => import('pages/dashboard/PortfolioSecuritiesActivity')));
-const CorporateActionActivity = Loadable(lazy(() => import('pages/dashboard/CorporateActionActivity')));
-const TradesActivity = Loadable(lazy(() => import('pages/dashboard/TradesActivity')));
+const ReconToolActivity = Loadable(lazy(() => import('pages/dashboard/RecentActivity/RecentReconActivity')));
+const PortfolioActivity = Loadable(lazy(() => import('pages/dashboard/RecentActivity/PortfolioSecuritiesActivity')));
+const CorporateActionActivity = Loadable(lazy(() => import('pages/dashboard/RecentActivity/CorporateActionActivity')));
+const TradesActivity = Loadable(lazy(() => import('pages/dashboard/RecentActivity/TradesActivity')));
 // TODO: Remove these components
 const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
 const Viewdata = Loadable(lazy(() => import('pages/ViewData')));
@@ -48,6 +50,10 @@ const MainRoutes = {
     {
       path: 'dashboard',
       element: <DashboardDefault />
+    },
+    {
+      path: 'dashboard2',
+      element: <DashboardDefault2 />
     },
     {
       path: 'dashboard/recon-tool-activity',

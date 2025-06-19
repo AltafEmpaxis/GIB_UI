@@ -21,90 +21,89 @@ import PropTypes from 'prop-types';
 
 // project imports
 import MainCard from 'components/MainCard';
-import mockData from './dashbord-mockData.json';
+import mockData from '../dashbord-mockData.json';
 
-const CorporateActionActivity = ({ isLoading }) => {
+const TradesActivity = ({ isLoading }) => {
   const theme = useTheme();
 
-  // Use mock data from the JSON file, or fallback to hardcoded
-  const activities = mockData?.corporateActions || [
+  // Use mock data from the JSON file, or fallback to hardcoded if unavailable
+  const activities = mockData?.tradesActivity || [
     {
       id: 1,
-      action: 'Dividend Announcement',
-      security: 'SABB - Saudi British Bank (1060.SE)',
-      details: "0.83 SAR per share, Ex-Date: 15 Dhul Qa'dah",
-      time: '15 minutes ago',
-      user: 'System',
-      status: 'new'
+      action: 'Buy Order Executed',
+      security: 'ARAMCO - Saudi Arabian Oil Co. (2222.SE)',
+      details: '250 shares @ 31.15 SAR',
+      time: '5 minutes ago',
+      user: 'Trading Desk',
+      type: 'buy',
+      status: 'completed'
     },
     {
       id: 2,
-      action: 'Stock Split',
-      security: 'ARAMCO - Saudi Arabian Oil Co (2222.SE)',
-      details: '2:1 Split, Effective Date: 10 Dhul Hijjah',
-      time: '1 hour ago',
-      user: 'Mohammed Al-Otaibi',
-      status: 'processed'
+      action: 'Sell Order Executed',
+      security: 'ALRAJHI - Al Rajhi Bank (1120.SE)',
+      details: '150 shares @ 85.70 SAR',
+      time: '30 minutes ago',
+      user: 'Yousef Al-Qahtani',
+      type: 'sell',
+      status: 'completed'
     },
     {
       id: 3,
-      action: 'Sukuk Maturity Notice',
-      security: 'GACA - General Authority of Civil Aviation',
-      details: 'Sukuk maturity on 20 Safar, 1446H',
-      time: '3 hours ago',
-      user: 'Fahad Al-Shammari',
-      status: 'pending'
+      action: 'Trade Rejected',
+      security: 'SABB - Saudi British Bank (1060.SE)',
+      details: 'Insufficient funds',
+      time: '1 hour ago',
+      user: 'System',
+      type: 'buy',
+      status: 'rejected'
     },
     {
       id: 4,
-      action: 'Rights Issue',
-      security: 'ALRAJHI - Al Rajhi Bank (1120.SE)',
-      details: '1:5 Rights Issue, Subscription: 1-15 Muharram',
-      time: '5 hours ago',
-      user: 'Nora Al-Dosari',
-      status: 'processed'
+      action: 'Block Trade Posted',
+      security: 'TASI - Tadawul All Share Index',
+      details: '10,000 shares @ Index Value',
+      time: '2 hours ago',
+      user: 'Institutional Desk',
+      type: 'block',
+      status: 'completed'
     }
   ];
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'new':
-        return theme.palette.info;
-      case 'processed':
-        return theme.palette.success;
-      case 'pending':
-        return theme.palette.warning;
-      case 'rejected':
-        return theme.palette.error;
-      default:
-        return theme.palette.primary;
+  const getStatusColor = (status, type) => {
+    if (status === 'rejected') {
+      return theme.palette.error;
+    } else if (status === 'pending') {
+      return theme.palette.warning;
+    } else if (type === 'buy') {
+      return theme.palette.success;
+    } else if (type === 'sell') {
+      return theme.palette.primary;
+    } else {
+      return theme.palette.info;
     }
   };
 
-  const getActionIcon = (action) => {
-    if (action.includes('Dividend')) {
-      return 'solar:money-bag-bold-duotone';
-    } else if (action.includes('Split')) {
-      return 'solar:cell-divided-bold-duotone';
-    } else if (action.includes('Sukuk')) {
-      return 'solar:document-text-bold-duotone';
-    } else if (action.includes('Rights')) {
-      return 'solar:widget-add-bold-duotone';
-    } else if (action.includes('Merger')) {
-      return 'solar:arrow-right-bold-duotone';
+  const getActionIcon = (type, status) => {
+    if (status === 'rejected') {
+      return 'solar:close-circle-bold-duotone';
+    } else if (status === 'pending') {
+      return 'solar:clock-circle-bold-duotone';
+    } else if (type === 'buy') {
+      return 'solar:arrow-down-bold-duotone';
+    } else if (type === 'sell') {
+      return 'solar:arrow-up-bold-duotone';
+    } else if (type === 'block') {
+      return 'solar:widget-3-bold-duotone';
     } else {
-      return 'solar:document-text-bold-duotone';
+      return 'solar:dollar-minimalistic-bold-duotone';
     }
   };
 
   if (isLoading) {
     return (
       <MainCard
-        title={
-          <Typography variant="h6" fontWeight={600} fontSize="1rem">
-            Corporate Actions - Saudi Market
-          </Typography>
-        }
+        title="Saudi Market Trades"
         sx={{
           height: '100%',
           '& .MuiCardContent-root': { p: 0 }
@@ -118,11 +117,11 @@ const CorporateActionActivity = ({ isLoading }) => {
                 divider
                 sx={{
                   py: 1.5,
-                  px: { xs: 1.5, md: 2 },
+                  px: 2,
                   borderColor: theme.palette.divider
                 }}
               >
-                <ListItemAvatar sx={{ minWidth: 40, mt: 0 }}>
+                <ListItemAvatar sx={{ minWidth: 45 }}>
                   <Skeleton variant="circular" width={36} height={36} />
                 </ListItemAvatar>
                 <ListItemText
@@ -147,11 +146,7 @@ const CorporateActionActivity = ({ isLoading }) => {
 
   return (
     <MainCard
-      title={
-        <Typography variant="h6" fontWeight={600} fontSize="1rem">
-          Corporate Actions - Saudi Market
-        </Typography>
-      }
+      title="Saudi Market Trades"
       secondary={
         <IconButton
           color="primary"
@@ -159,22 +154,21 @@ const CorporateActionActivity = ({ isLoading }) => {
           component={motion.button}
           whileHover={{ rotate: 180, scale: 1.1 }}
           transition={{ duration: 0.3 }}
-          sx={{ width: 30, height: 30 }}
         >
-          <Icon icon="solar:refresh-bold" width={18} height={18} />
+          <Icon icon="solar:refresh-bold" width={20} height={20} />
         </IconButton>
       }
       sx={{
         height: '100%',
-        boxShadow: theme.palette.mode === 'dark' ? '0 4px 12px rgba(0,0,0,0.1)' : '0 4px 12px rgba(0,0,0,0.05)',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
         '& .MuiCardContent-root': { p: 0 }
       }}
     >
       <CardContent>
         <List sx={{ py: 0 }}>
           {activities.map((activity, index) => {
-            const statusColor = getStatusColor(activity.status);
-            const iconName = getActionIcon(activity.action);
+            const statusColor = getStatusColor(activity.status, activity.type);
+            const iconName = getActionIcon(activity.type, activity.status);
             return (
               <ListItem
                 key={activity.id}
@@ -185,7 +179,7 @@ const CorporateActionActivity = ({ isLoading }) => {
                 divider
                 sx={{
                   py: 1.5,
-                  px: { xs: 1.5, md: 2 },
+                  px: 2,
                   borderColor: theme.palette.divider,
                   '&:hover': {
                     bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.01)'
@@ -193,7 +187,7 @@ const CorporateActionActivity = ({ isLoading }) => {
                   cursor: 'pointer'
                 }}
               >
-                <ListItemAvatar sx={{ minWidth: 40, mt: 0 }}>
+                <ListItemAvatar sx={{ minWidth: 45 }}>
                   <Avatar
                     sx={{
                       color: statusColor.main,
@@ -202,39 +196,33 @@ const CorporateActionActivity = ({ isLoading }) => {
                       height: 36
                     }}
                   >
-                    <Icon icon={iconName} width={18} height={18} />
+                    <Icon icon={iconName} width={20} height={20} />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <Typography variant="subtitle1" sx={{ fontSize: '0.875rem' }}>
+                    <Typography variant="subtitle1">
                       {activity.action}
-                      <Typography component="span" variant="caption" sx={{ ml: 1, fontSize: '0.75rem', opacity: 0.7 }}>
+                      <Typography component="span" variant="caption" sx={{ ml: 1 }}>
                         • {activity.time}
                       </Typography>
                     </Typography>
                   }
                   secondary={
                     <Stack spacing={0.5} mt={0.5}>
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ fontWeight: 500, fontSize: '0.75rem', display: 'block' }}
-                      >
+                      <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 500 }}>
                         {activity.security}
                       </Typography>
                       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-                        <Typography variant="caption" color="textSecondary" sx={{ fontSize: '0.75rem' }}>
+                        <Typography variant="caption" color="textSecondary">
                           {activity.details}
                         </Typography>
                         <Chip
                           label={activity.user}
                           size="small"
                           sx={{
-                            bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-                            borderRadius: '4px',
-                            height: 22,
-                            fontSize: '0.7rem'
+                            bgcolor: theme.palette.mode === 'dark' ? 'background.default' : 'grey.50',
+                            borderRadius: '4px'
                           }}
                         />
                       </Stack>
@@ -249,7 +237,7 @@ const CorporateActionActivity = ({ isLoading }) => {
           component={motion.div}
           whileHover={{ scale: 1.02 }}
           sx={{
-            p: { xs: 1.5, md: 2 },
+            p: 2,
             display: 'flex',
             justifyContent: 'center',
             borderTop: `1px solid ${theme.palette.divider}`,
@@ -260,16 +248,15 @@ const CorporateActionActivity = ({ isLoading }) => {
           <Button
             variant="text"
             color="primary"
-            endIcon={<Icon icon="solar:document-bold-duotone" width={16} />}
+            endIcon={<Icon icon="solar:chart-bold-duotone" />}
             sx={{
               fontWeight: 500,
-              fontSize: '0.8125rem',
               '&:hover': {
                 background: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'
               }
             }}
           >
-            View All Corporate Actions
+            View All Trades
           </Button>
         </Box>
       </CardContent>
@@ -277,8 +264,8 @@ const CorporateActionActivity = ({ isLoading }) => {
   );
 };
 
-CorporateActionActivity.propTypes = {
+TradesActivity.propTypes = {
   isLoading: PropTypes.bool
 };
 
-export default CorporateActionActivity;
+export default TradesActivity;

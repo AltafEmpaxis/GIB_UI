@@ -18,6 +18,13 @@ const dashboard = {
       type: 'item',
       url: '/dashboard',
       icon: icons.DashboardOutlined
+    },
+    {
+      id: 'dashboard2',
+      title: 'Dashboard2',
+      type: 'item',
+      url: '/dashboard2',
+      icon: icons.DashboardOutlined
     }
   ]
 };
