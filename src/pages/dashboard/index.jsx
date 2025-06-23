@@ -1,27 +1,25 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 // material-ui
-import { Grid, Box, useMediaQuery, Typography, Tabs, Tab, Divider, IconButton, Button } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
+import { Box, Button, Grid, IconButton, Tab, Tabs, Typography, useMediaQuery } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 
 // project imports
-import MainCard from 'components/MainCard';
-import { GRID_SPACING } from 'config';
-import WelcomeCard from './WelcomeCard';
-import RecentActivity from './RecentActivity';
+import PortfoliosTab from 'pages/dashboard/tabs/PortfoliosTab';
+import ReportsTab from 'pages/dashboard/tabs/ReportsTab';
+import TradesTab from 'pages/dashboard/tabs/TradesTab';
+import KeyAccountsWidget from './KeyAccountsWidget';
+import MarketOverview from './MarketOverview';
 import PerformanceMetrics from './PerformanceMetrics';
 import PortfolioDistribution from './PortfolioDistribution';
-import TradingVolumeChart from './TradingVolumeChart';
-import MarketOverview from './MarketOverview';
-import KeyAccountsWidget from './KeyAccountsWidget';
 import QuickTasksWidget from './QuickTasksWidget';
+import RecentActivity from './RecentActivity';
+import TradingVolumeChart from './TradingVolumeChart';
+import WelcomeCard from './WelcomeCard';
 
 // Tab content components
-import PortfoliosTab from './tabs/PortfoliosTab';
-import TradesTab from './tabs/TradesTab';
-import ReportsTab from './tabs/ReportsTab';
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -233,14 +231,14 @@ const Dashboard = () => {
             </Grid>
           )}
 
+          {activeTab === 1 && <PortfoliosTab isLoading={isLoading} />}
           {/* Portfolios Tab */}
-          {/* {activeTab === 1 && <PortfoliosTab isLoading={isLoading} />}
 
           {/* Trades Tab */}
-          {/* {activeTab === 2 && <TradesTab isLoading={isLoading} />} */}
+          {activeTab === 2 && <TradesTab isLoading={isLoading} />}
 
           {/* Reports Tab */}
-          {/* {activeTab === 3 && <ReportsTab isLoading={isLoading} />} */}
+          {activeTab === 3 && <ReportsTab isLoading={isLoading} />}
         </Box>
       </Box>
     </Box>

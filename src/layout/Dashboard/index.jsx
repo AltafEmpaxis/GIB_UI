@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Backdrop, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -13,11 +13,16 @@ import Header from './Header';
 const DashboardLayout = () => {
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
-  const [open, setOpen] = useState(!matchDownLG);
 
-  useEffect(() => {
-    setOpen(!matchDownLG);
-  }, [matchDownLG]);
+  // Dashboard layout to keep the drawer closed by default when landing on the page.
+  const [open, setOpen] = useState(false);
+
+  // Dashboard layout to keep the drawer open by default when landing on the page.
+  // const [open, setOpen] = useState(!matchDownLG);
+
+  // useEffect(() => {
+  //   setOpen(!matchDownLG);
+  // }, [matchDownLG]);
 
   const handleDrawerToggle = () => {
     setOpen(!open);

@@ -1,14 +1,13 @@
 // material-ui
 import { Icon } from '@iconify/react';
-import { alpha, Avatar, Box, Card, CardContent, Chip, Grid, Paper, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Avatar, Box, Card, CardContent, Chip, Grid, Stack, Typography, useTheme } from '@mui/material';
 
 // project imports
 import MainCard from 'components/MainCard';
 import { GRID_SPACING } from 'config';
-import DateTimeWeather from './DateTimeWeather';
 import LeadershipCard from './LeadershipCard';
+import MissionVisionSlider from './MissionVisionSlider';
 import TadawulFeed from './TadawulFeed';
-import WelcomeCard from './WelcomeCard';
 
 // ==============================|| HOME PAGE ||============================== //
 
@@ -18,122 +17,18 @@ const Home = () => {
   return (
     <Card sx={{ p: 1, borderRadius: 2 }}>
       <Grid container spacing={GRID_SPACING}>
-        {/* Welcome Message */}
+        {/* Mission & Vision - Full width with 100dvh height */}
         <Grid item xs={12}>
-          <WelcomeCard />
+          <MissionVisionSlider />
         </Grid>
 
-        {/* Mission & Vision */}
-        <Grid item xs={12} md={6}>
-          <MainCard
-            sx={{
-              height: '100%',
-              borderRadius: 2,
-              overflow: 'hidden',
-              boxShadow: theme.palette.mode === 'dark' ? '0 3px 14px rgba(0,0,0,0.3)' : '0 3px 14px rgba(58,53,65,0.1)',
-              position: 'relative',
-              '&:before': {
-                content: '""',
-                position: 'absolute',
-                width: 210,
-                height: 210,
-                background: `linear-gradient(140.9deg, ${theme.palette.primary.main} -14.02%, rgba(144, 202, 249, 0) 77.58%)`,
-                borderRadius: '50%',
-                top: -85,
-                right: -95,
-                opacity: 0.2,
-                transition: 'all 0.3s ease-in-out'
-              },
-              '&:hover:before': {
-                transform: 'scale(1.05) translate(-5px, 5px)',
-                opacity: 0.25
-              }
-            }}
-            title={
-              <Stack direction="row" alignItems="center" spacing={1.5}>
-                <Avatar
-                  sx={{
-                    width: 34,
-                    height: 34,
-                    bgcolor: alpha(theme.palette.primary.main, 0.2),
-                    color: theme.palette.primary.main
-                  }}
-                >
-                  <Icon icon="solar:flag-bold-duotone" width={22} height={22} />
-                </Avatar>
-                <Typography variant="h5">Our Mission & Vision</Typography>
-              </Stack>
-            }
-          >
-            <Box sx={{ height: '100%' }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  mb: 2,
-                  borderRadius: 1.5,
-                  bgcolor: alpha(theme.palette.primary.light, 0.1),
-                  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    color: theme.palette.primary.main,
-                    mb: 1,
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Icon
-                    icon="streamline-ultimate-color:business-team-goal"
-                    style={{ marginRight: '8px', fontSize: '22px' }}
-                  />
-                  Mission
-                </Typography>
-                <Typography variant="body1" sx={{ mb: 0.5 }}>
-                  To deliver exceptional investment solutions through cutting-edge technology, ensuring accuracy,
-                  efficiency, and transparency in all investment operations.
-                </Typography>
-              </Paper>
-
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  borderRadius: 1.5,
-                  bgcolor: alpha(theme.palette.primary.light, 0.1),
-                  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    color: theme.palette.primary.main,
-                    mb: 1,
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Icon icon="solar:telescope-bold-duotone" style={{ marginRight: '8px', fontSize: '22px' }} />
-                  Vision
-                </Typography>
-                <Typography variant="body1">
-                  To be the industry leader in investment verification and reconciliation services, transforming data
-                  into actionable insights that drive successful investment strategies.
-                </Typography>
-              </Paper>
-            </Box>
-          </MainCard>
-        </Grid>
-
-        {/* Date, Time & Weather */}
-        <Grid item xs={12} md={6}>
-          <DateTimeWeather />
-        </Grid>
-
-        {/* Live Market Feed */}
+        {/* Leadership Insights - 6/12 width */}
         <Grid item xs={12} md={8}>
+          <LeadershipCard />
+        </Grid>
+
+        {/* Live Market Feed - 6/12 width */}
+        <Grid item xs={12} md={4}>
           <MainCard
             sx={{
               height: '100%',
@@ -174,12 +69,7 @@ const Home = () => {
           </MainCard>
         </Grid>
 
-        {/* Leadership Insights */}
-        <Grid item xs={12} md={4}>
-          <LeadershipCard />
-        </Grid>
-
-        {/* Internal Updates */}
+        {/* Internal Updates - Full width */}
         <Grid item xs={12}>
           <MainCard
             sx={{
