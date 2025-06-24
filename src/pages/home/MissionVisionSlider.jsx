@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
 import { A11y, Autoplay, EffectFade, Navigation, Pagination, Keyboard, Mousewheel } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -85,10 +85,191 @@ const slides = [
   }
 ];
 
+function ProgressBarNav({ activeIndex, slidesLength, progress }) {
+  const swiper = useSwiper();
+
+  return (
+    <Box
+      sx={{
+        position: 'absolute',
+        bottom: { xs: 10, sm: 10, md: 5 },
+        left: 0,
+        right: 0,
+        zIndex: 10,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        px: { xs: 2, sm: 0 }
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '100%',
+          maxWidth: '500px',
+          backdropFilter: 'blur(10px)',
+          background: (theme) => alpha(theme.palette.background.paper, 0.1),
+          borderRadius: '20px',
+          border: (theme) => `1px solid ${alpha(theme.palette.common.white, 0.1)}`,
+          py: 1.5
+        }}
+      >
+        {/* Single container for progress, navigation, and pagination */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            px: 3
+          }}
+        >
+          {/* Top row with progress and navigation */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%'
+            }}
+          >
+            {/* Left navigation button */}
+            <Button
+              onClick={() => swiper.slidePrev()}
+              disabled={swiper.isBeginning}
+              sx={(theme) => ({
+                minWidth: '40px',
+                width: '40px',
+                height: '40px',
+                p: 0,
+                borderRadius: '50%',
+                backgroundColor: alpha(theme.palette.secondary.main, 0.15),
+                backdropFilter: 'blur(8px)',
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.3)}`,
+                color: theme.palette.secondary.main,
+                transition: 'all 0.3s ease',
+                opacity: swiper.isBeginning ? 0.35 : 1,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.2),
+                  transform: 'scale(1.05)',
+                  boxShadow: `0 0 15px ${alpha(theme.palette.secondary.main, 0.5)}`
+                }
+              })}
+            >
+              <Icon icon="mdi:chevron-left" style={{ fontSize: '20px' }} />
+            </Button>
+
+            {/* Linear progress bar */}
+            <Box
+              sx={{
+                flexGrow: 1,
+                mx: 2,
+                mt: 2.5
+              }}
+            >
+              <LinearProgress
+                variant="determinate"
+                value={progress}
+                sx={(theme) => ({
+                  height: 5,
+                  borderRadius: 3,
+                  backgroundColor: alpha(theme.palette.common.white, 0.2),
+                  '& .MuiLinearProgress-bar': {
+                    backgroundColor: theme.palette.secondary.main,
+                    borderRadius: 3,
+                    boxShadow: `0 0 8px ${alpha(theme.palette.secondary.main, 0.7)}`
+                  }
+                })}
+              />
+              {/* Bottom row with slide count and bullets */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                  mt: 0.5
+                }}
+              >
+                {/* Slide count */}
+                <Typography
+                  variant="body2"
+                  sx={(theme) => ({
+                    color: theme.palette.common.white,
+                    fontWeight: 600,
+                    mr: 2
+                  })}
+                >
+                  {activeIndex + 1}/{slidesLength}
+                </Typography>
+
+                {/* Bullets */}
+                <Box sx={{ display: 'flex', gap: 0.8 }}>
+                  {Array.from({ length: slidesLength }).map((_, index) => (
+                    <Box
+                      key={index}
+                      onClick={() => swiper.slideTo(index)}
+                      sx={(theme) => ({
+                        width: activeIndex === index ? '24px' : '8px',
+                        height: '8px',
+                        borderRadius: activeIndex === index ? '4px' : '50%',
+                        backgroundColor:
+                          activeIndex === index
+                            ? theme.palette.secondary.main
+                            : alpha(theme.palette.secondary.main, 0.6),
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        opacity: activeIndex === index ? 1 : 0.6,
+                        border: `1px solid ${alpha(theme.palette.common.white, 0.5)}`,
+                        boxShadow:
+                          activeIndex === index ? `0 0 10px ${alpha(theme.palette.secondary.main, 0.6)}` : 'none',
+                        '&:hover': {
+                          opacity: 0.8,
+                          transform: 'scale(1.05)'
+                        }
+                      })}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Right navigation button */}
+            <Button
+              onClick={() => swiper.slideNext()}
+              disabled={swiper.isEnd}
+              sx={(theme) => ({
+                minWidth: '40px',
+                width: '40px',
+                height: '40px',
+                p: 0,
+                borderRadius: '50%',
+                backgroundColor: alpha(theme.palette.secondary.main, 0.15),
+                backdropFilter: 'blur(8px)',
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.3)}`,
+                color: theme.palette.secondary.main,
+                transition: 'all 0.3s ease',
+                opacity: swiper.isEnd ? 0.35 : 1,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.2),
+                  transform: 'scale(1.05)',
+                  boxShadow: `0 0 15px ${alpha(theme.palette.secondary.main, 0.5)}`
+                }
+              })}
+            >
+              <Icon icon="mdi:chevron-right" style={{ fontSize: '20px' }} />
+            </Button>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
 const MissionVisionSlider = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const [activeIndex, setActiveIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const swiperRef = useRef(null);
@@ -126,51 +307,7 @@ const MissionVisionSlider = () => {
           height: '100%',
           position: 'relative'
         },
-        '& .swiper-button-next, & .swiper-button-prev': {
-          color: theme.palette.secondary.main,
-          background: alpha(theme.palette.background.paper, 0.1),
-          width: '40px',
-          height: '40px',
-          backdropFilter: 'blur(8px)',
-          borderRadius: '50%',
-          border: `1px solid ${alpha(theme.palette.secondary.main, 0.3)}`,
-          '&:after': {
-            fontSize: '18px',
-            fontWeight: 'bold'
-          },
-          '&:hover': {
-            background: alpha(theme.palette.secondary.main, 0.2),
-            transform: 'scale(1.05)'
-          },
-          '&.swiper-button-disabled': {
-            opacity: 0.35
-          }
-        },
-        '& .swiper-pagination': {
-          bottom: '20px !important',
-          zIndex: 20,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%'
-        },
-        '& .swiper-pagination-bullet': {
-          backgroundColor: theme.palette.secondary.main,
-          opacity: 0.6,
-          width: '8px',
-          height: '8px',
-          margin: '0 6px',
-          transition: 'all 0.3s ease',
-          border: `1px solid ${alpha(theme.palette.common.white, 0.5)}`,
-          '&.swiper-pagination-bullet-active': {
-            opacity: 1,
-            backgroundColor: theme.palette.secondary.main,
-            width: '24px',
-            height: '8px',
-            borderRadius: '4px',
-            boxShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.6)}`
-          }
-        },
+
         '& .autoplay-progress': {
           position: 'absolute',
           right: '20px',
@@ -214,12 +351,8 @@ const MissionVisionSlider = () => {
         fadeEffect={{ crossFade: true }}
         spaceBetween={0}
         slidesPerView={1}
-        pagination={{
-          clickable: true,
-          dynamicBullets: true,
-          dynamicMainBullets: 1
-        }}
-        navigation={true}
+        pagination={false} // Disable default pagination
+        navigation={false} // Disable default navigation
         autoplay={{ delay: 6000, disableOnInteraction: false }}
         keyboard={{ enabled: true }}
         mousewheel={{ invert: false }}
@@ -274,22 +407,6 @@ const MissionVisionSlider = () => {
                           )} 100%)`,
                           backdropFilter: 'brightness(0.95)'
                         }
-                      }}
-                    />
-
-                    {/* Subtle pattern overlay for texture */}
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundImage:
-                          "url(\"data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E\")",
-                        opacity: 0.4,
-                        zIndex: 2,
-                        pointerEvents: 'none'
                       }}
                     />
 
@@ -680,75 +797,10 @@ const MissionVisionSlider = () => {
           </svg>
           <span ref={progressContent}></span>
         </div>
-      </Swiper>
 
-      {/* Progress bar with slide count */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: { xs: 65, sm: 65, md: 50 },
-          left: 0,
-          right: 0,
-          zIndex: 10,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          px: { xs: 2, sm: 0 }
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            maxWidth: '500px',
-            px: 3,
-            py: 1.5,
-            backdropFilter: 'blur(10px)',
-            background: alpha(theme.palette.background.paper, 0.1),
-            borderRadius: '20px',
-            border: `1px solid ${alpha(theme.palette.common.white, 0.1)}`
-          }}
-        >
-          {/* Center content with slide count and progress */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              flexGrow: 1,
-              width: '100%'
-            }}
-          >
-            <Typography
-              variant="body2"
-              sx={{
-                color: theme.palette.common.white,
-                fontWeight: 600,
-                minWidth: '45px'
-              }}
-            >
-              {activeIndex + 1}/{slides.length}
-            </Typography>
-            <LinearProgress
-              variant="determinate"
-              value={progress}
-              sx={{
-                flexGrow: 1,
-                height: 5,
-                borderRadius: 3,
-                backgroundColor: alpha(theme.palette.common.white, 0.2),
-                '& .MuiLinearProgress-bar': {
-                  backgroundColor: theme.palette.secondary.main,
-                  borderRadius: 3,
-                  boxShadow: `0 0 8px ${alpha(theme.palette.secondary.main, 0.7)}`
-                }
-              }}
-            />
-          </Box>
-        </Box>
-      </Box>
+        {/* Progress bar with integrated navigation buttons and pagination */}
+        <ProgressBarNav activeIndex={activeIndex} slidesLength={slides.length} progress={progress} />
+      </Swiper>
     </Box>
   );
 };

@@ -9,8 +9,7 @@ import RoleBasedGuard from './Guard/RoleBasedGuard';
 
 // Lazy load components
 const Home = Loadable(lazy(() => import('pages/home')));
-const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const DashboardDefault2 = Loadable(lazy(() => import('pages/dashboard2')));
+const DashboardDefault = Loadable(lazy(() => import('pages/dashboard2')));
 
 // Dashboard Activity Components
 const ReconToolActivity = Loadable(lazy(() => import('pages/dashboard/RecentActivity/RecentReconActivity')));
@@ -50,10 +49,6 @@ const MainRoutes = {
     {
       path: 'dashboard',
       element: <DashboardDefault />
-    },
-    {
-      path: 'dashboard2',
-      element: <DashboardDefault2 />
     },
     {
       path: 'dashboard/recon-tool-activity',

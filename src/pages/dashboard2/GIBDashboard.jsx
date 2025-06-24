@@ -53,7 +53,7 @@ const GIBDashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Enhanced Chart Options - Collection Trend Line Chart
+  // Collection Trend Line Chart
   const collectionTrendOptions = {
     chart: {
       type: 'line',
@@ -78,26 +78,17 @@ const GIBDashboard = () => {
     },
     stroke: {
       curve: 'smooth',
-      width: [3, 2],
+      width: [2, 2],
       dashArray: [0, 0],
-      colors: [theme.palette.success.main, theme.palette.warning.main]
+      colors: [theme.palette.primary.main, theme.palette.secondary.main]
     },
-    colors: [theme.palette.success.main, theme.palette.warning.main],
+    colors: [theme.palette.primary.main, theme.palette.secondary.main],
     fill: {
-      type: ['gradient', 'solid'],
-      gradient: {
-        shade: 'light',
-        type: 'vertical',
-        shadeIntensity: 0.5,
-        gradientToColors: [alpha(theme.palette.success.main, 0.6)],
-        inverseColors: false,
-        opacityFrom: 0.7,
-        opacityTo: 0.1,
-        stops: [0, 100]
-      }
+      type: ['solid', 'solid'],
+      opacity: [1, 1]
     },
     grid: {
-      borderColor: alpha(theme.palette.divider, 0.6),
+      borderColor: theme.palette.divider,
       strokeDashArray: 4,
       xaxis: {
         lines: {
@@ -146,12 +137,12 @@ const GIBDashboard = () => {
       }
     },
     markers: {
-      size: [5, 5],
+      size: [4, 4],
       strokeWidth: 0,
       fillOpacity: 1,
       strokeOpacity: 1,
       hover: {
-        size: 7
+        size: 5
       }
     },
     tooltip: {
@@ -199,15 +190,10 @@ const GIBDashboard = () => {
       curve: 'smooth',
       width: 2
     },
-    colors: [theme.palette.success.main],
+    colors: [theme.palette.primary.main],
     fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.2,
-        stops: [0, 90, 100]
-      }
+      type: 'solid',
+      opacity: 0.2
     },
     grid: {
       borderColor: theme.palette.divider,
@@ -288,7 +274,7 @@ const GIBDashboard = () => {
     stroke: {
       show: false
     },
-    colors: [alpha(theme.palette.success.main, 0.5)],
+    colors: [theme.palette.secondary.main],
     grid: {
       padding: {
         top: 0,
@@ -326,51 +312,38 @@ const GIBDashboard = () => {
   };
 
   return (
-    <Box
-      sx={{
-        bgcolor:
-          theme.palette.mode === 'dark' ? theme.palette.background.default : alpha(theme.palette.primary.light, 0.04),
-        borderRadius: 0,
-        p: 0
-      }}
-    >
+    <Box>
       <Grid container>
         {/* Main Content Area */}
-        <Grid item xs={12} lg={9} sx={{ py: 3, px: 2 }}>
+        <Grid item xs={12} lg={9} sx={{ pr: 2 }}>
           {/* Financial Summary Section */}
-          <Box sx={{ mb: 3 }}>
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
-              <Typography variant="h3" sx={{ fontWeight: 700, letterSpacing: '-0.01em' }}>
-                $19,249.81
-              </Typography>
-              <Chip
-                label="+12.5% this month"
-                color="success"
-                size="small"
-                icon={<Icon icon="solar:arrow-up-bold" width={14} />}
-                sx={{
-                  fontWeight: 600,
-                  bgcolor: alpha(theme.palette.success.main, 0.15),
-                  color: theme.palette.success.main,
-                  border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`
-                }}
-              />
-            </Stack>
-
-            <Grid container spacing={GRID_SPACING}>
+          <Box sx={{ pb: 2 }}>
+            <Grid container spacing={2}>
               <Grid item xs={12} md={8}>
-                {/* Collection Trend Chart - Enhanced */}
+                {/* Collection Trend Chart */}
                 <Card
                   sx={{
                     height: '100%',
-                    p: 2.5,
-                    boxShadow: theme.customShadows?.z1 || '0 8px 25px rgba(0,0,0,0.07)',
-                    borderRadius: 3,
-                    border: `1px solid ${alpha(theme.palette.divider, 0.8)}`
+                    p: 2
                   }}
                 >
                   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: theme.palette.primary.main }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: 600, color: theme.palette.text.primary, display: 'flex', alignItems: 'center' }}
+                    >
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          mr: 1,
+                          bgcolor: theme.palette.primary.lighter,
+                          color: theme.palette.primary.main
+                        }}
+                      >
+                        <Icon icon="solar:chart-line-bold-duotone" width={16} />
+                      </Avatar>
                       Collection Trend
                     </Typography>
                     <Stack direction="row" spacing={1} alignItems="center">
@@ -380,7 +353,7 @@ const GIBDashboard = () => {
                             width: 10,
                             height: 10,
                             borderRadius: '50%',
-                            bgcolor: theme.palette.success.main,
+                            bgcolor: theme.palette.primary.main,
                             mr: 1
                           }}
                         />
@@ -394,7 +367,7 @@ const GIBDashboard = () => {
                             width: 10,
                             height: 10,
                             borderRadius: '50%',
-                            bgcolor: theme.palette.warning.main,
+                            bgcolor: theme.palette.secondary.main,
                             mr: 1
                           }}
                         />
@@ -424,60 +397,46 @@ const GIBDashboard = () => {
               </Grid>
 
               <Grid item xs={12} md={4}>
-                <Grid container spacing={2.5}>
+                <Grid container spacing={2}>
                   {/* Yearly Turnover - Enhanced */}
                   <Grid item xs={6}>
                     <Card
                       sx={{
-                        p: 2.5,
-                        boxShadow: theme.customShadows?.z1 || '0 8px 25px rgba(0,0,0,0.07)',
-                        borderRadius: 3,
                         height: '100%',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        background: `linear-gradient(135deg, ${theme.palette.success.main} 0%, ${alpha(theme.palette.success.main, 0.8)} 100%)`,
-                        color: theme.palette.success.contrastText,
-                        border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`
+                        bgcolor: theme.palette.primary.main,
+                        color: theme.palette.common.white,
+                        p: 2
                       }}
                     >
-                      {/* Background decorative element */}
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          top: -30,
-                          right: -20,
-                          opacity: 0.15,
-                          zIndex: 0
-                        }}
-                      >
-                        <Icon icon="solar:money-bag-bold-duotone" width={90} />
-                      </Box>
-
-                      <Box sx={{ position: 'relative', zIndex: 1 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                          <Typography variant="body2" sx={{ opacity: 0.9, fontWeight: 500 }}>
-                            Yearly Turnover
-                          </Typography>
-                          <Box
-                            sx={{
-                              bgcolor: alpha('#fff', 0.25),
-                              p: 0.75,
-                              borderRadius: 1.5,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center'
-                            }}
-                          >
-                            <Icon icon="solar:graph-up-bold-duotone" width={16} />
-                          </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}
+                        >
+                          Yearly Turnover
+                        </Typography>
+                        <Box
+                          sx={{
+                            bgcolor: alpha('#fff', 0.25),
+                            p: 0.75,
+                            borderRadius: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <Icon icon="solar:graph-up-bold-duotone" width={16} />
                         </Box>
-                        <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, letterSpacing: '-0.01em' }}>
-                          $29M
-                        </Typography>
-                        <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 0.5 }}>
-                          +8% from previous
-                        </Typography>
                       </Box>
+                      <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: theme.palette.common.white }}>
+                        $29M
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{ color: theme.palette.common.white, opacity: 0.9, display: 'block', mt: 0.5 }}
+                      >
+                        +8% from previous
+                      </Typography>
                     </Card>
                   </Grid>
 
@@ -485,80 +444,67 @@ const GIBDashboard = () => {
                   <Grid item xs={6}>
                     <Card
                       sx={{
-                        p: 2.5,
-                        boxShadow: theme.customShadows?.z1 || '0 8px 25px rgba(0,0,0,0.07)',
-                        borderRadius: 3,
                         height: '100%',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        background: `linear-gradient(135deg, ${theme.palette.warning.main} 0%, ${alpha(theme.palette.warning.main, 0.8)} 100%)`,
-                        color: theme.palette.warning.contrastText,
-                        border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`
+                        bgcolor: theme.palette.secondary.main,
+                        color: theme.palette.common.white,
+                        p: 2
                       }}
                     >
-                      {/* Background decorative element */}
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          top: -25,
-                          right: -15,
-                          opacity: 0.15,
-                          zIndex: 0
-                        }}
-                      >
-                        <Icon icon="solar:calendar-bold-duotone" width={80} />
-                      </Box>
-
-                      <Box sx={{ position: 'relative', zIndex: 1 }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                          <Typography variant="body2" sx={{ opacity: 0.9, fontWeight: 500 }}>
-                            Last Month
-                          </Typography>
-                          <Box
-                            sx={{
-                              bgcolor: alpha('#fff', 0.25),
-                              p: 0.75,
-                              borderRadius: 1.5,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center'
-                            }}
-                          >
-                            <Icon icon="solar:calendar-mark-bold-duotone" width={16} />
-                          </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}
+                        >
+                          Last Month
+                        </Typography>
+                        <Box
+                          sx={{
+                            bgcolor: alpha('#fff', 0.25),
+                            p: 0.75,
+                            borderRadius: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          <Icon icon="solar:calendar-mark-bold-duotone" width={16} />
                         </Box>
-                        <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, letterSpacing: '-0.01em' }}>
-                          $1.4M
-                        </Typography>
-                        <Typography variant="caption" sx={{ opacity: 0.8, display: 'block', mt: 0.5 }}>
-                          +3.2% from October
-                        </Typography>
                       </Box>
+                      <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: theme.palette.common.white }}>
+                        $1.4M
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{ color: theme.palette.common.white, opacity: 0.9, display: 'block', mt: 0.5 }}
+                      >
+                        +3.2% from October
+                      </Typography>
                     </Card>
                   </Grid>
 
                   {/* Today's Activity - Enhanced */}
                   <Grid item xs={12}>
-                    <Card
-                      sx={{
-                        p: 2.5,
-                        borderRadius: 3
-                      }}
-                    >
-                      <Stack spacing={2.5}>
+                    <Card sx={{ p: 2 }}>
+                      <Stack spacing={2}>
                         <Box>
                           <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-                            <Icon
-                              icon="solar:clock-circle-bold-duotone"
-                              color={theme.palette.success.main}
-                              width={18}
-                            />
+                            <Avatar
+                              variant="rounded"
+                              sx={{
+                                width: 22,
+                                height: 22,
+                                bgcolor: theme.palette.primary.lighter,
+                                color: theme.palette.primary.main
+                              }}
+                            >
+                              <Icon icon="solar:clock-circle-bold-duotone" width={14} />
+                            </Avatar>
                             <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 500 }}>
                               Today's Received
                             </Typography>
                           </Stack>
                           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
                               $2,890
                             </Typography>
                             <Box>
@@ -566,8 +512,8 @@ const GIBDashboard = () => {
                                 size="small"
                                 label="Live"
                                 sx={{
-                                  bgcolor: alpha(theme.palette.warning.main, 0.15),
-                                  color: theme.palette.warning.main,
+                                  bgcolor: theme.palette.primary.lighter,
+                                  color: theme.palette.primary.main,
                                   fontWeight: 600,
                                   height: 24
                                 }}
@@ -580,28 +526,34 @@ const GIBDashboard = () => {
                             sx={{
                               mt: 1,
                               height: 6,
-                              borderRadius: 3,
-                              bgcolor: alpha(theme.palette.divider, 0.3),
+                              borderRadius: 1,
+                              bgcolor: theme.palette.grey[200],
                               '& .MuiLinearProgress-bar': {
-                                bgcolor: theme.palette.success.main,
-                                borderRadius: 3
+                                bgcolor: theme.palette.primary.main,
+                                borderRadius: 1
                               }
                             }}
                           />
                         </Box>
                         <Box>
                           <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-                            <Icon
-                              icon="solar:dollar-minimalistic-bold-duotone"
-                              color={theme.palette.primary.main}
-                              width={18}
-                            />
+                            <Avatar
+                              variant="rounded"
+                              sx={{
+                                width: 22,
+                                height: 22,
+                                bgcolor: theme.palette.secondary.lighter || alpha(theme.palette.secondary.main, 0.2),
+                                color: theme.palette.secondary.main
+                              }}
+                            >
+                              <Icon icon="solar:dollar-minimalistic-bold-duotone" width={14} />
+                            </Avatar>
                             <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 500 }}>
                               Monthly Total
                             </Typography>
                           </Stack>
                           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
                               $82,890
                             </Typography>
                             <Chip
@@ -609,8 +561,8 @@ const GIBDashboard = () => {
                               label="+18%"
                               icon={<Icon icon="solar:arrow-up-bold" width={14} />}
                               sx={{
-                                bgcolor: alpha(theme.palette.success.main, 0.15),
-                                color: theme.palette.success.main,
+                                bgcolor: theme.palette.secondary.lighter || alpha(theme.palette.secondary.main, 0.2),
+                                color: theme.palette.secondary.main,
                                 fontWeight: 600,
                                 height: 24
                               }}
@@ -622,11 +574,11 @@ const GIBDashboard = () => {
                             sx={{
                               mt: 1,
                               height: 6,
-                              borderRadius: 3,
-                              bgcolor: alpha(theme.palette.divider, 0.3),
+                              borderRadius: 1,
+                              bgcolor: theme.palette.grey[200],
                               '& .MuiLinearProgress-bar': {
-                                bgcolor: theme.palette.primary.main,
-                                borderRadius: 3
+                                bgcolor: theme.palette.secondary.main,
+                                borderRadius: 1
                               }
                             }}
                           />
@@ -640,51 +592,46 @@ const GIBDashboard = () => {
           </Box>
 
           {/* Top Sales Agent & Cash at Bank - Enhanced Section */}
-          <Box sx={{ mb: 4 }}>
-            <Grid container spacing={GRID_SPACING}>
+          <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <Card
-                  sx={{
-                    p: 2.5,
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.07)',
-                    borderRadius: 3,
-                    border: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
-                    height: '100%'
-                  }}
-                >
-                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.5 }}>
+                <MainCard>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
                     <Typography
                       variant="h6"
                       sx={{
                         fontWeight: 600,
-                        color: theme.palette.primary.main,
+                        color: theme.palette.text.primary,
                         display: 'flex',
                         alignItems: 'center'
                       }}
                     >
-                      <Icon
-                        icon="solar:user-check-bold-duotone"
-                        style={{
-                          marginRight: '8px',
-                          color: theme.palette.success.main,
-                          fontSize: '20px'
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          mr: 1,
+                          bgcolor: theme.palette.primary.lighter,
+                          color: theme.palette.primary.main
                         }}
-                      />
+                      >
+                        <Icon icon="solar:user-check-bold-duotone" width={16} />
+                      </Avatar>
                       Top Sales Agents
                     </Typography>
                     <Chip
                       label="This Month"
                       size="small"
                       sx={{
-                        bgcolor: alpha(theme.palette.success.main, 0.08),
-                        color: theme.palette.success.main,
-                        fontWeight: 500,
-                        border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`
+                        bgcolor: theme.palette.primary.lighter,
+                        color: theme.palette.primary.main,
+                        fontWeight: 500
                       }}
                     />
                   </Stack>
 
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2.5 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     <AvatarGroup
                       max={5}
                       sx={{
@@ -693,26 +640,24 @@ const GIBDashboard = () => {
                           height: 36,
                           fontSize: '1rem',
                           fontWeight: 600,
-                          border: `2px solid ${theme.palette.background.paper}`,
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                          border: `2px solid ${theme.palette.background.paper}`
                         }
                       }}
                     >
-                      <Avatar sx={{ bgcolor: theme.palette.success.main }}>JD</Avatar>
-                      <Avatar sx={{ bgcolor: theme.palette.warning.main }}>JS</Avatar>
+                      <Avatar sx={{ bgcolor: theme.palette.primary.main }}>JD</Avatar>
+                      <Avatar sx={{ bgcolor: theme.palette.secondary.main }}>JS</Avatar>
                       <Avatar sx={{ bgcolor: theme.palette.primary.main }}>RJ</Avatar>
-                      <Avatar sx={{ bgcolor: theme.palette.primary.main }}>AM</Avatar>
-                      <Avatar sx={{ bgcolor: theme.palette.error.main }}>KS</Avatar>
-                      <Avatar sx={{ bgcolor: theme.palette.success.main }}>FN</Avatar>
+                      <Avatar sx={{ bgcolor: theme.palette.primary.dark }}>AM</Avatar>
+                      <Avatar sx={{ bgcolor: theme.palette.secondary.main }}>KS</Avatar>
+                      <Avatar sx={{ bgcolor: theme.palette.primary.main }}>FN</Avatar>
                     </AvatarGroup>
                     <Box
                       sx={{
                         ml: 'auto',
                         p: 1,
                         px: 1.5,
-                        borderRadius: 2,
-                        bgcolor: alpha(theme.palette.primary.main, 0.08),
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.15)}`,
+                        borderRadius: 1,
+                        bgcolor: theme.palette.primary.lighter,
                         display: 'flex',
                         alignItems: 'center'
                       }}
@@ -733,18 +678,18 @@ const GIBDashboard = () => {
                     spacing={1}
                     sx={{
                       p: 2,
-                      borderRadius: 2,
-                      bgcolor: alpha(theme.palette.background.default, 0.6),
-                      border: `1px solid ${alpha(theme.palette.divider, 0.5)}`
+                      borderRadius: 1,
+                      bgcolor: theme.palette.grey[100],
+                      border: `1px solid ${theme.palette.divider}`
                     }}
                   >
                     {[
-                      { name: 'Total Sales', value: '$285,400', change: '+12.5%', color: theme.palette.success.main },
+                      { name: 'Total Sales', value: '$285,400', change: '+12.5%', color: theme.palette.primary.main },
                       {
                         name: 'Average per Agent',
                         value: '$47,567',
                         change: '+8.2%',
-                        color: theme.palette.warning.main
+                        color: theme.palette.secondary.main
                       }
                     ].map((item, index) => (
                       <Box
@@ -771,9 +716,8 @@ const GIBDashboard = () => {
                               height: 20,
                               fontSize: '0.7rem',
                               fontWeight: 600,
-                              bgcolor: alpha(item.color, 0.12),
-                              color: item.color,
-                              border: `1px solid ${alpha(item.color, 0.2)}`
+                              bgcolor: alpha(item.color, 0.1),
+                              color: item.color
                             }}
                           />
                         </Stack>
@@ -783,199 +727,171 @@ const GIBDashboard = () => {
 
                   <Button
                     fullWidth
-                    variant="text"
+                    variant="outlined"
                     sx={{
-                      mt: 2.5,
-                      color: theme.palette.primary.contrastText,
-                      bgcolor: alpha(theme.palette.background.paper, 0.1),
-                      '&:hover': {
-                        bgcolor: alpha(theme.palette.background.paper, 0.15)
-                      }
+                      mt: 2,
+                      color: theme.palette.primary.main,
+                      borderColor: theme.palette.primary.main,
+                      borderRadius: 1,
+                      textTransform: 'none',
+                      fontWeight: 600
                     }}
                     endIcon={<Icon icon="solar:arrow-right-bold" />}
                   >
                     View All Performance Metrics
                   </Button>
-                </Card>
+                </MainCard>
               </Grid>
 
               <Grid item xs={12} md={6}>
-                <Card
-                  sx={{
-                    p: 2.5,
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.07)',
-                    borderRadius: 3,
-                    border: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
-                    height: '100%',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                >
-                  {/* Background decorative elements */}
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: -40,
-                      right: -30,
-                      opacity: 0.04,
-                      zIndex: 0,
-                      transform: 'rotate(10deg)'
-                    }}
-                  >
-                    <Icon icon="solar:card-bold-duotone" width={160} />
-                  </Box>
-
-                  <Box sx={{ position: 'relative', zIndex: 1 }}>
-                    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.5 }}>
-                      <Typography
-                        variant="h6"
+                <Card sx={{ p: 2 }}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        color: theme.palette.text.primary,
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Avatar
+                        variant="rounded"
                         sx={{
-                          fontWeight: 600,
-                          color: theme.palette.primary.main,
-                          display: 'flex',
-                          alignItems: 'center'
+                          width: 24,
+                          height: 24,
+                          mr: 1,
+                          bgcolor: theme.palette.primary.lighter,
+                          color: theme.palette.primary.main
                         }}
                       >
-                        <Icon
-                          icon="solar:buildings-3-bold-duotone"
-                          style={{
-                            marginRight: '8px',
-                            color: theme.palette.primary.main,
-                            fontSize: '20px'
-                          }}
-                        />
-                        Banking Summary
-                      </Typography>
+                        <Icon icon="solar:user-check-bold-duotone" width={16} />
+                      </Avatar>
+                      Banking Summary
+                    </Typography>
+                    <Tooltip title="Refresh banking data">
                       <IconButton
                         size="small"
                         sx={{
-                          bgcolor: alpha(theme.palette.primary.main, 0.08),
+                          bgcolor: theme.palette.primary.lighter,
                           color: theme.palette.primary.main
                         }}
                       >
                         <Icon icon="solar:refresh-bold" width={16} />
                       </IconButton>
-                    </Stack>
+                    </Tooltip>
+                  </Stack>
 
-                    <Box
-                      sx={{
-                        p: 2.5,
-                        borderRadius: 3,
-                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
-                        mb: 2.5
-                      }}
-                    >
-                      <Stack spacing={1}>
-                        <Typography variant="body2" color="textSecondary" fontWeight={500}>
-                          Total Cash at Bank
+                  <Box
+                    sx={{
+                      p: 1
+                    }}
+                  >
+                    <Stack spacing={1}>
+                      <Typography variant="body2" color="textSecondary" fontWeight={500}>
+                        Total Cash at Bank
+                      </Typography>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+                          $9.38M
                         </Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-                            $9.38M
-                          </Typography>
+                        <Chip
+                          size="small"
+                          label="+3.6% this week"
+                          icon={<Icon icon="solar:arrow-up-bold" width={14} />}
+                          sx={{
+                            bgcolor: theme.palette.primary.lighter,
+                            color: theme.palette.primary.main,
+                            fontWeight: 600,
+                            height: 24
+                          }}
+                        />
+                      </Box>
+                      <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                        {['SABB', 'NCB', 'Alinma'].map((bank, i) => (
                           <Chip
+                            key={i}
+                            label={bank}
                             size="small"
-                            label="+3.6% this week"
-                            icon={<Icon icon="solar:arrow-up-bold" width={14} />}
                             sx={{
-                              bgcolor: alpha(theme.palette.success.main, 0.15),
-                              color: theme.palette.success.main,
-                              fontWeight: 600,
-                              height: 24
+                              bgcolor: theme.palette.background.paper,
+                              border: `1px solid ${theme.palette.divider}`,
+                              height: 24,
+                              fontWeight: 500
                             }}
                           />
-                        </Box>
-                        <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
-                          {['SABB', 'NCB', 'Alinma'].map((bank, i) => (
-                            <Chip
-                              key={i}
-                              label={bank}
-                              size="small"
-                              sx={{
-                                bgcolor: theme.palette.background.paper,
-                                border: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
-                                height: 24,
-                                fontWeight: 500
-                              }}
-                            />
-                          ))}
-                        </Stack>
+                        ))}
                       </Stack>
-                    </Box>
-
-                    <Stack spacing={2}>
-                      {[
-                        {
-                          name: 'Available Funds',
-                          value: '$3.85M',
-                          icon: 'solar:wallet-money-bold-duotone',
-                          color: theme.palette.success.main
-                        },
-                        {
-                          name: 'Reserved Amounts',
-                          value: '$5.53M',
-                          icon: 'solar:lock-bold-duotone',
-                          color: theme.palette.warning.main
-                        }
-                      ].map((item, index) => (
-                        <Box
-                          key={index}
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            p: 1.5,
-                            borderRadius: 2,
-                            bgcolor: alpha(theme.palette.background.default, 0.6),
-                            border: `1px solid ${alpha(theme.palette.divider, 0.5)}`
-                          }}
-                        >
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Box
-                              sx={{
-                                width: 36,
-                                height: 36,
-                                mr: 1.5,
-                                bgcolor: alpha(item.color, 0.12),
-                                borderRadius: 1.5,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: item.color,
-                                border: `1px solid ${alpha(item.color, 0.2)}`
-                              }}
-                            >
-                              <Icon icon={item.icon} width={20} />
-                            </Box>
-                            <Typography variant="body2" fontWeight={500} color="textSecondary">
-                              {item.name}
-                            </Typography>
-                          </Box>
-                          <Typography variant="body1" fontWeight={700}>
-                            {item.value}
-                          </Typography>
-                        </Box>
-                      ))}
                     </Stack>
                   </Box>
+
+                  <Stack spacing={2}>
+                    {[
+                      {
+                        name: 'Available Funds',
+                        value: '$3.85M',
+                        icon: 'solar:wallet-money-bold-duotone',
+                        color: theme.palette.primary.main
+                      },
+                      {
+                        name: 'Reserved Amounts',
+                        value: '$5.53M',
+                        icon: 'solar:lock-bold-duotone',
+                        color: theme.palette.secondary.main
+                      }
+                    ].map((item, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          p: 1.5,
+                          borderRadius: 1,
+                          bgcolor: theme.palette.grey[100],
+                          border: `1px solid ${theme.palette.divider}`
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                          <Box
+                            sx={{
+                              width: 36,
+                              height: 36,
+                              mr: 1.5,
+                              bgcolor: alpha(item.color, 0.1),
+                              borderRadius: 1,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: item.color
+                            }}
+                          >
+                            <Icon icon={item.icon} width={20} />
+                          </Box>
+                          <Typography variant="body2" color="textSecondary" fontWeight={500}>
+                            {item.name}
+                          </Typography>
+                        </Box>
+                        <Typography variant="body1" fontWeight={700}>
+                          {item.value}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Stack>
                 </Card>
               </Grid>
             </Grid>
           </Box>
 
           {/* Data Analysis & Monthly Invoices - Enhanced Section */}
-          <Box sx={{ mb: 3 }}>
-            <Grid container spacing={GRID_SPACING}>
+          <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2}>
               {/* Data Analysis - Enhanced */}
               <Grid item xs={12} md={6}>
                 <Card
                   sx={{
-                    p: 2.5,
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.07)',
-                    borderRadius: 3,
-                    border: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
-                    height: '100%'
+                    height: '100%',
+                    p: 2
                   }}
                 >
                   <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
@@ -983,31 +899,34 @@ const GIBDashboard = () => {
                       variant="h6"
                       sx={{
                         fontWeight: 600,
-                        color: theme.palette.primary.main,
+                        color: theme.palette.text.primary,
                         display: 'flex',
                         alignItems: 'center'
                       }}
                     >
-                      <Icon
-                        icon="solar:chart-bold-duotone"
-                        style={{
-                          marginRight: '8px',
-                          color: theme.palette.primary.main,
-                          fontSize: '20px'
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          mr: 1,
+                          bgcolor: theme.palette.primary.lighter,
+                          color: theme.palette.primary.main
                         }}
-                      />
+                      >
+                        <Icon icon="solar:chart-bold-duotone" width={16} />
+                      </Avatar>
                       Data Analysis
                     </Typography>
                     <Box
                       sx={{
                         display: 'flex',
                         alignItems: 'center',
-                        bgcolor: alpha(theme.palette.success.main, 0.1),
-                        color: theme.palette.success.main,
+                        bgcolor: theme.palette.primary.lighter,
+                        color: theme.palette.primary.main,
                         py: 0.5,
                         px: 1.5,
-                        borderRadius: 1.5,
-                        border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`
+                        borderRadius: 1
                       }}
                     >
                       <Icon icon="solar:arrow-up-bold" style={{ marginRight: '4px', fontSize: '14px' }} />
@@ -1019,25 +938,7 @@ const GIBDashboard = () => {
 
                   <Box sx={{ height: 180, position: 'relative' }}>
                     <ReactApexChart
-                      options={{
-                        ...dataAnalysisOptions,
-                        chart: {
-                          ...dataAnalysisOptions.chart
-                        },
-                        fill: {
-                          type: 'gradient',
-                          gradient: {
-                            shade: 'light',
-                            type: 'vertical',
-                            shadeIntensity: 0.5,
-                            gradientToColors: [alpha(theme.palette.success.main, 0.1)],
-                            inverseColors: false,
-                            opacityFrom: 0.8,
-                            opacityTo: 0.2,
-                            stops: [0, 100]
-                          }
-                        }
-                      }}
+                      options={dataAnalysisOptions}
                       series={[
                         {
                           name: 'Data',
@@ -1055,15 +956,14 @@ const GIBDashboard = () => {
                         transform: 'translate(-50%, -50%)',
                         width: 60,
                         height: 60,
-                        bgcolor: theme.palette.success.main,
-                        color: '#fff',
+                        bgcolor: theme.palette.secondary.main,
+                        color: theme.palette.primary.contrastText,
                         borderRadius: '50%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: 700,
-                        fontSize: '18px',
-                        boxShadow: '0 4px 15px rgba(0,0,0,0.15)'
+                        fontSize: '18px'
                       }}
                     >
                       38%
@@ -1075,9 +975,9 @@ const GIBDashboard = () => {
                       display: 'flex',
                       justifyContent: 'space-between',
                       p: 1.5,
-                      borderRadius: 2,
-                      bgcolor: alpha(theme.palette.background.default, 0.6),
-                      border: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
+                      borderRadius: 1,
+                      bgcolor: theme.palette.grey[100],
+                      border: `1px solid ${theme.palette.divider}`,
                       mt: 2
                     }}
                   >
@@ -1086,13 +986,13 @@ const GIBDashboard = () => {
                         label: 'Total Users',
                         value: '2.4K',
                         icon: 'solar:users-group-rounded-bold-duotone',
-                        color: theme.palette.success.main
+                        color: theme.palette.primary.main
                       },
                       {
                         label: 'Avg. Time',
                         value: '3:45',
                         icon: 'solar:clock-circle-bold-duotone',
-                        color: theme.palette.warning.main
+                        color: theme.palette.secondary.main
                       },
                       {
                         label: 'Bounce Rate',
@@ -1108,7 +1008,19 @@ const GIBDashboard = () => {
                           px: 1
                         }}
                       >
-                        <Icon icon={item.icon} style={{ fontSize: '20px', color: item.color, marginBottom: '4px' }} />
+                        <Avatar
+                          variant="rounded"
+                          sx={{
+                            width: 20,
+                            height: 20,
+                            mx: 'auto',
+                            mb: 0.5,
+                            bgcolor: alpha(item.color, 0.1),
+                            color: item.color
+                          }}
+                        >
+                          <Icon icon={item.icon} width={12} />
+                        </Avatar>
                         <Typography variant="caption" display="block" color="textSecondary" fontWeight={500}>
                           {item.label}
                         </Typography>
@@ -1125,198 +1037,128 @@ const GIBDashboard = () => {
               <Grid item xs={12} md={6}>
                 <Card
                   sx={{
-                    p: 2.5,
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.07)',
-                    borderRadius: 3,
-                    border: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
                     height: '100%',
-                    position: 'relative',
-                    overflow: 'hidden'
+                    p: 2
                   }}
                 >
-                  {/* Background decorative element */}
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: -20,
-                      right: -20,
-                      opacity: 0.04,
-                      transform: 'rotate(-10deg)',
-                      zIndex: 0
-                    }}
-                  >
-                    <Icon icon="solar:bill-list-bold-duotone" width={130} />
-                  </Box>
-
-                  <Box sx={{ position: 'relative', zIndex: 1 }}>
-                    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-                      <Typography
-                        variant="h6"
+                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        color: theme.palette.text.primary,
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Avatar
+                        variant="rounded"
                         sx={{
-                          fontWeight: 600,
+                          width: 24,
+                          height: 24,
+                          mr: 1,
+                          bgcolor: theme.palette.secondary.lighter || alpha(theme.palette.secondary.main, 0.1),
+                          color: theme.palette.secondary.main
+                        }}
+                      >
+                        <Icon icon="solar:document-text-bold-duotone" width={16} />
+                      </Avatar>
+                      Monthly Invoices
+                    </Typography>
+                    <Select
+                      displayEmpty
+                      size="small"
+                      defaultValue="thisyear"
+                      sx={{
+                        minWidth: 120,
+                        height: 32,
+                        fontSize: '0.8rem',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: theme.palette.divider
+                        }
+                      }}
+                    >
+                      <MenuItem value="thisyear">This Year</MenuItem>
+                      <MenuItem value="lastyear">Last Year</MenuItem>
+                    </Select>
+                  </Stack>
+
+                  <Box sx={{ p: 2 }}>
+                    <Stack spacing={1}>
+                      <Typography variant="body2" color="textSecondary" fontWeight={500}>
+                        Total Monthly Invoices
+                      </Typography>
+                      <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+                        $24,000
+                      </Typography>
+                      <Typography
+                        variant="caption"
+                        sx={{
                           color: theme.palette.primary.main,
                           display: 'flex',
                           alignItems: 'center'
                         }}
                       >
-                        <Icon
-                          icon="solar:document-text-bold-duotone"
-                          style={{
-                            marginRight: '8px',
-                            color: theme.palette.warning.main,
-                            fontSize: '20px'
-                          }}
-                        />
-                        Monthly Invoices
+                        <Icon icon="solar:arrow-up-bold" style={{ fontSize: '12px', marginRight: '4px' }} />
+                        +8.3% from previous month
                       </Typography>
-                      <Select
-                        displayEmpty
-                        size="small"
-                        defaultValue="thisyear"
-                        sx={{
-                          minWidth: 120,
-                          height: 32,
-                          fontSize: '0.8rem',
-                          '& .MuiOutlinedInput-notchedOutline': {
-                            borderColor: alpha(theme.palette.divider, 0.8)
-                          }
-                        }}
-                      >
-                        <MenuItem value="thisyear">This Year</MenuItem>
-                        <MenuItem value="lastyear">Last Year</MenuItem>
-                      </Select>
                     </Stack>
+                  </Box>
 
-                    <Box
-                      sx={{
-                        p: 2.5,
-                        borderRadius: 3,
-                        bgcolor: alpha(theme.palette.warning.main, 0.06),
-                        border: `1px solid ${alpha(theme.palette.warning.main, 0.1)}`,
-                        mb: 3,
-                        position: 'relative'
+                  <Box>
+                    <ReactApexChart
+                      options={{
+                        ...monthlyInvoicesOptions,
+                        colors: [theme.palette.secondary.main],
+                        tooltip: {
+                          theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+                          y: {
+                            formatter: function (val) {
+                              return `$${val}k`;
+                            }
+                          }
+                        },
+                        plotOptions: {
+                          bar: {
+                            borderRadius: 2,
+                            columnWidth: '60%'
+                          }
+                        }
                       }}
-                    >
-                      <Box
-                        sx={{
-                          position: 'absolute',
-                          top: -1,
-                          right: -1,
-                          bg: 'transparent',
-                          width: 40,
-                          height: 40,
-                          borderRadius: '0 8px 0 8px',
-                          overflow: 'hidden'
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            width: '100%',
-                            height: '100%',
-                            bgcolor: theme.palette.warning.main,
-                            transform: 'rotate(45deg) translate(20%, -20%)'
-                          }}
-                        />
-                      </Box>
+                      series={[
+                        {
+                          name: 'Monthly Invoices',
+                          data: [19, 28, 30, 22, 25, 28, 30, 35, 25, 28, 32, 28]
+                        }
+                      ]}
+                      type="bar"
+                      height={120}
+                    />
+                  </Box>
 
-                      <Stack spacing={1}>
-                        <Typography variant="body2" color="textSecondary" fontWeight={500}>
-                          Total Monthly Invoices
-                        </Typography>
-                        <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.warning.main }}>
-                          $24,000
-                        </Typography>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      px: 1,
+                      mt: 1
+                    }}
+                  >
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(
+                      (month, index) => (
                         <Typography
+                          key={index}
                           variant="caption"
+                          color="textSecondary"
                           sx={{
-                            color: theme.palette.success.main,
-                            display: 'flex',
-                            alignItems: 'center'
+                            fontSize: '8px',
+                            fontWeight: 500
                           }}
                         >
-                          <Icon icon="solar:arrow-up-bold" style={{ fontSize: '12px', marginRight: '4px' }} />
-                          +8.3% from previous month
+                          {month}
                         </Typography>
-                      </Stack>
-                    </Box>
-
-                    <Box>
-                      <ReactApexChart
-                        options={{
-                          ...monthlyInvoicesOptions,
-                          chart: {
-                            ...monthlyInvoicesOptions.chart
-                          },
-                          colors: [alpha(theme.palette.warning.main, 0.8)],
-                          tooltip: {
-                            theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
-                            y: {
-                              formatter: function (val) {
-                                return `$${val}k`;
-                              }
-                            }
-                          },
-                          plotOptions: {
-                            bar: {
-                              borderRadius: 4,
-                              columnWidth: '60%',
-                              colors: {
-                                ranges: [
-                                  {
-                                    from: 0,
-                                    to: 20,
-                                    color: alpha(theme.palette.warning.main, 0.5)
-                                  },
-                                  {
-                                    from: 21,
-                                    to: 30,
-                                    color: alpha(theme.palette.warning.main, 0.8)
-                                  },
-                                  {
-                                    from: 31,
-                                    to: 100,
-                                    color: theme.palette.warning.main
-                                  }
-                                ]
-                              }
-                            }
-                          }
-                        }}
-                        series={[
-                          {
-                            name: 'Monthly Invoices',
-                            data: [19, 28, 30, 22, 25, 28, 30, 35, 25, 28, 32, 28]
-                          }
-                        ]}
-                        type="bar"
-                        height={120}
-                      />
-                    </Box>
-
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        px: 1,
-                        mt: 1
-                      }}
-                    >
-                      {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(
-                        (month, index) => (
-                          <Typography
-                            key={index}
-                            variant="caption"
-                            color="textSecondary"
-                            sx={{
-                              fontSize: '8px',
-                              fontWeight: 500
-                            }}
-                          >
-                            {month}
-                          </Typography>
-                        )
-                      )}
-                    </Box>
+                      )
+                    )}
                   </Box>
                 </Card>
               </Grid>
@@ -1331,25 +1173,20 @@ const GIBDashboard = () => {
           lg={3}
           sx={{
             display: { xs: 'none', lg: 'block' },
-            bgcolor:
-              theme.palette.mode === 'dark' ? alpha(theme.palette.primary.dark, 0.8) : theme.palette.primary.main,
-            p: 2.5,
+            bgcolor: theme.palette.primary.main,
+            p: 2,
             color: theme.palette.primary.contrastText,
-            boxShadow: '-4px 0 20px rgba(0,0,0,0.1)'
+            borderRadius: '0 8px 8px 0'
           }}
         >
-          <Stack spacing={GRID_SPACING}>
-            {/* Sidebar Top Spacing */}
-            <Box sx={{ mb: 2 }}></Box>
-
+          <Stack spacing={2}>
             {/* GIB Logo */}
-            <Box sx={{ textAlign: 'center', mb: 2 }}>
+            <Box sx={{ textAlign: 'center', mb: 1 }}>
               <Typography
                 variant="h4"
                 sx={{
                   fontWeight: 700,
-                  color: theme.palette.primary.contrastText,
-                  letterSpacing: '0.02em'
+                  color: theme.palette.primary.contrastText
                 }}
               >
                 GIB SmartOPS
@@ -1368,222 +1205,179 @@ const GIBDashboard = () => {
             {/* Activity Card - GIB Styled */}
             <Card
               sx={{
-                p: 2.5,
-                bgcolor: alpha(theme.palette.background.paper, 0.12),
-                backdropFilter: 'blur(10px)',
-                borderRadius: 3,
-                boxShadow: theme.customShadows?.z1 || '0 8px 24px rgba(0,0,0,0.12)',
+                bgcolor: alpha(theme.palette.background.paper, 0.1),
+                borderRadius: 2,
                 border: `1px solid ${alpha(theme.palette.background.paper, 0.2)}`
               }}
             >
-              <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2.5 }}>
-                <Box
-                  sx={{
-                    p: 0.75,
-                    borderRadius: 1.5,
-                    bgcolor: alpha(theme.palette.background.paper, 0.15),
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Icon icon="solar:clock-circle-bold-duotone" color={theme.palette.primary.contrastText} width={18} />
-                </Box>
+              <Box sx={{ p: 2 }}>
                 <Typography
                   variant="h6"
                   sx={{
-                    fontWeight: 600,
                     color: theme.palette.primary.contrastText,
-                    textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                    mb: 2
                   }}
                 >
                   Recent Activity
                 </Typography>
-              </Stack>
-
-              <Stack spacing={2.5}>
-                {[
-                  {
-                    text: 'Reconciliation Completed',
-                    time: '10:23 AM',
-                    icon: 'solar:check-circle-bold-duotone',
-                    color: theme.palette.success.main
-                  },
-                  {
-                    text: 'New Portfolio Added',
-                    time: 'Yesterday',
-                    icon: 'solar:folder-add-bold-duotone',
-                    color: theme.palette.info.main
-                  },
-                  {
-                    text: 'Report Generated',
-                    time: '2 days ago',
-                    icon: 'solar:file-bold-duotone',
-                    color: theme.palette.warning.main
-                  }
-                ].map((activity, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      p: 1.5,
-                      borderRadius: 2,
-                      bgcolor: alpha(theme.palette.background.paper, 0.08),
-                      border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`,
-                      '&:hover': {
-                        bgcolor: alpha(theme.palette.background.paper, 0.12)
-                      }
-                    }}
-                  >
+                <Stack spacing={2}>
+                  {[
+                    {
+                      text: 'Reconciliation Completed',
+                      time: '10:23 AM',
+                      icon: 'solar:check-circle-bold-duotone',
+                      color: theme.palette.primary.main
+                    },
+                    {
+                      text: 'New Portfolio Added',
+                      time: 'Yesterday',
+                      icon: 'solar:folder-add-bold-duotone',
+                      color: theme.palette.secondary.main
+                    },
+                    {
+                      text: 'Report Generated',
+                      time: '2 days ago',
+                      icon: 'solar:file-bold-duotone',
+                      color: theme.palette.primary.light
+                    }
+                  ].map((activity, index) => (
                     <Box
+                      key={index}
                       sx={{
-                        width: 32,
-                        height: 32,
-                        bgcolor: alpha(activity.color, 0.2),
-                        borderRadius: '50%',
                         display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mr: 1.5
+                        alignItems: 'flex-start',
+                        p: 1.5,
+                        borderRadius: 1,
+                        bgcolor: alpha(theme.palette.background.paper, 0.08),
+                        border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`
                       }}
                     >
-                      <Icon icon={activity.icon} width={18} color={activity.color} />
-                    </Box>
-                    <Box sx={{ flex: 1 }}>
-                      <Typography
-                        variant="body2"
+                      <Avatar
                         sx={{
-                          fontWeight: 600,
-                          color: theme.palette.primary.contrastText,
-                          textShadow: '0 1px 1px rgba(0,0,0,0.1)'
+                          width: 32,
+                          height: 32,
+                          bgcolor: alpha(activity.color, 0.2),
+                          color: activity.color,
+                          borderRadius: 1,
+                          mr: 1.5
                         }}
                       >
-                        {activity.text}
-                      </Typography>
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          color: alpha(theme.palette.primary.contrastText, 0.85)
-                        }}
-                      >
-                        {activity.time}
-                      </Typography>
+                        <Icon icon={activity.icon} width={18} />
+                      </Avatar>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 600,
+                            color: theme.palette.primary.contrastText
+                          }}
+                        >
+                          {activity.text}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: alpha(theme.palette.primary.contrastText, 0.85)
+                          }}
+                        >
+                          {activity.time}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                ))}
-              </Stack>
+                  ))}
+                </Stack>
 
-              <Button
-                fullWidth
-                variant="text"
-                sx={{
-                  mt: 2,
-                  color: theme.palette.primary.contrastText,
-                  bgcolor: alpha(theme.palette.background.paper, 0.1),
-                  borderRadius: 2,
-                  border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`,
-                  '&:hover': {
-                    bgcolor: alpha(theme.palette.background.paper, 0.15)
-                  }
-                }}
-                endIcon={<Icon icon="solar:arrow-right-bold" />}
-              >
-                View All Activities
-              </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    color: theme.palette.primary.main,
+                    bgcolor: theme.palette.primary.contrastText,
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    fontWeight: 600
+                  }}
+                  endIcon={<Icon icon="solar:arrow-right-bold" style={{ color: theme.palette.primary.main }} />}
+                >
+                  View All Activities
+                </Button>
+              </Box>
             </Card>
 
             {/* GIB Stats Card */}
             <Card
               sx={{
-                p: 2.5,
-                bgcolor: alpha(theme.palette.background.paper, 0.12),
-                backdropFilter: 'blur(10px)',
-                borderRadius: 3,
-                boxShadow: theme.customShadows?.z1 || '0 8px 24px rgba(0,0,0,0.12)',
+                bgcolor: alpha(theme.palette.background.paper, 0.1),
+                borderRadius: 2,
                 border: `1px solid ${alpha(theme.palette.background.paper, 0.2)}`
               }}
             >
-              <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2.5 }}>
-                <Box
-                  sx={{
-                    p: 0.75,
-                    borderRadius: 1.5,
-                    bgcolor: alpha(theme.palette.background.paper, 0.15),
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}
-                >
-                  <Icon icon="solar:chart-bold-duotone" color={theme.palette.primary.contrastText} width={18} />
-                </Box>
+              <Box sx={{ p: 2 }}>
                 <Typography
                   variant="h6"
                   sx={{
-                    fontWeight: 600,
                     color: theme.palette.primary.contrastText,
-                    textShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                    mb: 2
                   }}
                 >
                   GIB Stats
                 </Typography>
-              </Stack>
-
-              <Stack spacing={2}>
-                {[
-                  { label: 'Total Portfolios', value: '24', icon: 'solar:folder-bold-duotone' },
-                  { label: 'Active Securities', value: '1,458', icon: 'solar:document-bold-duotone' },
-                  { label: 'Daily Trades', value: '128', icon: 'solar:graph-new-up-bold-duotone' }
-                ].map((stat, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      p: 1.5,
-                      borderRadius: 2,
-                      bgcolor: alpha(theme.palette.background.paper, 0.08),
-                      border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`
-                    }}
-                  >
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Box
-                        sx={{
-                          width: 32,
-                          height: 32,
-                          bgcolor: alpha(theme.palette.background.paper, 0.15),
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          mr: 1.5
-                        }}
-                      >
-                        <Icon icon={stat.icon} width={18} color={theme.palette.primary.contrastText} />
-                      </Box>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontWeight: 500,
-                          color: alpha(theme.palette.primary.contrastText, 0.85)
-                        }}
-                      >
-                        {stat.label}
-                      </Typography>
-                    </Box>
-                    <Typography
-                      variant="body1"
+                <Stack spacing={2}>
+                  {[
+                    { label: 'Total Portfolios', value: '24', icon: 'solar:folder-bold-duotone' },
+                    { label: 'Active Securities', value: '1,458', icon: 'solar:document-bold-duotone' },
+                    { label: 'Daily Trades', value: '128', icon: 'solar:graph-new-up-bold-duotone' }
+                  ].map((stat, index) => (
+                    <Box
+                      key={index}
                       sx={{
-                        fontWeight: 700,
-                        color: theme.palette.primary.contrastText
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        p: 1.5,
+                        borderRadius: 1,
+                        bgcolor: alpha(theme.palette.background.paper, 0.08),
+                        border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`
                       }}
                     >
-                      {stat.value}
-                    </Typography>
-                  </Box>
-                ))}
-              </Stack>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Avatar
+                          variant="rounded"
+                          sx={{
+                            width: 32,
+                            height: 32,
+                            bgcolor: alpha(theme.palette.background.paper, 0.15),
+                            color: theme.palette.primary.contrastText,
+                            mr: 1.5,
+                            borderRadius: 1
+                          }}
+                        >
+                          <Icon icon={stat.icon} width={18} />
+                        </Avatar>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 500,
+                            color: alpha(theme.palette.primary.contrastText, 0.85)
+                          }}
+                        >
+                          {stat.label}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: 700,
+                          color: theme.palette.primary.contrastText
+                        }}
+                      >
+                        {stat.value}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </Box>
             </Card>
           </Stack>
         </Grid>

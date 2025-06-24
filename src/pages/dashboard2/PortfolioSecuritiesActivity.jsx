@@ -19,7 +19,8 @@ import {
   Divider,
   Card,
   Fade,
-  Grid
+  Grid,
+  Tooltip
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -34,6 +35,7 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
   const primaryColor = theme.palette.primary.main;
   const successColor = theme.palette.success.main;
   const warningColor = theme.palette.warning.main;
+  const infoColor = theme.palette.info.main;
 
   // Use mock data from the JSON file, or fallback to hardcoded if unavailable
   const activities = mockData?.portfolioActivity || [
@@ -77,9 +79,30 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
 
   // Activity metrics for the overview section
   const activityMetrics = [
-    { label: 'Total Portfolios', value: '18', icon: 'solar:folder-bold-duotone', color: successColor },
-    { label: 'Securities', value: '265', icon: 'solar:document-text-bold-duotone', color: primaryColor },
-    { label: 'Changes Today', value: '14', icon: 'solar:pen-bold-duotone', color: warningColor }
+    {
+      label: 'Total Portfolios',
+      value: '18',
+      icon: 'solar:folder-bold-duotone',
+      color: primaryColor,
+      trend: '+2',
+      trendUp: true
+    },
+    {
+      label: 'Securities',
+      value: '265',
+      icon: 'solar:document-text-bold-duotone',
+      color: successColor,
+      trend: '+12',
+      trendUp: true
+    },
+    {
+      label: 'Changes Today',
+      value: '14',
+      icon: 'solar:pen-bold-duotone',
+      color: warningColor,
+      trend: '↑5',
+      trendUp: true
+    }
   ];
 
   const getActivityIcon = (category, type) => {
@@ -130,17 +153,19 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
         title={
           <Stack direction="row" alignItems="center" spacing={1}>
             <Icon icon="solar:folder-bold-duotone" width={24} style={{ color: primaryColor }} />
-            <Typography variant="h5">Overview, Recent Activity on New Portfolio & Securities</Typography>
+            <Typography variant="h5">Portfolio & Securities</Typography>
           </Stack>
         }
         sx={{
           height: '100%',
-          '& .MuiCardContent-root': { p: 0 }
+          boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 12px rgba(0,0,0,0.05)',
+          '& .MuiCardContent-root': { p: 0 },
+          borderRadius: 3
         }}
       >
         <CardContent>
           <Box sx={{ p: 2 }}>
-            <Skeleton variant="rectangular" height={80} sx={{ borderRadius: 2, mb: 2 }} />
+            <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: 2 }} />
           </Box>
           <Divider />
           <List sx={{ py: 0 }}>
@@ -178,31 +203,61 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
     <MainCard
       title={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Icon icon="solar:folder-bold-duotone" width={24} style={{ color: primaryColor }} />
-          <Typography variant="h5">Overview, Recent Activity on New Portfolio & Securities</Typography>
+          <Avatar
+            variant="rounded"
+            sx={{
+              width: 32,
+              height: 32,
+              background: `linear-gradient(135deg, ${alpha(primaryColor, 0.16)} 0%, ${alpha(primaryColor, 0.24)} 100%)`,
+              color: primaryColor
+            }}
+          >
+            <Icon icon="solar:folder-bold-duotone" width={20} />
+          </Avatar>
+          <Typography variant="h5">Portfolio & Securities</Typography>
         </Stack>
       }
       secondary={
-        <IconButton
-          color="primary"
-          size="small"
-          sx={{
-            bgcolor: alpha(primaryColor, 0.1),
-            '&:hover': { bgcolor: alpha(primaryColor, 0.2) }
-          }}
-        >
-          <Icon icon="solar:refresh-bold" width={20} height={20} style={{ color: primaryColor }} />
-        </IconButton>
+        <Tooltip title="Refresh data">
+          <IconButton
+            color="primary"
+            size="small"
+            sx={{
+              bgcolor: alpha(primaryColor, 0.1),
+              '&:hover': { bgcolor: alpha(primaryColor, 0.16) },
+              border: `1px solid ${alpha(primaryColor, 0.2)}`,
+              backdropFilter: 'blur(4px)'
+            }}
+          >
+            <Icon icon="solar:refresh-bold" width={18} height={18} />
+          </IconButton>
+        </Tooltip>
       }
       sx={{
         height: '100%',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+        boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
         borderRadius: 3,
         border: '1px solid',
-        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(230,230,230,0.8)'
+        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
+      {/* Decorative element */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: -24,
+          left: -24,
+          width: 150,
+          height: 150,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(primaryColor, 0.08)} 0%, rgba(0,0,0,0) 70%)`,
+          zIndex: 0
+        }}
+      />
+
       <CardContent>
         {/* Activity Overview Section */}
         <Box sx={{ p: 2 }}>
@@ -214,25 +269,56 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
                     p: 1.5,
                     borderRadius: 2,
                     boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    bgcolor: alpha(metric.color, 0.08),
-                    border: `1px solid ${alpha(metric.color, 0.2)}`
+                    bgcolor: alpha(metric.color, 0.06),
+                    border: `1px solid ${alpha(metric.color, 0.2)}`,
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      boxShadow: `0 4px 12px ${alpha(metric.color, 0.2)}`,
+                      transform: 'translateY(-2px)'
+                    }
                   }}
                 >
                   <Stack spacing={1} alignItems="center" direction="row">
                     <Avatar
                       sx={{
-                        bgcolor: alpha(metric.color, 0.2),
+                        bgcolor: alpha(metric.color, 0.15),
                         color: metric.color,
-                        width: 32,
-                        height: 32
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5
                       }}
                     >
                       <Icon icon={metric.icon} width={18} />
                     </Avatar>
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 600, color: metric.color }}>
-                        {metric.value}
-                      </Typography>
+                      <Stack direction="row" alignItems="center" spacing={0.75}>
+                        <Typography variant="h5" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
+                          {metric.value}
+                        </Typography>
+                        <Chip
+                          label={metric.trend}
+                          size="small"
+                          sx={{
+                            height: 20,
+                            fontSize: '0.625rem',
+                            fontWeight: 600,
+                            bgcolor: alpha(successColor, 0.12),
+                            color: successColor,
+                            borderRadius: 1
+                          }}
+                          icon={
+                            <Icon
+                              icon="solar:alt-arrow-up-bold-duotone"
+                              width={12}
+                              style={{
+                                marginLeft: '2px',
+                                marginRight: '-4px',
+                                color: successColor
+                              }}
+                            />
+                          }
+                        />
+                      </Stack>
                       <Typography variant="caption" color="textSecondary">
                         {metric.label}
                       </Typography>
@@ -251,95 +337,114 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
           {activities.map((activity, index) => {
             const activityColor = getActivityColor(activity.category);
             const iconName = getActivityIcon(activity.category, activity.type);
+
             return (
-              <Fade key={activity.id} in={!isLoading} style={{ transitionDelay: `${index * 150}ms` }}>
-                <ListItem
-                  divider
-                  sx={{
-                    py: 1.5,
-                    px: 2,
-                    borderColor: theme.palette.divider,
-                    '&:hover': {
-                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : alpha(primaryColor, 0.05)
-                    },
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                >
-                  <ListItemAvatar sx={{ minWidth: 45 }}>
-                    <Avatar
-                      sx={{
-                        color: activityColor.main,
-                        bgcolor: activityColor.lighter,
-                        width: 36,
-                        height: 36,
-                        border: `1px solid ${activityColor.border}`
-                      }}
-                    >
-                      <Icon icon={iconName} width={20} height={20} />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Stack direction="row" alignItems="center" justifyContent="space-between">
-                        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                          {activity.activity}
-                          <Typography component="span" variant="caption" sx={{ ml: 1, opacity: 0.7 }}>
-                            • {activity.time}
-                          </Typography>
-                        </Typography>
-                        <Chip
-                          label={activity.user}
-                          size="small"
-                          sx={{
-                            bgcolor: alpha(activityColor.main, 0.1),
-                            color: activityColor.main,
-                            borderRadius: '4px',
-                            border: `1px solid ${activityColor.border}`,
-                            fontWeight: 500,
-                            '& .MuiChip-label': {
-                              px: 1
-                            }
-                          }}
-                        />
-                      </Stack>
-                    }
-                    secondary={
+              <ListItem
+                key={activity.id}
+                divider={index !== activities.length - 1}
+                sx={{
+                  py: 1.5,
+                  px: 2.5,
+                  transition: 'all 0.2s ease-in-out',
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.04)
+                  }
+                }}
+              >
+                <ListItemAvatar sx={{ minWidth: 44 }}>
+                  <Avatar
+                    variant="rounded"
+                    sx={{
+                      bgcolor: activityColor.lighter,
+                      color: activityColor.main,
+                      width: 36,
+                      height: 36,
+                      borderRadius: 1.5
+                    }}
+                  >
+                    <Icon icon={iconName} width={20} />
+                  </Avatar>
+                </ListItemAvatar>
+
+                <ListItemText
+                  primary={
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '0.9rem', mb: 0.5 }}>
+                      {activity.activity}
+                    </Typography>
+                  }
+                  secondary={
+                    <>
                       <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ mt: 0.5, display: 'block', fontWeight: 500 }}
+                        variant="body2"
+                        sx={{
+                          color: theme.palette.text.primary,
+                          fontWeight: 500,
+                          mb: 0.5
+                        }}
                       >
                         {activity.name}
                       </Typography>
-                    }
-                  />
-                </ListItem>
-              </Fade>
+
+                      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+                        <Typography variant="caption" sx={{ color: alpha(theme.palette.text.primary, 0.6) }}>
+                          <Box component="span" sx={{ mr: 1 }}>
+                            <Icon
+                              icon="solar:user-outline"
+                              width={14}
+                              style={{ verticalAlign: 'middle', marginRight: '4px' }}
+                            />
+                            {activity.user}
+                          </Box>
+                          <Box component="span">
+                            <Icon
+                              icon="solar:clock-circle-outline"
+                              width={14}
+                              style={{ verticalAlign: 'middle', marginRight: '4px' }}
+                            />
+                            {activity.time}
+                          </Box>
+                        </Typography>
+
+                        <Chip
+                          label={activity.category.charAt(0).toUpperCase() + activity.category.slice(1)}
+                          size="small"
+                          sx={{
+                            bgcolor: activityColor.lighter,
+                            color: activityColor.main,
+                            borderRadius: '4px',
+                            fontSize: '0.7rem',
+                            height: 22,
+                            fontWeight: 600,
+                            border: `1px solid ${activityColor.border}`
+                          }}
+                        />
+                      </Stack>
+                    </>
+                  }
+                />
+              </ListItem>
             );
           })}
         </List>
-        <Box
-          sx={{
-            p: 2,
-            display: 'flex',
-            justifyContent: 'center',
-            borderTop: `1px solid ${theme.palette.divider}`,
-            background: alpha(primaryColor, 0.03)
-          }}
-        >
+
+        {/* View All Button */}
+        <Box sx={{ p: 2, textAlign: 'center' }}>
           <Button
-            variant="text"
-            startIcon={<Icon icon="solar:folder-bold-duotone" />}
+            variant="outlined"
+            color="primary"
+            size="small"
+            startIcon={<Icon icon="solar:folder-with-files-bold-duotone" width={16} />}
             sx={{
-              fontWeight: 500,
-              color: primaryColor,
+              borderRadius: 1.5,
+              fontWeight: 600,
+              boxShadow: `inset 0 0 0 1px ${alpha(primaryColor, 0.3)}`,
               '&:hover': {
-                background: alpha(primaryColor, 0.1)
+                boxShadow: `inset 0 0 0 1px ${primaryColor}`,
+                bgcolor: alpha(primaryColor, 0.04)
               }
             }}
           >
-            View All Portfolio Activities
+            View All Portfolios
           </Button>
         </Box>
       </CardContent>

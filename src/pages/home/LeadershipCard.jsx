@@ -73,6 +73,36 @@ const testimonials = [
     image: 'https://www.gibcapital.com/media/qc3p3fv2/3.png',
     flag: 'SA',
     bioUrl: 'https://www.gibcapital.com/senior-management/abdullah-s-al-hamed/'
+  },
+  {
+    id: 7,
+    name: 'Ghadah Alnujaydi',
+    position: 'Head of Human Resources',
+    quote:
+      'At GIB Capital, our people are our greatest asset. We strive to create an inclusive workplace culture that attracts, develops, and retains top talent. By investing in our team, we ensure our clients receive exceptional service from passionate professionals.',
+    image: 'https://www.gibcapital.com/media/n1wmaxhk/9.png',
+    flag: 'SA',
+    bioUrl: 'https://www.gibcapital.com/senior-management/ghadah-al-nujaydi/'
+  },
+  {
+    id: 8,
+    name: 'Faisal Alruhaymi',
+    position: 'Head of Risk Management',
+    quote:
+      'Effective risk management is fundamental to our success and the success of our clients. We implement robust frameworks that identify, assess, and mitigate risks while enabling strategic growth and capitalizing on market opportunities.',
+    image: 'https://www.gibcapital.com/media/dstiyny3/8.png',
+    flag: 'SA',
+    bioUrl: 'https://www.gibcapital.com/senior-management/faisal-alruhaymi/'
+  },
+  {
+    id: 9,
+    name: 'Maha AlQassem',
+    position: 'Senior Corporate Communications Manager',
+    quote:
+      'Clear and transparent communication is essential in building trust with all our stakeholders. At GIB Capital, we are committed to maintaining open channels of communication that strengthen our relationships and enhance our reputation in the market.',
+    image: 'https://www.gibcapital.com/media/1bypyrck/maha-photo.png',
+    flag: 'SA',
+    bioUrl: 'https://www.gibcapital.com/senior-management/maha-alqassem/'
   }
 ];
 
@@ -147,7 +177,7 @@ const LeadershipCard = () => {
           flexDirection: { xs: 'column', md: 'row' },
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: { xs: 650, md: 550 },
+          minHeight: { xs: 650, md: 535 },
           position: 'relative',
           gap: { xs: 4, md: 3 },
           maxWidth: '1200px',
@@ -183,11 +213,12 @@ const LeadershipCard = () => {
                     transition={{ duration: 0.5 }}
                   >
                     <Paper
-                      elevation={6}
+                      elevation={2}
                       sx={{
                         bgcolor: alpha(theme.palette.primary.dark, 0.85),
                         backdropFilter: 'blur(10px)',
                         p: { xs: 3, sm: 3.5, md: 4 },
+                        // mt: { xs: 0, sm: 0, md: 0, lg: 4 },
                         borderRadius: 3,
                         border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
                         boxShadow: `0 15px 40px ${alpha(theme.palette.common.black, 0.4)}`
@@ -280,7 +311,7 @@ const LeadershipCard = () => {
                 color: theme.palette.secondary.main
               }}
             >
-              <Icon icon="mdi:chevron-left" width={28} height={28} />
+              <Icon icon="mdi:chevron-left" width={28} height={28} style={{ color: theme.palette.secondary.main }} />
             </IconButton>
             <IconButton
               onClick={goToNextSlide}
@@ -290,7 +321,7 @@ const LeadershipCard = () => {
                 color: theme.palette.secondary.main
               }}
             >
-              <Icon icon="mdi:chevron-right" width={28} height={28} />
+              <Icon icon="mdi:chevron-right" width={28} height={28} style={{ color: theme.palette.secondary.main }} />
             </IconButton>
           </Box>
         </Box>

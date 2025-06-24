@@ -22,7 +22,8 @@ import {
   ButtonGroup,
   Collapse,
   CircularProgress,
-  Tooltip
+  Tooltip,
+  Grid
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
@@ -30,9 +31,6 @@ import { useState } from 'react';
 // project imports
 import MainCard from 'components/MainCard';
 import mockData from './dashbord-mockData.json';
-
-// Add Grid import
-import { Grid } from '@mui/material';
 
 const TradesActivity = ({ isLoading: parentLoading }) => {
   const theme = useTheme();
@@ -45,6 +43,8 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
   const primaryColor = theme.palette.primary.main;
   const successColor = theme.palette.success.main;
   const warningColor = theme.palette.warning.main;
+  const errorColor = theme.palette.error.main;
+  const infoColor = theme.palette.info.main;
 
   // Use mock data from the JSON file, or fallback to hardcoded if unavailable
   const allActivities = mockData?.tradesActivity || [
@@ -107,9 +107,30 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
 
   // Activity metrics for the overview section
   const activityMetrics = [
-    { label: 'Total Trades', value: '142', icon: 'solar:chart-bold-duotone', color: successColor },
-    { label: 'Buy Orders', value: '87', icon: 'solar:arrow-down-bold-duotone', color: primaryColor },
-    { label: 'Sell Orders', value: '55', icon: 'solar:arrow-up-bold-duotone', color: warningColor }
+    {
+      label: 'Total Trades',
+      value: '142',
+      icon: 'solar:chart-bold-duotone',
+      color: infoColor,
+      trend: '+8',
+      trendUp: true
+    },
+    {
+      label: 'Buy Orders',
+      value: '87',
+      icon: 'solar:arrow-down-bold-duotone',
+      color: successColor,
+      trend: '+5',
+      trendUp: true
+    },
+    {
+      label: 'Sell Orders',
+      value: '55',
+      icon: 'solar:arrow-up-bold-duotone',
+      color: primaryColor,
+      trend: '+3',
+      trendUp: true
+    }
   ];
 
   // Handle refresh
@@ -134,9 +155,9 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
   const getStatusColor = (status, type) => {
     if (status === 'rejected') {
       return {
-        main: theme.palette.error.main,
-        lighter: alpha(theme.palette.error.main, 0.1),
-        border: alpha(theme.palette.error.main, 0.2)
+        main: errorColor,
+        lighter: alpha(errorColor, 0.1),
+        border: alpha(errorColor, 0.2)
       };
     } else if (status === 'pending') {
       return {
@@ -158,9 +179,9 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
       };
     } else {
       return {
-        main: theme.palette.info.main,
-        lighter: alpha(theme.palette.info.main, 0.1),
-        border: alpha(theme.palette.info.main, 0.2)
+        main: infoColor,
+        lighter: alpha(infoColor, 0.1),
+        border: alpha(infoColor, 0.2)
       };
     }
   };
@@ -187,17 +208,19 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
         title={
           <Stack direction="row" alignItems="center" spacing={1}>
             <Icon icon="solar:chart-bold-duotone" width={24} style={{ color: successColor }} />
-            <Typography variant="h5">Overview, Recent Activity on Posting of Trades</Typography>
+            <Typography variant="h5">Trading Activity</Typography>
           </Stack>
         }
         sx={{
           height: '100%',
-          '& .MuiCardContent-root': { p: 0 }
+          boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 12px rgba(0,0,0,0.05)',
+          '& .MuiCardContent-root': { p: 0 },
+          borderRadius: 3
         }}
       >
         <CardContent>
           <Box sx={{ p: 2 }}>
-            <Skeleton variant="rectangular" height={80} sx={{ borderRadius: 2, mb: 2 }} />
+            <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: 2 }} />
           </Box>
           <Divider />
           <List sx={{ py: 0 }}>
@@ -217,12 +240,9 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                 <ListItemText
                   primary={<Skeleton variant="text" width="60%" height={24} />}
                   secondary={
-                    <Stack spacing={0.5} mt={0.5}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1} mt={0.5}>
                       <Skeleton variant="text" width="40%" height={20} />
-                      <Stack direction="row" justifyContent="space-between" spacing={1}>
-                        <Skeleton variant="text" width="50%" height={20} />
-                        <Skeleton variant="rectangular" width={60} height={24} sx={{ borderRadius: 1 }} />
-                      </Stack>
+                      <Skeleton variant="rectangular" width={60} height={24} sx={{ borderRadius: 1 }} />
                     </Stack>
                   }
                 />
@@ -238,39 +258,120 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
     <MainCard
       title={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Icon icon="solar:chart-bold-duotone" width={24} style={{ color: successColor }} />
-          <Typography variant="h5">Overview, Recent Activity on Posting of Trades</Typography>
+          <Avatar
+            variant="rounded"
+            sx={{
+              width: 32,
+              height: 32,
+              background: `linear-gradient(135deg, ${alpha(successColor, 0.16)} 0%, ${alpha(successColor, 0.24)} 100%)`,
+              color: successColor
+            }}
+          >
+            <Icon icon="solar:chart-bold-duotone" width={20} />
+          </Avatar>
+          <Typography variant="h5">Trading Activity</Typography>
         </Stack>
       }
       secondary={
-        <Tooltip title="Refresh trade data">
-          <IconButton
-            color="primary"
-            size="small"
-            onClick={handleRefresh}
-            disabled={refreshing}
-            sx={{
-              bgcolor: alpha(successColor, 0.1),
-              '&:hover': { bgcolor: alpha(successColor, 0.2) }
-            }}
-          >
-            {refreshing ? (
-              <CircularProgress size={20} color="inherit" />
-            ) : (
-              <Icon icon="solar:refresh-bold" width={20} height={20} style={{ color: successColor }} />
-            )}
-          </IconButton>
-        </Tooltip>
+        <Stack direction="row" spacing={1}>
+          <Tooltip title="Filter trades">
+            <ButtonGroup
+              size="small"
+              sx={{
+                borderRadius: 1.5,
+                boxShadow: `0 2px 8px ${alpha(theme.palette.common.black, 0.08)}`,
+                '.MuiButtonGroup-grouped': {
+                  borderColor: alpha(theme.palette.divider, 0.5)
+                }
+              }}
+            >
+              <Button
+                variant={filter === 'all' ? 'contained' : 'outlined'}
+                onClick={() => handleFilterChange('all')}
+                size="small"
+                sx={{
+                  fontSize: '0.75rem',
+                  px: 1.5,
+                  borderRadius: '6px 0 0 6px',
+                  minHeight: 28
+                }}
+              >
+                All
+              </Button>
+              <Button
+                variant={filter === 'buy' ? 'contained' : 'outlined'}
+                onClick={() => handleFilterChange('buy')}
+                size="small"
+                sx={{
+                  fontSize: '0.75rem',
+                  px: 1.5,
+                  minHeight: 28
+                }}
+              >
+                Buy
+              </Button>
+              <Button
+                variant={filter === 'sell' ? 'contained' : 'outlined'}
+                onClick={() => handleFilterChange('sell')}
+                size="small"
+                sx={{
+                  fontSize: '0.75rem',
+                  px: 1.5,
+                  borderRadius: '0 6px 6px 0',
+                  minHeight: 28
+                }}
+              >
+                Sell
+              </Button>
+            </ButtonGroup>
+          </Tooltip>
+          <Tooltip title="Refresh trading data">
+            <IconButton
+              color="primary"
+              size="small"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              sx={{
+                bgcolor: alpha(successColor, 0.1),
+                '&:hover': { bgcolor: alpha(successColor, 0.16) },
+                border: `1px solid ${alpha(successColor, 0.2)}`,
+                backdropFilter: 'blur(4px)'
+              }}
+            >
+              {refreshing ? (
+                <CircularProgress size={18} thickness={2} />
+              ) : (
+                <Icon icon="solar:refresh-bold" width={18} height={18} style={{ color: successColor }} />
+              )}
+            </IconButton>
+          </Tooltip>
+        </Stack>
       }
       sx={{
         height: '100%',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+        boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
         borderRadius: 3,
         border: '1px solid',
-        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(230,230,230,0.8)'
+        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
+        position: 'relative',
+        overflow: 'hidden'
       }}
     >
+      {/* Decorative element */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: -24,
+          right: -24,
+          width: 150,
+          height: 150,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(successColor, 0.1)} 0%, rgba(0,0,0,0) 70%)`,
+          zIndex: 0
+        }}
+      />
+
       <CardContent>
         {/* Activity Overview Section */}
         <Box sx={{ p: 2 }}>
@@ -282,25 +383,56 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                     p: 1.5,
                     borderRadius: 2,
                     boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                    bgcolor: alpha(metric.color, 0.08),
-                    border: `1px solid ${alpha(metric.color, 0.2)}`
+                    bgcolor: alpha(metric.color, 0.06),
+                    border: `1px solid ${alpha(metric.color, 0.2)}`,
+                    transition: 'all 0.2s ease-in-out',
+                    '&:hover': {
+                      boxShadow: `0 4px 12px ${alpha(metric.color, 0.2)}`,
+                      transform: 'translateY(-2px)'
+                    }
                   }}
                 >
                   <Stack spacing={1} alignItems="center" direction="row">
                     <Avatar
                       sx={{
-                        bgcolor: alpha(metric.color, 0.2),
+                        bgcolor: alpha(metric.color, 0.15),
                         color: metric.color,
-                        width: 32,
-                        height: 32
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5
                       }}
                     >
                       <Icon icon={metric.icon} width={18} />
                     </Avatar>
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 600, color: metric.color }}>
-                        {metric.value}
-                      </Typography>
+                      <Stack direction="row" alignItems="center" spacing={0.75}>
+                        <Typography variant="h5" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
+                          {metric.value}
+                        </Typography>
+                        <Chip
+                          label={metric.trend}
+                          size="small"
+                          sx={{
+                            height: 20,
+                            fontSize: '0.625rem',
+                            fontWeight: 600,
+                            bgcolor: alpha(successColor, 0.12),
+                            color: successColor,
+                            borderRadius: 1
+                          }}
+                          icon={
+                            <Icon
+                              icon="solar:alt-arrow-up-bold-duotone"
+                              width={12}
+                              style={{
+                                marginLeft: '2px',
+                                marginRight: '-4px',
+                                color: successColor
+                              }}
+                            />
+                          }
+                        />
+                      </Stack>
                       <Typography variant="caption" color="textSecondary">
                         {metric.label}
                       </Typography>
@@ -312,270 +444,197 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
           </Grid>
         </Box>
 
-        {/* Filter Buttons */}
-        <Box sx={{ px: 2, mb: 2 }}>
-          <ButtonGroup
-            size="small"
-            variant="outlined"
-            sx={{
-              '& .MuiButton-root': {
-                borderColor: alpha(theme.palette.divider, 0.5),
-                color: theme.palette.text.secondary,
-                '&.active': {
-                  bgcolor: alpha(successColor, 0.1),
-                  color: successColor,
-                  borderColor: alpha(successColor, 0.5)
-                }
-              }
-            }}
-          >
-            <Button className={filter === 'all' ? 'active' : ''} onClick={() => handleFilterChange('all')}>
-              All Trades
-            </Button>
-            <Button className={filter === 'buy' ? 'active' : ''} onClick={() => handleFilterChange('buy')}>
-              Buy Orders
-            </Button>
-            <Button className={filter === 'sell' ? 'active' : ''} onClick={() => handleFilterChange('sell')}>
-              Sell Orders
-            </Button>
-            <Button className={filter === 'block' ? 'active' : ''} onClick={() => handleFilterChange('block')}>
-              Block Trades
-            </Button>
-          </ButtonGroup>
-        </Box>
-
         <Divider />
 
         {/* Activity List */}
         <List sx={{ py: 0 }}>
           {activities.map((activity, index) => {
-            const statusColor = getStatusColor(activity.status, activity.type);
+            const statusColors = getStatusColor(activity.status, activity.type);
             const iconName = getActionIcon(activity.type, activity.status);
             const isExpanded = expandedId === activity.id;
 
             return (
-              <Fade key={activity.id} in={!isLoading} style={{ transitionDelay: `${index * 150}ms` }}>
+              <Box key={activity.id}>
                 <ListItem
-                  divider
+                  divider={index !== activities.length - 1 || isExpanded}
                   sx={{
                     py: 1.5,
-                    px: 2,
-                    borderColor: theme.palette.divider,
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
+                    px: 2.5,
+                    transition: 'all 0.2s ease-in-out',
                     '&:hover': {
-                      bgcolor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : alpha(successColor, 0.05)
+                      bgcolor: alpha(theme.palette.primary.main, 0.04)
                     },
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
+                    cursor: 'pointer'
                   }}
                   onClick={() => toggleExpand(activity.id)}
                 >
-                  <Stack direction="row" alignItems="flex-start">
-                    <ListItemAvatar sx={{ minWidth: 45 }}>
-                      <Avatar
-                        sx={{
-                          color: statusColor.main,
-                          bgcolor: statusColor.lighter,
-                          width: 36,
-                          height: 36,
-                          border: `1px solid ${statusColor.border}`
-                        }}
-                      >
-                        <Icon icon={iconName} width={20} height={20} />
-                      </Avatar>
-                    </ListItemAvatar>
-
-                    <Box sx={{ flex: 1, width: '100%' }}>
-                      <Stack direction="row" alignItems="center" justifyContent="space-between">
-                        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                          {activity.action}
-                          <Typography component="span" variant="caption" sx={{ ml: 1, opacity: 0.7 }}>
-                            • {activity.time}
-                          </Typography>
-                        </Typography>
-                        <Stack direction="row" spacing={1} alignItems="center">
-                          <Chip
-                            label={activity.user}
-                            size="small"
-                            sx={{
-                              bgcolor: alpha(statusColor.main, 0.1),
-                              color: statusColor.main,
-                              borderRadius: '4px',
-                              border: `1px solid ${statusColor.border}`,
-                              fontWeight: 500,
-                              '& .MuiChip-label': {
-                                px: 1
-                              }
-                            }}
-                          />
-                          <IconButton
-                            size="small"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleExpand(activity.id);
-                            }}
-                          >
-                            <Icon
-                              icon={isExpanded ? 'solar:alt-arrow-up-bold' : 'solar:alt-arrow-down-bold'}
-                              width={16}
-                            />
-                          </IconButton>
-                        </Stack>
-                      </Stack>
-
-                      <Typography variant="caption" color="textSecondary" sx={{ fontWeight: 500 }}>
-                        {activity.security}
-                      </Typography>
-
-                      <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 0.5 }}>
-                        {activity.details}
-                      </Typography>
-                    </Box>
-                  </Stack>
-
-                  {/* Expandable Details */}
-                  <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-                    <Box
+                  <ListItemAvatar sx={{ minWidth: 44 }}>
+                    <Avatar
+                      variant="rounded"
                       sx={{
-                        mt: 2,
-                        ml: 5.5,
-                        p: 1.5,
-                        borderLeft: `1px dashed ${statusColor.border}`,
-                        bgcolor: alpha(statusColor.lighter, 0.5),
-                        borderRadius: 1
+                        bgcolor: statusColors.lighter,
+                        color: statusColors.main,
+                        width: 36,
+                        height: 36,
+                        borderRadius: 1.5
                       }}
                     >
-                      <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                      <Icon icon={iconName} width={20} />
+                    </Avatar>
+                  </ListItemAvatar>
+
+                  <ListItemText
+                    primary={
+                      <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '0.9rem', mb: 0.5 }}>
+                        {activity.action}
+                      </Typography>
+                    }
+                    secondary={
+                      <>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: theme.palette.text.primary,
+                            fontWeight: 500,
+                            mb: 0.5
+                          }}
+                        >
+                          {activity.security}
+                        </Typography>
+
+                        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1}>
+                          <Stack direction="row" spacing={1} alignItems="center">
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: alpha(theme.palette.text.primary, 0.6),
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5
+                              }}
+                            >
+                              <Icon icon="solar:clock-circle-outline" width={14} style={{ verticalAlign: 'middle' }} />
+                              {activity.time}
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: alpha(theme.palette.text.primary, 0.6),
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 0.5
+                              }}
+                            >
+                              <Icon
+                                icon={
+                                  activity.type === 'buy' ? 'solar:money-bag-bold-duotone' : 'solar:dollar-bold-duotone'
+                                }
+                                width={14}
+                                style={{ verticalAlign: 'middle' }}
+                              />
+                              {activity.value}
+                            </Typography>
+                          </Stack>
+
+                          <Chip
+                            label={activity.type.charAt(0).toUpperCase() + activity.type.slice(1)}
+                            size="small"
+                            sx={{
+                              bgcolor: statusColors.lighter,
+                              color: statusColors.main,
+                              borderRadius: '4px',
+                              fontSize: '0.7rem',
+                              height: 22,
+                              fontWeight: 600,
+                              border: `1px solid ${statusColors.border}`
+                            }}
+                          />
+                        </Stack>
+                      </>
+                    }
+                  />
+
+                  <Icon
+                    icon={isExpanded ? 'solar:minus-circle-bold-duotone' : 'solar:add-circle-bold-duotone'}
+                    width={20}
+                    style={{
+                      color: alpha(theme.palette.text.primary, 0.5),
+                      marginLeft: 8
+                    }}
+                  />
+                </ListItem>
+
+                {/* Expanded Details */}
+                <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+                  <Box
+                    sx={{
+                      p: 2,
+                      bgcolor: alpha(theme.palette.background.default, 0.5),
+                      borderBottom: index !== activities.length - 1 ? `1px solid ${theme.palette.divider}` : 'none'
+                    }}
+                  >
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <Stack spacing={1}>
                           <Typography variant="caption" color="textSecondary">
-                            Value
+                            Trade Details
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {activity.value}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
+                          <Typography variant="body2">{activity.details}</Typography>
+                        </Stack>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Stack spacing={1}>
                           <Typography variant="caption" color="textSecondary">
                             Settlement
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {activity.settlement}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
+                          <Typography variant="body2">{activity.settlement}</Typography>
+                        </Stack>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Stack spacing={1}>
                           <Typography variant="caption" color="textSecondary">
                             Broker
                           </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {activity.broker}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <Typography variant="caption" color="textSecondary">
-                            Status
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            sx={{
-                              fontWeight: 500,
-                              color: statusColor.main
-                            }}
-                          >
-                            {activity.status.charAt(0).toUpperCase() + activity.status.slice(1)}
-                          </Typography>
-                        </Grid>
+                          <Typography variant="body2">{activity.broker}</Typography>
+                        </Stack>
                       </Grid>
-
-                      <Stack direction="row" spacing={1} justifyContent="flex-end" sx={{ mt: 1 }}>
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          startIcon={<Icon icon="solar:eye-bold" width={16} />}
-                          sx={{
-                            borderColor: statusColor.border,
-                            color: statusColor.main,
-                            '&:hover': {
-                              bgcolor: statusColor.lighter
-                            }
-                          }}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          View Details
-                        </Button>
-
-                        {activity.status !== 'rejected' && (
-                          <Button
-                            size="small"
-                            variant="contained"
-                            startIcon={<Icon icon="solar:printer-bold" width={16} />}
-                            sx={{
-                              bgcolor: statusColor.main,
-                              '&:hover': {
-                                bgcolor: alpha(statusColor.main, 0.8)
-                              }
-                            }}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            Print Confirmation
-                          </Button>
-                        )}
-                      </Stack>
-                    </Box>
-                  </Collapse>
-                </ListItem>
-              </Fade>
+                      <Grid item xs={6}>
+                        <Stack spacing={1}>
+                          <Typography variant="caption" color="textSecondary">
+                            Initiated By
+                          </Typography>
+                          <Typography variant="body2">{activity.user}</Typography>
+                        </Stack>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Collapse>
+              </Box>
             );
           })}
         </List>
 
-        {activities.length === 0 && (
-          <Box sx={{ py: 6, textAlign: 'center' }}>
-            <Box>
-              <Icon
-                icon="solar:box-minimalistic-broken"
-                width={60}
-                height={60}
-                style={{ color: alpha(theme.palette.text.secondary, 0.5), margin: '0 auto' }}
-              />
-              <Typography variant="h6" color="textSecondary" sx={{ mt: 2 }}>
-                No trades found
-              </Typography>
-              <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                Try changing your filter or check back later
-              </Typography>
-              <Button
-                variant="outlined"
-                startIcon={<Icon icon="solar:refresh-bold" />}
-                onClick={() => handleFilterChange('all')}
-              >
-                Show All Trades
-              </Button>
-            </Box>
-          </Box>
-        )}
-
-        <Box
-          sx={{
-            p: 2,
-            display: 'flex',
-            justifyContent: 'center',
-            borderTop: `1px solid ${theme.palette.divider}`,
-            background: alpha(successColor, 0.03)
-          }}
-        >
+        {/* View All Button */}
+        <Box sx={{ p: 2, textAlign: 'center' }}>
           <Button
-            variant="text"
-            startIcon={<Icon icon="solar:chart-bold-duotone" />}
+            variant="outlined"
+            color="primary"
+            size="small"
+            startIcon={<Icon icon="solar:graph-new-up-bold-duotone" width={16} />}
             sx={{
-              fontWeight: 500,
+              borderRadius: 1.5,
+              fontWeight: 600,
+              boxShadow: `inset 0 0 0 1px ${alpha(successColor, 0.3)}`,
               color: successColor,
+              borderColor: alpha(successColor, 0.3),
               '&:hover': {
-                background: alpha(successColor, 0.1)
+                boxShadow: `inset 0 0 0 1px ${successColor}`,
+                bgcolor: alpha(successColor, 0.04),
+                borderColor: successColor
               }
             }}
           >
-            View All Trades
+            View All Trading Activity
           </Button>
         </Box>
       </CardContent>
