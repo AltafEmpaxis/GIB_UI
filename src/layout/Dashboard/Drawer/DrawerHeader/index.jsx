@@ -19,6 +19,7 @@ const DrawerHeader = ({ open }) => {
           alignItems: 'center',
           height: '100%',
           position: 'relative',
+          px: open ? 0 : 0.25,
           '&:after': {
             content: '""',
             position: 'absolute',
@@ -32,7 +33,7 @@ const DrawerHeader = ({ open }) => {
           }
         }}
       >
-        <LogoSection collapsed={!open} />
+        <LogoSection collapsed={!open} sx={{ width: open ? 'auto' : '100%', p: 0 }} />
       </Box>
     </DrawerHeaderStyled>
   );

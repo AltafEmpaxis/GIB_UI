@@ -1,16 +1,4 @@
 /* ==============================|| GLOBAL STYLES ||============================== */
-/* Import Swiper styles - core */
-@import 'swiper/css';
-
-/* Import required module styles */
-@import 'swiper/css/a11y';
-@import 'swiper/css/autoplay';
-@import 'swiper/css/effect-fade';
-@import 'swiper/css/keyboard';
-@import 'swiper/css/mousewheel';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
-@import 'swiper/css/parallax';
 
 /* Base Styles */
 * {

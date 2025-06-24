@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import gibLogo from 'assets/logo/gib_logo.png';
+import gibLogo from 'assets/logo/gib_logo.jpg';
 import PropTypes from 'prop-types';
 
 const Logo = ({
@@ -29,13 +29,17 @@ const Logo = ({
 
   const colors = getGradientColors();
 
+  // Logo aspect ratio is 3238:951 (approximately 3.4:1)
+  const aspectRatio = 3.4;
+
   // Default dimensions based on collapsed state
-  const defaultWidth = collapsed ? 40 : 150;
-  const defaultHeight = collapsed ? 40 : 'auto';
+  const defaultWidth = collapsed ? 52 : 240;
+  const defaultHeight = collapsed ? 52 : Math.round(defaultWidth / aspectRatio);
 
   // Determine final dimensions (priority: direct props > custom props > defaults)
   const finalWidth = width || imageWidth || defaultWidth;
-  const finalHeight = height || imageHeight || defaultHeight;
+  const finalHeight =
+    height || imageHeight || (typeof finalWidth === 'number' ? Math.round(finalWidth / aspectRatio) : defaultHeight);
 
   // Common box props
   const boxProps = {
@@ -44,16 +48,11 @@ const Logo = ({
     sx: {
       width: finalWidth,
       height: finalHeight,
-      transform: collapsed ? 'none' : 'translate(-3px, 0px)',
+      transform: collapsed ? 'none' : 'translate(0, 0)',
       transition: 'all 0.3s ease-in-out',
       objectFit: 'contain',
       maxWidth: '100%',
       display: 'block',
-      '&:hover': {
-        transform: 'scale(1.025)',
-        opacity: 0.85,
-        transition: 'opacity 0.25s ease-in-out'
-      },
       ...sx
     },
     ...other
@@ -69,12 +68,10 @@ const Logo = ({
         sx={{
           ...boxProps.sx,
           objectFit: 'contain',
-          filter: `drop-shadow(1px 1px 2px ${colors.shadow})`,
+          // No hover effects
           '&:hover': {
-            ...boxProps.sx['&:hover'],
-            filter: `drop-shadow(2px 2px 4px ${colors.shadow})`,
-            opacity: 0.7,
-            transition: 'opacity 0.25s ease-in-out'
+            transform: 'none',
+            opacity: 1
           }
         }}
       />
@@ -86,12 +83,9 @@ const Logo = ({
       {...boxProps}
       sx={{
         ...boxProps.sx,
-        filter: `drop-shadow(1px 1px 2px ${colors.shadow})`,
         '&:hover': {
-          ...boxProps.sx['&:hover'],
-          filter: `drop-shadow(2px 2px 4px ${colors.shadow})`,
-          opacity: 0.85,
-          transition: 'opacity 0.25s ease-in-out'
+          transform: 'none',
+          opacity: 1
         },
         '& path': {
           strokeDasharray: 7000,

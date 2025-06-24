@@ -22,20 +22,14 @@ const Home = () => {
           <MissionVisionSlider />
         </Grid>
 
-        {/* Leadership Insights - 6/12 width */}
+        {/* Leadership Insights - 8/12 width */}
         <Grid item xs={12} md={8}>
           <LeadershipCard />
         </Grid>
 
-        {/* Live Market Feed - 6/12 width */}
+        {/* Live Market Feed - 4/12 width */}
         <Grid item xs={12} md={4}>
           <MainCard
-            sx={{
-              height: '100%',
-              borderRadius: 2,
-              overflow: 'hidden',
-              boxShadow: theme.palette.mode === 'dark' ? '0 3px 14px rgba(0,0,0,0.3)' : '0 3px 14px rgba(58,53,65,0.1)'
-            }}
             title={
               <Stack direction="row" alignItems="center" spacing={1.5}>
                 <Avatar
@@ -72,33 +66,9 @@ const Home = () => {
         {/* Internal Updates - Full width */}
         <Grid item xs={12}>
           <MainCard
-            sx={{
-              borderRadius: 2,
-              overflow: 'hidden',
-              boxShadow: theme.palette.mode === 'dark' ? '0 3px 14px rgba(0,0,0,0.3)' : '0 3px 14px rgba(58,53,65,0.1)',
-              '&:before': {
-                content: '""',
-                position: 'absolute',
-                width: 300,
-                height: 300,
-                background: `radial-gradient(circle, ${alpha(theme.palette.info.main, 0.1)} 0%, rgba(255,255,255,0) 70%)`,
-                borderRadius: '50%',
-                bottom: -150,
-                right: -100,
-                zIndex: 0
-              }
-            }}
             title={
               <Stack direction="row" alignItems="center" spacing={1.5}>
-                <Avatar
-                  sx={{
-                    width: 38,
-                    height: 38,
-                    bgcolor: alpha(theme.palette.info.main, 0.2),
-                    color: theme.palette.info.main,
-                    boxShadow: `0 2px 10px ${alpha(theme.palette.info.main, 0.2)}`
-                  }}
-                >
+                <Avatar>
                   <Icon icon="solar:bell-bold-duotone" width={24} height={24} />
                 </Avatar>
                 <Typography variant="h5" sx={{ fontWeight: 600, letterSpacing: '0.02em' }}>
@@ -108,30 +78,12 @@ const Home = () => {
             }
             secondary={
               <Stack direction="row" spacing={1}>
-                <Chip
-                  label="New"
-                  size="small"
-                  color="error"
-                  variant="filled"
-                  sx={{
-                    fontSize: '0.75rem',
-                    height: 24,
-                    borderRadius: '12px',
-                    fontWeight: 500,
-                    boxShadow: `0 2px 6px ${alpha(theme.palette.error.main, 0.25)}`
-                  }}
-                />
+                <Chip label="New" size="small" color="error" variant="filled" />
                 <Chip
                   label="3 updates"
                   size="small"
                   color="info"
                   variant="outlined"
-                  sx={{
-                    fontSize: '0.75rem',
-                    height: 24,
-                    borderRadius: '12px',
-                    fontWeight: 500
-                  }}
                   icon={<Icon icon="solar:document-text-bold-duotone" width={14} />}
                 />
               </Stack>

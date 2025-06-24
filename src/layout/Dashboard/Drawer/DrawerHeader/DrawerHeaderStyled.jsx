@@ -11,9 +11,12 @@ const DrawerHeaderStyled = styled(Box, { shouldForwardProp: (prop) => prop !== '
   display: 'flex',
   alignItems: 'center',
   justifyContent: open ? 'flex-start' : 'center',
-  padding: theme.spacing(open ? 0.5 : 1),
+  padding: theme.spacing(open ? 0.25 : 0.5),
+  paddingLeft: open ? theme.spacing(1) : theme.spacing(0.25),
+  paddingRight: open ? theme.spacing(1) : theme.spacing(0.25),
   backgroundColor: theme.palette.background.paper,
   borderBottom: `1px solid ${theme.palette.divider}`,
+  overflow: 'hidden',
   transition: theme.transitions.create(['height', 'min-height', 'padding'], {
     easing: theme.transitions.easing.easeInOut,
     duration: theme.transitions.duration.shorter

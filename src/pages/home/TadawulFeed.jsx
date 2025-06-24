@@ -3,21 +3,7 @@ import { useEffect, useState } from 'react';
 
 // material-ui
 import { Icon } from '@iconify/react';
-import {
-  alpha,
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  Grid,
-  LinearProgress,
-  List,
-  ListItem,
-  Paper,
-  Stack,
-  Typography,
-  useTheme
-} from '@mui/material';
+import { alpha, Box, Grid, LinearProgress, List, ListItem, Paper, Stack, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 
 // chart
@@ -181,390 +167,476 @@ const TadawulFeed = ({ isLoading = false }) => {
     }
   };
 
-  const StatItem = ({ label, value, isSpecial = false }) => (
-    <Box>
-      <Typography
-        variant="caption"
-        color="textSecondary"
-        sx={{
-          fontSize: '0.75rem',
-          display: 'block',
-          mb: 0.5
-        }}
-      >
-        {label}
-      </Typography>
-      <Typography
-        variant="body2"
-        sx={{
-          fontWeight: 600,
-          color: isSpecial
-            ? marketData?.isPositive
-              ? theme.palette.success.main
-              : theme.palette.error.main
-            : 'inherit',
-          fontSize: '0.9rem'
-        }}
-      >
-        {value}
-      </Typography>
-    </Box>
-  );
-
   return (
     <Box component={motion.div} variants={containerVariants} initial="hidden" animate="visible" sx={{ height: '100%' }}>
       {isLoading || !marketData ? (
         <Box sx={{ width: '100%', mt: 2 }}>
-          <LinearProgress />
+          <LinearProgress color="secondary" />
         </Box>
       ) : (
-        <Grid container spacing={2}>
+        <Stack spacing={2.5} sx={{ height: '100%' }}>
           {/* Main Index Card */}
-          <Grid item xs={12} component={motion.div} variants={itemVariants}>
-            <Card
+          <Box component={motion.div} variants={itemVariants}>
+            <Paper
+              elevation={0}
               sx={{
+                p: 2.5,
                 borderRadius: 2,
-                boxShadow: 'none',
-                border: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
-                bgcolor: alpha(theme.palette.background.paper, 0.8),
-                overflow: 'hidden'
+                bgcolor: theme.palette.background.paper,
+                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                boxShadow: theme.customShadows?.z1
               }}
             >
-              <CardContent>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    <Stack spacing={1}>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Icon
-                          icon="solar:saudi-arabia-bold-duotone"
-                          style={{
-                            marginRight: '8px',
-                            fontSize: '22px',
-                            color: theme.palette.primary.main
-                          }}
-                        />
-                        <Typography variant="h5">{marketData.indexName}</Typography>
-                      </Box>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography
-                          variant="h3"
-                          sx={{
-                            fontWeight: 600,
-                            color: theme.palette.text.primary
-                          }}
-                        >
-                          {marketData.lastPrice.toLocaleString()}
-                        </Typography>
-                        <Stack direction="column">
-                          <Chip
-                            icon={
-                              <Icon
-                                icon={marketData.isPositive ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
-                                width={16}
-                                height={16}
-                              />
-                            }
-                            label={`${marketData.change.toLocaleString()} (${marketData.changePercent}%)`}
-                            size="small"
-                            color={marketData.isPositive ? 'success' : 'error'}
-                            sx={{ fontWeight: 500, height: 28 }}
-                          />
-                          <Typography
-                            variant="caption"
-                            sx={{
-                              mt: 0.5,
-                              display: 'flex',
-                              alignItems: 'center'
-                            }}
-                          >
-                            <Icon
-                              icon="solar:clock-circle-bold"
-                              style={{
-                                marginRight: '4px',
-                                fontSize: '14px'
-                              }}
-                            />
-                            Last updated: {marketData.lastUpdate}
-                          </Typography>
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
-                    <Box
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} md={7}>
+                  <Box sx={{ mb: { xs: 1, md: 0 } }}>
+                    <Typography
+                      variant="caption"
                       sx={{
-                        height: 120,
-                        mt: { xs: 1, md: 0 },
-                        position: 'relative',
-                        '&::after': {
-                          content: '""',
-                          position: 'absolute',
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          height: '30%',
-                          background: `linear-gradient(to top, ${alpha(theme.palette.background.paper, 0.3)}, transparent)`,
-                          zIndex: 1,
-                          pointerEvents: 'none'
-                        }
+                        display: 'flex',
+                        alignItems: 'center',
+                        color: theme.palette.text.secondary,
+                        mb: 0.5
                       }}
                     >
-                      <Chart options={chartOptions} series={chartSeries} type="area" height={120} />
-                    </Box>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
+                      <Icon icon="solar:clock-circle-bold" style={{ marginRight: '4px', fontSize: '14px' }} />
+                      Last updated: {marketData.lastUpdate}
+                    </Typography>
 
-          {/* Stats */}
-          <Grid item xs={12} md={5} component={motion.div} variants={itemVariants}>
-            <Card
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        mb: 1,
+                        color: theme.palette.text.primary
+                      }}
+                    >
+                      {marketData.indexName}
+                    </Typography>
+
+                    <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontWeight: 700,
+                          lineHeight: 1.2,
+                          color: theme.palette.text.primary
+                        }}
+                      >
+                        {marketData.lastPrice.toLocaleString()}
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          py: 0.5,
+                          px: 1.5,
+                          borderRadius: 1.5,
+                          bgcolor: alpha(
+                            marketData.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                            theme.palette.mode === 'dark' ? 0.2 : 0.1
+                          ),
+                          border: `1px solid ${alpha(
+                            marketData.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                            0.2
+                          )}`
+                        }}
+                      >
+                        <Icon
+                          icon={marketData.isPositive ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
+                          width={18}
+                          height={18}
+                          style={{
+                            marginRight: '6px',
+                            color: marketData.isPositive ? theme.palette.success.main : theme.palette.error.main
+                          }}
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 600,
+                            color: marketData.isPositive ? theme.palette.success.main : theme.palette.error.main
+                          }}
+                        >
+                          {marketData.change.toLocaleString()} ({marketData.changePercent}%)
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Grid>
+
+                <Grid item xs={12} md={5}>
+                  <Box sx={{ height: 100, position: 'relative' }}>
+                    <Chart options={chartOptions} series={chartSeries} type="area" height={100} />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Box>
+
+          {/* Market Statistics */}
+          {/* <Box component={motion.div} variants={itemVariants}>
+            <Paper
+              elevation={0}
               sx={{
                 height: '100%',
                 borderRadius: 2,
-                boxShadow: 'none',
-                border: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
-                bgcolor: alpha(theme.palette.background.paper, 0.8)
+                overflow: 'hidden',
+                bgcolor: theme.palette.background.paper,
+                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                boxShadow: theme.customShadows?.z1
               }}
             >
-              <CardContent>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Box
-                    sx={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      bgcolor: alpha(theme.palette.primary.main, 0.1)
+              <Box
+                sx={{
+                  p: 2,
+                  bgcolor: alpha(theme.palette.primary.main, 0.04),
+                  borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: theme.palette.primary.main
+                  }}
+                >
+                  <Icon
+                    icon="solar:chart-square-bold-duotone"
+                    style={{
+                      fontSize: '20px',
+                      marginRight: '8px',
+                      color: theme.palette.primary.main
                     }}
-                  >
-                    <Icon
-                      icon="solar:chart-square-bold-duotone"
-                      style={{
-                        fontSize: '20px',
-                        color: theme.palette.primary.main
-                      }}
-                    />
-                  </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Market Statistics
-                  </Typography>
-                </Stack>
+                  />
+                  Market Statistics
+                </Typography>
+              </Box>
 
-                <Grid container spacing={1.5}>
+              <Box sx={{ p: 2 }}>
+                <Grid container spacing={2}>
                   <Grid item xs={6}>
-                    <Paper
-                      elevation={0}
+                    <Box
                       sx={{
                         p: 1.5,
-                        borderRadius: 1.5,
-                        bgcolor: alpha(theme.palette.background.default, 0.6),
-                        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                        borderRadius: 2,
+                        bgcolor: alpha(theme.palette.primary.main, 0.04),
+                        border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`
                       }}
                     >
-                      <StatItem label="Open" value={marketData.open.toLocaleString()} />
-                    </Paper>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
+                      >
+                        Open
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                        {marketData.open.toLocaleString()}
+                      </Typography>
+                    </Box>
                   </Grid>
+
                   <Grid item xs={6}>
-                    <Paper
-                      elevation={0}
+                    <Box
                       sx={{
                         p: 1.5,
-                        borderRadius: 1.5,
-                        bgcolor: alpha(theme.palette.background.default, 0.6),
-                        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                        borderRadius: 2,
+                        bgcolor: alpha(theme.palette.primary.main, 0.04),
+                        border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`
                       }}
                     >
-                      <StatItem label="Previous Close" value={marketData.previousClose.toLocaleString()} />
-                    </Paper>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
+                      >
+                        Previous
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                        {marketData.previousClose.toLocaleString()}
+                      </Typography>
+                    </Box>
                   </Grid>
+
                   <Grid item xs={6}>
-                    <Paper
-                      elevation={0}
+                    <Box
                       sx={{
                         p: 1.5,
-                        borderRadius: 1.5,
-                        bgcolor: alpha(theme.palette.background.default, 0.6),
-                        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                        borderRadius: 2,
+                        bgcolor: alpha(theme.palette.success.main, 0.08),
+                        border: `1px solid ${alpha(theme.palette.success.main, 0.12)}`
                       }}
                     >
-                      <StatItem label="Today's High" value={marketData.high.toLocaleString()} isSpecial={true} />
-                    </Paper>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
+                      >
+                        High
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: '0.95rem',
+                          color: theme.palette.success.main
+                        }}
+                      >
+                        {marketData.high.toLocaleString()}
+                      </Typography>
+                    </Box>
                   </Grid>
+
                   <Grid item xs={6}>
-                    <Paper
-                      elevation={0}
+                    <Box
                       sx={{
                         p: 1.5,
-                        borderRadius: 1.5,
-                        bgcolor: alpha(theme.palette.background.default, 0.6),
-                        border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                        borderRadius: 2,
+                        bgcolor: alpha(theme.palette.error.main, 0.08),
+                        border: `1px solid ${alpha(theme.palette.error.main, 0.12)}`
                       }}
                     >
-                      <StatItem label="Today's Low" value={marketData.low.toLocaleString()} isSpecial={true} />
-                    </Paper>
+                      <Typography
+                        variant="caption"
+                        color="textSecondary"
+                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
+                      >
+                        Low
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                          fontSize: '0.95rem',
+                          color: theme.palette.error.main
+                        }}
+                      >
+                        {marketData.low.toLocaleString()}
+                      </Typography>
+                    </Box>
                   </Grid>
+
                   <Grid item xs={12}>
-                    <Paper
-                      elevation={0}
+                    <Box
                       sx={{
                         p: 1.5,
-                        borderRadius: 1.5,
-                        bgcolor: alpha(theme.palette.primary.main, 0.05),
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
+                        borderRadius: 2,
+                        bgcolor: alpha(theme.palette.secondary.main, 0.08),
+                        border: `1px solid ${alpha(theme.palette.secondary.main, 0.12)}`
                       }}
                     >
                       <Grid container spacing={1}>
                         <Grid item xs={6}>
-                          <StatItem label="Volume" value={marketData.volume} />
+                          <Typography
+                            variant="caption"
+                            color="textSecondary"
+                            sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
+                          >
+                            Volume
+                          </Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                            {marketData.volume}
+                          </Typography>
                         </Grid>
+
                         <Grid item xs={6}>
-                          <StatItem label="Turnover (SAR)" value={marketData.turnover} />
+                          <Typography
+                            variant="caption"
+                            color="textSecondary"
+                            sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
+                          >
+                            Turnover
+                          </Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                            4.62B SAR
+                          </Typography>
                         </Grid>
                       </Grid>
-                    </Paper>
+                    </Box>
                   </Grid>
                 </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
+              </Box>
+            </Paper>
+          </Box> */}
 
           {/* Top Movers */}
-          <Grid item xs={12} md={7} component={motion.div} variants={itemVariants}>
-            <Card
+          <Box component={motion.div} variants={itemVariants} sx={{ flexGrow: 1 }}>
+            <Paper
+              elevation={0}
               sx={{
                 height: '100%',
                 borderRadius: 2,
-                boxShadow: 'none',
-                border: `1px solid ${alpha(theme.palette.divider, 0.15)}`,
-                bgcolor: alpha(theme.palette.background.paper, 0.8)
+                overflow: 'hidden',
+                bgcolor: theme.palette.background.paper,
+                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+                boxShadow: theme.customShadows?.z1,
+                display: 'flex',
+                flexDirection: 'column'
               }}
             >
-              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-                  <Box
-                    sx={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      bgcolor: alpha(theme.palette.success.main, 0.1)
-                    }}
-                  >
-                    <Icon
-                      // icon="solar:stock-up-bold-duotone"
-                      // icon="cbi:top-radio"
-                      icon="streamline-freehand-color:analytics-graph-stock"
-                      style={{
-                        fontSize: '20px',
-                        color: theme.palette.success.main
-                      }}
-                    />
-                  </Box>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                    Top Movers
-                  </Typography>
-                </Stack>
-
-                <List
+              <Box
+                sx={{
+                  p: 2,
+                  bgcolor: alpha(theme.palette.secondary.main, 0.04),
+                  borderBottom: `1px solid ${alpha(theme.palette.secondary.main, 0.1)}`
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
                   sx={{
-                    p: 0,
-                    flex: 1,
-                    overflow: 'hidden',
-                    '& .MuiListItem-root': {
-                      px: 0
-                    }
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: theme.palette.secondary.main
                   }}
                 >
-                  {marketData.topMovers.map((stock, index) => (
-                    <ListItem
-                      key={stock.symbol}
-                      sx={{
-                        py: 1.5,
-                        borderBottom:
-                          index !== marketData.topMovers.length - 1
-                            ? `1px solid ${alpha(theme.palette.divider, 0.1)}`
-                            : 'none'
-                      }}
-                    >
-                      <Box sx={{ width: '100%' }}>
-                        <Grid container alignItems="center">
-                          <Grid item xs={7} sm={8}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Box
-                                sx={{
-                                  width: 32,
-                                  height: 32,
-                                  borderRadius: '50%',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  bgcolor: alpha(
-                                    stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
-                                    0.1
-                                  ),
-                                  mr: 1.5
-                                }}
-                              >
-                                <Typography
-                                  variant="caption"
-                                  sx={{
-                                    fontWeight: 600,
-                                    color: stock.isPositive ? theme.palette.success.main : theme.palette.error.main
-                                  }}
-                                >
-                                  {stock.symbol}
-                                </Typography>
-                              </Box>
-                              <Box>
-                                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                                  {stock.name}
-                                </Typography>
-                                <Typography variant="caption" color="textSecondary">
-                                  Saudi Stock Exchange
-                                </Typography>
-                              </Box>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={5} sm={4}>
-                            <Box sx={{ textAlign: 'right' }}>
-                              <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                                {stock.lastPrice.toFixed(2)}
-                              </Typography>
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  color: stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  justifyContent: 'flex-end'
-                                }}
-                              >
-                                <Icon
-                                  icon={stock.isPositive ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
-                                  width={14}
-                                  height={14}
-                                  style={{ marginRight: '4px' }}
-                                />
-                                {stock.isPositive ? '+' : ''}
-                                {stock.change.toFixed(2)} ({stock.changePercent}%)
-                              </Typography>
-                            </Box>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                    </ListItem>
-                  ))}
-                </List>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
+                  <Icon
+                    icon="solar:stock-up-bold-duotone"
+                    style={{
+                      fontSize: '20px',
+                      marginRight: '8px',
+                      color: theme.palette.secondary.main
+                    }}
+                  />
+                  Top Market Movers
+                </Typography>
+              </Box>
+
+              <List
+                sx={{
+                  p: 0,
+                  flexGrow: 1,
+                  overflow: 'auto',
+                  '& .MuiListItem-root': {
+                    px: 2,
+                    py: 1.5
+                  }
+                }}
+              >
+                {marketData.topMovers.map((stock, index) => (
+                  <ListItem
+                    key={stock.symbol}
+                    sx={{
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        bgcolor: alpha(theme.palette.primary.main, 0.04)
+                      },
+                      borderBottom:
+                        index !== marketData.topMovers.length - 1
+                          ? `1px solid ${alpha(theme.palette.divider, 0.1)}`
+                          : 'none'
+                    }}
+                  >
+                    <Grid container alignItems="center">
+                      <Grid item xs={2} sm={1.5}>
+                        <Box
+                          sx={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            bgcolor: stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                            boxShadow: `0 4px 8px ${alpha(
+                              stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                              0.25
+                            )}`
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              fontWeight: 700,
+                              color: theme.palette.common.white
+                            }}
+                          >
+                            {stock.symbol}
+                          </Typography>
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={6} sm={6.5}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 600,
+                            fontSize: '0.9rem',
+                            color: theme.palette.text.primary
+                          }}
+                        >
+                          {stock.name}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            fontSize: '0.75rem',
+                            color: theme.palette.text.secondary
+                          }}
+                        >
+                          Saudi Stock Exchange
+                        </Typography>
+                      </Grid>
+
+                      <Grid item xs={4} sx={{ textAlign: 'right' }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: '0.95rem',
+                            color: theme.palette.text.primary
+                          }}
+                        >
+                          {stock.lastPrice.toFixed(2)}
+                        </Typography>
+
+                        <Box
+                          sx={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            py: 0.25,
+                            px: 0.75,
+                            mt: 0.5,
+                            borderRadius: 1,
+                            bgcolor: alpha(
+                              stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                              0.1
+                            )
+                          }}
+                        >
+                          <Icon
+                            icon={stock.isPositive ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
+                            width={12}
+                            height={12}
+                            style={{
+                              marginRight: '4px',
+                              color: stock.isPositive ? theme.palette.success.main : theme.palette.error.main
+                            }}
+                          />
+                          <Typography
+                            variant="caption"
+                            sx={{
+                              fontWeight: 600,
+                              fontSize: '0.75rem',
+                              color: stock.isPositive ? theme.palette.success.main : theme.palette.error.main
+                            }}
+                          >
+                            {stock.isPositive ? '+' : ''}
+                            {stock.change.toFixed(2)} ({stock.changePercent}%)
+                          </Typography>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+                ))}
+              </List>
+            </Paper>
+          </Box>
+        </Stack>
       )}
     </Box>
   );
