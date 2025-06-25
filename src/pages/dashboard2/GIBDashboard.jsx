@@ -342,7 +342,7 @@ const GIBDashboard = () => {
                           color: theme.palette.primary.main
                         }}
                       >
-                        <Icon icon="solar:chart-line-bold-duotone" width={16} />
+                        <Icon icon="fluent:arrow-trending-lines-24-filled" width={16} />
                       </Avatar>
                       Collection Trend
                     </Typography>
@@ -413,7 +413,7 @@ const GIBDashboard = () => {
                           variant="body2"
                           sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}
                         >
-                          Yearly Turnover
+                          Reconcile Accounts
                         </Typography>
                         <Box
                           sx={{
@@ -429,7 +429,7 @@ const GIBDashboard = () => {
                         </Box>
                       </Box>
                       <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: theme.palette.common.white }}>
-                        $29M
+                        384
                       </Typography>
                       <Typography
                         variant="caption"
@@ -455,7 +455,7 @@ const GIBDashboard = () => {
                           variant="body2"
                           sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}
                         >
-                          Last Month
+                          UnReconcile Accounts
                         </Typography>
                         <Box
                           sx={{
@@ -471,13 +471,13 @@ const GIBDashboard = () => {
                         </Box>
                       </Box>
                       <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: theme.palette.common.white }}>
-                        $1.4M
+                        27
                       </Typography>
                       <Typography
                         variant="caption"
                         sx={{ color: theme.palette.common.white, opacity: 0.9, display: 'block', mt: 0.5 }}
                       >
-                        +3.2% from October
+                        -3.2% from yesterday
                       </Typography>
                     </Card>
                   </Grid>
@@ -595,7 +595,7 @@ const GIBDashboard = () => {
           <Box sx={{ mb: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <MainCard>
+                <Card sx={{ p: 2 }}>
                   <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
                     <Typography
                       variant="h6"
@@ -616,9 +616,9 @@ const GIBDashboard = () => {
                           color: theme.palette.primary.main
                         }}
                       >
-                        <Icon icon="solar:user-check-bold-duotone" width={16} />
+                        <Icon icon="solar:calendar-bold-duotone" width={16} />
                       </Avatar>
-                      Top Sales Agents
+                      Corporate Action for Today
                     </Typography>
                     <Chip
                       label="This Month"
@@ -663,13 +663,13 @@ const GIBDashboard = () => {
                       }}
                     >
                       <Icon
-                        icon="solar:users-group-rounded-bold-duotone"
+                        icon="solar:clock-circle-bold-duotone"
                         color={theme.palette.primary.main}
                         width={18}
                         style={{ marginRight: '6px' }}
                       />
                       <Typography variant="body2" fontWeight={500} color={theme.palette.primary.main}>
-                        Team Performance
+                        Today's Events
                       </Typography>
                     </Box>
                   </Box>
@@ -679,17 +679,31 @@ const GIBDashboard = () => {
                     sx={{
                       p: 2,
                       borderRadius: 1,
-                      bgcolor: theme.palette.grey[100],
+                      bgcolor:
+                        theme.palette.mode === 'dark'
+                          ? alpha(theme.palette.background.paper, 0.2)
+                          : theme.palette.grey[100],
                       border: `1px solid ${theme.palette.divider}`
                     }}
                   >
                     {[
-                      { name: 'Total Sales', value: '$285,400', change: '+12.5%', color: theme.palette.primary.main },
                       {
-                        name: 'Average per Agent',
-                        value: '$47,567',
-                        change: '+8.2%',
-                        color: theme.palette.secondary.main
+                        name: 'Dividend Payments',
+                        value: '3',
+                        change: 'Due today',
+                        color: theme.palette.success.main
+                      },
+                      {
+                        name: 'Rights Issues',
+                        value: '1',
+                        change: 'Closing today',
+                        color: theme.palette.warning.main
+                      },
+                      {
+                        name: 'Stock Splits',
+                        value: '2',
+                        change: 'Pending',
+                        color: theme.palette.info.main
                       }
                     ].map((item, index) => (
                       <Box
@@ -711,7 +725,6 @@ const GIBDashboard = () => {
                           <Chip
                             size="small"
                             label={item.change}
-                            icon={<Icon icon="solar:arrow-up-bold" width={12} />}
                             sx={{
                               height: 20,
                               fontSize: '0.7rem',
@@ -738,9 +751,9 @@ const GIBDashboard = () => {
                     }}
                     endIcon={<Icon icon="solar:arrow-right-bold" />}
                   >
-                    View All Performance Metrics
+                    View All Corporate Actions
                   </Button>
-                </MainCard>
+                </Card>
               </Grid>
 
               <Grid item xs={12} md={6}>
@@ -848,7 +861,10 @@ const GIBDashboard = () => {
                           justifyContent: 'space-between',
                           p: 1.5,
                           borderRadius: 1,
-                          bgcolor: theme.palette.grey[100],
+                          bgcolor:
+                            theme.palette.mode === 'dark'
+                              ? alpha(theme.palette.background.paper, 0.2)
+                              : theme.palette.grey[100],
                           border: `1px solid ${theme.palette.divider}`
                         }}
                       >
@@ -894,7 +910,7 @@ const GIBDashboard = () => {
                     p: 2
                   }}
                 >
-                  <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
                     <Typography
                       variant="h6"
                       sx={{
@@ -914,120 +930,70 @@ const GIBDashboard = () => {
                           color: theme.palette.primary.main
                         }}
                       >
-                        <Icon icon="solar:chart-bold-duotone" width={16} />
+                        <Icon icon="solar:documents-minimalistic-bold-duotone" width={16} />
                       </Avatar>
-                      Data Analysis
+                      Ad Hoc Reports
                     </Typography>
-                    <Box
+                    <Chip
+                      label="This Week"
+                      size="small"
                       sx={{
-                        display: 'flex',
-                        alignItems: 'center',
                         bgcolor: theme.palette.primary.lighter,
                         color: theme.palette.primary.main,
-                        py: 0.5,
-                        px: 1.5,
-                        borderRadius: 1
+                        fontWeight: 500
                       }}
-                    >
-                      <Icon icon="solar:arrow-up-bold" style={{ marginRight: '4px', fontSize: '14px' }} />
-                      <Typography variant="caption" fontWeight={600}>
-                        +12% Growth
-                      </Typography>
-                    </Box>
+                    />
                   </Stack>
 
-                  <Box sx={{ height: 180, position: 'relative' }}>
-                    <ReactApexChart
-                      options={dataAnalysisOptions}
-                      series={[
-                        {
-                          name: 'Data',
-                          data: [30, 40, 25, 50, 49]
-                        }
-                      ]}
-                      type="area"
-                      height={180}
-                    />
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: 60,
-                        height: 60,
-                        bgcolor: theme.palette.secondary.main,
-                        color: theme.palette.primary.contrastText,
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 700,
-                        fontSize: '18px'
-                      }}
-                    >
-                      38%
-                    </Box>
+                  <Box sx={{ mb: 2 }}>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+                        24
+                      </Typography>
+                      <Stack spacing={0.5}>
+                        <Typography variant="body2" color="textSecondary">
+                          Ad Hoc Reports Generated
+                        </Typography>
+                        <Chip
+                          size="small"
+                          label="+8 from last week"
+                          icon={<Icon icon="solar:arrow-up-bold" width={14} />}
+                          sx={{
+                            bgcolor: theme.palette.success.lighter,
+                            color: theme.palette.success.main,
+                            fontWeight: 600,
+                            height: 20
+                          }}
+                        />
+                      </Stack>
+                    </Stack>
                   </Box>
 
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      p: 1.5,
-                      borderRadius: 1,
-                      bgcolor: theme.palette.grey[100],
-                      border: `1px solid ${theme.palette.divider}`,
-                      mt: 2
-                    }}
-                  >
-                    {[
+                  <ReactApexChart
+                    options={dataAnalysisOptions}
+                    series={[
                       {
-                        label: 'Total Users',
-                        value: '2.4K',
-                        icon: 'solar:users-group-rounded-bold-duotone',
-                        color: theme.palette.primary.main
-                      },
-                      {
-                        label: 'Avg. Time',
-                        value: '3:45',
-                        icon: 'solar:clock-circle-bold-duotone',
-                        color: theme.palette.secondary.main
-                      },
-                      {
-                        label: 'Bounce Rate',
-                        value: '24%',
-                        icon: 'solar:sort-by-time-bold-duotone',
-                        color: theme.palette.primary.main
+                        name: 'Reports',
+                        data: [6, 9, 5, 3, 1]
                       }
-                    ].map((item, index) => (
-                      <Box
+                    ]}
+                    type="area"
+                    height={180}
+                  />
+
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1, mt: 1 }}>
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day, index) => (
+                      <Typography
                         key={index}
+                        variant="caption"
+                        color="textSecondary"
                         sx={{
-                          textAlign: 'center',
-                          px: 1
+                          fontSize: '10px',
+                          fontWeight: 500
                         }}
                       >
-                        <Avatar
-                          variant="rounded"
-                          sx={{
-                            width: 20,
-                            height: 20,
-                            mx: 'auto',
-                            mb: 0.5,
-                            bgcolor: alpha(item.color, 0.1),
-                            color: item.color
-                          }}
-                        >
-                          <Icon icon={item.icon} width={12} />
-                        </Avatar>
-                        <Typography variant="caption" display="block" color="textSecondary" fontWeight={500}>
-                          {item.label}
-                        </Typography>
-                        <Typography variant="body2" fontWeight={700}>
-                          {item.value}
-                        </Typography>
-                      </Box>
+                        {day}
+                      </Typography>
                     ))}
                   </Box>
                 </Card>
@@ -1164,6 +1130,141 @@ const GIBDashboard = () => {
               </Grid>
             </Grid>
           </Box>
+
+          {/* Ad Hoc Reports Card */}
+          {/* <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Card sx={{ p: 2 }}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        fontWeight: 600,
+                        color: theme.palette.text.primary,
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Avatar
+                        variant="rounded"
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          mr: 1,
+                          bgcolor: theme.palette.primary.lighter,
+                          color: theme.palette.primary.main
+                        }}
+                      >
+                        <Icon icon="solar:file-broken" width={16} />
+                      </Avatar>
+                      Ad Hoc Report Management
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<Icon icon="solar:add-circle-bold" width={18} />}
+                      size="small"
+                    >
+                      New Ad Hoc Report
+                    </Button>
+                  </Stack>
+
+                  <Grid container spacing={2}>
+                    {[
+                      {
+                        title: 'Reconciliation Report',
+                        type: 'Custom',
+                        date: 'Today, 10:30 AM',
+                        status: 'Completed',
+                        statusColor: theme.palette.success.main
+                      },
+                      {
+                        title: 'Portfolio Valuation',
+                        type: 'Scheduled',
+                        date: 'Today, 09:15 AM',
+                        status: 'In Progress',
+                        statusColor: theme.palette.warning.main
+                      },
+                      {
+                        title: 'Corporate Actions Summary',
+                        type: 'Custom',
+                        date: 'Yesterday',
+                        status: 'Completed',
+                        statusColor: theme.palette.success.main
+                      },
+                      {
+                        title: 'Trade Analysis',
+                        type: 'Scheduled',
+                        date: '2 days ago',
+                        status: 'Completed',
+                        statusColor: theme.palette.success.main
+                      }
+                    ].map((report, index) => (
+                      <Grid item xs={12} md={6} key={index}>
+                        <Box
+                          sx={{
+                            p: 2,
+                            borderRadius: 1,
+                            bgcolor: theme.palette.background.paper,
+                            boxShadow: theme.customShadows.z1,
+                            border: `1px solid ${theme.palette.divider}`
+                          }}
+                        >
+                          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                            <Typography variant="subtitle1" fontWeight={600}>
+                              {report.title}
+                            </Typography>
+                            <Chip
+                              size="small"
+                              label={report.status}
+                              sx={{
+                                bgcolor: alpha(report.statusColor, 0.1),
+                                color: report.statusColor,
+                                fontWeight: 600
+                              }}
+                            />
+                          </Stack>
+
+                          <Stack direction="row" spacing={2} sx={{ mb: 1 }}>
+                            <Chip
+                              size="small"
+                              label={report.type}
+                              sx={{
+                                bgcolor: theme.palette.background.default,
+                                borderRadius: 0.75,
+                                height: 22
+                              }}
+                            />
+                            <Typography
+                              variant="caption"
+                              color="textSecondary"
+                              sx={{ display: 'flex', alignItems: 'center' }}
+                            >
+                              <Icon icon="solar:calendar-mark-bold-duotone" width={14} style={{ marginRight: 4 }} />
+                              {report.date}
+                            </Typography>
+                          </Stack>
+
+                          <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ mt: 1 }}>
+                            <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                              <Icon icon="solar:eye-bold" width={16} />
+                            </IconButton>
+                            <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                              <Icon icon="solar:download-bold" width={16} />
+                            </IconButton>
+                            <IconButton size="small" sx={{ color: theme.palette.primary.main }}>
+                              <Icon icon="solar:refresh-bold" width={16} />
+                            </IconButton>
+                          </Stack>
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Card>
+              </Grid>
+            </Grid>
+          </Box> */}
         </Grid>
 
         {/* Right Sidebar */}
@@ -1189,7 +1290,7 @@ const GIBDashboard = () => {
                   color: theme.palette.primary.contrastText
                 }}
               >
-                GIB SmartOPS
+                Notifications
               </Typography>
               <Typography
                 variant="body2"
@@ -1198,7 +1299,7 @@ const GIBDashboard = () => {
                   mt: 0.5
                 }}
               >
-                Gulf International Bank
+                System Updates & Alerts
               </Typography>
             </Box>
 
@@ -1218,27 +1319,27 @@ const GIBDashboard = () => {
                     mb: 2
                   }}
                 >
-                  Recent Activity
+                  Task Notification Status
                 </Typography>
                 <Stack spacing={2}>
                   {[
                     {
-                      text: 'Reconciliation Completed',
-                      time: '10:23 AM',
+                      text: 'Pending Reconciliation Tasks',
+                      time: '3 tasks pending',
+                      icon: 'solar:hourglass-bold-duotone',
+                      color: theme.palette.warning.main
+                    },
+                    {
+                      text: 'Portfolio Review Required',
+                      time: 'High priority',
+                      icon: 'solar:folder-check-bold-duotone',
+                      color: theme.palette.error.main
+                    },
+                    {
+                      text: 'Completed Reconciliations',
+                      time: '5 tasks today',
                       icon: 'solar:check-circle-bold-duotone',
-                      color: theme.palette.primary.main
-                    },
-                    {
-                      text: 'New Portfolio Added',
-                      time: 'Yesterday',
-                      icon: 'solar:folder-add-bold-duotone',
-                      color: theme.palette.secondary.main
-                    },
-                    {
-                      text: 'Report Generated',
-                      time: '2 days ago',
-                      icon: 'solar:file-bold-duotone',
-                      color: theme.palette.primary.light
+                      color: theme.palette.success.main
                     }
                   ].map((activity, index) => (
                     <Box
@@ -1377,6 +1478,217 @@ const GIBDashboard = () => {
                     </Box>
                   ))}
                 </Stack>
+              </Box>
+            </Card>
+            {/* Ad Hoc Status Section */}
+            <Card
+              sx={{
+                bgcolor: alpha(theme.palette.background.paper, 0.1),
+                borderRadius: 2,
+                border: `1px solid ${alpha(theme.palette.background.paper, 0.2)}`,
+                mt: 3
+              }}
+            >
+              <Box sx={{ p: 2 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: theme.palette.primary.contrastText,
+                    mb: 2,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Icon
+                    icon="solar:chart-bold-duotone"
+                    width={20}
+                    style={{ marginRight: '8px', color: alpha(theme.palette.primary.contrastText, 0.9) }}
+                  />
+                  Ad Hoc Status
+                </Typography>
+
+                <Stack spacing={2}>
+                  {[
+                    {
+                      label: 'Completed',
+                      value: '18',
+                      icon: 'solar:check-circle-bold-duotone',
+                      color: theme.palette.success.main
+                    },
+                    {
+                      label: 'In Progress',
+                      value: '5',
+                      icon: 'solar:clock-circle-bold-duotone',
+                      color: theme.palette.warning.main
+                    },
+                    {
+                      label: 'Pending',
+                      value: '3',
+                      icon: 'solar:hourglass-bold-duotone',
+                      color: theme.palette.info.main
+                    }
+                  ].map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        p: 1.5,
+                        borderRadius: 1,
+                        bgcolor: alpha(theme.palette.background.paper, 0.08),
+                        border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`
+                      }}
+                    >
+                      <Avatar
+                        sx={{
+                          width: 32,
+                          height: 32,
+                          bgcolor: alpha(item.color, 0.2),
+                          color: item.color,
+                          borderRadius: 1,
+                          mr: 1.5
+                        }}
+                      >
+                        <Icon icon={item.icon} width={18} />
+                      </Avatar>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 500,
+                            color: alpha(theme.palette.primary.contrastText, 0.85)
+                          }}
+                        >
+                          {item.label}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          fontWeight: 700,
+                          color: theme.palette.primary.contrastText
+                        }}
+                      >
+                        {item.value}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </Box>
+            </Card>
+            {/* Ad Hoc Activities Section */}
+            <Card
+              sx={{
+                bgcolor: alpha(theme.palette.background.paper, 0.1),
+                borderRadius: 2,
+                border: `1px solid ${alpha(theme.palette.background.paper, 0.2)}`,
+                mt: 3
+              }}
+            >
+              <Box sx={{ p: 2 }}>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: theme.palette.primary.contrastText,
+                    mb: 2,
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  <Icon
+                    icon="solar:activity-bold-duotone"
+                    width={20}
+                    style={{ marginRight: '8px', color: alpha(theme.palette.primary.contrastText, 0.9) }}
+                  />
+                  Ad Hoc Activities
+                </Typography>
+
+                <Stack spacing={2}>
+                  {[
+                    {
+                      text: 'Custom Report Requested',
+                      time: '2 hours ago',
+                      icon: 'tabler:report-analytics',
+                      color: theme.palette.info.main
+                    },
+                    {
+                      text: 'Ad Hoc Reconciliation',
+                      time: 'Just now',
+                      icon: 'solar:refresh-bold-duotone',
+                      color: theme.palette.warning.main
+                    },
+                    {
+                      text: 'Data Export Completed',
+                      time: '1 day ago',
+                      icon: 'solar:upload-square-bold-duotone',
+                      color: theme.palette.success.main
+                    }
+                  ].map((activity, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        p: 1.5,
+                        borderRadius: 1,
+                        bgcolor: alpha(theme.palette.background.paper, 0.08),
+                        border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`
+                      }}
+                    >
+                      <Avatar
+                        sx={{
+                          width: 32,
+                          height: 32,
+                          bgcolor: alpha(activity.color, 0.2),
+                          color: activity.color,
+                          borderRadius: 1,
+                          mr: 1.5
+                        }}
+                      >
+                        <Icon icon={activity.icon} width={18} />
+                      </Avatar>
+                      <Box sx={{ flex: 1 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 600,
+                            color: theme.palette.primary.contrastText
+                          }}
+                        >
+                          {activity.text}
+                        </Typography>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: alpha(theme.palette.primary.contrastText, 0.85),
+                            display: 'flex',
+                            alignItems: 'center',
+                            mt: 0.5
+                          }}
+                        >
+                          <Icon icon="solar:clock-circle-linear" width={12} style={{ marginRight: 4 }} />
+                          {activity.time}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ))}
+                </Stack>
+
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    color: theme.palette.primary.main,
+                    bgcolor: theme.palette.primary.contrastText,
+                    borderRadius: 1,
+                    textTransform: 'none',
+                    fontWeight: 600
+                  }}
+                  endIcon={<Icon icon="solar:arrow-right-bold" style={{ color: theme.palette.primary.main }} />}
+                >
+                  View All Ad Hoc Activities
+                </Button>
               </Box>
             </Card>
           </Stack>

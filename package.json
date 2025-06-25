@@ -49,11 +49,11 @@
     "release:uat": "CI=true npx semantic-release --branches uat",
     "release:prod": "CI=true npx semantic-release --branches main",
     "backup:build": "powershell -Command \"$date = Get-Date -Format 'yyyyMMdd_HHmmss'; if (Test-Path 'build') { Copy-Item -Path 'build' -Destination ('build_backup_' + $date) -Recurse -Force; Write-Host ('Backup created successfully as build_backup_' + $date) } else { Write-Host 'No build folder to backup' }\"",
-    "build:with-backup": "npm run backup:build && npm run build",
-    "build:dev:with-backup": "npm run backup:build && npm run build:dev",
-    "build:qa:with-backup": "npm run backup:build && npm run build:qa",
-    "build:uat:with-backup": "npm run backup:build && npm run build:uat",
-    "build:prod:with-backup": "npm run backup:build && npm run build:prod"
+    "build:backup": "npm run backup:build && npm run build",
+    "build:dev:backup": "npm run backup:build && npm run build:dev",
+    "build:qa:backup": "npm run backup:build && npm run build:qa",
+    "build:uat:backup": "npm run backup:build && npm run build:uat",
+    "build:prod:backup": "npm run backup:build && npm run build:prod"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

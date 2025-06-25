@@ -25,7 +25,6 @@ import {
 import PropTypes from 'prop-types';
 
 // project imports
-import MainCard from 'components/MainCard';
 import mockData from './dashbord-mockData.json';
 
 const CorporateActionActivity = ({ isLoading }) => {
@@ -33,10 +32,7 @@ const CorporateActionActivity = ({ isLoading }) => {
 
   // Theme-based colors instead of hardcoded values
   const primaryColor = theme.palette.primary.main;
-  const successColor = theme.palette.success.main;
-  const warningColor = theme.palette.warning.main;
-  const errorColor = theme.palette.error.main;
-  const infoColor = theme.palette.info.main;
+  const secondaryColor = theme.palette.secondary.main;
 
   // Use mock data from the JSON file, or fallback to hardcoded
   const activities = mockData?.corporateActions || [
@@ -84,7 +80,7 @@ const CorporateActionActivity = ({ isLoading }) => {
       label: 'Dividends',
       value: '12',
       icon: 'solar:money-bag-bold-duotone',
-      color: successColor,
+      color: secondaryColor,
       trend: '+3',
       trendUp: true
     },
@@ -92,7 +88,7 @@ const CorporateActionActivity = ({ isLoading }) => {
       label: 'Rights Issues',
       value: '3',
       icon: 'solar:widget-add-bold-duotone',
-      color: infoColor,
+      color: primaryColor,
       trend: '0',
       trendUp: null
     },
@@ -100,7 +96,7 @@ const CorporateActionActivity = ({ isLoading }) => {
       label: 'Other Actions',
       value: '8',
       icon: 'solar:document-text-bold-duotone',
-      color: warningColor,
+      color: secondaryColor,
       trend: '+2',
       trendUp: true
     }
@@ -110,27 +106,27 @@ const CorporateActionActivity = ({ isLoading }) => {
     switch (status) {
       case 'new':
         return {
-          main: infoColor,
-          lighter: alpha(infoColor, 0.1),
-          border: alpha(infoColor, 0.2)
+          main: primaryColor,
+          lighter: alpha(primaryColor, 0.1),
+          border: alpha(primaryColor, 0.2)
         };
       case 'processed':
         return {
-          main: successColor,
-          lighter: alpha(successColor, 0.1),
-          border: alpha(successColor, 0.2)
+          main: secondaryColor,
+          lighter: alpha(secondaryColor, 0.1),
+          border: alpha(secondaryColor, 0.2)
         };
       case 'pending':
         return {
-          main: warningColor,
-          lighter: alpha(warningColor, 0.1),
-          border: alpha(warningColor, 0.2)
+          main: theme.palette.warning.main,
+          lighter: alpha(theme.palette.warning.main, 0.1),
+          border: alpha(theme.palette.warning.main, 0.2)
         };
       case 'rejected':
         return {
-          main: errorColor,
-          lighter: alpha(errorColor, 0.1),
-          border: alpha(errorColor, 0.2)
+          main: theme.palette.error.main,
+          lighter: alpha(theme.palette.error.main, 0.1),
+          border: alpha(theme.palette.error.main, 0.2)
         };
       default:
         return {
@@ -159,21 +155,22 @@ const CorporateActionActivity = ({ isLoading }) => {
 
   if (isLoading) {
     return (
-      <MainCard
-        title={
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Icon icon="solar:document-bold-duotone" width={24} style={{ color: primaryColor }} />
-            <Typography variant="h5">Corporate Actions</Typography>
-          </Stack>
-        }
+      <Card
         sx={{
           height: '100%',
-          boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 12px rgba(0,0,0,0.05)',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
           '& .MuiCardContent-root': { p: 0 },
           borderRadius: 3
         }}
       >
         <CardContent>
+          <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Skeleton variant="circular" width={32} height={32} />
+              <Skeleton variant="text" width={180} height={28} />
+            </Stack>
+            <Skeleton variant="circular" width={32} height={32} />
+          </Box>
           <Box sx={{ p: 2 }}>
             <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: 2 }} />
           </Box>
@@ -205,47 +202,15 @@ const CorporateActionActivity = ({ isLoading }) => {
             ))}
           </List>
         </CardContent>
-      </MainCard>
+      </Card>
     );
   }
 
   return (
-    <MainCard
-      title={
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Avatar
-            variant="rounded"
-            sx={{
-              width: 32,
-              height: 32,
-              background: `linear-gradient(135deg, ${alpha(warningColor, 0.16)} 0%, ${alpha(warningColor, 0.24)} 100%)`,
-              color: warningColor
-            }}
-          >
-            <Icon icon="solar:document-bold-duotone" width={20} />
-          </Avatar>
-          <Typography variant="h5">Corporate Actions</Typography>
-        </Stack>
-      }
-      secondary={
-        <Tooltip title="Refresh corporate actions">
-          <IconButton
-            color="primary"
-            size="small"
-            sx={{
-              bgcolor: alpha(warningColor, 0.1),
-              '&:hover': { bgcolor: alpha(warningColor, 0.16) },
-              border: `1px solid ${alpha(warningColor, 0.2)}`,
-              backdropFilter: 'blur(4px)'
-            }}
-          >
-            <Icon icon="solar:refresh-bold" width={18} height={18} style={{ color: warningColor }} />
-          </IconButton>
-        </Tooltip>
-      }
+    <Card
       sx={{
         height: '100%',
-        boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 16px rgba(0,0,0,0.08)',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
         borderRadius: 3,
         border: '1px solid',
@@ -263,12 +228,44 @@ const CorporateActionActivity = ({ isLoading }) => {
           width: 150,
           height: 150,
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${alpha(warningColor, 0.1)} 0%, rgba(0,0,0,0) 70%)`,
+          background: `radial-gradient(circle, ${alpha(primaryColor, 0.1)} 0%, rgba(0,0,0,0) 70%)`,
           zIndex: 0
         }}
       />
 
       <CardContent>
+        <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              variant="rounded"
+              sx={{
+                width: 32,
+                height: 32,
+                background: `linear-gradient(135deg, ${alpha(primaryColor, 0.16)} 0%, ${alpha(primaryColor, 0.24)} 100%)`,
+                color: primaryColor
+              }}
+            >
+              <Icon icon="solar:document-bold-duotone" width={20} />
+            </Avatar>
+            <Typography variant="h5">Corporate Actions</Typography>
+          </Stack>
+
+          <Tooltip title="Refresh corporate actions">
+            <IconButton
+              color="primary"
+              size="small"
+              sx={{
+                bgcolor: alpha(primaryColor, 0.1),
+                '&:hover': { bgcolor: alpha(primaryColor, 0.16) },
+                border: `1px solid ${alpha(primaryColor, 0.2)}`,
+                backdropFilter: 'blur(4px)'
+              }}
+            >
+              <Icon icon="solar:refresh-bold" width={18} height={18} style={{ color: primaryColor }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+
         {/* Activity Overview Section */}
         <Box sx={{ p: 2 }}>
           <Grid container spacing={2}>
@@ -315,9 +312,9 @@ const CorporateActionActivity = ({ isLoading }) => {
                               fontWeight: 600,
                               bgcolor:
                                 metric.trendUp === true
-                                  ? alpha(successColor, 0.12)
+                                  ? alpha(secondaryColor, 0.12)
                                   : alpha(theme.palette.text.secondary, 0.12),
-                              color: metric.trendUp === true ? successColor : theme.palette.text.secondary,
+                              color: metric.trendUp === true ? secondaryColor : theme.palette.text.secondary,
                               borderRadius: 1
                             }}
                             icon={
@@ -328,7 +325,7 @@ const CorporateActionActivity = ({ isLoading }) => {
                                   style={{
                                     marginLeft: '2px',
                                     marginRight: '-4px',
-                                    color: metric.trendUp === true ? successColor : theme.palette.text.secondary
+                                    color: metric.trendUp === true ? secondaryColor : theme.palette.text.secondary
                                   }}
                                 />
                               )
@@ -459,13 +456,13 @@ const CorporateActionActivity = ({ isLoading }) => {
             sx={{
               borderRadius: 1.5,
               fontWeight: 600,
-              boxShadow: `inset 0 0 0 1px ${alpha(warningColor, 0.3)}`,
-              color: warningColor,
-              borderColor: alpha(warningColor, 0.3),
+              boxShadow: `inset 0 0 0 1px ${alpha(primaryColor, 0.3)}`,
+              color: primaryColor,
+              borderColor: alpha(primaryColor, 0.3),
               '&:hover': {
-                boxShadow: `inset 0 0 0 1px ${warningColor}`,
-                bgcolor: alpha(warningColor, 0.04),
-                borderColor: warningColor
+                boxShadow: `inset 0 0 0 1px ${primaryColor}`,
+                bgcolor: alpha(primaryColor, 0.04),
+                borderColor: primaryColor
               }
             }}
           >
@@ -473,7 +470,7 @@ const CorporateActionActivity = ({ isLoading }) => {
           </Button>
         </Box>
       </CardContent>
-    </MainCard>
+    </Card>
   );
 };
 

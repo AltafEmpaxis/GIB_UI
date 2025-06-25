@@ -144,16 +144,16 @@ function ProgressBarNav({ activeIndex, slidesLength, progress }) {
                 height: '40px',
                 p: 0,
                 borderRadius: '50%',
-                backgroundColor: alpha(theme.palette.secondary.main, 0.15),
-                backdropFilter: 'blur(8px)',
-                border: `1px solid ${alpha(theme.palette.secondary.main, 0.3)}`,
+                backgroundColor: alpha(theme.palette.secondary.main, 0.12),
+                backdropFilter: 'blur(5px)',
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
                 color: theme.palette.secondary.main,
-                transition: 'all 0.3s ease',
+                transition: 'all 0.25s ease',
                 opacity: swiper.isBeginning ? 0.35 : 1,
                 '&:hover': {
                   backgroundColor: alpha(theme.palette.secondary.main, 0.2),
-                  transform: 'scale(1.05)',
-                  boxShadow: `0 0 15px ${alpha(theme.palette.secondary.main, 0.5)}`
+                  transform: 'scale(1.03)',
+                  boxShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.3)}`
                 }
               })}
             >
@@ -217,16 +217,16 @@ function ProgressBarNav({ activeIndex, slidesLength, progress }) {
                         backgroundColor:
                           activeIndex === index
                             ? theme.palette.secondary.main
-                            : alpha(theme.palette.secondary.main, 0.6),
-                        transition: 'all 0.3s ease',
+                            : alpha(theme.palette.secondary.main, 0.5),
+                        transition: 'all 0.25s ease',
                         cursor: 'pointer',
                         opacity: activeIndex === index ? 1 : 0.6,
-                        border: `1px solid ${alpha(theme.palette.common.white, 0.5)}`,
+                        border: `1px solid ${alpha(theme.palette.common.white, 0.3)}`,
                         boxShadow:
-                          activeIndex === index ? `0 0 10px ${alpha(theme.palette.secondary.main, 0.6)}` : 'none',
+                          activeIndex === index ? `0 0 5px ${alpha(theme.palette.secondary.main, 0.4)}` : 'none',
                         '&:hover': {
                           opacity: 0.8,
-                          transform: 'scale(1.05)'
+                          transform: 'scale(1.03)'
                         }
                       })}
                     />
@@ -245,16 +245,16 @@ function ProgressBarNav({ activeIndex, slidesLength, progress }) {
                 height: '40px',
                 p: 0,
                 borderRadius: '50%',
-                backgroundColor: alpha(theme.palette.secondary.main, 0.15),
-                backdropFilter: 'blur(8px)',
-                border: `1px solid ${alpha(theme.palette.secondary.main, 0.3)}`,
+                backgroundColor: alpha(theme.palette.secondary.main, 0.12),
+                backdropFilter: 'blur(5px)',
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
                 color: theme.palette.secondary.main,
-                transition: 'all 0.3s ease',
+                transition: 'all 0.25s ease',
                 opacity: swiper.isEnd ? 0.35 : 1,
                 '&:hover': {
                   backgroundColor: alpha(theme.palette.secondary.main, 0.2),
-                  transform: 'scale(1.05)',
-                  boxShadow: `0 0 15px ${alpha(theme.palette.secondary.main, 0.5)}`
+                  transform: 'scale(1.03)',
+                  boxShadow: `0 0 10px ${alpha(theme.palette.secondary.main, 0.3)}`
                 }
               })}
             >
@@ -301,7 +301,7 @@ const MissionVisionSlider = () => {
         position: 'relative',
         overflow: 'hidden',
         borderRadius: { xs: 0, md: 2 },
-        boxShadow: `0 10px 40px ${alpha(theme.palette.common.black, 0.2)}`,
+        boxShadow: `0 4px 20px ${alpha(theme.palette.common.black, 0.2)}`,
         '& .swiper': {
           width: '100%',
           height: '100%',
@@ -641,11 +641,11 @@ const MissionVisionSlider = () => {
                                   textTransform: 'none',
                                   fontWeight: 600,
                                   letterSpacing: '0.01em',
-                                  boxShadow: `0 8px 20px ${alpha(theme.palette.secondary.main, 0.25)}`,
+                                  boxShadow: `0 4px 12px ${alpha(theme.palette.secondary.main, 0.25)}`,
                                   transition: 'all 0.3s ease',
                                   '&:hover': {
                                     transform: 'translateY(-2px)',
-                                    boxShadow: `0 10px 25px ${alpha(theme.palette.secondary.main, 0.35)}`
+                                    boxShadow: `0 6px 15px ${alpha(theme.palette.secondary.main, 0.3)}`
                                   }
                                 }}
                               >
@@ -710,11 +710,11 @@ const MissionVisionSlider = () => {
                                     position: 'relative',
                                     transition: 'all 0.3s ease',
                                     '&:hover': {
-                                      transform: 'translateY(-5px)',
-                                      boxShadow: `0 12px 24px ${alpha(theme.palette.common.black, 0.2)}`,
+                                      transform: 'translateY(-2px)',
+                                      boxShadow: `0 8px 16px ${alpha(theme.palette.common.black, 0.15)}`,
                                       '& .stat-decoration': {
                                         opacity: 0.9,
-                                        transform: 'scale(1.1)'
+                                        transform: 'scale(1.05)'
                                       }
                                     },
                                     '&::before': {

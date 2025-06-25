@@ -130,7 +130,7 @@ function WelcomeCard({ isLoading = false }) {
               letterSpacing: '0.02em'
             }}
           >
-            Welcome to GIB Investment Solutions
+            Welcome to GIB Reconciliation Dashboard
           </Typography>
 
           <Typography
@@ -142,9 +142,8 @@ function WelcomeCard({ isLoading = false }) {
               maxWidth: '90%'
             }}
           >
-            Experience the power of GIB's Investment Verification & Reconciliation System. Our platform delivers
-            industry-leading investment solutions focused on Treasury, Capital Markets, and Asset Management that adhere
-            to Shariah-compliant standards for our Saudi clients.
+            Monitor your account reconciliation status in real-time. View reconciled and unreconciled accounts, track
+            corporate actions, and manage verification tasks efficiently from this central dashboard.
           </Typography>
         </Box>
 

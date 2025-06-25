@@ -115,10 +115,6 @@ const Dashboard = () => {
             scrollButtons="auto"
             aria-label="dashboard tabs"
             sx={{
-              minHeight: 48,
-              '& .MuiTabs-flexContainer': {
-                borderBottom: `1px solid ${alpha(theme.palette.divider, 0.3)}`
-              },
               '& .MuiTab-root': {
                 minHeight: 48,
                 color: theme.palette.text.secondary,
@@ -129,11 +125,6 @@ const Dashboard = () => {
                   color: theme.palette.primary.main,
                   fontWeight: 600
                 }
-              },
-              '& .MuiTabs-indicator': {
-                backgroundColor: theme.palette.primary.main,
-                height: 3,
-                borderRadius: '3px 3px 0 0'
               }
             }}
           >
@@ -141,7 +132,7 @@ const Dashboard = () => {
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   <Icon icon="solar:home-2-bold-duotone" />
-                  <span>Overview</span>
+                  <span>Recon Summary</span>
                 </Box>
               }
             />

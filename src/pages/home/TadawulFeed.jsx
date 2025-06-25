@@ -91,7 +91,7 @@ const TadawulFeed = ({ isLoading = false }) => {
     stroke: {
       curve: 'smooth',
       width: 2.5,
-      colors: [marketData?.isPositive ? theme.palette.success.main : theme.palette.error.main]
+      colors: [marketData?.isPositive ? theme.palette.primary.main : theme.palette.secondary.main]
     },
     fill: {
       type: 'gradient',
@@ -103,12 +103,12 @@ const TadawulFeed = ({ isLoading = false }) => {
         colorStops: [
           {
             offset: 0,
-            color: marketData?.isPositive ? theme.palette.success.main : theme.palette.error.main,
+            color: marketData?.isPositive ? theme.palette.primary.main : theme.palette.secondary.main,
             opacity: 0.6
           },
           {
             offset: 100,
-            color: marketData?.isPositive ? theme.palette.success.light : theme.palette.error.light,
+            color: marketData?.isPositive ? theme.palette.primary.light : theme.palette.secondary.light,
             opacity: 0.1
           }
         ]
@@ -171,7 +171,7 @@ const TadawulFeed = ({ isLoading = false }) => {
     <Box component={motion.div} variants={containerVariants} initial="hidden" animate="visible" sx={{ height: '100%' }}>
       {isLoading || !marketData ? (
         <Box sx={{ width: '100%', mt: 2 }}>
-          <LinearProgress color="secondary" />
+          <LinearProgress color="primary" />
         </Box>
       ) : (
         <Stack spacing={2.5} sx={{ height: '100%' }}>
@@ -183,8 +183,7 @@ const TadawulFeed = ({ isLoading = false }) => {
                 p: 2.5,
                 borderRadius: 2,
                 bgcolor: theme.palette.background.paper,
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                boxShadow: theme.customShadows?.z1
+                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`
               }}
             >
               <Grid container spacing={2} alignItems="center">
@@ -234,11 +233,11 @@ const TadawulFeed = ({ isLoading = false }) => {
                           px: 1.5,
                           borderRadius: 1.5,
                           bgcolor: alpha(
-                            marketData.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                            marketData.isPositive ? theme.palette.primary.main : theme.palette.secondary.main,
                             theme.palette.mode === 'dark' ? 0.2 : 0.1
                           ),
                           border: `1px solid ${alpha(
-                            marketData.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                            marketData.isPositive ? theme.palette.primary.main : theme.palette.secondary.main,
                             0.2
                           )}`
                         }}
@@ -249,14 +248,14 @@ const TadawulFeed = ({ isLoading = false }) => {
                           height={18}
                           style={{
                             marginRight: '6px',
-                            color: marketData.isPositive ? theme.palette.success.main : theme.palette.error.main
+                            color: marketData.isPositive ? theme.palette.primary.main : theme.palette.secondary.main
                           }}
                         />
                         <Typography
                           variant="body2"
                           sx={{
                             fontWeight: 600,
-                            color: marketData.isPositive ? theme.palette.success.main : theme.palette.error.main
+                            color: marketData.isPositive ? theme.palette.primary.main : theme.palette.secondary.main
                           }}
                         >
                           {marketData.change.toLocaleString()} ({marketData.changePercent}%)
@@ -275,8 +274,8 @@ const TadawulFeed = ({ isLoading = false }) => {
             </Paper>
           </Box>
 
-          {/* Market Statistics */}
-          {/* <Box component={motion.div} variants={itemVariants}>
+          {/* Top Movers */}
+          <Box component={motion.div} variants={itemVariants} sx={{ flexGrow: 1 }}>
             <Paper
               elevation={0}
               sx={{
@@ -285,7 +284,8 @@ const TadawulFeed = ({ isLoading = false }) => {
                 overflow: 'hidden',
                 bgcolor: theme.palette.background.paper,
                 border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                boxShadow: theme.customShadows?.z1
+                display: 'flex',
+                flexDirection: 'column'
               }}
             >
               <Box
@@ -305,201 +305,11 @@ const TadawulFeed = ({ isLoading = false }) => {
                   }}
                 >
                   <Icon
-                    icon="solar:chart-square-bold-duotone"
-                    style={{
-                      fontSize: '20px',
-                      marginRight: '8px',
-                      color: theme.palette.primary.main
-                    }}
-                  />
-                  Market Statistics
-                </Typography>
-              </Box>
-
-              <Box sx={{ p: 2 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <Box
-                      sx={{
-                        p: 1.5,
-                        borderRadius: 2,
-                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
-                      >
-                        Open
-                      </Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                        {marketData.open.toLocaleString()}
-                      </Typography>
-                    </Box>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Box
-                      sx={{
-                        p: 1.5,
-                        borderRadius: 2,
-                        bgcolor: alpha(theme.palette.primary.main, 0.04),
-                        border: `1px solid ${alpha(theme.palette.primary.main, 0.08)}`
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
-                      >
-                        Previous
-                      </Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                        {marketData.previousClose.toLocaleString()}
-                      </Typography>
-                    </Box>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Box
-                      sx={{
-                        p: 1.5,
-                        borderRadius: 2,
-                        bgcolor: alpha(theme.palette.success.main, 0.08),
-                        border: `1px solid ${alpha(theme.palette.success.main, 0.12)}`
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
-                      >
-                        High
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: '0.95rem',
-                          color: theme.palette.success.main
-                        }}
-                      >
-                        {marketData.high.toLocaleString()}
-                      </Typography>
-                    </Box>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Box
-                      sx={{
-                        p: 1.5,
-                        borderRadius: 2,
-                        bgcolor: alpha(theme.palette.error.main, 0.08),
-                        border: `1px solid ${alpha(theme.palette.error.main, 0.12)}`
-                      }}
-                    >
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
-                      >
-                        Low
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          fontWeight: 600,
-                          fontSize: '0.95rem',
-                          color: theme.palette.error.main
-                        }}
-                      >
-                        {marketData.low.toLocaleString()}
-                      </Typography>
-                    </Box>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <Box
-                      sx={{
-                        p: 1.5,
-                        borderRadius: 2,
-                        bgcolor: alpha(theme.palette.secondary.main, 0.08),
-                        border: `1px solid ${alpha(theme.palette.secondary.main, 0.12)}`
-                      }}
-                    >
-                      <Grid container spacing={1}>
-                        <Grid item xs={6}>
-                          <Typography
-                            variant="caption"
-                            color="textSecondary"
-                            sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
-                          >
-                            Volume
-                          </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                            {marketData.volume}
-                          </Typography>
-                        </Grid>
-
-                        <Grid item xs={6}>
-                          <Typography
-                            variant="caption"
-                            color="textSecondary"
-                            sx={{ fontSize: '0.75rem', display: 'block', mb: 0.5 }}
-                          >
-                            Turnover
-                          </Typography>
-                          <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
-                            4.62B SAR
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Paper>
-          </Box> */}
-
-          {/* Top Movers */}
-          <Box component={motion.div} variants={itemVariants} sx={{ flexGrow: 1 }}>
-            <Paper
-              elevation={0}
-              sx={{
-                height: '100%',
-                borderRadius: 2,
-                overflow: 'hidden',
-                bgcolor: theme.palette.background.paper,
-                border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-                boxShadow: theme.customShadows?.z1,
-                display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
-              <Box
-                sx={{
-                  p: 2,
-                  bgcolor: alpha(theme.palette.secondary.main, 0.04),
-                  borderBottom: `1px solid ${alpha(theme.palette.secondary.main, 0.1)}`
-                }}
-              >
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    fontWeight: 600,
-                    display: 'flex',
-                    alignItems: 'center',
-                    color: theme.palette.secondary.main
-                  }}
-                >
-                  <Icon
                     icon="solar:stock-up-bold-duotone"
                     style={{
                       fontSize: '20px',
                       marginRight: '8px',
-                      color: theme.palette.secondary.main
+                      color: theme.palette.primary.main
                     }}
                   />
                   Top Market Movers
@@ -541,11 +351,7 @@ const TadawulFeed = ({ isLoading = false }) => {
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            bgcolor: stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
-                            boxShadow: `0 4px 8px ${alpha(
-                              stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
-                              0.25
-                            )}`
+                            bgcolor: stock.isPositive ? theme.palette.primary.main : theme.palette.secondary.main
                           }}
                         >
                           <Typography
@@ -603,7 +409,7 @@ const TadawulFeed = ({ isLoading = false }) => {
                             mt: 0.5,
                             borderRadius: 1,
                             bgcolor: alpha(
-                              stock.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                              stock.isPositive ? theme.palette.primary.main : theme.palette.secondary.main,
                               0.1
                             )
                           }}
@@ -614,7 +420,7 @@ const TadawulFeed = ({ isLoading = false }) => {
                             height={12}
                             style={{
                               marginRight: '4px',
-                              color: stock.isPositive ? theme.palette.success.main : theme.palette.error.main
+                              color: stock.isPositive ? theme.palette.primary.main : theme.palette.secondary.main
                             }}
                           />
                           <Typography
@@ -622,7 +428,7 @@ const TadawulFeed = ({ isLoading = false }) => {
                             sx={{
                               fontWeight: 600,
                               fontSize: '0.75rem',
-                              color: stock.isPositive ? theme.palette.success.main : theme.palette.error.main
+                              color: stock.isPositive ? theme.palette.primary.main : theme.palette.secondary.main
                             }}
                           >
                             {stock.isPositive ? '+' : ''}

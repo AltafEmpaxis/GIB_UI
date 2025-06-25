@@ -29,7 +29,6 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // project imports
-import MainCard from 'components/MainCard';
 import mockData from './dashbord-mockData.json';
 
 const TradesActivity = ({ isLoading: parentLoading }) => {
@@ -41,10 +40,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
 
   // Theme-based colors instead of hardcoded values
   const primaryColor = theme.palette.primary.main;
-  const successColor = theme.palette.success.main;
-  const warningColor = theme.palette.warning.main;
-  const errorColor = theme.palette.error.main;
-  const infoColor = theme.palette.info.main;
+  const secondaryColor = theme.palette.secondary.main;
 
   // Use mock data from the JSON file, or fallback to hardcoded if unavailable
   const allActivities = mockData?.tradesActivity || [
@@ -111,7 +107,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
       label: 'Total Trades',
       value: '142',
       icon: 'solar:chart-bold-duotone',
-      color: infoColor,
+      color: primaryColor,
       trend: '+8',
       trendUp: true
     },
@@ -119,7 +115,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
       label: 'Buy Orders',
       value: '87',
       icon: 'solar:arrow-down-bold-duotone',
-      color: successColor,
+      color: secondaryColor,
       trend: '+5',
       trendUp: true
     },
@@ -155,21 +151,21 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
   const getStatusColor = (status, type) => {
     if (status === 'rejected') {
       return {
-        main: errorColor,
-        lighter: alpha(errorColor, 0.1),
-        border: alpha(errorColor, 0.2)
+        main: theme.palette.error.main,
+        lighter: alpha(theme.palette.error.main, 0.1),
+        border: alpha(theme.palette.error.main, 0.2)
       };
     } else if (status === 'pending') {
       return {
-        main: warningColor,
-        lighter: alpha(warningColor, 0.1),
-        border: alpha(warningColor, 0.2)
+        main: theme.palette.warning.main,
+        lighter: alpha(theme.palette.warning.main, 0.1),
+        border: alpha(theme.palette.warning.main, 0.2)
       };
     } else if (type === 'buy') {
       return {
-        main: successColor,
-        lighter: alpha(successColor, 0.1),
-        border: alpha(successColor, 0.2)
+        main: secondaryColor,
+        lighter: alpha(secondaryColor, 0.1),
+        border: alpha(secondaryColor, 0.2)
       };
     } else if (type === 'sell') {
       return {
@@ -179,9 +175,9 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
       };
     } else {
       return {
-        main: infoColor,
-        lighter: alpha(infoColor, 0.1),
-        border: alpha(infoColor, 0.2)
+        main: theme.palette.info.main,
+        lighter: alpha(theme.palette.info.main, 0.1),
+        border: alpha(theme.palette.info.main, 0.2)
       };
     }
   };
@@ -204,13 +200,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
 
   if (isLoading) {
     return (
-      <MainCard
-        title={
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Icon icon="solar:chart-bold-duotone" width={24} style={{ color: successColor }} />
-            <Typography variant="h5">Trading Activity</Typography>
-          </Stack>
-        }
+      <Card
         sx={{
           height: '100%',
           boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 12px rgba(0,0,0,0.05)',
@@ -219,6 +209,13 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
         }}
       >
         <CardContent>
+          <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Skeleton variant="circular" width={32} height={32} />
+              <Skeleton variant="text" width={180} height={28} />
+            </Stack>
+            <Skeleton variant="circular" width={32} height={32} />
+          </Box>
           <Box sx={{ p: 2 }}>
             <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: 2 }} />
           </Box>
@@ -250,106 +247,15 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
             ))}
           </List>
         </CardContent>
-      </MainCard>
+      </Card>
     );
   }
 
   return (
-    <MainCard
-      title={
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Avatar
-            variant="rounded"
-            sx={{
-              width: 32,
-              height: 32,
-              background: `linear-gradient(135deg, ${alpha(successColor, 0.16)} 0%, ${alpha(successColor, 0.24)} 100%)`,
-              color: successColor
-            }}
-          >
-            <Icon icon="solar:chart-bold-duotone" width={20} />
-          </Avatar>
-          <Typography variant="h5">Trading Activity</Typography>
-        </Stack>
-      }
-      secondary={
-        <Stack direction="row" spacing={1}>
-          <Tooltip title="Filter trades">
-            <ButtonGroup
-              size="small"
-              sx={{
-                borderRadius: 1.5,
-                boxShadow: `0 2px 8px ${alpha(theme.palette.common.black, 0.08)}`,
-                '.MuiButtonGroup-grouped': {
-                  borderColor: alpha(theme.palette.divider, 0.5)
-                }
-              }}
-            >
-              <Button
-                variant={filter === 'all' ? 'contained' : 'outlined'}
-                onClick={() => handleFilterChange('all')}
-                size="small"
-                sx={{
-                  fontSize: '0.75rem',
-                  px: 1.5,
-                  borderRadius: '6px 0 0 6px',
-                  minHeight: 28
-                }}
-              >
-                All
-              </Button>
-              <Button
-                variant={filter === 'buy' ? 'contained' : 'outlined'}
-                onClick={() => handleFilterChange('buy')}
-                size="small"
-                sx={{
-                  fontSize: '0.75rem',
-                  px: 1.5,
-                  minHeight: 28
-                }}
-              >
-                Buy
-              </Button>
-              <Button
-                variant={filter === 'sell' ? 'contained' : 'outlined'}
-                onClick={() => handleFilterChange('sell')}
-                size="small"
-                sx={{
-                  fontSize: '0.75rem',
-                  px: 1.5,
-                  borderRadius: '0 6px 6px 0',
-                  minHeight: 28
-                }}
-              >
-                Sell
-              </Button>
-            </ButtonGroup>
-          </Tooltip>
-          <Tooltip title="Refresh trading data">
-            <IconButton
-              color="primary"
-              size="small"
-              onClick={handleRefresh}
-              disabled={refreshing}
-              sx={{
-                bgcolor: alpha(successColor, 0.1),
-                '&:hover': { bgcolor: alpha(successColor, 0.16) },
-                border: `1px solid ${alpha(successColor, 0.2)}`,
-                backdropFilter: 'blur(4px)'
-              }}
-            >
-              {refreshing ? (
-                <CircularProgress size={18} thickness={2} />
-              ) : (
-                <Icon icon="solar:refresh-bold" width={18} height={18} style={{ color: successColor }} />
-              )}
-            </IconButton>
-          </Tooltip>
-        </Stack>
-      }
+    <Card
       sx={{
         height: '100%',
-        boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 16px rgba(0,0,0,0.08)',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
         borderRadius: 3,
         border: '1px solid',
@@ -367,12 +273,103 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
           width: 150,
           height: 150,
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${alpha(successColor, 0.1)} 0%, rgba(0,0,0,0) 70%)`,
+          background: `radial-gradient(circle, ${alpha(primaryColor, 0.1)} 0%, rgba(0,0,0,0) 70%)`,
           zIndex: 0
         }}
       />
 
       <CardContent>
+        <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Avatar
+              variant="rounded"
+              sx={{
+                width: 32,
+                height: 32,
+                background: `linear-gradient(135deg, ${alpha(primaryColor, 0.16)} 0%, ${alpha(primaryColor, 0.24)} 100%)`,
+                color: primaryColor
+              }}
+            >
+              <Icon icon="solar:chart-bold-duotone" width={20} />
+            </Avatar>
+            <Typography variant="h5">Trading Activity</Typography>
+          </Stack>
+
+          <Stack direction="row" spacing={1}>
+            <Tooltip title="Filter trades">
+              <ButtonGroup
+                size="small"
+                sx={{
+                  borderRadius: 1.5,
+                  boxShadow: `0 2px 8px ${alpha(theme.palette.common.black, 0.08)}`,
+                  '.MuiButtonGroup-grouped': {
+                    borderColor: alpha(theme.palette.divider, 0.5)
+                  }
+                }}
+              >
+                <Button
+                  variant={filter === 'all' ? 'contained' : 'outlined'}
+                  onClick={() => handleFilterChange('all')}
+                  size="small"
+                  sx={{
+                    fontSize: '0.75rem',
+                    px: 1.5,
+                    borderRadius: '6px 0 0 6px',
+                    minHeight: 28
+                  }}
+                >
+                  All
+                </Button>
+                <Button
+                  variant={filter === 'buy' ? 'contained' : 'outlined'}
+                  onClick={() => handleFilterChange('buy')}
+                  size="small"
+                  sx={{
+                    fontSize: '0.75rem',
+                    px: 1.5,
+                    minHeight: 28
+                  }}
+                >
+                  Buy
+                </Button>
+                <Button
+                  variant={filter === 'sell' ? 'contained' : 'outlined'}
+                  onClick={() => handleFilterChange('sell')}
+                  size="small"
+                  sx={{
+                    fontSize: '0.75rem',
+                    px: 1.5,
+                    borderRadius: '0 6px 6px 0',
+                    minHeight: 28
+                  }}
+                >
+                  Sell
+                </Button>
+              </ButtonGroup>
+            </Tooltip>
+            <Tooltip title="Refresh trading data">
+              <IconButton
+                color="primary"
+                size="small"
+                onClick={handleRefresh}
+                disabled={refreshing}
+                sx={{
+                  bgcolor: alpha(primaryColor, 0.1),
+                  '&:hover': { bgcolor: alpha(primaryColor, 0.16) },
+                  border: `1px solid ${alpha(primaryColor, 0.2)}`,
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                {refreshing ? (
+                  <CircularProgress size={18} thickness={2} />
+                ) : (
+                  <Icon icon="solar:refresh-bold" width={18} height={18} style={{ color: primaryColor }} />
+                )}
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </Box>
+
         {/* Activity Overview Section */}
         <Box sx={{ p: 2 }}>
           <Grid container spacing={2}>
@@ -416,8 +413,8 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                             height: 20,
                             fontSize: '0.625rem',
                             fontWeight: 600,
-                            bgcolor: alpha(successColor, 0.12),
-                            color: successColor,
+                            bgcolor: alpha(secondaryColor, 0.12),
+                            color: secondaryColor,
                             borderRadius: 1
                           }}
                           icon={
@@ -427,7 +424,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                               style={{
                                 marginLeft: '2px',
                                 marginRight: '-4px',
-                                color: successColor
+                                color: secondaryColor
                               }}
                             />
                           }
@@ -624,13 +621,13 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
             sx={{
               borderRadius: 1.5,
               fontWeight: 600,
-              boxShadow: `inset 0 0 0 1px ${alpha(successColor, 0.3)}`,
-              color: successColor,
-              borderColor: alpha(successColor, 0.3),
+              boxShadow: `inset 0 0 0 1px ${alpha(primaryColor, 0.3)}`,
+              color: primaryColor,
+              borderColor: alpha(primaryColor, 0.3),
               '&:hover': {
-                boxShadow: `inset 0 0 0 1px ${successColor}`,
-                bgcolor: alpha(successColor, 0.04),
-                borderColor: successColor
+                boxShadow: `inset 0 0 0 1px ${primaryColor}`,
+                bgcolor: alpha(primaryColor, 0.04),
+                borderColor: primaryColor
               }
             }}
           >
@@ -638,7 +635,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
           </Button>
         </Box>
       </CardContent>
-    </MainCard>
+    </Card>
   );
 };
 
