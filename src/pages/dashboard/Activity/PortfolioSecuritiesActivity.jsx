@@ -1,32 +1,31 @@
 // material-ui
 import { Icon } from '@iconify/react';
 import {
+  alpha,
   Avatar,
   Box,
+  Button,
+  Card,
   CardContent,
   Chip,
+  Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Stack,
-  Typography,
-  useTheme,
   Skeleton,
-  Button,
-  alpha,
-  Divider,
-  Card,
-  Fade,
-  Grid,
-  Tooltip
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
 // project imports
 import MainCard from 'components/MainCard';
-import mockData from './dashbord-mockData.json';
+import mockData from '../dashbord-mockData.json';
 
 const PortfolioSecuritiesActivity = ({ isLoading }) => {
   const theme = useTheme();

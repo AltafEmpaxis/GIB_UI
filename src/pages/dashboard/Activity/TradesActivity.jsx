@@ -1,35 +1,34 @@
 // material-ui
 import { Icon } from '@iconify/react';
 import {
+  alpha,
   Avatar,
   Box,
+  Button,
+  ButtonGroup,
+  Card,
   CardContent,
   Chip,
+  CircularProgress,
+  Collapse,
+  Divider,
+  Grid,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Stack,
-  Typography,
-  useTheme,
   Skeleton,
-  Button,
-  alpha,
-  Divider,
-  Card,
-  Fade,
-  ButtonGroup,
-  Collapse,
-  CircularProgress,
+  Stack,
   Tooltip,
-  Grid
+  Typography,
+  useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 // project imports
-import mockData from './dashbord-mockData.json';
+import mockData from '../dashbord-mockData.json';
 
 const TradesActivity = ({ isLoading: parentLoading }) => {
   const theme = useTheme();

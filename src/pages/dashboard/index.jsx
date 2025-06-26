@@ -1,35 +1,14 @@
-import { useState, useEffect } from 'react';
-import {
-  Grid,
-  Container,
-  Box,
-  useTheme,
-  alpha,
-  Typography,
-  Tabs,
-  Tab,
-  IconButton,
-  Stack,
-  Paper,
-  Divider,
-  Tooltip,
-  Card
-} from '@mui/material';
 import { Icon } from '@iconify/react';
-
-// Project imports
+import { Box, Divider, IconButton, Stack, Tab, Tabs, Tooltip, Typography, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
-import GIBDashboard from './GIBDashboard';
-import RecentReconActivity from './RecentReconActivity';
-import PortfolioSecuritiesActivity from './PortfolioSecuritiesActivity';
-import CorporateActionActivity from './CorporateActionActivity';
-import TradesActivity from './TradesActivity';
+import { useEffect, useMemo, useState } from 'react';
+import Activity from './Activity';
+import ReconSummary from './ReconSummary';
 
 const Dashboard = () => {
+  const [currentTab, setCurrentTab] = useState('ReconSummary');
   const theme = useTheme();
-
   const [isLoading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     // Simulate data loading
@@ -40,143 +19,102 @@ const Dashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleTabChange = (event, newValue) => {
-    setActiveTab(newValue);
-  };
+  const tabs = useMemo(
+    () => [
+      {
+        value: 'ReconSummary',
+        label: 'Recon Summary',
+        icon: <Icon icon="solar:home-2-bold-duotone" width={20} height={20} color={theme.palette.primary.main} />,
+        component: <ReconSummary isLoading={isLoading} />,
+        color: theme.palette.primary.main
+      },
+      {
+        value: 'Activity',
+        label: 'Activity',
+        icon: <Icon icon="hugeicons:activity-01" width={20} height={20} color={theme.palette.primary.main} />,
+        component: <Activity isLoading={isLoading} />,
+        color: theme.palette.primary.main
+      }
+    ],
+    [theme, isLoading]
+  );
+
+  // Find the current tab information
+  const currentTabInfo = tabs.find((tab) => tab.value === currentTab);
+
+  // Header JSX
+  const header = (
+    <Box>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
+        justifyContent="space-between"
+        spacing={2}
+      >
+        <Stack direction="row" alignItems="center" spacing={2}>
+          <Box>
+            <Typography
+              variant="h5"
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontSize: '1.5rem'
+              }}
+            >
+              <Icon icon="fluent-emoji:bank" />
+              GIB SmartOPS
+            </Typography>
+          </Box>
+        </Stack>
+        <Tooltip title="Refresh Dashboard" placement="left">
+          <IconButton size="medium">
+            <Icon icon="solar:refresh-bold-duotone" width={22} height={22} />
+          </IconButton>
+        </Tooltip>
+      </Stack>
+    </Box>
+  );
 
   return (
-    <MainCard>
-      {/* Header with Tabs */}
-      <Card
-        sx={{
-          mb: 3,
-          overflow: 'hidden'
-        }}
-        content={false}
-      >
-        <Box sx={{ px: 3, pt: 2.5, pb: 0 }}>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            alignItems={{ xs: 'flex-start', sm: 'center' }}
-            justifyContent="space-between"
-            spacing={2}
-            sx={{ mb: 1.5 }}
-          >
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <Box
-                sx={{
-                  borderRadius: 2,
-                  display: 'flex',
-                  alignItems: 'center'
-                }}
-              >
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: 700,
-                    color: theme.palette.primary.main,
-                    display: 'flex',
-                    alignItems: 'center'
-                  }}
-                >
-                  <Icon icon="fluent-emoji:bank" style={{ marginRight: '10px', fontSize: '28px' }} />
-                  GIB SmartOPS
-                </Typography>
-              </Box>
-            </Stack>
+    <>
+      <title>View Data - GIB UI</title>
+      <meta name="description" content="" />
+      <meta property="og:title" content="" />
+      <meta property="og:description" content="" />
 
-            {/* Refresh Button */}
-            <Tooltip title="Refresh Dashboard" placement="left">
-              <IconButton
-                size="medium"
-                sx={{
-                  bgcolor: alpha(theme.palette.primary.main, 0.12),
-                  color: theme.palette.primary.main,
-                  borderRadius: 2,
-                  '&:hover': {
-                    bgcolor: alpha(theme.palette.primary.main, 0.2)
-                  },
-                  transition: 'all 0.2s ease-in-out',
-                  transform: 'translateZ(0)',
-                  boxShadow: `0 0 0 1px ${alpha(theme.palette.primary.main, 0.1)}`,
-                  backdropFilter: 'blur(4px)'
-                }}
-              >
-                <Icon icon="solar:refresh-bold-duotone" width={22} height={22} />
-              </IconButton>
-            </Tooltip>
-          </Stack>
-
-          {/* Tabs - Enhanced UI */}
+      <Box>
+        <MainCard title={header} elevation={0} sx={{ p: '0!important' }} contentSX={{ p: '0.5rem !important' }}>
           <Tabs
-            value={activeTab}
-            onChange={handleTabChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="dashboard tabs"
-            sx={{
-              '& .MuiTab-root': {
-                minHeight: 48,
-                color: theme.palette.text.secondary,
-                fontWeight: 500,
-                fontSize: '0.875rem',
-                textTransform: 'none',
-                '&.Mui-selected': {
-                  color: theme.palette.primary.main,
-                  fontWeight: 600
-                }
+            value={currentTab}
+            onChange={(event, newValue) => setCurrentTab(newValue)}
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: currentTabInfo?.color
               }
             }}
           >
-            <Tab
-              label={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Icon icon="solar:home-2-bold-duotone" />
-                  <span>Recon Summary</span>
-                </Box>
-              }
-            />
-            <Tab
-              label={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Icon icon="solar:folder-check-bold-duotone" />
-                  <span>Activity</span>
-                </Box>
-              }
-            />
+            {tabs.map((tab) => (
+              <Tab
+                key={tab.value}
+                value={tab.value}
+                label={tab.label}
+                icon={tab.icon}
+                iconPosition="start"
+                sx={{
+                  fontWeight: 500,
+                  '&.Mui-selected': {
+                    color: tab.color
+                  }
+                }}
+              />
+            ))}
           </Tabs>
-        </Box>
-      </Card>
-
-      {/* Tab Content */}
-      <Box>
-        {activeTab === 0 && (
-          <Grid container spacing={3}>
-            {/* Main Dashboard */}
-            <Grid item xs={12}>
-              <GIBDashboard isLoading={isLoading} />
-            </Grid>
-          </Grid>
-        )}
-
-        {activeTab === 1 && (
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
-              <RecentReconActivity isLoading={isLoading} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <TradesActivity isLoading={isLoading} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <PortfolioSecuritiesActivity isLoading={isLoading} />
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <CorporateActionActivity isLoading={isLoading} />
-            </Grid>
-          </Grid>
-        )}
+          <Divider />
+          {tabs.map((tab) => tab.value === currentTab && <Box key={tab.value}>{tab.component}</Box>)}
+        </MainCard>
       </Box>
-    </MainCard>
+    </>
   );
 };
 
