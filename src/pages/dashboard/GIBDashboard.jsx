@@ -1,43 +1,30 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
+import { Icon } from '@iconify/react';
 import {
-  Grid,
-  Box,
-  useMediaQuery,
-  Stack,
-  Typography,
+  alpha,
   Avatar,
+  AvatarGroup,
+  Box,
+  Button,
   Card,
   Chip,
+  Grid,
   IconButton,
-  Paper,
-  Tab,
-  Tabs,
-  Menu,
-  MenuItem,
-  Button,
-  Divider,
-  Badge,
-  useTheme,
-  alpha,
-  AvatarGroup,
   LinearProgress,
-  Tooltip,
+  MenuItem,
   Select,
-  FormControl,
-  InputLabel
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme
 } from '@mui/material';
-import { Icon } from '@iconify/react';
 import ReactApexChart from 'react-apexcharts';
 
 // project imports
-import MainCard from 'components/MainCard';
-import useAuth from 'hooks/useAuth';
 
 // mock data
-import dashboardData from './dashbord-mockData.json';
-import { GRID_SPACING } from 'config';
 
 const GIBDashboard = () => {
   const theme = useTheme();
@@ -932,7 +919,7 @@ const GIBDashboard = () => {
                       >
                         <Icon icon="solar:documents-minimalistic-bold-duotone" width={16} />
                       </Avatar>
-                      Ad Hoc Reports
+                      ad-doc Reports
                     </Typography>
                     <Chip
                       label="This Week"
@@ -1406,80 +1393,6 @@ const GIBDashboard = () => {
               </Box>
             </Card>
 
-            {/* GIB Stats Card */}
-            <Card
-              sx={{
-                bgcolor: alpha(theme.palette.background.paper, 0.1),
-                borderRadius: 2,
-                border: `1px solid ${alpha(theme.palette.background.paper, 0.2)}`
-              }}
-            >
-              <Box sx={{ p: 2 }}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: theme.palette.primary.contrastText,
-                    mb: 2
-                  }}
-                >
-                  GIB Stats
-                </Typography>
-                <Stack spacing={2}>
-                  {[
-                    { label: 'Total Portfolios', value: '24', icon: 'solar:folder-bold-duotone' },
-                    { label: 'Active Securities', value: '1,458', icon: 'solar:document-bold-duotone' },
-                    { label: 'Daily Trades', value: '128', icon: 'solar:graph-new-up-bold-duotone' }
-                  ].map((stat, index) => (
-                    <Box
-                      key={index}
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        p: 1.5,
-                        borderRadius: 1,
-                        bgcolor: alpha(theme.palette.background.paper, 0.08),
-                        border: `1px solid ${alpha(theme.palette.background.paper, 0.15)}`
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar
-                          variant="rounded"
-                          sx={{
-                            width: 32,
-                            height: 32,
-                            bgcolor: alpha(theme.palette.background.paper, 0.15),
-                            color: theme.palette.primary.contrastText,
-                            mr: 1.5,
-                            borderRadius: 1
-                          }}
-                        >
-                          <Icon icon={stat.icon} width={18} />
-                        </Avatar>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            fontWeight: 500,
-                            color: alpha(theme.palette.primary.contrastText, 0.85)
-                          }}
-                        >
-                          {stat.label}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontWeight: 700,
-                          color: theme.palette.primary.contrastText
-                        }}
-                      >
-                        {stat.value}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Stack>
-              </Box>
-            </Card>
             {/* Ad Hoc Status Section */}
             <Card
               sx={{
