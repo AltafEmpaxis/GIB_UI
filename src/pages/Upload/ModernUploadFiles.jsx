@@ -2449,7 +2449,7 @@ const ModernUploadFiles = () => {
   // Process instructions for tooltips
   const processInstructions = {
     custodian: `
-      1. Select the custodian type (Albilad, Riyadh, or AT)
+      1. Select the custodian type (Albilad, Riyadh, AT, or State Street)
       2. Click the upload button for the selected custodian
       3. Wait for confirmation of successful data upload
       4. Switch to View Data to see the uploaded information
@@ -2481,6 +2481,12 @@ const ModernUploadFiles = () => {
       icon: 'mdi:office-building',
       color: '#FF9800', // Orange
       handler: () => handleCustodianUpload('AT')
+    },
+    {
+      title: 'State Street',
+      icon: 'mdi:bank-outline',
+      color: '#673AB7', // Deep Purple
+      handler: () => handleCustodianUpload('State Street')
     }
   ];
 
@@ -2515,6 +2521,16 @@ const ModernUploadFiles = () => {
       lastUpdated: '2025-05-28 16:45 PM',
       color: '#FF9800', // Orange
       status: 'inactive'
+    },
+    {
+      id: 'statestreet',
+      title: 'State Street Data',
+      owner: 'Md Altaf Raja',
+      ownerAvatar: '/static/images/avatar/5.jpg',
+      records: '1,563',
+      lastUpdated: '2025-05-31 11:20 AM',
+      color: '#673AB7', // Deep Purple
+      status: 'active'
     },
     {
       id: 'apx',
@@ -2553,6 +2569,14 @@ const ModernUploadFiles = () => {
       status: 'Processing',
       icon: 'mdi:office-building',
       color: '#FF9800'
+    },
+    {
+      name: 'State Street Securities',
+      records: 1563,
+      lastUpload: '2025-05-31 11:20 AM',
+      status: 'Completed',
+      icon: 'mdi:bank-outline',
+      color: '#673AB7'
     },
     {
       name: 'APX System Data',
@@ -2778,33 +2802,47 @@ const ModernUploadFiles = () => {
       {/* Main content - full width */}
       <Grid item xs={12}>
         <MainCard
-          title={currentView === 'upload' ? 'Upload Data' : 'View Data'}
-          secondary={
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Button
-                variant={currentView === 'upload' ? 'contained' : 'outlined'}
-                startIcon={<Icon icon="mdi:cloud-upload" />}
-                onClick={() => setCurrentView('upload')}
-                color="primary"
-              >
-                Upload Data
-              </Button>
-              <Button
-                variant={currentView === 'view' ? 'contained' : 'outlined'}
-                startIcon={<Icon icon="mdi:eye" />}
-                onClick={() => setCurrentView('view')}
-                color="secondary"
-              >
-                View Data
-              </Button>
-            </Box>
-          }
+          title="Data Management"
           sx={{
             '& .MuiCardHeader-root': {
               p: 2.5
             }
           }}
         >
+          {/* Main Navigation Tabs */}
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+            <Tabs
+              value={currentView}
+              onChange={(e, newValue) => setCurrentView(newValue)}
+              aria-label="data management tabs"
+              sx={{
+                '& .MuiTabs-indicator': {
+                  height: 3,
+                  borderTopLeftRadius: 3,
+                  borderTopRightRadius: 3
+                },
+                '& .Mui-selected': {
+                  fontWeight: 600
+                }
+              }}
+            >
+              <Tab
+                icon={<Icon icon="mdi:cloud-upload" width={20} />}
+                iconPosition="start"
+                label="Upload Data"
+                value="upload"
+                sx={{ minHeight: 48, px: 2 }}
+              />
+              <Tab
+                icon={<Icon icon="mdi:eye" width={20} />}
+                iconPosition="start"
+                label="View Data"
+                value="view"
+                sx={{ minHeight: 48, px: 2 }}
+              />
+            </Tabs>
+          </Box>
+
           {/* Upload Data View */}
           {currentView === 'upload' && (
             <>
@@ -2857,7 +2895,7 @@ const ModernUploadFiles = () => {
                               Custodian Upload Instructions:
                             </Typography>
                             <Typography component="div" variant="body2">
-                              1. Select the custodian type (Albilad, Riyadh, or AT)
+                              1. Select the custodian type (Albilad, Riyadh, AT, or State Street)
                               <br />
                               2. Click the upload button for the selected custodian
                               <br />
@@ -2893,7 +2931,7 @@ const ModernUploadFiles = () => {
 
                     <Grid container spacing={3} sx={{ mt: 2 }}>
                       {custodianOptions.map((option, index) => (
-                        <Grid item xs={12} md={4} key={index}>
+                        <Grid item xs={12} md={6} lg={3} key={index}>
                           <CustodianUploadAction
                             title={option.title}
                             icon={option.icon}
