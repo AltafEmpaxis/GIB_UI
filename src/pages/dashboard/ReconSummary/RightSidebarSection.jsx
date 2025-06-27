@@ -155,7 +155,7 @@ const RightSidebarSection = () => {
               width={20}
               style={{ marginRight: '8px', color: alpha(theme.palette.primary.contrastText, 0.9) }}
             />
-            Ad Hoc Status
+            ad-hoc Status
           </Typography>
 
           <Stack spacing={2}>
@@ -252,7 +252,7 @@ const RightSidebarSection = () => {
               width={20}
               style={{ marginRight: '8px', color: alpha(theme.palette.primary.contrastText, 0.9) }}
             />
-            Ad Hoc Activities
+            ad-hoc Activities
           </Typography>
 
           <Stack spacing={2}>
@@ -339,7 +339,7 @@ const RightSidebarSection = () => {
             }}
             endIcon={<Icon icon="solar:arrow-right-bold" style={{ color: theme.palette.primary.main }} />}
           >
-            View All Ad Hoc Activities
+            View All ad-hoc Activities
           </Button>
         </Box>
       </Card>

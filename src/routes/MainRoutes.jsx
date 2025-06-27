@@ -10,6 +10,7 @@ import DashboardLayout from 'layout/Dashboard';
 const Home = Loadable(lazy(() => import('pages/home')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const ReconTool = Loadable(lazy(() => import('pages/Upload/ModernUploadFiles')));
+const CustodiansSection = Loadable(lazy(() => import('pages/CustodiansDesign')));
 
 // ==============================|| ROUTING RENDER ||============================== //
 
@@ -36,6 +37,10 @@ const MainRoutes = {
     {
       path: 'dashboard',
       element: <DashboardDefault />
+    },
+    {
+      path: 'custodians-design',
+      element: <CustodiansSection />
     },
     {
       path: 'recon-tool',

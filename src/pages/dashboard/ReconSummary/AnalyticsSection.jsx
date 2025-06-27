@@ -203,7 +203,7 @@ const AnalyticsSection = () => {
               </Typography>
               <Stack spacing={0.5}>
                 <Typography variant="body2" color="textSecondary">
-                  Ad Hoc Reports Generated
+                  ad-hoc Reports Generated
                 </Typography>
                 <Chip
                   size="small"

@@ -6,7 +6,6 @@ import {
   Button,
   Card,
   CircularProgress,
-  Grid,
   IconButton,
   Stack,
   Tab,
@@ -14,13 +13,20 @@ import {
   Typography,
   useTheme
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const CustodiansSection = ({ isLoading }) => {
   const theme = useTheme();
   const [viewMode, setViewMode] = useState('list');
   const [activeTab, setActiveTab] = useState(0);
+  // Add a state to track if ApexCharts is available in the browser environment
+  const [chartReady, setChartReady] = useState(false);
+
+  // Make sure ApexCharts initializes properly in browser environment
+  useEffect(() => {
+    setChartReady(true);
+  }, []);
 
   // Custodian data
   const custodianData = [
@@ -48,7 +54,7 @@ const CustodiansSection = ({ isLoading }) => {
       id: 'at',
       name: 'At Account',
       icon: 'mdi:office-building',
-      color: theme.palette.primary.main,
+      color: theme.palette.warning.main,
       totalAccounts: 76,
       reconciledAccounts: 74,
       unreconciledAccounts: 2,
@@ -56,9 +62,9 @@ const CustodiansSection = ({ isLoading }) => {
     },
     {
       id: 'statestreet',
-      name: 'State Street',
+      name: 'State Street Account',
       icon: 'mdi:domain',
-      color: theme.palette.secondary.main,
+      color: theme.palette.info.main,
       totalAccounts: 56,
       reconciledAccounts: 52,
       unreconciledAccounts: 4,
@@ -74,45 +80,35 @@ const CustodiansSection = ({ isLoading }) => {
     setViewMode(mode);
   };
 
-  // Chart configuration
+  // Define the chart configuration outside of the render function
   const getChartOptions = (custodian) => {
     return {
       chart: {
         type: 'donut',
         background: 'transparent',
-        toolbar: {
-          show: false
-        },
         fontFamily: theme.typography.fontFamily
       },
-      colors: [theme.palette.primary.main, theme.palette.secondary.main || '#f59e0b'],
+      colors: [theme.palette.success.main, theme.palette.warning.main || '#f59e0b'],
       labels: ['Reconciled', 'Unreconciled'],
-      // stroke: {
-      //   width: 0
-      // },
+      stroke: { width: 2, colors: [theme.palette.background.paper] },
       legend: {
-        show: false
-        // position: 'bottom',
-        // fontSize: '13px',
-        // fontWeight: 500,
-        // labels: {
-        //   colors: theme.palette.text.secondary
-        // },
-        // markers: {
-        //   width: 12,
-        //   height: 12,
-        //   radius: 6
-        // },
-        // formatter: function (seriesName, opts) {
-        //   // Add the count value to the legend
-        //   return [seriesName, ': ', opts.w.globals.series[opts.seriesIndex]].join('');
-        // }
+        show: true,
+        position: 'bottom',
+        fontSize: '14px',
+        markers: {
+          width: 12,
+          height: 12,
+          radius: 6
+        }
       },
       dataLabels: {
-        enabled: true
+        enabled: false
       },
       tooltip: {
-        enabled: true
+        enabled: true,
+        y: {
+          formatter: (value) => `${value} accounts`
+        }
       },
       plotOptions: {
         pie: {
@@ -120,16 +116,25 @@ const CustodiansSection = ({ isLoading }) => {
             size: '70%',
             labels: {
               show: true,
-              total: {
-                show: true,
-                fontSize: '16px',
-                label: 'Total',
-                formatter: function () {
-                  return custodian.totalAccounts;
-                }
+              name: {
+                show: true
               },
               value: {
-                show: true
+                show: true,
+                fontSize: '20px',
+                fontWeight: 600,
+                formatter: function (val) {
+                  return val;
+                }
+              },
+              total: {
+                show: true,
+                label: 'Total',
+                fontSize: '16px',
+                fontWeight: 600,
+                formatter: function (w) {
+                  return custodian.totalAccounts;
+                }
               }
             }
           }
@@ -140,10 +145,10 @@ const CustodiansSection = ({ isLoading }) => {
           breakpoint: 480,
           options: {
             chart: {
-              height: 200
+              height: 280
             },
             legend: {
-              show: false
+              position: 'bottom'
             }
           }
         }
@@ -201,15 +206,10 @@ const CustodiansSection = ({ isLoading }) => {
             {custodianData.map((custodian, index) => (
               <Tab
                 key={custodian.id}
-                icon={<Icon icon={custodian.icon} width={20} />}
-                iconPosition="start"
                 label={custodian.name}
                 sx={{
                   minWidth: 'auto',
                   px: 2,
-                  '& .MuiTab-iconWrapper': {
-                    mr: 1
-                  },
                   '&.Mui-selected': {
                     color: custodian.color
                   }
@@ -276,7 +276,7 @@ const CustodiansSection = ({ isLoading }) => {
 
                   {/* Reconciled */}
                   <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h6" fontWeight={600} color="primary.main">
+                    <Typography variant="h6" fontWeight={600} color="success.main">
                       {custodian.reconciledAccounts}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
@@ -289,7 +289,7 @@ const CustodiansSection = ({ isLoading }) => {
                     <Typography
                       variant="h6"
                       fontWeight={600}
-                      color={custodian.unreconciledAccounts > 0 ? 'secondary.main' : 'text.disabled'}
+                      color={custodian.unreconciledAccounts > 0 ? 'warning.main' : 'text.disabled'}
                     >
                       {custodian.unreconciledAccounts}
                     </Typography>
@@ -328,145 +328,120 @@ const CustodiansSection = ({ isLoading }) => {
               <Box
                 key={custodian.id}
                 sx={{
-                  px: 1.5,
+                  p: 3,
                   display: activeTab === index ? 'flex' : 'none',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  flexGrow: 1
+                  flexGrow: 1,
+                  height: '100%'
                 }}
               >
-                {/* Header with bank info
-                <Box sx={{ mb: 3, width: '100%', display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ mb: 2 }}>
                   <Avatar
                     sx={{
                       bgcolor: alpha(custodian.color, 0.1),
                       color: custodian.color,
-                      width: 48,
-                      height: 48,
-                      mr: 2
+                      width: 56,
+                      height: 56,
+                      mb: 1,
+                      mx: 'auto'
                     }}
                   >
-                    <Icon icon={custodian.icon} width={28} />
+                    <Icon icon={custodian.icon} width={32} />
                   </Avatar>
-                  <Box>
-                    <Typography variant="h6">{custodian.name}</Typography>
+                  <Typography variant="h6" align="center">
+                    {custodian.name}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" align="center" display="block">
+                    Last updated: {custodian.lastUpdate}
+                  </Typography>
+                </Box>
+
+                {/* ApexCharts Pie Chart */}
+                <Box
+                  sx={{
+                    mt: 1,
+                    mb: 3,
+                    width: '100%',
+                    maxWidth: 250,
+                    height: 250,
+                    mx: 'auto'
+                  }}
+                >
+                  {chartReady && (
+                    <ReactApexChart
+                      options={getChartOptions(custodian)}
+                      series={chartSeries}
+                      type="donut"
+                      height={350}
+                    />
+                  )}
+                </Box>
+
+                {/* Stats */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, mt: 2 }}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          width: 12,
+                          height: 12,
+                          borderRadius: '50%',
+                          bgcolor: theme.palette.success.main,
+                          mr: 1
+                        }}
+                      />
+                      <Typography variant="h6" fontWeight={600} color="success.main">
+                        {custodian.reconciledAccounts}
+                      </Typography>
+                    </Box>
                     <Typography variant="body2" color="text.secondary">
-                      Last updated: {custodian.lastUpdate}
+                      Reconciled
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Box
+                        sx={{
+                          width: 12,
+                          height: 12,
+                          borderRadius: '50%',
+                          bgcolor:
+                            custodian.unreconciledAccounts > 0
+                              ? theme.palette.warning.main
+                              : alpha(theme.palette.text.disabled, 0.3),
+                          mr: 1
+                        }}
+                      />
+                      <Typography
+                        variant="h6"
+                        fontWeight={600}
+                        color={custodian.unreconciledAccounts > 0 ? 'warning.main' : 'text.disabled'}
+                      >
+                        {custodian.unreconciledAccounts}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      Unreconciled
                     </Typography>
                   </Box>
                 </Box>
-                <Divider sx={{ width: '100%', mb: 3 }} />*/}
-                {/* Chart and details side by side */}
-                <Grid container spacing={3} sx={{ flexGrow: 1, alignItems: 'center' }}>
-                  {/* Left side - Chart */}
-                  <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Box sx={{ width: '100%', maxWidth: 200, height: 200 }}>
-                      <ReactApexChart
-                        options={getChartOptions(custodian)}
-                        series={chartSeries}
-                        type="donut"
-                        height={200}
-                        width="100%"
-                      />
-                    </Box>
-                  </Grid>
 
-                  {/* Right side - Stats and button */}
-                  <Grid item xs={12} md={6}>
-                    <Card
-                      elevation={0}
-                      sx={{
-                        p: 3,
-                        border: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
-                        bgcolor: alpha(theme.palette.background.default, 0.4)
-                      }}
-                    >
-                      <Box sx={{ mb: 2 }}>
-                        <Grid container spacing={1}>
-                          <Grid item xs={6}>
-                            <Typography variant="body2" color="text.secondary">
-                              Total Accounts:
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <Typography variant="body2" fontWeight={600}>
-                              {custodian.totalAccounts}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Box>
-
-                      <Box sx={{ mb: 2 }}>
-                        <Grid container spacing={1}>
-                          <Grid item xs={6}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Box
-                                sx={{
-                                  width: 10,
-                                  height: 10,
-                                  borderRadius: '50%',
-                                  bgcolor: theme.palette.primary.main,
-                                  mr: 1
-                                }}
-                              />
-                              <Typography variant="body2" color="text.secondary">
-                                Reconciled:
-                              </Typography>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <Typography variant="body2" fontWeight={600} color="primary.main">
-                              {custodian.reconciledAccounts}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Box>
-
-                      <Box sx={{ mb: 3 }}>
-                        <Grid container spacing={1}>
-                          <Grid item xs={6}>
-                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Box
-                                sx={{
-                                  width: 10,
-                                  height: 10,
-                                  borderRadius: '50%',
-                                  bgcolor: theme.palette.secondary.main,
-                                  mr: 1
-                                }}
-                              />
-                              <Typography variant="body2" color="text.secondary">
-                                Unreconciled:
-                              </Typography>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={6}>
-                            <Typography
-                              variant="body2"
-                              fontWeight={600}
-                              color={custodian.unreconciledAccounts > 0 ? 'secondary.main' : 'text.disabled'}
-                            >
-                              {custodian.unreconciledAccounts}
-                            </Typography>
-                          </Grid>
-                        </Grid>
-                      </Box>
-
-                      <Button
-                        variant="contained"
-                        fullWidth
-                        sx={{
-                          bgcolor: custodian.color,
-                          '&:hover': {
-                            bgcolor: alpha(custodian.color, 0.8)
-                          }
-                        }}
-                      >
-                        View Account Details
-                      </Button>
-                    </Card>
-                  </Grid>
-                </Grid>
+                <Box sx={{ mt: 'auto', pt: 3 }}>
+                  <Button
+                    variant="contained"
+                    size="medium"
+                    sx={{
+                      bgcolor: custodian.color,
+                      '&:hover': {
+                        bgcolor: alpha(custodian.color, 0.8)
+                      }
+                    }}
+                  >
+                    View Details
+                  </Button>
+                </Box>
               </Box>
             );
           })}
