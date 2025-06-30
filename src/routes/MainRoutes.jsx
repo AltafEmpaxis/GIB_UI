@@ -9,7 +9,7 @@ import DashboardLayout from 'layout/Dashboard';
 // Lazy load components
 const Home = Loadable(lazy(() => import('pages/home')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const ReconTool = Loadable(lazy(() => import('pages/Upload/ModernUploadFiles')));
+const ReconTool = Loadable(lazy(() => import('pages/Upload')));
 const CustodiansSection = Loadable(lazy(() => import('pages/CustodiansDesign')));
 
 // ==============================|| ROUTING RENDER ||============================== //
