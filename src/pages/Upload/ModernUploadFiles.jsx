@@ -41,7 +41,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuth from 'hooks/useAuth';
 import PropTypes from 'prop-types';
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import Swal from 'sweetalert2';
 
 // Components
@@ -2403,6 +2403,242 @@ UploadSteps.propTypes = {
   activeStep: PropTypes.number.isRequired
 };
 
+// Raw Data Table component for custodian uploads
+const RawDataTable = ({ uploadedFiles }) => {
+  const theme = useTheme();
+  const [expandedCustodian, setExpandedCustodian] = useState(null);
+
+  const handleExpandClick = (custodian) => {
+    setExpandedCustodian(expandedCustodian === custodian ? null : custodian);
+  };
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        mt: 3,
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: 2,
+        overflow: 'hidden'
+      }}
+    >
+      <Box
+        sx={{
+          p: 2,
+          bgcolor: alpha(theme.palette.primary.main, 0.05),
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
+        <Typography variant="h6">Raw Data Files</Typography>
+        <Tooltip title="View uploaded raw data files for each custodian">
+          <IconButton size="small">
+            <Icon icon="mdi:information" width={20} />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ bgcolor: alpha(theme.palette.background.default, 0.5) }}>
+              <TableCell width="25%">Custodian</TableCell>
+              <TableCell>Files</TableCell>
+              <TableCell align="center" width="15%">
+                Status
+              </TableCell>
+              <TableCell align="center" width="15%">
+                Actions
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {uploadedFiles.map((custodian) => (
+              <React.Fragment key={custodian.id}>
+                <TableRow
+                  sx={{
+                    '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.02) },
+                    cursor: 'pointer',
+                    bgcolor: expandedCustodian === custodian.id ? alpha(custodian.color, 0.05) : 'inherit'
+                  }}
+                  onClick={() => handleExpandClick(custodian.id)}
+                >
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Avatar
+                        sx={{
+                          bgcolor: alpha(custodian.color, 0.2),
+                          color: custodian.color,
+                          width: 36,
+                          height: 36,
+                          mr: 1.5
+                        }}
+                      >
+                        <Icon icon={custodian.icon} width={20} />
+                      </Avatar>
+                      <Typography variant="subtitle2">{custodian.name}</Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Typography variant="body2">
+                        {custodian.files.length} {custodian.files.length === 1 ? 'file' : 'files'} uploaded
+                      </Typography>
+                      {custodian.files.length > 0 && (
+                        <Chip
+                          size="small"
+                          label={`${formatBytes(custodian.files.reduce((total, file) => total + file.size, 0))}`}
+                          sx={{ ml: 1, height: 20, fontSize: '0.7rem' }}
+                        />
+                      )}
+                    </Box>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Chip
+                      label={custodian.status}
+                      size="small"
+                      color={
+                        custodian.status === 'Processed'
+                          ? 'success'
+                          : custodian.status === 'Processing'
+                            ? 'warning'
+                            : custodian.status === 'Error'
+                              ? 'error'
+                              : 'default'
+                      }
+                      sx={{ minWidth: 85 }}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      size="small"
+                      color="primary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleExpandClick(custodian.id);
+                      }}
+                    >
+                      <Icon
+                        icon={expandedCustodian === custodian.id ? 'mdi:chevron-up' : 'mdi:chevron-down'}
+                        width={20}
+                      />
+                    </IconButton>
+                    {custodian.files.length > 0 && (
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Handle delete action
+                        }}
+                        sx={{ ml: 1 }}
+                      >
+                        <Icon icon="mdi:delete-outline" width={20} />
+                      </IconButton>
+                    )}
+                  </TableCell>
+                </TableRow>
+
+                {/* Expanded section with file details */}
+                {expandedCustodian === custodian.id && (
+                  <TableRow>
+                    <TableCell colSpan={4} sx={{ p: 0, borderBottom: 0 }}>
+                      <Box
+                        sx={{
+                          p: 2,
+                          bgcolor: alpha(custodian.color, 0.03),
+                          borderTop: `1px dashed ${alpha(custodian.color, 0.3)}`,
+                          borderBottom: `1px solid ${theme.palette.divider}`
+                        }}
+                      >
+                        {custodian.files.length > 0 ? (
+                          <List disablePadding dense>
+                            {custodian.files.map((file, index) => (
+                              <ListItem
+                                key={index}
+                                disablePadding
+                                sx={{
+                                  py: 1,
+                                  borderBottom:
+                                    index < custodian.files.length - 1
+                                      ? `1px dashed ${alpha(theme.palette.divider, 0.5)}`
+                                      : 'none'
+                                }}
+                              >
+                                <ListItemIcon sx={{ minWidth: 40 }}>
+                                  {getFileIcon(file.name.split('.').pop().toLowerCase())}
+                                </ListItemIcon>
+                                <ListItemText
+                                  primary={file.name}
+                                  secondary={`${formatBytes(file.size)} • Uploaded ${file.uploadTime}`}
+                                  primaryTypographyProps={{ variant: 'body2', fontWeight: 500 }}
+                                  secondaryTypographyProps={{ variant: 'caption' }}
+                                />
+                                <Chip
+                                  label={file.status}
+                                  size="small"
+                                  color={
+                                    file.status === 'Valid'
+                                      ? 'success'
+                                      : file.status === 'Processing'
+                                        ? 'warning'
+                                        : 'error'
+                                  }
+                                  sx={{ height: 20, fontSize: '0.7rem', minWidth: 70 }}
+                                />
+                                <IconButton size="small" sx={{ ml: 1 }}>
+                                  <Icon icon="mdi:eye" width={18} />
+                                </IconButton>
+                              </ListItem>
+                            ))}
+                          </List>
+                        ) : (
+                          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 3 }}>
+                            <Icon
+                              icon="mdi:file-upload-outline"
+                              width={24}
+                              style={{ color: alpha(theme.palette.text.secondary, 0.5), marginRight: 8 }}
+                            />
+                            <Typography variant="body2" color="text.secondary">
+                              No files uploaded yet. Use the upload section above to add files.
+                            </Typography>
+                          </Box>
+                        )}
+
+                        {custodian.files.length > 0 && (
+                          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                            <Button size="small" startIcon={<Icon icon="mdi:refresh" width={18} />} sx={{ mr: 1 }}>
+                              Refresh
+                            </Button>
+                            <Button
+                              size="small"
+                              color="primary"
+                              variant="contained"
+                              startIcon={<Icon icon="mdi:database-import" width={18} />}
+                            >
+                              Process Files
+                            </Button>
+                          </Box>
+                        )}
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
+};
+
+RawDataTable.propTypes = {
+  uploadedFiles: PropTypes.array.isRequired
+};
+
 // Main component
 const ModernUploadFiles = () => {
   const theme = useTheme();
@@ -2416,6 +2652,103 @@ const ModernUploadFiles = () => {
   const [selectedDataCategory, setSelectedDataCategory] = useState(null);
   const [uploadStep, setUploadStep] = useState(0); // Track upload step for the progress indicator
   const [activeFilter, setActiveFilter] = useState(null); // New state to track active filter
+
+  // Sample uploaded files data for each custodian
+  const [custodianFiles, setCustodianFiles] = useState([
+    {
+      id: 'albilad',
+      name: 'Albilad',
+      icon: 'mdi:bank',
+      color: theme.palette.primary.main,
+      status: 'Ready',
+      files: [
+        {
+          name: 'Albilad_Monthly_Report_May2025.xlsx',
+          size: 2456789,
+          type: 'xlsx',
+          uploadTime: '2 hours ago',
+          status: 'Valid'
+        },
+        {
+          name: 'Albilad_Transactions_Q2.csv',
+          size: 1245678,
+          type: 'csv',
+          uploadTime: '2 hours ago',
+          status: 'Valid'
+        }
+      ]
+    },
+    {
+      id: 'riyadh',
+      name: 'Riyadh',
+      icon: 'mdi:city',
+      color: theme.palette.secondary.main,
+      status: 'Processed',
+      files: [
+        {
+          name: 'Riyadh_Portfolio_Summary.xlsx',
+          size: 3456789,
+          type: 'xlsx',
+          uploadTime: '1 day ago',
+          status: 'Valid'
+        }
+      ]
+    },
+    {
+      id: 'at',
+      name: 'AT',
+      icon: 'mdi:office-building',
+      color: '#FF9800',
+      status: 'Processing',
+      files: [
+        {
+          name: 'AT_Holdings_Report.xlsx',
+          size: 5678901,
+          type: 'xlsx',
+          uploadTime: '3 hours ago',
+          status: 'Processing'
+        },
+        {
+          name: 'AT_Cash_Positions.csv',
+          size: 987654,
+          type: 'csv',
+          uploadTime: '3 hours ago',
+          status: 'Processing'
+        },
+        {
+          name: 'AT_Securities_List.pdf',
+          size: 3456789,
+          type: 'pdf',
+          uploadTime: '3 hours ago',
+          status: 'Valid'
+        }
+      ]
+    },
+    {
+      id: 'statestreet',
+      name: 'State Street',
+      icon: 'mdi:bank-outline',
+      color: '#673AB7',
+      status: 'Error',
+      files: [
+        {
+          name: 'StateStreet_Daily_NAV.xlsx',
+          size: 1234567,
+          type: 'xlsx',
+          uploadTime: '5 hours ago',
+          status: 'Error'
+        },
+        {
+          name: 'StateStreet_Positions.csv',
+          size: 2345678,
+          type: 'csv',
+          uploadTime: '5 hours ago',
+          status: 'Valid'
+        }
+      ]
+    }
+  ]);
+
   const [recentUploads, setRecentUploads] = useState([
     {
       id: 1,
@@ -2630,6 +2963,27 @@ const ModernUploadFiles = () => {
 
         // Set to complete step
         setUploadStep(3);
+
+        // Add mock file to the custodian files
+        const mockFile = {
+          name: `${custodianType}_Data_${new Date().toISOString().split('T')[0]}.xlsx`,
+          size: Math.floor(Math.random() * 5000000) + 1000000,
+          type: 'xlsx',
+          uploadTime: 'Just now',
+          status: 'Valid'
+        };
+
+        setCustodianFiles((prev) =>
+          prev.map((custodian) =>
+            custodian.name === custodianType
+              ? {
+                  ...custodian,
+                  files: [...custodian.files, mockFile],
+                  status: 'Processing'
+                }
+              : custodian
+          )
+        );
 
         // Show success notification after completion
         setTimeout(() => {
@@ -2941,6 +3295,9 @@ const ModernUploadFiles = () => {
                         </Grid>
                       ))}
                     </Grid>
+
+                    {/* Raw Data Table for uploaded files */}
+                    <RawDataTable uploadedFiles={custodianFiles} />
                   </Box>
                 </>
               )}
@@ -2993,317 +3350,272 @@ const ModernUploadFiles = () => {
                       </Tooltip>
                     </Box>
 
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        mt: 3,
-                        p: 0,
-                        borderRadius: 2,
-                        border: 1,
-                        borderColor: alpha(theme.palette.success.main, 0.3),
-                        overflow: 'hidden'
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          width: '100%',
-                          height: 120,
-                          position: 'relative',
-                          bgcolor: alpha(theme.palette.success.main, 0.05),
-                          borderBottom: 1,
-                          borderColor: alpha(theme.palette.success.main, 0.2)
-                        }}
-                      >
-                        <Box
+                    <Grid container spacing={3} sx={{ mt: 2 }}>
+                      {/* APX Connection Status Card */}
+                      <Grid item xs={12} md={6}>
+                        <Card
+                          elevation={0}
                           sx={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
                             height: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
+                            borderRadius: 2,
+                            border: `1px solid ${alpha(theme.palette.success.main, 0.3)}`,
+                            overflow: 'hidden'
                           }}
                         >
                           <Box
                             sx={{
+                              p: 2,
+                              bgcolor: alpha(theme.palette.success.main, 0.05),
+                              borderBottom: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
                               display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              flexDirection: 'column'
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
                             }}
                           >
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                mb: 1
-                              }}
-                            >
-                              <Box
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <Avatar
                                 sx={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  alignItems: 'center',
+                                  bgcolor: alpha(theme.palette.success.main, 0.2),
+                                  color: theme.palette.success.main,
+                                  width: 40,
+                                  height: 40,
                                   mr: 2
                                 }}
                               >
-                                <Avatar
-                                  sx={{
-                                    width: 48,
-                                    height: 48,
-                                    bgcolor: alpha(theme.palette.success.main, 0.2),
-                                    color: theme.palette.success.main,
-                                    mb: 1
-                                  }}
-                                >
-                                  <Icon icon="mdi:server" width={24} />
-                                </Avatar>
-                                <Typography variant="caption" color="text.secondary">
-                                  APX Server
+                                <Icon icon="mdi:server-network" width={24} />
+                              </Avatar>
+                              <Box>
+                                <Typography variant="h6">APX Connection</Typography>
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                  <Box
+                                    sx={{
+                                      width: 8,
+                                      height: 8,
+                                      borderRadius: '50%',
+                                      bgcolor: theme.palette.success.main,
+                                      mr: 1
+                                    }}
+                                  />
+                                  <Typography variant="caption" color="success.main" fontWeight={500}>
+                                    Ready to Connect
+                                  </Typography>
+                                </Box>
+                              </Box>
+                            </Box>
+                            <IconButton color="primary" size="small">
+                              <Icon icon="mdi:refresh" width={20} />
+                            </IconButton>
+                          </Box>
+
+                          <CardContent sx={{ p: 3 }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+                              <Box>
+                                <Typography variant="body2" color="text.secondary">
+                                  Last Sync
+                                </Typography>
+                                <Typography variant="subtitle2">Today, 10:45 AM</Typography>
+                              </Box>
+                              <Box>
+                                <Typography variant="body2" color="text.secondary" align="right">
+                                  Status
+                                </Typography>
+                                <Typography variant="subtitle2" color="success.main" align="right">
+                                  Online
                                 </Typography>
                               </Box>
+                            </Box>
 
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                               <Box
                                 sx={{
                                   display: 'flex',
                                   alignItems: 'center',
-                                  width: 80,
-                                  height: 4,
-                                  mx: 2,
+                                  justifyContent: 'center',
+                                  width: 48,
+                                  height: 48,
+                                  borderRadius: '50%',
                                   bgcolor: alpha(theme.palette.primary.main, 0.1),
-                                  borderRadius: 2,
-                                  position: 'relative',
-                                  overflow: 'hidden'
+                                  mr: 2
                                 }}
                               >
+                                <Icon icon="mdi:database" color={theme.palette.primary.main} width={24} />
+                              </Box>
+                              <Box sx={{ flexGrow: 1 }}>
                                 <Box
                                   sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    height: '100%',
-                                    width: '30%',
-                                    bgcolor: theme.palette.primary.main,
-                                    animation: 'pulse 1.5s infinite',
-                                    '@keyframes pulse': {
-                                      '0%': {
-                                        transform: 'translateX(-100%)'
-                                      },
-                                      '100%': {
-                                        transform: 'translateX(400%)'
-                                      }
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    mb: 0.5
+                                  }}
+                                >
+                                  <Typography variant="body2">Available APX Data</Typography>
+                                  <Typography variant="body2" fontWeight={600}>
+                                    4 Categories
+                                  </Typography>
+                                </Box>
+                                <LinearProgress
+                                  variant="determinate"
+                                  value={100}
+                                  sx={{
+                                    height: 6,
+                                    borderRadius: 3,
+                                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                                    '& .MuiLinearProgress-bar': {
+                                      bgcolor: theme.palette.primary.main
                                     }
                                   }}
                                 />
                               </Box>
-
-                              <Box
-                                sx={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  alignItems: 'center',
-                                  ml: 2
-                                }}
-                              >
-                                <Avatar
-                                  sx={{
-                                    width: 48,
-                                    height: 48,
-                                    bgcolor: alpha(theme.palette.primary.main, 0.2),
-                                    color: theme.palette.primary.main,
-                                    mb: 1
-                                  }}
-                                >
-                                  <Icon icon="mdi:database" width={24} />
-                                </Avatar>
-                                <Typography variant="caption" color="text.secondary">
-                                  Your System
-                                </Typography>
-                              </Box>
                             </Box>
 
-                            {/* Add system status indicator */}
+                            <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                              <Chip
+                                icon={<Icon icon="mdi:file-chart" width={16} />}
+                                label="Portfolio Data"
+                                size="small"
+                                sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1) }}
+                              />
+                              <Chip
+                                icon={<Icon icon="mdi:chart-timeline" width={16} />}
+                                label="Transactions"
+                                size="small"
+                                sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }}
+                              />
+                            </Stack>
+                            <Stack direction="row" spacing={1}>
+                              <Chip
+                                icon={<Icon icon="mdi:currency-usd" width={16} />}
+                                label="Holdings"
+                                size="small"
+                                sx={{ bgcolor: alpha(theme.palette.info.main, 0.1) }}
+                              />
+                              <Chip
+                                icon={<Icon icon="mdi:account-cash" width={16} />}
+                                label="Cash Balances"
+                                size="small"
+                                sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1) }}
+                              />
+                            </Stack>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+
+                      {/* APX Data Import Card */}
+                      <Grid item xs={12} md={6}>
+                        <Card
+                          elevation={0}
+                          sx={{
+                            height: '100%',
+                            borderRadius: 2,
+                            border: `1px solid ${alpha(theme.palette.primary.main, 0.3)}`,
+                            display: 'flex',
+                            flexDirection: 'column'
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              p: 2,
+                              bgcolor: alpha(theme.palette.primary.main, 0.05),
+                              borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center'
+                            }}
+                          >
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <Avatar
+                                sx={{
+                                  bgcolor: alpha(theme.palette.primary.main, 0.2),
+                                  color: theme.palette.primary.main,
+                                  width: 40,
+                                  height: 40,
+                                  mr: 2
+                                }}
+                              >
+                                <Icon icon="mdi:database-import" width={24} />
+                              </Avatar>
+                              <Typography variant="h6">APX Data Import</Typography>
+                            </Box>
+                          </Box>
+
+                          <CardContent sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                              Import financial data from APX system for reconciliation and reporting. Click the button
+                              below to start the data loading process.
+                            </Typography>
+
                             <Box
                               sx={{
+                                flexGrow: 1,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                mt: 1
+                                mb: 3
                               }}
                             >
                               <Box
                                 sx={{
-                                  width: 10,
-                                  height: 10,
+                                  width: 120,
+                                  height: 120,
                                   borderRadius: '50%',
-                                  bgcolor: theme.palette.success.main,
-                                  mr: 1
+                                  border: `3px dashed ${alpha(theme.palette.primary.main, 0.3)}`,
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  position: 'relative'
                                 }}
-                              />
-                              <Typography variant="caption" color="success.main">
-                                System Ready
-                              </Typography>
-                              <Divider orientation="vertical" flexItem sx={{ mx: 2, height: 14 }} />
-                              <Icon
-                                icon="mdi:clock-outline"
-                                width={14}
-                                style={{ color: theme.palette.text.secondary, marginRight: 4 }}
-                              />
-                              <Typography variant="caption" color="text.secondary">
-                                Last sync: Today, 10:45 AM
-                              </Typography>
+                              >
+                                <Icon
+                                  icon="mdi:database-import"
+                                  width={50}
+                                  height={50}
+                                  color={theme.palette.primary.main}
+                                />
+                                <Box
+                                  sx={{
+                                    position: 'absolute',
+                                    top: -5,
+                                    right: -5,
+                                    width: 30,
+                                    height: 30,
+                                    borderRadius: '50%',
+                                    bgcolor: theme.palette.success.main,
+                                    color: '#fff',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center'
+                                  }}
+                                >
+                                  <Icon icon="mdi:check-bold" width={18} />
+                                </Box>
+                              </Box>
                             </Box>
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Paper>
-                  </Box>
 
-                  <Box sx={{ p: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Avatar
-                        sx={{
-                          bgcolor: theme.palette.success.main,
-                          mr: 2,
-                          width: 44,
-                          height: 44
-                        }}
-                      >
-                        <Icon icon="mdi:database-import" width={24} />
-                      </Avatar>
-                      <Box>
-                        <Typography variant="h5">APX Data Loading</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Load financial data from APX system
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    {/* Data types section */}
-                    <Box sx={{ mb: 3, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                      <Chip
-                        icon={<Icon icon="mdi:file-chart" width={16} />}
-                        label="Portfolio Data"
-                        size="small"
-                        sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1) }}
-                      />
-                      <Chip
-                        icon={<Icon icon="mdi:chart-timeline" width={16} />}
-                        label="Transactions"
-                        size="small"
-                        sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1) }}
-                      />
-                      <Chip
-                        icon={<Icon icon="mdi:currency-usd" width={16} />}
-                        label="Holdings"
-                        size="small"
-                        sx={{ bgcolor: alpha(theme.palette.info.main, 0.1) }}
-                      />
-                      <Chip
-                        icon={<Icon icon="mdi:account-cash" width={16} />}
-                        label="Cash Balances"
-                        size="small"
-                        sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1) }}
-                      />
-                    </Box>
-
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="success"
-                      size="large"
-                      startIcon={<Icon icon="mdi:database-import" width={22} />}
-                      onClick={handleLoadAPXData}
-                      sx={{
-                        py: 1.2,
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                        borderRadius: 2,
-                        boxShadow: theme.shadows[5],
-                        '&:hover': {
-                          boxShadow: theme.shadows[8]
-                        }
-                      }}
-                    >
-                      Load APX Data
-                    </Button>
-
-                    {/* Data loading process information */}
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        mt: 3,
-                        p: 2,
-                        bgcolor: alpha(theme.palette.info.main, 0.05),
-                        border: `1px solid ${alpha(theme.palette.info.main, 0.2)}`,
-                        borderRadius: 1
-                      }}
-                    >
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                        <Icon
-                          icon="mdi:information-outline"
-                          style={{ color: theme.palette.info.main, marginRight: 8 }}
-                        />
-                        <Typography variant="subtitle2" color="info.main">
-                          About APX Data Loading
-                        </Typography>
-                      </Box>
-
-                      <Typography variant="body2" color="text.secondary">
-                        The APX data loading process retrieves current financial data through a secure connection to the
-                        APX server. This data includes portfolio details, current positions, transactions, and cash
-                        balances.
-                      </Typography>
-
-                      <Grid container spacing={2} sx={{ mt: 1 }}>
-                        <Grid item xs={6}>
-                          <List dense disablePadding>
-                            <ListItem disableGutters>
-                              <ListItemIcon sx={{ minWidth: 36 }}>
-                                <Icon icon="mdi:check-circle" style={{ color: theme.palette.success.main }} />
-                              </ListItemIcon>
-                              <ListItemText
-                                primary="Automated data retrieval"
-                                primaryTypographyProps={{ variant: 'caption' }}
-                              />
-                            </ListItem>
-                            <ListItem disableGutters>
-                              <ListItemIcon sx={{ minWidth: 36 }}>
-                                <Icon icon="mdi:check-circle" style={{ color: theme.palette.success.main }} />
-                              </ListItemIcon>
-                              <ListItemText
-                                primary="Encrypted data transfer"
-                                primaryTypographyProps={{ variant: 'caption' }}
-                              />
-                            </ListItem>
-                          </List>
-                        </Grid>
-                        <Grid item xs={6}>
-                          <List dense disablePadding>
-                            <ListItem disableGutters>
-                              <ListItemIcon sx={{ minWidth: 36 }}>
-                                <Icon icon="mdi:check-circle" style={{ color: theme.palette.success.main }} />
-                              </ListItemIcon>
-                              <ListItemText
-                                primary="Automated validation"
-                                primaryTypographyProps={{ variant: 'caption' }}
-                              />
-                            </ListItem>
-                            <ListItem disableGutters>
-                              <ListItemIcon sx={{ minWidth: 36 }}>
-                                <Icon icon="mdi:check-circle" style={{ color: theme.palette.success.main }} />
-                              </ListItemIcon>
-                              <ListItemText
-                                primary="Full data reconciliation"
-                                primaryTypographyProps={{ variant: 'caption' }}
-                              />
-                            </ListItem>
-                          </List>
-                        </Grid>
+                            <Button
+                              fullWidth
+                              variant="contained"
+                              color="primary"
+                              size="large"
+                              startIcon={<Icon icon="mdi:database-import" width={22} />}
+                              onClick={handleLoadAPXData}
+                              sx={{
+                                py: 1.2,
+                                fontSize: '1rem',
+                                fontWeight: 500,
+                                borderRadius: 2,
+                                boxShadow: theme.shadows[5],
+                                '&:hover': {
+                                  boxShadow: theme.shadows[8]
+                                }
+                              }}
+                            >
+                              Load APX Data
+                            </Button>
+                          </CardContent>
+                        </Card>
                       </Grid>
-                    </Paper>
+                    </Grid>
                   </Box>
                 </>
               )}
