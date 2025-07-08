@@ -1,8 +1,8 @@
 import { Navigate, useLocation, useRoutes } from 'react-router';
 
+import UnderConstruction from 'pages/UnderConstruction';
 import LoginRoutes from './LoginRoutes';
 import MainRoutes from './MainRoutes';
-import NotFound from './NotFound';
 
 // ==============================|| ROUTING RENDER ||============================== //
 
@@ -18,7 +18,7 @@ const IndexRoutes = () => {
     },
     {
       path: '/not-found',
-      element: <NotFound />
+      element: <UnderConstruction />
     },
     {
       path: '*',

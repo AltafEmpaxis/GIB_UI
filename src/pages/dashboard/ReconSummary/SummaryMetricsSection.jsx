@@ -1,8 +1,26 @@
 import { Icon } from '@iconify/react';
-import { alpha, Avatar, Box, Card, Chip, Grid, LinearProgress, Stack, Typography, useTheme } from '@mui/material';
+import {
+  alpha,
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Chip,
+  Grid,
+  LinearProgress,
+  Stack,
+  Typography,
+  useTheme
+} from '@mui/material';
+import { useNavigate } from 'react-router';
 
 const SummaryMetricsSection = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const handleViewReconcileDetails = () => {
+    navigate('/detail-recon-tool');
+  };
 
   return (
     <Grid container spacing={2}>
@@ -13,8 +31,15 @@ const SummaryMetricsSection = () => {
             height: '100%',
             bgcolor: theme.palette.primary.main,
             color: theme.palette.common.white,
-            p: 2
+            p: 2,
+            cursor: 'pointer',
+            '&:hover': {
+              boxShadow: theme.shadows[10],
+              transform: 'translateY(-2px)',
+              transition: 'all 0.3s'
+            }
           }}
+          onClick={handleViewReconcileDetails}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <Typography variant="body2" sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}>
@@ -42,6 +67,22 @@ const SummaryMetricsSection = () => {
           >
             +8% from previous
           </Typography>
+          <Button
+            size="small"
+            variant="contained"
+            fullWidth
+            sx={{
+              bgcolor: alpha('#fff', 0.25),
+              color: '#fff',
+              fontSize: '0.7rem',
+              mt: 1.5,
+              '&:hover': {
+                bgcolor: alpha('#fff', 0.35)
+              }
+            }}
+          >
+            View Detail
+          </Button>
         </Card>
       </Grid>
 
@@ -52,8 +93,15 @@ const SummaryMetricsSection = () => {
             height: '100%',
             bgcolor: theme.palette.secondary.main,
             color: theme.palette.common.white,
-            p: 2
+            p: 2,
+            cursor: 'pointer',
+            '&:hover': {
+              boxShadow: theme.shadows[10],
+              transform: 'translateY(-2px)',
+              transition: 'all 0.3s'
+            }
           }}
+          onClick={handleViewReconcileDetails}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <Typography variant="body2" sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}>
@@ -81,6 +129,22 @@ const SummaryMetricsSection = () => {
           >
             -3.2% from yesterday
           </Typography>
+          <Button
+            size="small"
+            variant="contained"
+            fullWidth
+            sx={{
+              bgcolor: alpha('#fff', 0.25),
+              color: '#fff',
+              fontSize: '0.7rem',
+              mt: 1.5,
+              '&:hover': {
+                bgcolor: alpha('#fff', 0.35)
+              }
+            }}
+          >
+            View Detail
+          </Button>
         </Card>
       </Grid>
 

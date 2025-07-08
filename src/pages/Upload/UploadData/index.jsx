@@ -23,7 +23,6 @@ import { alpha } from '@mui/material/styles';
 import CustodianUploadAction from 'components/Upload/CustodianUploadAction';
 import NotificationBar from 'components/Upload/NotificationBar';
 import React, { useState } from 'react';
-import APXDataFlow from './APXData';
 
 // Format bytes to human readable format
 const formatBytes = (bytes, decimals = 2) => {
@@ -677,124 +676,106 @@ const UploadData = ({ isLoading }) => {
       {activeTab === 'apx' && (
         <>
           <Box sx={{ mt: 1, mb: 3 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
               <Typography variant="body1" color="text.secondary" sx={{ mr: 1 }}>
                 Connect to APX system and import financial data for reconciliation and reporting. The system securely
                 retrieves current portfolio data and prepares it for analysis.
               </Typography>
-              <Tooltip
-                title={
-                  <Box sx={{ p: 0.5 }}>
-                    <Typography variant="subtitle2" sx={{ mb: 1 }}>
-                      APX Process Instructions:
-                    </Typography>
-                    <Typography component="div" variant="caption">
-                      <ol style={{ paddingLeft: '16px', margin: 0 }}>
-                        <li>Click the &quot;Connect APX&quot; button to establish connection</li>
-                        <li>Select portfolios and date range for retrieval</li>
-                        <li>System will process and normalize the data</li>
-                        <li>Generated reports will be available for review</li>
-                      </ol>
-                    </Typography>
-                  </Box>
-                }
-                placement="right"
-              >
-                <IconButton size="small" color="primary" sx={{ ml: 0.5 }}>
-                  <Icon icon="mdi:information-outline" fontSize={20} />
-                </IconButton>
-              </Tooltip>
+              <InstructionTooltip
+                text="1. Click the 'Load APX Data' button to initiate the server-side process
+                      2. Wait for confirmation of successful data loading
+                      3. The data will be available in the View Data section"
+              />
             </Box>
 
-            {/* Add global style for animations */}
-            <style jsx global>{`
-              @keyframes spin {
-                from {
-                  transform: rotate(0deg);
-                }
-                to {
-                  transform: rotate(360deg);
-                }
-              }
-              .spinning {
-                animation: spin 3s linear infinite;
-              }
-              @keyframes pulse {
-                0% {
-                  box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-                }
-                70% {
-                  box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-                }
-                100% {
-                  box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
-                }
-              }
-            `}</style>
-
-            <APXDataFlow />
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                startIcon={<Icon icon="mdi:database-import" />}
-                onClick={() => handleLoadAPXData()}
-                sx={{
-                  bgcolor: alpha(theme.palette.primary.main, 0.8),
-                  '&:hover': { bgcolor: theme.palette.primary.main }
-                }}
-              >
-                Connect APX
-              </Button>
-            </Box>
-          </Box>
-
-          {/* Placeholder for APX data integration */}
-          <Box sx={{ mt: 2, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>
-              Connected APX Data Sources
-            </Typography>
-
-            {/* Render placeholder for APX data sources */}
-            <Grid container spacing={2}>
-              {/* Placeholders for APX data sources */}
-              {[1, 2, 3, 4].map((item) => (
-                <Grid item xs={12} sm={6} md={3} key={item}>
-                  <Paper
-                    elevation={0}
+            <Grid container spacing={3} sx={{ mt: 2 }}>
+              {/* APX Data Import Card */}
+              <Grid item xs={12} md={6} sx={{ mx: 'auto' }}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    height: '100%',
+                    borderRadius: 2,
+                    border: `1px solid ${alpha(theme.palette.primary.main, 0.3)}`,
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <Box
                     sx={{
                       p: 2,
-                      border: `1px solid ${theme.palette.divider}`,
-                      bgcolor: alpha(theme.palette.background.paper, 0.7),
-                      borderRadius: 2,
-                      height: '100%'
+                      bgcolor: alpha(theme.palette.primary.main, 0.05),
+                      borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center'
                     }}
                   >
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Avatar
                         sx={{
-                          bgcolor: alpha(theme.palette.primary.main, 0.1),
+                          bgcolor: alpha(theme.palette.primary.main, 0.2),
                           color: theme.palette.primary.main,
-                          width: 34,
-                          height: 34,
-                          mr: 1.5
+                          width: 40,
+                          height: 40,
+                          mr: 2
                         }}
                       >
-                        <Icon
-                          icon={['mdi:database', 'mdi:chart-box', 'mdi:file-chart', 'mdi:account-details'][item - 1]}
-                          width={20}
-                        />
+                        <Icon icon="mdi:database-import" width={24} />
                       </Avatar>
-                      <Typography variant="subtitle2">APX Source {item}</Typography>
+                      <Typography variant="h6">APX Data Import</Typography>
                     </Box>
-                    <Typography variant="body2" color="text.secondary">
-                      Last updated: Today
+                  </Box>
+
+                  <Box sx={{ p: 3, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+                      Import financial data from APX system for reconciliation and reporting. Click the button below to
+                      start the data loading process.
                     </Typography>
-                  </Paper>
-                </Grid>
-              ))}
+
+                    <Box
+                      sx={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        mb: 3
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 120,
+                          height: 120,
+                          borderRadius: '50%',
+                          border: `3px dashed ${alpha(theme.palette.primary.main, 0.3)}`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Icon icon="mdi:database-import" width={50} height={50} color={theme.palette.primary.main} />
+                      </Box>
+                    </Box>
+
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                      startIcon={<Icon icon="mdi:database-import" width={22} />}
+                      onClick={handleLoadAPXData}
+                      sx={{
+                        py: 1.2,
+                        fontSize: '1rem',
+                        fontWeight: 500,
+                        borderRadius: 2
+                      }}
+                    >
+                      Load APX Data
+                    </Button>
+                  </Box>
+                </Paper>
+              </Grid>
             </Grid>
           </Box>
         </>

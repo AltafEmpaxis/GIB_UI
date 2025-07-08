@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { Box, Divider, IconButton, Stack, Tab, Tabs, Tooltip, Typography, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
 import { useEffect, useMemo, useState } from 'react';
+import DetailReconTool from './DetailReconTool';
 import UploadData from './UploadData';
 import ViewData from './ViewData';
 
@@ -33,6 +34,13 @@ const Upload = () => {
         label: 'View Data',
         icon: <Icon icon="mdi:eye" width={20} height={20} />,
         component: <ViewData isLoading={isLoading} />,
+        color: theme.palette.secondary.main
+      },
+      {
+        value: 'detailReconTool',
+        label: 'Detail Recon Tool',
+        icon: <Icon icon="mdi:eye" width={20} height={20} />,
+        component: <DetailReconTool />,
         color: theme.palette.secondary.main
       }
     ],

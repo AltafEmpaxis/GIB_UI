@@ -26,14 +26,8 @@ const pages = {
       url: '/user-management',
       icon: icons.UserManagementOutlined,
       roles: ['admin'] // Only admin can access
-    },
-    {
-      id: 'changelog',
-      title: 'Changelog',
-      type: 'item',
-      url: '/changelog',
-      icon: icons.HistoryOutlined
     }
+
     // {
     //   id: 'profile',
     //   title: 'Profile',

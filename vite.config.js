@@ -74,40 +74,28 @@ export default ({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'core-vendor': ['react', 'react-dom', 'react-router'], // Core React dependencies
-            'ui-vendor': [
-              // Material-UI dependencies
+            'core-vendor': ['react', 'react-dom', 'react-router'],
+            'mui-vendor': [
               '@mui/material',
               '@mui/icons-material',
               '@emotion/react',
               '@emotion/styled',
               '@mui/system'
             ],
-            'animation-vendor': ['framer-motion', '@iconify/react'], // Animation dependencies
-            'table-vendor': ['material-react-table'], // Table library
-            'table-components': [
-              // Custom table components
-              'src/components/Table/Columns/Columns.jsx',
-              'src/components/Table/ReusableTable.jsx'
-            ],
-            'changelog': [
-              // Changelog components
-              'src/pages/Changelog/Changelog.jsx',
-              'src/components/@extended/Markdown.jsx'
-            ],
+            'animation-vendor': ['framer-motion', '@iconify/react'],
+            'table-vendor': ['material-react-table'],
             'form-vendor': [
-              // Form-related dependencies
               'react-hook-form',
               '@hookform/resolvers',
               'yup'
             ],
             'chart-vendor': [
-              // Chart-related dependencies
               'apexcharts',
               'react-apexcharts'
             ]
           }
-        }
+        },
+        preserveEntrySignatures: false // Helps reduce file handle usage
       },
       // Exclude documentation files from build
       exclude: ['CHANGELOG.md', 'README.md', 'LICENSE', 'docs/**/*']
@@ -116,11 +104,11 @@ export default ({ mode }) => {
     // Dependency optimization
     optimizeDeps: {
       include: [
-        // Dependencies to pre-bundle
         'react',
         'react-dom',
         'react-router',
         '@mui/material',
+        '@mui/icons-material',
         'material-react-table',
         'framer-motion',
         'react-hook-form',

@@ -16,9 +16,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import { useNavigate } from 'react-router';
 
 const CustodiansSection = ({ isLoading }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = useState('list');
   const [activeTab, setActiveTab] = useState(0);
 
@@ -72,6 +74,10 @@ const CustodiansSection = ({ isLoading }) => {
 
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
+  };
+
+  const handleNavigateToDetailRecon = (custodianId) => {
+    navigate('/detail-recon-tool');
   };
 
   // Chart configuration
@@ -302,6 +308,7 @@ const CustodiansSection = ({ isLoading }) => {
                   <Button
                     variant="outlined"
                     size="small"
+                    onClick={() => handleNavigateToDetailRecon(custodian.id)}
                     sx={{
                       minWidth: 80,
                       borderColor: alpha(custodian.color, 0.5),
@@ -455,6 +462,7 @@ const CustodiansSection = ({ isLoading }) => {
                       <Button
                         variant="contained"
                         fullWidth
+                        onClick={() => handleNavigateToDetailRecon(custodian.id)}
                         sx={{
                           bgcolor: custodian.color,
                           '&:hover': {

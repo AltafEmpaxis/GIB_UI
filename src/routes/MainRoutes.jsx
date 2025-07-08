@@ -5,12 +5,14 @@ import RoleBasedGuard from './Guard/RoleBasedGuard';
 // Components
 import Loadable from 'components/Loader/Loadable';
 import DashboardLayout from 'layout/Dashboard';
+import AuthGuard from 'routes/Guard/AuthGuard';
 
 // Lazy load components
 const Home = Loadable(lazy(() => import('pages/home')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
 const ReconTool = Loadable(lazy(() => import('pages/Upload')));
 const CustodiansSection = Loadable(lazy(() => import('pages/CustodiansDesign')));
+const DetailReconTool = Loadable(lazy(() => import('pages/Upload/DetailReconTool')));
 
 // ==============================|| ROUTING RENDER ||============================== //
 
@@ -21,9 +23,9 @@ const UnderConstruction = Loadable(lazy(() => import('pages/UnderConstruction'))
 const MainRoutes = {
   path: '/',
   element: (
-    // <AuthGuard>
-    <DashboardLayout />
-    // </AuthGuard>
+    <AuthGuard>
+      <DashboardLayout />
+    </AuthGuard>
   ),
   children: [
     {
@@ -45,6 +47,10 @@ const MainRoutes = {
     {
       path: 'recon-tool',
       element: <ReconTool />
+    },
+    {
+      path: 'detail-recon-tool',
+      element: <DetailReconTool />
     },
     {
       path: 'user-management',
