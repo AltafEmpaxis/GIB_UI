@@ -4,8 +4,6 @@ import { alpha } from '@mui/material/styles';
 // ==============================|| OVERRIDES - BUTTON GROUP ||============================== //
 
 export default function ButtonGroup(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   const getColorStyle = (color) => {
     const colors = theme.palette[color];
 
@@ -22,7 +20,7 @@ export default function ButtonGroup(theme) {
             backgroundColor:
               color === 'secondary'
                 ? theme.palette.primary.main // For secondary (gold) buttons, hover to dark gray
-                : isDark
+                : theme.palette.mode === 'dark'
                   ? alpha(colors.main, 0.85)
                   : colors.dark
           },
@@ -93,13 +91,22 @@ export default function ButtonGroup(theme) {
 
         // Size variations
         sizeLarge: {
-          height: 48
+          height: {
+            xs: 44,
+            sm: 48
+          }
         },
         sizeMedium: {
-          height: 40
+          height: {
+            xs: 36,
+            sm: 40
+          }
         },
         sizeSmall: {
-          height: 32
+          height: {
+            xs: 28,
+            sm: 32
+          }
         },
 
         // Orientation styles
@@ -145,13 +152,17 @@ export default function ButtonGroup(theme) {
 
         // Soft variant
         groupedSoft: {
-          backgroundColor: isDark ? alpha(theme.palette.secondary.main, 0.1) : alpha(theme.palette.secondary.main, 0.1),
+          backgroundColor:
+            theme.palette.mode === 'dark'
+              ? alpha(theme.palette.secondary.main, 0.1)
+              : alpha(theme.palette.secondary.main, 0.1),
           '& .MuiButtonGroup-grouped': {
             color: theme.palette.secondary.main,
             '&:hover': {
-              backgroundColor: isDark
-                ? alpha(theme.palette.secondary.main, 0.2)
-                : alpha(theme.palette.secondary.main, 0.2)
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.2)
+                  : alpha(theme.palette.secondary.main, 0.2)
             },
             '&.Mui-disabled': {
               color: theme.palette.action.disabled

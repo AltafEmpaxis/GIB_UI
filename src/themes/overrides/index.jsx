@@ -18,13 +18,13 @@ import Dialog from './Dialog';
 import Drawer from './Drawer';
 import IconButton from './IconButton';
 import Input from './Input';
-import Progress from './Progress';
 import Link from './Link';
 import ListItem from './ListItem';
 import Menu from './Menu';
 import Pagination from './Pagination';
 import Paper from './Paper';
 import Popover from './Popover';
+import Progress from './Progress';
 import Radio from './Radio';
 import Select from './Select';
 import Slider from './Slider';
@@ -51,11 +51,11 @@ export default function componentStyleOverrides(theme) {
     Button(theme, customShadows),
     ButtonBase(theme),
     ButtonGroup(theme),
-    Card(theme, customShadows),
+    Card(theme),
     Checkbox(theme),
     Chip(theme),
     DataGrid(theme),
-    Dialog(theme, customShadows),
+    Dialog(theme),
     Drawer(theme),
     IconButton(theme),
     Input(theme),
@@ -64,13 +64,13 @@ export default function componentStyleOverrides(theme) {
     ListItem(theme),
     Menu(theme, customShadows),
     Pagination(theme),
-    Paper(theme, customShadows),
+    Paper(theme),
     Popover(theme, customShadows),
     Radio(theme),
     Select(theme),
     Slider(theme),
     Switch(theme),
-    Table(theme, customShadows),
+    Table(theme),
     Tab(theme),
     Timeline(theme),
     Tooltip(theme, customShadows),

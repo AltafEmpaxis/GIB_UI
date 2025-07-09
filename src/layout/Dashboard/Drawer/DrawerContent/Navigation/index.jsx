@@ -3,8 +3,8 @@ import { useLayoutEffect, useState } from 'react';
 import { Box, alpha, useTheme } from '@mui/material';
 import { useLocation } from 'react-router';
 
-import menuItems from 'menu-items';
 import useAuth from 'hooks/useAuth';
+import menuItems from 'menu-items';
 
 import NavGroup from './NavGroup';
 
@@ -14,7 +14,6 @@ const Navigation = () => {
   const [selectedLevel, setSelectedLevel] = useState(0);
   const { user } = useAuth();
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
   const currentRole = user?.isAdmin === 1 ? 'admin' : 'user';
 
   useLayoutEffect(() => {
@@ -66,9 +65,10 @@ const Navigation = () => {
           left: '10%',
           right: '10%',
           height: '1px',
-          background: isDark
-            ? `linear-gradient(90deg, ${alpha(theme.palette.divider, 0)}, ${alpha(theme.palette.divider, 0.1)}, ${alpha(theme.palette.divider, 0)})`
-            : `linear-gradient(90deg, ${alpha(theme.palette.divider, 0)}, ${alpha(theme.palette.divider, 0.15)}, ${alpha(theme.palette.divider, 0)})`
+          background: `linear-gradient(90deg,
+            ${alpha(theme.palette.divider, 0)},
+            ${alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.1 : 0.15)},
+            ${alpha(theme.palette.divider, 0)})`
         }
       }}
     >

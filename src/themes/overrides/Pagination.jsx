@@ -23,7 +23,7 @@ export default function Pagination(theme) {
               }
             },
             '&.MuiPaginationItem-outlined': {
-              borderColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[300],
+              borderColor: theme.palette.grey[300],
               '&:hover': {
                 backgroundColor: theme.palette.action.hover,
                 borderColor: theme.palette.primary.main

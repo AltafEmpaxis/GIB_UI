@@ -4,28 +4,20 @@ import { alpha } from '@mui/material/styles';
 // ==============================|| OVERRIDES - LIST ITEM & ICON ||============================== //
 
 export default function ListItem(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     MuiListItem: {
       styleOverrides: {
         root: {
           padding: theme.spacing(1.5),
           '&.Mui-selected': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.secondary.main, 0.2)
-              : alpha(theme.palette.secondary.main, 0.12),
-            color: theme.palette.secondary.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+            color: theme.palette.primary.main,
             '&:hover': {
-              backgroundColor: isDark
-                ? alpha(theme.palette.secondary.main, 0.3)
-                : alpha(theme.palette.secondary.main, 0.18)
+              backgroundColor: alpha(theme.palette.primary.main, 0.18)
             }
           },
           '&:hover': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.secondary.main, 0.1)
-              : alpha(theme.palette.secondary.main, 0.08)
+            backgroundColor: alpha(theme.palette.primary.main, 0.08)
           }
         }
       }
@@ -36,20 +28,14 @@ export default function ListItem(theme) {
           borderRadius: theme.shape.borderRadius,
           padding: theme.spacing(1),
           '&.Mui-selected': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.secondary.main, 0.2)
-              : alpha(theme.palette.secondary.main, 0.12),
-            color: theme.palette.secondary.main,
+            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+            color: theme.palette.primary.main,
             '&:hover': {
-              backgroundColor: isDark
-                ? alpha(theme.palette.secondary.main, 0.3)
-                : alpha(theme.palette.secondary.main, 0.18)
+              backgroundColor: alpha(theme.palette.primary.main, 0.18)
             }
           },
           '&:hover': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.secondary.main, 0.1)
-              : alpha(theme.palette.secondary.main, 0.08)
+            backgroundColor: alpha(theme.palette.primary.main, 0.08)
           }
         }
       }
@@ -59,12 +45,12 @@ export default function ListItem(theme) {
         root: {
           minWidth: 24,
           marginRight: theme.spacing(2),
-          color: isDark ? theme.palette.grey[400] : theme.palette.grey[700],
+          color: theme.palette.grey[700],
           '& svg': {
             fontSize: '1.5rem'
           },
           '.MuiListItemButton-root.Mui-selected &': {
-            color: theme.palette.secondary.main
+            color: theme.palette.primary.main
           }
         }
       }
@@ -72,7 +58,7 @@ export default function ListItem(theme) {
     MuiListItemText: {
       styleOverrides: {
         primary: {
-          color: isDark ? theme.palette.grey[100] : theme.palette.grey[900]
+          color: theme.palette.text.primary
         },
         secondary: {
           color: theme.palette.text.secondary

@@ -1,7 +1,10 @@
 // ==============================|| THEME TYPES  ||============================== //
 
+/**
+ * Available preset color themes
+ */
 export const PresetColors = {
-  default: 'default',
+  default: 'gib', // Default theme
   theme1: 'theme1',
   theme2: 'theme2',
   theme3: 'theme3',
@@ -16,9 +19,12 @@ export const PresetColors = {
   cyan: 'cyan',
   teal: 'teal',
   indigo: 'indigo',
-  gib: 'gib'
+  gib: 'gib' // Gulf International Bank theme
 };
 
+/**
+ * Available font families for the application
+ */
 export const FontFamily = {
   PUBLIC_SANS: "'Public Sans', sans-serif",
   PUBLIC_SANS_VARIATION: "'Public Sans Variable', sans-serif",
@@ -42,6 +48,9 @@ export const FontFamily = {
   ROBOTO_FLEX_VARIATION: "'Roboto Flex Variable', sans-serif"
 };
 
+/**
+ * Breakpoints for responsive design
+ */
 export const ThemeBreakpoints = {
   xs: 0,
   sm: 768,
@@ -55,6 +64,9 @@ export const ThemeBreakpoints = {
   wide: 1440
 };
 
+/**
+ * Z-index values for stacking elements
+ */
 export const ThemeZIndex = {
   mobileStepper: 1000,
   fab: 1050,
@@ -70,6 +82,9 @@ export const ThemeZIndex = {
   overlay: 2000
 };
 
+/**
+ * Transition configurations for animations
+ */
 export const ThemeTransitions = {
   EASING: {
     easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
@@ -89,37 +104,9 @@ export const ThemeTransitions = {
   }
 };
 
-export const ThemeShadowVariants = {
-  button: 'button',
-  text: 'text',
-  z1: 'z1',
-  primary: 'primary',
-  secondary: 'secondary',
-  error: 'error',
-  warning: 'warning',
-  info: 'info',
-  success: 'success',
-  dialog: 'dialog',
-  card: {
-    xs: 'card-xs',
-    sm: 'card-sm',
-    md: 'card-md',
-    lg: 'card-lg'
-  },
-  popup: {
-    xs: 'popup-xs',
-    sm: 'popup-sm',
-    md: 'popup-md',
-    lg: 'popup-lg'
-  },
-  drawer: {
-    xs: 'drawer-xs',
-    sm: 'drawer-sm',
-    md: 'drawer-md',
-    lg: 'drawer-lg'
-  }
-};
-
+/**
+ * Default theme values
+ */
 export const ThemeDefaults = {
   HEADER_HEIGHT: 64,
   DRAWER_WIDTH: 260,

@@ -4,8 +4,6 @@ import { alpha } from '@mui/material/styles';
 // ==============================|| OVERRIDES - SELECT ||============================== //
 
 export default function Select(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     MuiSelect: {
       styleOverrides: {
@@ -14,7 +12,7 @@ export default function Select(theme) {
             backgroundColor: 'transparent'
           },
           '&.Mui-disabled': {
-            backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.15) : alpha(theme.palette.grey[100], 0.1)
+            backgroundColor: alpha(theme.palette.grey[100], 0.1)
           }
         },
         icon: {
@@ -36,7 +34,7 @@ export default function Select(theme) {
         root: {
           borderRadius: theme.shape.borderRadius,
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: isDark ? alpha(theme.palette.grey[500], 0.32) : theme.palette.grey[300],
+            borderColor: theme.palette.grey[300],
             transition: theme.transitions.create(['border-color', 'box-shadow'])
           },
           '&:hover:not(.Mui-focused):not(.Mui-disabled):not(.Mui-error) .MuiOutlinedInput-notchedOutline': {
@@ -46,22 +44,18 @@ export default function Select(theme) {
           '&.Mui-focused': {
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.primary.main,
-              borderWidth: 2,
-              boxShadow: isDark ? `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}` : 'none'
+              borderWidth: 2
             }
           },
           '&.Mui-error': {
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: theme.palette.error.main,
-              boxShadow: isDark ? `0 0 0 2px ${alpha(theme.palette.error.main, 0.2)}` : 'none'
+              borderColor: theme.palette.error.main
             }
           },
           '&.Mui-disabled': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.background.paper, 0.15)
-              : alpha(theme.palette.action.disabledBackground, 0.1),
+            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1),
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? alpha(theme.palette.grey[600], 0.25) : alpha(theme.palette.grey[300], 0.5)
+              borderColor: alpha(theme.palette.grey[300], 0.5)
             }
           }
         },
@@ -75,7 +69,7 @@ export default function Select(theme) {
               backgroundColor: 'transparent'
             },
             '&[aria-expanded="true"]': {
-              backgroundColor: isDark ? alpha(theme.palette.grey[500], 0.12) : alpha(theme.palette.grey[500], 0.08)
+              backgroundColor: alpha(theme.palette.grey[500], 0.08)
             }
           }
         },
@@ -101,7 +95,7 @@ export default function Select(theme) {
             color: theme.palette.error.main
           },
           '&.Mui-disabled': {
-            color: isDark ? alpha(theme.palette.grey[400], 0.6) : theme.palette.text.disabled
+            color: theme.palette.text.disabled
           }
         }
       }

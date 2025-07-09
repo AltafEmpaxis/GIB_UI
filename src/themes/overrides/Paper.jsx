@@ -1,11 +1,8 @@
 // material-ui
-import { alpha } from '@mui/material/styles';
 
 // ==============================|| OVERRIDES - PAPER ||============================== //
 
-export default function Paper(theme, customShadows) {
-  const isDark = theme.palette.mode === 'dark';
-
+export default function Paper(theme) {
   return {
     MuiPaper: {
       defaultProps: {
@@ -14,7 +11,7 @@ export default function Paper(theme, customShadows) {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.98) : theme.palette.background.paper,
+          backgroundColor: theme.palette.background.paper,
           transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
             duration: theme.transitions.duration.shorter
           }),
@@ -27,32 +24,32 @@ export default function Paper(theme, customShadows) {
         },
         outlined: {
           borderColor: theme.palette.divider,
-          background: isDark ? alpha(theme.palette.background.paper, 0.98) : theme.palette.background.paper
+          background: theme.palette.background.paper
         },
         elevation: {
           '&.MuiPaper-elevation0': {
             boxShadow: 'none'
           },
           '&.MuiPaper-elevation1': {
-            boxShadow: customShadows.z1
+            boxShadow: theme.shadows[1]
           },
           '&.MuiPaper-elevation4': {
-            boxShadow: customShadows.z4
+            boxShadow: theme.shadows[4]
           },
           '&.MuiPaper-elevation8': {
-            boxShadow: customShadows.z8
+            boxShadow: theme.shadows[8]
           },
           '&.MuiPaper-elevation12': {
-            boxShadow: customShadows.z12
+            boxShadow: theme.shadows[12]
           },
           '&.MuiPaper-elevation16': {
-            boxShadow: customShadows.z16
+            boxShadow: theme.shadows[16]
           },
           '&.MuiPaper-elevation20': {
-            boxShadow: customShadows.z20
+            boxShadow: theme.shadows[20]
           },
           '&.MuiPaper-elevation24': {
-            boxShadow: customShadows.z24
+            boxShadow: theme.shadows[24]
           }
         }
       }

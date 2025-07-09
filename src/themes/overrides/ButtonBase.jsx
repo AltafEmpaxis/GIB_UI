@@ -4,8 +4,6 @@ import { alpha } from '@mui/material/styles';
 // ==============================|| OVERRIDES - BUTTON BASE ||============================== //
 
 export default function ButtonBase(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     MuiButtonBase: {
       defaultProps: {
@@ -28,16 +26,23 @@ export default function ButtonBase(theme) {
             borderRadius: theme.shape.borderRadius,
             color: theme.palette.text.primary,
             '&:hover': {
-              backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.1) : theme.palette.primary.lighter,
-              color: theme.palette.primary.main
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.1)
+                  : alpha(theme.palette.secondary.main, 0.08),
+              color: theme.palette.secondary.main
             },
             '&.Mui-selected': {
-              backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.2) : theme.palette.primary.lighter,
-              color: theme.palette.primary.main,
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.2)
+                  : alpha(theme.palette.secondary.main, 0.1),
+              color: theme.palette.secondary.main,
               '&:hover': {
-                backgroundColor: isDark
-                  ? alpha(theme.palette.primary.main, 0.3)
-                  : alpha(theme.palette.primary.lighter, 0.8)
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.secondary.main, 0.3)
+                    : alpha(theme.palette.secondary.main, 0.2)
               }
             },
             '&.Mui-disabled': {
@@ -51,14 +56,21 @@ export default function ButtonBase(theme) {
             padding: '10px 16px',
             borderRadius: theme.shape.borderRadius,
             '&:hover': {
-              backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.1) : theme.palette.primary.lighter
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.1)
+                  : alpha(theme.palette.secondary.main, 0.08)
             },
             '&.Mui-selected': {
-              backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.2) : theme.palette.primary.lighter,
+              backgroundColor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.2)
+                  : alpha(theme.palette.secondary.main, 0.1),
               '&:hover': {
-                backgroundColor: isDark
-                  ? alpha(theme.palette.primary.main, 0.3)
-                  : alpha(theme.palette.primary.lighter, 0.8)
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.secondary.main, 0.3)
+                    : alpha(theme.palette.secondary.main, 0.2)
               }
             }
           }

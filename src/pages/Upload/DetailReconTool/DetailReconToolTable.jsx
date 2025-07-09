@@ -1,20 +1,9 @@
 import { Icon } from '@iconify/react';
-import {
-  Box,
-  Button,
-  Card,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-  useTheme
-} from '@mui/material';
+import { Box, Button, Card, Chip, Grid, Typography, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ReusableTable from 'components/Table/ReusableTable';
-import { useEffect, useMemo, useState } from 'react';
-import ReconMetricsCards from './ReconMetricsCards';
+import { useMemo, useState } from 'react';
+import MetricCard from './ReconMetricsCards';
 
 // Mock data for reconciliation details
 const mockAccounts = [
@@ -106,20 +95,59 @@ const mockAccounts = [
 
 export default function DetailReconToolTable() {
   const theme = useTheme();
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filteredData, setFilteredData] = useState(mockAccounts);
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [columnFilters, setColumnFilters] = useState([]);
 
-  // Filter data based on status
-  useEffect(() => {
-    let result = mockAccounts;
+  // Simple metrics calculation
+  const metrics = useMemo(() => {
+    // Basic counts
+    const totalAccounts = mockAccounts.length;
+    const reconciled = mockAccounts.filter((account) => account.status === 'reconciled').length;
+    const unreconciled = totalAccounts - reconciled;
 
-    // Filter by status
-    if (filterStatus !== 'all') {
-      result = result.filter((account) => account.status === filterStatus);
-    }
+    // Total amount calculation
+    const formatter = new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' });
+    const totalAmount = mockAccounts.reduce((sum, account) => sum + account.amount, 0);
 
-    setFilteredData(result);
-  }, [filterStatus]);
+    return [
+      {
+        id: 'all',
+        title: 'Total Accounts',
+        value: totalAccounts,
+        subtitle: 'All accounts in system',
+        icon: 'solar:files-bold-duotone',
+        color: theme.palette?.primary?.main || '#53565A',
+        trend: '+2.5%'
+      },
+      {
+        id: 'reconciled',
+        title: 'Reconciled',
+        value: reconciled,
+        subtitle: 'Matched accounts',
+        icon: 'solar:check-circle-bold-duotone',
+        color: theme.palette?.success?.main || '#4caf50',
+        trend: '+8%'
+      },
+      {
+        id: 'unreconciled',
+        title: 'Unreconciled',
+        value: unreconciled,
+        subtitle: 'Unmatched accounts',
+        icon: 'solar:close-circle-bold-duotone',
+        color: theme.palette?.error?.main || '#f44336',
+        trend: '-3.2%'
+      },
+      {
+        id: 'amount',
+        title: 'Total Amount',
+        value: formatter.format(totalAmount),
+        subtitle: 'Total reconciliation value',
+        icon: 'solar:dollar-minimalistic-bold-duotone',
+        color: theme.palette?.secondary?.main || '#FFC72C',
+        trend: '+5.1%'
+      }
+    ];
+  }, [theme.palette]);
 
   // Define columns for the table
   const columns = useMemo(
@@ -137,7 +165,9 @@ export default function DetailReconToolTable() {
       {
         accessorKey: 'status',
         header: 'Status',
-        size: 180,
+        size: 200,
+        filterVariant: 'select',
+        filterSelectOptions: ['reconciled', 'unreconciled'],
         Cell: ({ cell }) => (
           <Chip
             label={cell.getValue() === 'reconciled' ? 'Reconciled' : 'Unreconciled'}
@@ -150,12 +180,14 @@ export default function DetailReconToolTable() {
       {
         accessorKey: 'date',
         header: 'Date',
-        size: 180
+        size: 200,
+        filterVariant: 'date'
       },
       {
         accessorKey: 'amount',
         header: 'Amount',
-        size: 150,
+        size: 200,
+        filterVariant: 'range',
         Cell: ({ cell }) => (
           <Typography variant="body2">
             {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(cell.getValue())}
@@ -165,7 +197,9 @@ export default function DetailReconToolTable() {
       {
         accessorKey: 'portfolio',
         header: 'Portfolio',
-        size: 260
+        size: 260,
+        filterVariant: 'multi-select',
+        filterSelectOptions: [...new Set(mockAccounts.map((account) => account.portfolio))]
       },
       {
         accessorKey: 'reconciled_by',
@@ -175,13 +209,14 @@ export default function DetailReconToolTable() {
       {
         accessorKey: 'location',
         header: 'Location',
-        size: 180
+        size: 200
       },
       {
         id: 'actions',
         header: 'Actions',
-        size: 180,
-        Cell: ({ row }) => (
+        size: 200,
+        enableColumnFilter: false,
+        Cell: () => (
           <Button
             variant="outlined"
             size="small"
@@ -196,32 +231,28 @@ export default function DetailReconToolTable() {
     []
   );
 
-  // Table initial state with integrated search/filter
-  const initialState = {
-    showGlobalFilter: true
+  // Handle filter change from metric cards
+  const handleMetricCardFilter = (filter) => {
+    // Toggle filter if clicking the same one
+    const newFilter = activeFilter === filter ? 'all' : filter;
+    setActiveFilter(newFilter);
+
+    // Apply filter to table
+    if (newFilter === 'all') {
+      setColumnFilters([]);
+    } else if (newFilter !== 'amount') {
+      setColumnFilters([{ id: 'status', value: newFilter }]);
+    }
   };
 
-  // Extra props for ReusableTable
+  // Table props configuration
   const tableProps = {
+    state: { columnFilters },
+    onColumnFiltersChange: setColumnFilters,
+    enableFilters: true,
+    enableColumnFilters: true,
     enableGlobalFilter: true,
-    renderTopToolbarCustomActions: () => (
-      <Box sx={{ display: 'flex', gap: 1, p: 1 }}>
-        <FormControl sx={{ minWidth: 200 }} size="small">
-          <InputLabel id="status-filter-label">Filter by Status</InputLabel>
-          <Select
-            labelId="status-filter-label"
-            id="status-filter"
-            value={filterStatus}
-            label="Filter by Status"
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <MenuItem value="all">All Accounts</MenuItem>
-            <MenuItem value="reconciled">Reconciled</MenuItem>
-            <MenuItem value="unreconciled">Unreconciled</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-    )
+    manualFiltering: false
   };
 
   return (
@@ -248,11 +279,35 @@ export default function DetailReconToolTable() {
         }
       >
         <Box sx={{ mb: 3 }}>
-          <ReconMetricsCards data={mockAccounts} />
+          <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+            Reconciliation Summary
+          </Typography>
+          <Grid container spacing={2}>
+            {metrics.map((card) => (
+              <Grid item xs={12} sm={6} md={3} key={card.id}>
+                <MetricCard
+                  title={card.title}
+                  value={card.value}
+                  subtitle={card.subtitle}
+                  icon={card.icon}
+                  color={card.color}
+                  trend={card.trend}
+                  onClick={() => handleMetricCardFilter(card.id)}
+                  isActive={activeFilter === card.id}
+                />
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </MainCard>
+
       <Card sx={{ mt: 3 }}>
-        <ReusableTable columns={columns} data={filteredData} initialState={initialState} tableProps={tableProps} />
+        <ReusableTable
+          columns={columns}
+          data={mockAccounts}
+          initialState={{ showGlobalFilter: true }}
+          tableProps={tableProps}
+        />
       </Card>
     </Box>
   );

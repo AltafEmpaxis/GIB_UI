@@ -1,8 +1,6 @@
 import { alpha } from '@mui/material/styles';
 
 export default function Dialog(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     MuiDialog: {
       defaultProps: {
@@ -17,14 +15,13 @@ export default function Dialog(theme) {
       },
       styleOverrides: {
         paper: {
-          backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.98) : theme.palette.background.paper,
+          backgroundColor: theme.palette.background.paper,
           backgroundImage: 'none',
           borderRadius: Number(theme.shape.borderRadius) * 2,
-          border: `1px solid ${alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
-          boxShadow: theme.customShadows.dialog,
+          border: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+          boxShadow: theme.shadows[24],
           '&.MuiPaper-rounded': {
             borderRadius: Number(theme.shape.borderRadius) * 2
-            // overflow: 'hidden'
           },
           '&.MuiDialog-paperFullScreen': {
             borderRadius: 0,
@@ -73,7 +70,7 @@ export default function Dialog(theme) {
           paddingBottom: theme.spacing(1),
           fontSize: theme.typography.h5.fontSize,
           fontWeight: theme.typography.h5.fontWeight,
-          color: isDark ? theme.palette.grey[100] : theme.palette.grey[900],
+          color: theme.palette.text.primary,
           [`@media (max-width: ${theme.breakpoints.values.sm}px)`]: {
             padding: theme.spacing(2)
           }
@@ -95,8 +92,8 @@ export default function Dialog(theme) {
           }
         },
         dividers: {
-          borderTop: `1px dashed ${alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
-          borderBottom: `1px dashed ${alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
+          borderTop: `1px dashed ${alpha(theme.palette.divider, 0.12)}`,
+          borderBottom: `1px dashed ${alpha(theme.palette.divider, 0.12)}`,
           padding: theme.spacing(3)
         }
       }

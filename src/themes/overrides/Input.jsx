@@ -3,25 +3,21 @@ import { alpha } from '@mui/material/styles';
 // ==============================|| OVERRIDES - INPUT ||============================== //
 
 export default function Input(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     MuiInputBase: {
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.background.paper, 0.15)
-              : alpha(theme.palette.action.disabledBackground, 0.1),
+            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1),
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? alpha(theme.palette.grey[600], 0.25) : alpha(theme.palette.grey[300], 0.5)
+              borderColor: alpha(theme.palette.grey[300], 0.5)
             }
           },
           '&.Mui-error': {
             backgroundColor: alpha(theme.palette.error.main, 0.08)
           },
           '&:hover:not(.Mui-disabled):not(.Mui-error):not(.Mui-focused)': {
-            backgroundColor: isDark ? alpha(theme.palette.grey[900], 0.1) : alpha(theme.palette.grey[100], 0.5)
+            backgroundColor: alpha(theme.palette.grey[100], 0.5)
           },
           '&.Mui-focused': {
             backgroundColor: 'transparent'
@@ -35,8 +31,8 @@ export default function Input(theme) {
             opacity: 0.7
           },
           '&:-webkit-autofill': {
-            WebkitBoxShadow: isDark ? '0 0 0 100px #1a223f inset' : '0 0 0 100px #fff inset',
-            WebkitTextFillColor: isDark ? theme.palette.text.primary : 'inherit',
+            WebkitBoxShadow: '0 0 0 100px #fff inset',
+            WebkitTextFillColor: 'inherit',
             caretColor: theme.palette.text.primary
           }
         },
@@ -56,7 +52,7 @@ export default function Input(theme) {
         root: {
           backgroundColor: 'transparent',
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: isDark ? alpha(theme.palette.grey[500], 0.28) : theme.palette.grey[300],
+            borderColor: theme.palette.grey[300],
             borderWidth: 1,
             transition: theme.transitions.create(['border-color', 'box-shadow'])
           },
@@ -69,23 +65,21 @@ export default function Input(theme) {
               borderColor: theme.palette.primary.main,
               borderWidth: 2
             },
-            boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, isDark ? 0.2 : 0.15)}`
+            boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.15)}`
           },
           '&.Mui-error': {
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.error.main,
-              borderWidth: isDark ? 1 : 2
+              borderWidth: 2
             },
             '&.Mui-focused': {
-              boxShadow: `0 0 0 2px ${alpha(theme.palette.error.main, isDark ? 0.2 : 0.15)}`
+              boxShadow: `0 0 0 2px ${alpha(theme.palette.error.main, 0.15)}`
             }
           },
           '&.Mui-disabled': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.background.paper, 0.15)
-              : alpha(theme.palette.action.disabledBackground, 0.1),
+            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1),
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: isDark ? alpha(theme.palette.grey[600], 0.25) : alpha(theme.palette.grey[300], 0.5)
+              borderColor: alpha(theme.palette.grey[300], 0.5)
             }
           }
         },
@@ -98,8 +92,8 @@ export default function Input(theme) {
             }
           },
           '&:-webkit-autofill': {
-            WebkitBoxShadow: isDark ? '0 0 0 100px #1a223f inset' : '0 0 0 100px #fff inset',
-            WebkitTextFillColor: isDark ? theme.palette.text.primary : 'inherit',
+            WebkitBoxShadow: '0 0 0 100px #fff inset',
+            WebkitTextFillColor: 'inherit',
             caretColor: theme.palette.text.primary,
             borderRadius: 'inherit'
           }
@@ -116,17 +110,15 @@ export default function Input(theme) {
     MuiFilledInput: {
       styleOverrides: {
         root: {
-          backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.12) : alpha(theme.palette.grey[100], 0.9),
+          backgroundColor: alpha(theme.palette.grey[100], 0.9),
           '&:hover': {
-            backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.15) : alpha(theme.palette.grey[100], 1)
+            backgroundColor: alpha(theme.palette.grey[100], 1)
           },
           '&.Mui-focused': {
-            backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.12) : alpha(theme.palette.grey[100], 0.9)
+            backgroundColor: alpha(theme.palette.grey[100], 0.9)
           },
           '&.Mui-disabled': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.background.paper, 0.15)
-              : alpha(theme.palette.action.disabledBackground, 0.1)
+            backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1)
           }
         },
         input: {
@@ -141,7 +133,7 @@ export default function Input(theme) {
       styleOverrides: {
         root: {
           '&:before': {
-            borderBottom: `1px solid ${isDark ? alpha(theme.palette.grey[500], 0.28) : theme.palette.grey[300]}`
+            borderBottom: `1px solid ${theme.palette.grey[300]}`
           },
           '&:hover:not(.Mui-disabled):before': {
             borderBottom: `2px solid ${theme.palette.primary.main}`
@@ -153,9 +145,7 @@ export default function Input(theme) {
             borderBottom: `2px solid ${theme.palette.error.main}`
           },
           '&.Mui-disabled:before': {
-            borderBottom: `1px solid ${
-              isDark ? alpha(theme.palette.grey[600], 0.25) : alpha(theme.palette.grey[300], 0.5)
-            }`
+            borderBottom: `1px solid ${alpha(theme.palette.grey[300], 0.5)}`
           }
         },
         input: {
@@ -169,7 +159,7 @@ export default function Input(theme) {
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: isDark ? theme.palette.grey[400] : theme.palette.grey[600],
+          color: theme.palette.grey[600],
           fontSize: '0.875rem',
           '&.Mui-focused': {
             color: theme.palette.primary.main
@@ -178,7 +168,7 @@ export default function Input(theme) {
             color: theme.palette.error.main
           },
           '&.Mui-disabled': {
-            color: isDark ? alpha(theme.palette.grey[400], 0.6) : theme.palette.text.disabled
+            color: theme.palette.text.disabled
           }
         },
         outlined: {
@@ -210,7 +200,7 @@ export default function Input(theme) {
             color: theme.palette.error.main
           },
           '&.Mui-disabled': {
-            color: isDark ? alpha(theme.palette.grey[400], 0.6) : theme.palette.text.disabled
+            color: theme.palette.text.disabled
           }
         }
       }

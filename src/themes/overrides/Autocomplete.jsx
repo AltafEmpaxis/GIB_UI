@@ -10,7 +10,7 @@ export default function Autocomplete(theme) {
           }
         },
         paper: {
-          boxShadow: theme.customShadows.z1,
+          boxShadow: theme.shadows[4],
           borderRadius: 8,
           border: `1px solid ${theme.palette.divider}`
         },

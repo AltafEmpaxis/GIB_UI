@@ -7,7 +7,6 @@ import DrawerHeaderStyled from './DrawerHeaderStyled';
 
 const DrawerHeader = ({ open }) => {
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <DrawerHeaderStyled open={open}>
@@ -27,9 +26,7 @@ const DrawerHeader = ({ open }) => {
             left: '10%',
             right: '10%',
             height: '1px',
-            background: isDark
-              ? `linear-gradient(90deg, ${alpha(theme.palette.divider, 0)}, ${alpha(theme.palette.divider, 0.1)}, ${alpha(theme.palette.divider, 0)})`
-              : `linear-gradient(90deg, ${alpha(theme.palette.divider, 0)}, ${alpha(theme.palette.divider, 0.15)}, ${alpha(theme.palette.divider, 0)})`
+            background: `linear-gradient(90deg, ${alpha(theme.palette.divider, 0)}, ${alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.1 : 0.15)}, ${alpha(theme.palette.divider, 0)})`
           }
         }}
       >

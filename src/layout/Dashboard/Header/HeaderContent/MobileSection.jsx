@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Icon } from '@iconify/react';
 import {
@@ -9,9 +9,9 @@ import {
   IconButton,
   Paper,
   Popper,
+  Stack,
   Toolbar,
-  Tooltip,
-  Stack
+  Tooltip
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
@@ -21,7 +21,6 @@ import Profile from './Profile';
 
 const MobileSection = () => {
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
   const { mode, onChangeMode } = useConfig();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
@@ -87,7 +86,10 @@ const MobileSection = () => {
             height: 40,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
-              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.lighter, 0.5)
+              bgcolor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.15)
+                  : alpha(theme.palette.secondary.main, 0.1)
             }
           }}
         >
@@ -142,13 +144,14 @@ const MobileSection = () => {
                             width: 40,
                             height: 40,
                             '&:hover': {
-                              bgcolor: isDark
-                                ? alpha(theme.palette.primary.main, 0.15)
-                                : alpha(theme.palette.primary.lighter, 0.5)
+                              bgcolor:
+                                theme.palette.mode === 'dark'
+                                  ? alpha(theme.palette.secondary.main, 0.15)
+                                  : alpha(theme.palette.secondary.main, 0.1)
                             }
                           }}
                         >
-                          {isDark ? (
+                          {theme.palette.mode === 'dark' ? (
                             <Icon icon="solar:sun-bold-duotone" width={24} height={24} />
                           ) : (
                             <Icon icon="solar:moon-bold-duotone" width={24} height={24} />
@@ -168,9 +171,10 @@ const MobileSection = () => {
                             width: 40,
                             height: 40,
                             '&:hover': {
-                              bgcolor: isDark
-                                ? alpha(theme.palette.primary.main, 0.15)
-                                : alpha(theme.palette.primary.lighter, 0.5)
+                              bgcolor:
+                                theme.palette.mode === 'dark'
+                                  ? alpha(theme.palette.secondary.main, 0.15)
+                                  : alpha(theme.palette.secondary.main, 0.1)
                             }
                           }}
                         >

@@ -3,7 +3,7 @@ import { alpha } from '@mui/material/styles';
 
 // ==============================|| OVERRIDES - TABLE ||============================== //
 
-export default function Table(theme, customShadows) {
+export default function Table(theme) {
   const isDark = theme.palette.mode === 'dark';
 
   // Theme colors for better visual hierarchy
@@ -34,13 +34,13 @@ export default function Table(theme, customShadows) {
     MuiTableContainer: {
       styleOverrides: {
         root: {
-          boxShadow: customShadows.z1,
+          boxShadow: theme.shadows[1],
           borderRadius: theme.shape.borderRadius * 0.05,
           border: `1px solid ${colors.body.border}`,
           background: isDark ? alpha(theme.palette.background.default, 0.9) : theme.palette.background.paper,
           transition: 'all .2s ease-in-out',
           '&:hover': {
-            boxShadow: customShadows.z2
+            boxShadow: theme.shadows[2]
           }
         }
       }
@@ -143,7 +143,7 @@ export default function Table(theme, customShadows) {
             },
             '&:hover': {
               backgroundColor: colors.pagination.hover,
-              boxShadow: customShadows.primary
+              boxShadow: theme.shadows[4]
             }
           }
         }

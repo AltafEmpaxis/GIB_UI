@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
 
 import { CssBaseline } from '@mui/material';
-import { ThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
 // Theme config
 import useConfig from 'hooks/useConfig';
 
 import { config } from './config';
+import customShadows from './customShadows';
 import GlobalStyles from './globalStyles';
 import componentStyleOverrides from './overrides';
 import { themePalette } from './palette';
-import customShadows from './customShadows';
 import shadows from './shadows';
 import { ThemeBreakpoints, ThemeTransitions, ThemeZIndex } from './types';
 import { themeTypography } from './typography';
@@ -63,39 +63,22 @@ export default function ThemeCustomization({ children }) {
         }
       });
 
-      // Create shadows and custom shadows
-      const themeShadows = shadows(baseTheme);
-      const themeCustomShadows = customShadows(baseTheme);
+      // Add shadows to the theme
+      baseTheme.shadows = shadows(baseTheme);
 
-      // Create intermediate theme with shadows
-      const themeWithShadows = createTheme({
-        ...baseTheme,
-        shadows: themeShadows,
-        customShadows: themeCustomShadows
-      });
+      // Add custom shadows
+      baseTheme.customShadows = customShadows(baseTheme);
 
       // Create final theme with component overrides
-      const finalTheme = createTheme(themeWithShadows, {
-        components: componentStyleOverrides(themeWithShadows)
+      const finalTheme = createTheme(baseTheme, {
+        components: componentStyleOverrides(baseTheme)
       });
 
       return finalTheme;
     } catch (error) {
       console.error('Theme creation error:', error);
       // Return a minimal fallback theme
-      const fallbackTheme = createTheme({
-        mode: 'light',
-        palette: themePalette('light', 'default')
-      });
-      const fallbackShadows = shadows(fallbackTheme);
-      const fallbackCustomShadows = customShadows(fallbackTheme);
-
-      // Create fallback theme with shadows
-      return createTheme({
-        ...fallbackTheme,
-        shadows: fallbackShadows,
-        customShadows: fallbackCustomShadows
-      });
+      return createTheme();
     }
   }, [mode, presetColor, fontFamily, borderRadius]);
 

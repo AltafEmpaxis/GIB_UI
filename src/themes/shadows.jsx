@@ -8,7 +8,7 @@ export default function shadows(theme) {
   const transparent = alpha(theme.palette.common.black, isDark ? 0.25 : 0.15);
   const darkTransparent = alpha(theme.palette.common.black, isDark ? 0.35 : 0.25);
 
-  const shadowArray = [
+  return [
     'none',
     `0 1px 2px ${transparent}`,
     `0 1px 4px ${transparent}`,
@@ -35,6 +35,4 @@ export default function shadows(theme) {
     `0 11px 14px ${transparent}, 0 23px 36px ${darkTransparent}`,
     `0 11px 15px ${transparent}, 0 24px 38px ${darkTransparent}`
   ];
-
-  return shadowArray;
 }

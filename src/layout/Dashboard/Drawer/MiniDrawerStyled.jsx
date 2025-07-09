@@ -1,23 +1,19 @@
 import Drawer from '@mui/material/Drawer';
-import { alpha, styled, useTheme } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 
 import { DRAWER_WIDTH, HEADER_HEIGHT } from 'config';
 
 const openedMixin = (theme) => {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     width: DRAWER_WIDTH,
-    borderRight: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.standard
     }),
     overflowX: 'hidden',
-    boxShadow: isDark ? '4px 0 10px rgba(0,0,0,0.15)' : '2px 0 8px rgba(0,0,0,0.05)',
-    background: isDark
-      ? `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`
-      : `linear-gradient(${alpha(theme.palette.background.paper, 0.98)}, ${alpha(theme.palette.background.paper, 1)})`,
+    boxShadow: theme.customShadows?.drawer?.sm || 'none',
+    background: `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`,
     backdropFilter: 'blur(8px)',
     '&:before': {
       content: '""',
@@ -28,9 +24,10 @@ const openedMixin = (theme) => {
       left: 0,
       zIndex: -1,
       opacity: 0.05,
-      backgroundImage: isDark
-        ? 'radial-gradient(circle at 100% 150%, rgba(120, 120, 165, 0.1) 5%, rgba(120, 120, 165, 0.05) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(120, 120, 165, 0.15) 0%, transparent 40%)'
-        : 'radial-gradient(circle at 100% 150%, rgba(234, 228, 252, 0.5) 5%, rgba(234, 228, 252, 0.2) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(234, 228, 252, 0.4) 0%, transparent 40%)'
+      backgroundImage:
+        theme.palette.mode === 'dark'
+          ? 'radial-gradient(circle at 100% 150%, rgba(120, 120, 165, 0.1) 5%, rgba(120, 120, 165, 0.05) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(120, 120, 165, 0.15) 0%, transparent 40%)'
+          : 'radial-gradient(circle at 100% 150%, rgba(234, 228, 252, 0.5) 5%, rgba(234, 228, 252, 0.2) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(234, 228, 252, 0.4) 0%, transparent 40%)'
     },
     [theme.breakpoints.down('lg')]: {
       top: HEADER_HEIGHT,
@@ -40,8 +37,6 @@ const openedMixin = (theme) => {
 };
 
 const closedMixin = (theme) => {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.easeInOut,
@@ -49,11 +44,9 @@ const closedMixin = (theme) => {
     }),
     overflowX: 'hidden',
     width: theme.spacing(7.5),
-    borderRight: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-    boxShadow: isDark ? '2px 0 8px rgba(0,0,0,0.12)' : '1px 0 5px rgba(0,0,0,0.03)',
-    background: isDark
-      ? `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`
-      : `linear-gradient(${alpha(theme.palette.background.paper, 0.98)}, ${alpha(theme.palette.background.paper, 1)})`,
+    borderRight: `1px solid ${theme.palette.divider}`,
+    boxShadow: theme.customShadows?.drawer?.xs || 'none',
+    background: `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`,
     backdropFilter: 'blur(8px)',
     [theme.breakpoints.down('lg')]: {
       width: 0,

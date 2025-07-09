@@ -10,7 +10,6 @@ import DrawerHeader from './DrawerHeader';
 
 const MainDrawer = ({ open }) => {
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box component="nav">
@@ -26,10 +25,8 @@ const MainDrawer = ({ open }) => {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            borderRight: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-            background: isDark
-              ? `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`
-              : `linear-gradient(${alpha(theme.palette.background.paper, 0.98)}, ${alpha(theme.palette.background.paper, 1)})`,
+            borderRight: `1px solid ${theme.palette.divider}`,
+            background: `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`,
             backdropFilter: 'blur(8px)',
             overflowX: 'hidden',
             transform: open ? 'none' : 'translateX(-100%)',
@@ -38,7 +35,7 @@ const MainDrawer = ({ open }) => {
             display: 'flex',
             flexDirection: 'column',
             top: 0,
-            boxShadow: open ? (isDark ? '4px 0 10px rgba(0,0,0,0.15)' : '2px 0 8px rgba(0,0,0,0.05)') : 'none',
+            boxShadow: open ? theme.customShadows?.drawer?.sm || 'none' : 'none',
             transition: theme.transitions.create(['transform', 'visibility', 'box-shadow'], {
               easing: theme.transitions.easing.easeInOut,
               duration: theme.transitions.duration.standard
@@ -52,9 +49,10 @@ const MainDrawer = ({ open }) => {
               left: 0,
               zIndex: -1,
               opacity: 0.05,
-              backgroundImage: isDark
-                ? 'radial-gradient(circle at 100% 150%, rgba(120, 120, 165, 0.1) 5%, rgba(120, 120, 165, 0.05) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(120, 120, 165, 0.15) 0%, transparent 40%)'
-                : 'radial-gradient(circle at 100% 150%, rgba(234, 228, 252, 0.5) 5%, rgba(234, 228, 252, 0.2) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(234, 228, 252, 0.4) 0%, transparent 40%)'
+              backgroundImage:
+                theme.palette.mode === 'dark'
+                  ? 'radial-gradient(circle at 100% 150%, rgba(120, 120, 165, 0.1) 5%, rgba(120, 120, 165, 0.05) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(120, 120, 165, 0.15) 0%, transparent 40%)'
+                  : 'radial-gradient(circle at 100% 150%, rgba(234, 228, 252, 0.5) 5%, rgba(234, 228, 252, 0.2) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(234, 228, 252, 0.4) 0%, transparent 40%)'
             }
           }
         }}

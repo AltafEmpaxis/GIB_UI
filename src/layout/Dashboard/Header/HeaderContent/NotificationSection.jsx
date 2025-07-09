@@ -9,21 +9,20 @@ import {
   Divider,
   IconButton,
   List,
-  ListItemButton,
   ListItemAvatar,
-  ListItemText,
+  ListItemButton,
   ListItemSecondaryAction,
+  ListItemText,
   Paper,
   Popper,
-  Stack,
   Typography,
   useMediaQuery
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
 // project import
-import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
+import MainCard from 'components/MainCard';
 
 // sample notification data
 const notifications = [
@@ -77,7 +76,6 @@ const notificationIcons = {
 const NotificationSection = () => {
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down('md'));
-  const isDark = theme.palette.mode === 'dark';
 
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -109,7 +107,10 @@ const NotificationSection = () => {
             height: 40,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
-              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.lighter, 0.5)
+              bgcolor:
+                theme.palette.mode === 'dark'
+                  ? alpha(theme.palette.secondary.main, 0.15)
+                  : alpha(theme.palette.secondary.main, 0.1)
             }
           }}
           ref={anchorRef}
@@ -186,15 +187,17 @@ const NotificationSection = () => {
                         py: 1.5,
                         borderBottom: `1px solid ${theme.palette.divider}`,
                         '&:hover': {
-                          bgcolor: isDark
-                            ? alpha(theme.palette.primary.main, 0.08)
-                            : alpha(theme.palette.primary.lighter, 0.4)
+                          bgcolor:
+                            theme.palette.mode === 'dark'
+                              ? alpha(theme.palette.secondary.main, 0.08)
+                              : alpha(theme.palette.secondary.main, 0.1)
                         }
                       },
                       '& .MuiListItemButton-root.Mui-selected': {
-                        bgcolor: isDark
-                          ? alpha(theme.palette.primary.main, 0.1)
-                          : alpha(theme.palette.primary.lighter, 0.6)
+                        bgcolor:
+                          theme.palette.mode === 'dark'
+                            ? alpha(theme.palette.secondary.main, 0.1)
+                            : alpha(theme.palette.secondary.main, 0.2)
                       }
                     }}
                   >
@@ -206,19 +209,20 @@ const NotificationSection = () => {
                             sx={{
                               bgcolor:
                                 item.status === 'unread'
-                                  ? isDark
-                                    ? alpha(theme.palette.primary.main, 0.08)
-                                    : alpha(theme.palette.primary.lighter, 0.4)
+                                  ? theme.palette.mode === 'dark'
+                                    ? alpha(theme.palette.secondary.main, 0.08)
+                                    : alpha(theme.palette.secondary.main, 0.1)
                                   : 'transparent'
                             }}
                           >
                             <ListItemAvatar>
                               <Avatar
                                 sx={{
-                                  color: theme.palette.primary.main,
-                                  bgcolor: isDark
-                                    ? alpha(theme.palette.primary.main, 0.15)
-                                    : alpha(theme.palette.primary.lighter, 0.7)
+                                  color: theme.palette.secondary.main,
+                                  bgcolor:
+                                    theme.palette.mode === 'dark'
+                                      ? alpha(theme.palette.secondary.main, 0.15)
+                                      : alpha(theme.palette.secondary.main, 0.1)
                                 }}
                               >
                                 {notificationIcons[item.type]}

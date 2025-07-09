@@ -8,40 +8,53 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
-  const items = item.children?.map((menu) => {
-    switch (menu.type) {
-      case 'collapse':
-        return (
-          <NavCollapse
-            key={menu.id}
-            menu={menu}
-            level={1}
-            selectedItems={selectedItems}
-            selectedLevel={selectedLevel}
-            setSelectedItems={setSelectedItems}
-            setSelectedLevel={setSelectedLevel}
-          />
-        );
-      case 'item':
-        return (
-          <NavItem
-            key={menu.id}
-            item={menu}
-            level={1}
-            selected={selectedItems === menu.id}
-            selectedLevel={selectedLevel}
-            setSelectedItems={setSelectedItems}
-            setSelectedLevel={setSelectedLevel}
-          />
-        );
-      default:
-        return (
-          <Typography key={menu.id} variant="h6" color="error" align="center">
-            Menu Items Error: {menu.type}
-          </Typography>
-        );
-    }
-  });
+  // Handle undefined items or items without children
+  if (!item || !item.children) {
+    return null;
+  }
+
+  const items = item.children
+    ?.map((menu) => {
+      // Ensure menu is properly defined and has a type property
+      if (!menu || !menu.type) {
+        console.warn('Menu item is missing required properties:', menu);
+        return null;
+      }
+
+      switch (menu.type) {
+        case 'collapse':
+          return (
+            <NavCollapse
+              key={menu.id}
+              menu={menu}
+              level={1}
+              selectedItems={selectedItems}
+              selectedLevel={selectedLevel}
+              setSelectedItems={setSelectedItems}
+              setSelectedLevel={setSelectedLevel}
+            />
+          );
+        case 'item':
+          return (
+            <NavItem
+              key={menu.id}
+              item={menu}
+              level={1}
+              selected={selectedItems === menu.id}
+              selectedLevel={selectedLevel}
+              setSelectedItems={setSelectedItems}
+              setSelectedLevel={setSelectedLevel}
+            />
+          );
+        default:
+          return (
+            <Typography key={menu.id || 'error'} variant="h6" color="error" align="center">
+              Menu Items Error: {menu.type}
+            </Typography>
+          );
+      }
+    })
+    .filter(Boolean); // Filter out any null items
 
   return (
     <List

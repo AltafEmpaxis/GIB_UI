@@ -47,7 +47,7 @@ const ScrollTop = ({ children }) => {
             size="small"
             aria-label="scroll back to top"
             sx={{
-              boxShadow: theme.customShadows.z1,
+              boxShadow: theme.shadows[2],
               border: `1px solid ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.2 : 0.1)}`,
               bgcolor: alpha(
                 theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
@@ -60,7 +60,7 @@ const ScrollTop = ({ children }) => {
                 color: theme.palette.primary.main
               },
               '&:active': {
-                boxShadow: theme.customShadows.primary
+                boxShadow: theme.shadows[4]
               }
             }}
           >

@@ -76,6 +76,7 @@ typings/
 *.temp
 .temp/
 .tmp/
+.cursor/
 
 # # Local env files
 # .env.local

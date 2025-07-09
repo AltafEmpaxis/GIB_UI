@@ -1,6 +1,6 @@
 // ==============================|| OVERRIDES - TYPOGRAPHY ||============================== //
 
-export function typographyOverrides(theme) {
+export default function Typography(theme) {
   return {
     MuiTypography: {
       styleOverrides: {
@@ -26,10 +26,12 @@ export function typographyOverrides(theme) {
 
         // Subtitle styles
         subtitle1: {
-          color: theme.palette.text.secondary
+          color: theme.palette.text.secondary,
+          fontWeight: 500
         },
         subtitle2: {
-          color: theme.palette.text.secondary
+          color: theme.palette.text.secondary,
+          fontWeight: 500
         },
 
         // Body styles
@@ -45,7 +47,7 @@ export function typographyOverrides(theme) {
           color: theme.palette.text.secondary
         },
         overline: {
-          fontWeight: 600,
+          fontWeight: 500,
           letterSpacing: '0.5px',
           textTransform: 'uppercase',
           color: theme.palette.text.secondary
@@ -58,25 +60,7 @@ export function typographyOverrides(theme) {
         paragraph: {
           marginBottom: 16
         }
-      },
-      defaultProps: {
-        variantMapping: {
-          h1: 'h1',
-          h2: 'h2',
-          h3: 'h3',
-          h4: 'h4',
-          h5: 'h5',
-          h6: 'h6',
-          subtitle1: 'h6',
-          subtitle2: 'h6',
-          body1: 'p',
-          body2: 'p',
-          caption: 'span',
-          overline: 'span'
-        }
       }
     }
   };
 }
-
-export default typographyOverrides;

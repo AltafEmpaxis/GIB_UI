@@ -28,24 +28,27 @@ export default function GlobalStyles() {
           width: '100%'
         },
 
+        // Text Selection Styling
+        '::selection': {
+          backgroundColor: alpha(theme.palette.primary.main, 0.2),
+          color: theme.palette.text.primary
+        },
+
         // Scrollbar styles
         '::-webkit-scrollbar': {
           width: 8,
           height: 8
         },
         '::-webkit-scrollbar-track': {
-          background:
-            theme.palette.mode === 'dark' ? alpha(theme.palette.grey[900], 0.8) : alpha(theme.palette.grey[200], 0.8)
+          background: alpha(theme.palette.grey[200], 0.8)
         },
         '::-webkit-scrollbar-thumb': {
-          background:
-            theme.palette.mode === 'dark' ? alpha(theme.palette.grey[600], 0.9) : alpha(theme.palette.grey[400], 0.9),
+          backgroundColor: alpha(theme.palette.grey[400], 0.9),
           borderRadius: 4,
           transition: 'background-color 0.2s'
         },
         '::-webkit-scrollbar-thumb:hover': {
-          background:
-            theme.palette.mode === 'dark' ? alpha(theme.palette.grey[500], 0.9) : alpha(theme.palette.grey[500], 0.9)
+          backgroundColor: alpha(theme.palette.primary.main, 0.7)
         },
 
         // Enhanced ApexCharts Custom Styles
@@ -56,7 +59,7 @@ export default function GlobalStyles() {
           '& .apexcharts-theme-light': {
             '& .apexcharts-selection-icon:not(.apexcharts-selected):hover svg, & .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg, & .apexcharts-zoomin-icon:hover svg, & .apexcharts-zoomout-icon:hover svg, & .apexcharts-reset-icon:hover svg, & .apexcharts-menu-icon:hover svg':
               {
-                fill: theme.palette.mode === 'dark' ? theme.palette.grey[200] : theme.palette.grey[900]
+                fill: theme.palette.primary.main
               }
           },
 
@@ -78,35 +81,26 @@ export default function GlobalStyles() {
 
           // Grid & Lines with theme colors
           '& .apexcharts-grid line': {
-            stroke: theme.palette.mode === 'dark' ? alpha(theme.palette.divider, 0.2) : theme.palette.divider
+            stroke: theme.palette.divider
           },
 
-          // Enhanced Tooltip with theme colors
+          // Enhanced Tooltip
           '& .apexcharts-tooltip': {
-            backgroundColor:
-              theme.palette.mode === 'dark'
-                ? alpha(theme.palette.grey[900], 0.9)
-                : alpha(theme.palette.background.paper, 0.95),
+            backgroundColor: alpha(theme.palette.background.paper, 0.95),
             borderColor: theme.palette.divider,
-            boxShadow: theme.customShadows.z8,
+            boxShadow: theme.shadows[3],
             borderRadius: theme.shape.borderRadius,
             backdropFilter: 'blur(8px)',
 
             '& .apexcharts-tooltip-title': {
-              backgroundColor:
-                theme.palette.mode === 'dark'
-                  ? alpha(theme.palette.grey[900], 0.8)
-                  : alpha(theme.palette.grey[200], 0.8),
+              backgroundColor: alpha(theme.palette.grey[200], 0.8),
               borderColor: theme.palette.divider,
               ...theme.typography.subtitle2
             },
 
             '& .apexcharts-tooltip-series-group': {
               '&.active': {
-                backgroundColor:
-                  theme.palette.mode === 'dark'
-                    ? alpha(theme.palette.primary.dark, 0.1)
-                    : alpha(theme.palette.primary.light, 0.1)
+                backgroundColor: alpha(theme.palette.primary.main, 0.2)
               }
             }
           },
@@ -114,18 +108,14 @@ export default function GlobalStyles() {
           // Theme-aware toolbar
           '& .apexcharts-toolbar': {
             '& .apexcharts-menu': {
-              backgroundColor:
-                theme.palette.mode === 'dark' ? alpha(theme.palette.grey[900], 0.9) : theme.palette.background.paper,
+              backgroundColor: theme.palette.background.paper,
               border: `1px solid ${theme.palette.divider}`,
               borderRadius: theme.shape.borderRadius,
-              boxShadow: theme.customShadows.z8,
+              boxShadow: theme.shadows[3],
               backdropFilter: 'blur(8px)',
 
               '& .apexcharts-menu-item:hover': {
-                backgroundColor:
-                  theme.palette.mode === 'dark'
-                    ? alpha(theme.palette.primary.main, 0.1)
-                    : alpha(theme.palette.primary.lighter, 0.3)
+                backgroundColor: alpha(theme.palette.primary.main, 0.1)
               }
             }
           },
@@ -133,7 +123,7 @@ export default function GlobalStyles() {
           // Series colors based on theme palette
           '& .apexcharts-series': {
             '&.apexcharts-pie-series path, &.apexcharts-donut-series path': {
-              stroke: theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.background.paper
+              stroke: theme.palette.background.paper
             },
             '& .apexcharts-bar, & .apexcharts-candlestick-area, & .apexcharts-rangebar-area': {
               '&:hover': {
@@ -167,42 +157,38 @@ export default function GlobalStyles() {
         '.swal2-container': {
           zIndex: theme.zIndex.modal + 1,
           '& .swal2-backdrop-show': {
-            backgroundColor:
-              theme.palette.mode === 'dark' ? alpha(theme.palette.grey[900], 0.6) : alpha(theme.palette.grey[900], 0.4)
+            backgroundColor: alpha(theme.palette.grey[900], 0.4)
           }
         },
         '.swal2-popup': {
-          backgroundColor:
-            theme.palette.mode === 'dark'
-              ? alpha(theme.palette.background.paper, 0.95)
-              : theme.palette.background.paper,
+          backgroundColor: theme.palette.background.paper,
           borderRadius: theme.shape.borderRadius * 1.5,
           padding: theme.spacing(3),
           fontFamily: theme.typography.fontFamily,
-          boxShadow: theme.customShadows.dialog,
+          boxShadow: theme.shadows[8],
           border: `1px solid ${theme.palette.divider}`,
           backdropFilter: 'blur(8px)',
 
           // Title
           '& .swal2-title': {
-            color: theme.palette.mode === 'dark' ? theme.palette.grey[100] : theme.palette.grey[900],
+            color: theme.palette.text.primary,
             ...theme.typography.h5,
             marginBottom: theme.spacing(1)
           },
 
           // Content
           '& .swal2-html-container': {
-            color: theme.palette.mode === 'dark' ? theme.palette.grey[400] : theme.palette.grey[600],
+            color: theme.palette.text.secondary,
             ...theme.typography.body1,
             marginBottom: theme.spacing(2)
           },
 
           // Close Button
           '& .swal2-close': {
-            color: theme.palette.mode === 'dark' ? theme.palette.grey[400] : theme.palette.grey[600],
+            color: theme.palette.text.secondary,
             transition: theme.transitions.create(['color']),
             '&:hover': {
-              color: theme.palette.mode === 'dark' ? theme.palette.grey[200] : theme.palette.grey[900],
+              color: theme.palette.primary.main,
               backgroundColor: 'transparent'
             },
             '&:focus': {
@@ -346,25 +332,17 @@ export default function GlobalStyles() {
               color: `${theme.palette.primary.contrastText} !important`,
               '&:hover': {
                 backgroundColor: `${theme.palette.primary.dark} !important`,
-                boxShadow: theme.customShadows.primary
+                boxShadow: theme.shadows[2]
               }
             },
 
             '& .swal2-cancel': {
-              backgroundColor:
-                theme.palette.mode === 'dark'
-                  ? `${alpha(theme.palette.grey[700], 0.9)} !important`
-                  : `${alpha(theme.palette.grey[300], 0.9)} !important`,
-              color:
-                theme.palette.mode === 'dark'
-                  ? `${theme.palette.common.white} !important`
-                  : `${theme.palette.grey[800]} !important`,
+              backgroundColor: `${alpha(theme.palette.grey[300], 0.9)} !important`,
+              color: `${theme.palette.grey[800]} !important`,
               '&:hover': {
-                backgroundColor:
-                  theme.palette.mode === 'dark'
-                    ? `${theme.palette.grey[600]} !important`
-                    : `${theme.palette.grey[400]} !important`,
-                boxShadow: theme.customShadows.z8
+                backgroundColor: `${alpha(theme.palette.grey[400], 0.9)} !important`,
+                color: `${theme.palette.common.white} !important`,
+                boxShadow: theme.shadows[2]
               }
             },
 
@@ -373,7 +351,7 @@ export default function GlobalStyles() {
               color: `${theme.palette.error.contrastText} !important`,
               '&:hover': {
                 backgroundColor: `${theme.palette.error.dark} !important`,
-                boxShadow: theme.customShadows.error
+                boxShadow: theme.shadows[2]
               }
             }
           }

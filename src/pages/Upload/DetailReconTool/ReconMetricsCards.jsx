@@ -1,94 +1,152 @@
 import { Icon } from '@iconify/react';
-import { alpha, Box, Card, CardContent, Divider, Grid, Typography, useTheme } from '@mui/material';
-import { motion } from 'framer-motion';
+import { alpha, Box, Card, IconButton, Typography, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
-// Custom card component with animation
-const MetricCard = ({ title, value, subtitle, icon, color, iconBg }) => {
+/**
+ * MetricCard - A component for displaying metrics following GIB design system
+ */
+const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isActive }) => {
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      whileHover={{
-        y: -5,
-        boxShadow: theme.shadows[10],
-        transition: { duration: 0.2 }
+    <Card
+      onClick={onClick}
+      elevation={isActive ? 2 : 0}
+      sx={{
+        height: '100%',
+        position: 'relative',
+        // borderRadius: theme.shape.borderRadius,
+        backgroundColor: isActive ? alpha(color, isDark ? 0.2 : 0.08) : theme.palette.background.paper,
+        border: `1px solid ${isActive ? color : alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
+        overflow: 'hidden',
+        cursor: 'pointer',
+        transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
+          duration: theme.transitions.duration.shorter
+        }),
+        '&:hover': {
+          backgroundColor: alpha(color, isDark ? 0.15 : 0.05),
+          borderColor: alpha(color, isDark ? 0.6 : 0.4),
+          boxShadow: isActive ? theme.shadows[4] : theme.shadows[2]
+        }
       }}
     >
-      <Card
-        elevation={2}
+      {/* Accent top bar */}
+      <Box
         sx={{
-          height: '100%',
-          borderRadius: 2,
-          position: 'relative',
-          overflow: 'hidden',
-          bgcolor: alpha(color.lighter, 0.9),
-          border: `1px solid ${alpha(color.main, 0.1)}`
+          height: 4,
+          width: '100%',
+          backgroundColor: color,
+          opacity: isActive ? 1 : 0.7
         }}
-      >
-        {/* Decorative background elements */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: -10,
-            right: -10,
-            width: 100,
-            height: 100,
-            borderRadius: '50%',
-            bgcolor: alpha(color.main, 0.07),
-            zIndex: 0
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: -30,
-            left: -20,
-            width: 120,
-            height: 120,
-            borderRadius: '50%',
-            bgcolor: alpha(color.main, 0.05),
-            zIndex: 0
-          }}
-        />
+      />
 
-        <CardContent sx={{ position: 'relative', zIndex: 1 }}>
-          <Box display="flex" justifyContent="space-between" alignItems="flex-start">
-            <Box>
-              <Typography variant="subtitle1" color={color.dark} fontWeight={600} gutterBottom>
-                {title}
-              </Typography>
-              <Typography variant="h3" color={color.dark} sx={{ fontWeight: 700 }}>
-                {value}
-              </Typography>
-            </Box>
+      <Box sx={{ p: 2.5 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: 600,
+              color: theme.palette.text.primary,
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            {title}
+            {isActive && (
+              <Box
+                component="span"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  ml: 1,
+                  borderRadius: '4px',
+                  bgcolor: alpha(color, 0.15),
+                  px: 0.8,
+                  py: 0.2
+                }}
+              >
+                <Icon icon="mdi:filter" width={10} height={10} style={{ color, marginRight: 4 }} />
+                <Typography variant="caption" sx={{ color, fontWeight: 600, fontSize: '0.65rem' }}>
+                  ACTIVE
+                </Typography>
+              </Box>
+            )}
+          </Typography>
+
+          <IconButton
+            sx={{
+              backgroundColor: alpha(color, isDark ? 0.2 : 0.12)
+            }}
+          >
+            <Icon icon={icon} width={20} height={20} />
+          </IconButton>
+        </Box>
+
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: 700,
+            color: theme.palette.text.primary,
+            mb: 0.5
+          }}
+        >
+          {value}
+        </Typography>
+
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mt: 1
+          }}
+        >
+          <Typography
+            variant="caption"
+            sx={{
+              color: theme.palette.text.secondary,
+              fontSize: '0.75rem'
+            }}
+          >
+            {subtitle}
+          </Typography>
+
+          {trend && (
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
-                p: 1.5,
-                borderRadius: 2,
-                bgcolor: iconBg || alpha(color.main, 0.15),
-                color: color.dark,
-                boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 2px 4px 0 rgba(0,0,0,0.1)'
+                borderRadius: theme.shape.borderRadius / 2,
+                px: 0.8,
+                py: 0.3,
+                backgroundColor: alpha(
+                  trend.startsWith('+') ? theme.palette.success.main : theme.palette.error.main,
+                  isDark ? 0.2 : 0.1
+                )
               }}
             >
-              <Icon icon={icon} width={28} height={28} />
+              <Icon
+                icon={trend.startsWith('+') ? 'mdi:arrow-up' : 'mdi:arrow-down'}
+                width={12}
+                height={12}
+                style={{
+                  color: trend.startsWith('+') ? theme.palette.success.main : theme.palette.error.main,
+                  marginRight: 3
+                }}
+              />
+              <Typography
+                variant="caption"
+                color={trend.startsWith('+') ? theme.palette.success.main : theme.palette.error.main}
+                sx={{ fontWeight: 600, fontSize: '0.7rem' }}
+              >
+                {trend}
+              </Typography>
             </Box>
-          </Box>
-
-          <Divider sx={{ my: 2, opacity: 0.5 }} />
-
-          <Typography variant="body2" color={color.dark} sx={{ opacity: 0.8 }}>
-            {subtitle}
-          </Typography>
-        </CardContent>
-      </Card>
-    </motion.div>
+          )}
+        </Box>
+      </Box>
+    </Card>
   );
 };
 
@@ -97,95 +155,15 @@ MetricCard.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   subtitle: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
-  color: PropTypes.object.isRequired,
-  iconBg: PropTypes.string
+  color: PropTypes.string.isRequired,
+  trend: PropTypes.string,
+  onClick: PropTypes.func,
+  isActive: PropTypes.bool
 };
 
-// Main component that renders all metric cards
-const ReconMetricsCards = ({ data }) => {
-  const theme = useTheme();
-
-  // Calculate the metrics
-  const totalAccounts = data.length;
-  const reconciledAccounts = data.filter((account) => account.status === 'reconciled').length;
-  const unreconciledAccounts = data.filter((account) => account.status === 'unreconciled').length;
-  const totalAmount = data.reduce((sum, account) => sum + account.amount, 0);
-
-  // Define color schemes
-  const colorSchemes = {
-    total: {
-      main: theme.palette.primary.main,
-      dark: theme.palette.primary.dark,
-      lighter: theme.palette.primary.lighter,
-      light: theme.palette.primary.light
-    },
-    reconciled: {
-      main: theme.palette.success.main,
-      dark: theme.palette.success.dark,
-      lighter: theme.palette.success.lighter,
-      light: theme.palette.success.light
-    },
-    unreconciled: {
-      main: theme.palette.error.main,
-      dark: theme.palette.error.dark,
-      lighter: theme.palette.error.lighter,
-      light: theme.palette.error.light
-    },
-    amount: {
-      main: theme.palette.info.main,
-      dark: theme.palette.info.dark,
-      lighter: theme.palette.info.lighter,
-      light: theme.palette.info.light
-    }
-  };
-
-  return (
-    <Grid container spacing={3}>
-      <Grid item xs={12} sm={6} md={3}>
-        <MetricCard
-          title="Total Accounts"
-          value={totalAccounts}
-          subtitle="All accounts in system"
-          icon="solar:files-bold-duotone"
-          color={colorSchemes.total}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3}>
-        <MetricCard
-          title="Reconciled"
-          value={reconciledAccounts}
-          subtitle="+8% from previous"
-          icon="solar:check-circle-bold-duotone"
-          color={colorSchemes.reconciled}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3}>
-        <MetricCard
-          title="Unreconciled"
-          value={unreconciledAccounts}
-          subtitle="-3.2% from yesterday"
-          icon="solar:close-circle-bold-duotone"
-          color={colorSchemes.unreconciled}
-        />
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={3}>
-        <MetricCard
-          title="Total Amount"
-          value={new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(totalAmount)}
-          subtitle="Total reconciliation value"
-          icon="solar:dollar-minimalistic-bold-duotone"
-          color={colorSchemes.amount}
-        />
-      </Grid>
-    </Grid>
-  );
+MetricCard.defaultProps = {
+  isActive: false,
+  onClick: () => {}
 };
 
-ReconMetricsCards.propTypes = {
-  data: PropTypes.array.isRequired
-};
-
-export default ReconMetricsCards;
+export default MetricCard;

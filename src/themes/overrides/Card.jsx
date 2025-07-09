@@ -3,14 +3,12 @@ import { alpha } from '@mui/material/styles';
 
 // ==============================|| OVERRIDES - CARD ||============================== //
 
-export default function Card(theme, customShadows) {
-  const isDark = theme.palette.mode === 'dark';
-
+export default function Card(theme) {
   const getColorStyle = (color) => ({
-    backgroundColor: alpha(theme.palette[color].main, isDark ? 0.1 : 0.05),
+    backgroundColor: alpha(theme.palette[color].main, 0.05),
     borderColor: alpha(theme.palette[color].main, 0.25),
     '&:hover': {
-      backgroundColor: alpha(theme.palette[color].main, isDark ? 0.15 : 0.1)
+      backgroundColor: alpha(theme.palette[color].main, 0.1)
     }
   });
 
@@ -20,10 +18,7 @@ export default function Card(theme, customShadows) {
         root: {
           position: 'relative',
           borderRadius: theme.shape.borderRadius,
-          border:
-            theme.palette.mode === 'dark'
-              ? `1px solid ${theme.palette.divider}`
-              : `1px solid ${theme.palette.grey[200]}`,
+          border: `1px solid ${theme.palette.grey[200]}`,
           transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
             duration: theme.transitions.duration.shorter
           }),
@@ -37,7 +32,7 @@ export default function Card(theme, customShadows) {
           },
           '&.card-hover': {
             '&:hover': {
-              boxShadow: customShadows.z8
+              boxShadow: theme.shadows[8]
             }
           },
           // Color variants
@@ -59,13 +54,13 @@ export default function Card(theme, customShadows) {
           },
           '& .MuiCardHeader-subheader': {
             fontSize: '0.875rem',
-            color: isDark ? theme.palette.grey[400] : theme.palette.text.secondary
+            color: theme.palette.text.secondary
           }
         },
         title: {
           fontSize: '1rem',
           fontWeight: 500,
-          color: isDark ? theme.palette.grey[100] : theme.palette.text.primary
+          color: theme.palette.text.primary
         },
         action: {
           marginTop: 0,
@@ -106,7 +101,7 @@ export default function Card(theme, customShadows) {
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          backgroundColor: isDark ? theme.palette.grey[900] : theme.palette.grey[200],
+          backgroundColor: theme.palette.grey[200],
           '&.card-media-hover': {
             transition: theme.transitions.create('transform'),
             '&:hover': {

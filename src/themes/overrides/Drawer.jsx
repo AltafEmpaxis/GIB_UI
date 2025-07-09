@@ -3,8 +3,6 @@ import { alpha } from '@mui/material';
 // ==============================|| OVERRIDES - DRAWER ||============================== //
 
 export default function Drawer(theme) {
-  const isDark = theme.palette.mode === 'dark';
-
   return {
     MuiDrawer: {
       styleOverrides: {
@@ -17,14 +15,12 @@ export default function Drawer(theme) {
             duration: theme.transitions.duration.shorter
           }),
           '& .MuiListItemButton-root:hover': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.secondary.main, 0.2)
-              : alpha(theme.palette.secondary.main, 0.12),
+            backgroundColor: alpha(theme.palette.primary.main, 0.12),
             '& .MuiListItemIcon-root': {
-              color: theme.palette.secondary.main
+              color: theme.palette.primary.main
             },
             '& .MuiTypography-root': {
-              color: theme.palette.secondary.main
+              color: theme.palette.primary.main
             }
           }
         },
@@ -36,7 +32,7 @@ export default function Drawer(theme) {
         },
         modal: {
           '& .MuiBackdrop-root': {
-            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.5)'
+            backgroundColor: 'rgba(0, 0, 0, 0.5)'
           }
         },
         docked: {

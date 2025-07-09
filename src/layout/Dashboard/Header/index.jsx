@@ -16,7 +16,6 @@ import HeaderContent from './HeaderContent';
 const Header = ({ open, handleDrawerToggle }) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('lg'));
-  const isDark = theme.palette.mode === 'dark';
 
   // common header
   const mainHeader = (
@@ -40,7 +39,10 @@ const Header = ({ open, handleDrawerToggle }) => {
           color: theme.palette.text.primary,
           bgcolor: open ? theme.palette.action.selected : 'transparent',
           '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.main, 0.12),
+            bgcolor:
+              theme.palette.mode === 'dark'
+                ? alpha(theme.palette.secondary.main, 0.2)
+                : alpha(theme.palette.secondary.main, 0.12),
             color: theme.palette.secondary.main
           }
         }}

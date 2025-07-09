@@ -1,13 +1,13 @@
 // material-ui
-import { Badge, Box, IconButton, Stack, Tooltip, useMediaQuery } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
-import { useState, useCallback, useEffect } from 'react';
 import { Icon } from '@iconify/react';
+import { Box, IconButton, Stack, Tooltip, useMediaQuery } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
+import { useCallback, useEffect, useState } from 'react';
 
 // project import
 import useConfig from 'hooks/useConfig';
-import NotificationSection from './HeaderContent/NotificationSection';
 import MobileSection from './HeaderContent/MobileSection';
+import NotificationSection from './HeaderContent/NotificationSection';
 import Profile from './HeaderContent/Profile';
 
 // ==============================|| HEADER - CONTENT ||============================== //
@@ -16,7 +16,6 @@ const HeaderContent = () => {
   const { mode, onChangeMode } = useConfig();
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
-  const isDark = theme.palette.mode === 'dark';
 
   // State for fullscreen
   const [isFullscreen, setIsFullscreen] = useState(document.fullscreenElement !== null);
@@ -79,11 +78,14 @@ const HeaderContent = () => {
               height: 40,
               transition: 'all 0.2s ease-in-out',
               '&:hover': {
-                bgcolor: isDark ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.lighter, 0.5)
+                bgcolor:
+                  theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.secondary.main, 0.15)
+                    : alpha(theme.palette.secondary.main, 0.1)
               }
             }}
           >
-            {isDark ? (
+            {theme.palette.mode === 'dark' ? (
               <Icon icon="solar:sun-bold-duotone" width={24} height={24} />
             ) : (
               <Icon icon="solar:moon-bold-duotone" width={24} height={24} />
@@ -104,7 +106,10 @@ const HeaderContent = () => {
               height: 40,
               transition: 'all 0.2s ease-in-out',
               '&:hover': {
-                bgcolor: isDark ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.lighter, 0.5)
+                bgcolor:
+                  theme.palette.mode === 'dark'
+                    ? alpha(theme.palette.secondary.main, 0.15)
+                    : alpha(theme.palette.secondary.main, 0.1)
               }
             }}
           >
