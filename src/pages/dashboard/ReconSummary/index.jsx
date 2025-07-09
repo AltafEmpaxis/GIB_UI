@@ -1,4 +1,4 @@
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, Grid, useMediaQuery, useTheme } from '@mui/material';
 import AnalyticsSection from './AnalyticsSection';
 import BankingSummarySection from './BankingSummarySection';
 import CorporateActionsSection from './CorporateActionsSection';
@@ -8,62 +8,111 @@ import SummaryMetricsSection from './SummaryMetricsSection';
 
 const ReconSummary = ({ isLoading }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+
+  // Calculate dynamic spacing based on theme
+  const sidebarWidth = 320; // Width of the sidebar
+  const gridSpacing = 1.5;
+  const dynamicSpacing = theme.spacing(isLargeScreen ? gridSpacing : 0);
 
   return (
-    <Box>
-      <Grid container spacing={2} sx={{ mt: 2 }}>
-        {/* Main Content Area */}
-        <Grid item xs={12} lg={9} sx={{ pr: 2 }}>
-          {/* Financial Summary Section */}
-          <Box sx={{ pb: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={8} sx={{ display: 'flex', flexDirection: 'column' }}>
-                {/* Custodian Component */}
-                <CustodiansSection isLoading={isLoading} />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                {/* Summary Metrics Component */}
-                <SummaryMetricsSection />
-              </Grid>
+    <Box
+      sx={{
+        py: 1,
+        px: 1,
+        display: 'flex',
+        flexDirection: { xs: 'column', lg: 'row' },
+        position: 'relative',
+        minHeight: '100%',
+        gap: gridSpacing
+      }}
+    >
+      {/* Main Content Area */}
+      <Box
+        sx={{
+          flexGrow: 1,
+          width: { xs: '100%', lg: `calc(100% - ${sidebarWidth}px - ${theme.spacing(gridSpacing)})` },
+          pr: isLargeScreen ? 0 : 0,
+          mb: !isLargeScreen ? gridSpacing : 0
+        }}
+      >
+        {/* Financial Summary Section */}
+        <Box sx={{ pb: gridSpacing }}>
+          <Grid container spacing={gridSpacing}>
+            <Grid
+              item
+              xs={12}
+              md={8}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                order: { xs: 2, md: 1 }
+              }}
+            >
+              {/* Custodian Component */}
+              <CustodiansSection isLoading={isLoading} />
             </Grid>
-          </Box>
 
-          {/* Corporate Action & Banking Summary Section */}
-          <Box sx={{ mb: 2 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <CorporateActionsSection />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <BankingSummarySection />
-              </Grid>
+            <Grid
+              item
+              xs={12}
+              md={4}
+              sx={{
+                order: { xs: 1, md: 2 },
+                mb: { xs: 0, md: 0 }
+              }}
+            >
+              {/* Summary Metrics Component */}
+              <SummaryMetricsSection />
             </Grid>
-          </Box>
+          </Grid>
+        </Box>
 
-          {/* Analytics Section */}
-          <Box sx={{ mb: 2 }}>
-            <AnalyticsSection />
-          </Box>
-        </Grid>
+        {/* Corporate Action & Banking Summary Section */}
+        <Box sx={{ mb: gridSpacing }}>
+          <Grid container spacing={gridSpacing}>
+            <Grid item xs={12} md={6}>
+              <CorporateActionsSection />
+            </Grid>
 
-        {/* Right Sidebar */}
-        <Grid
-          item
-          xs={12}
-          lg={3}
-          sx={{
-            display: { xs: 'none', lg: 'block' },
-            bgcolor: theme.palette.primary.main,
-            p: 2,
-            color: theme.palette.primary.contrastText,
-            borderRadius: '0 8px 8px 0'
-          }}
-        >
-          <RightSidebarSection />
-        </Grid>
-      </Grid>
+            <Grid item xs={12} md={6}>
+              <BankingSummarySection />
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Analytics Section */}
+        <Box sx={{ mb: 0 }}>
+          <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+              <AnalyticsSection />
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+
+      {/* Right Sidebar */}
+      <Box
+        sx={{
+          display: { xs: 'block', sm: 'block', lg: 'block' },
+          bgcolor: theme.palette.primary.main,
+          p: 0,
+          color: theme.palette.primary.contrastText,
+          borderRadius: {
+            xs: 1,
+            lg: 1
+          },
+          position: { lg: 'relative' },
+          width: { xs: '100%', lg: sidebarWidth },
+          height: { lg: '100%' },
+          overflowY: { lg: 'auto' },
+          ml: isLargeScreen ? 0 : 0
+        }}
+      >
+        <RightSidebarSection />
+      </Box>
     </Box>
   );
 };

@@ -5,320 +5,261 @@ import {
   Avatar,
   Box,
   ButtonBase,
-  CardContent,
   ClickAwayListener,
   Divider,
-  Grid2,
+  List,
+  ListItemButton,
   Paper,
   Popper,
   Stack,
-  Typography
+  Typography,
+  styled
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
 // project import
-import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import useAuth from 'hooks/useAuth';
 
-import ProfileTab from './ProfileTab';
+// menu items
+const MENU_ITEMS = [
+  { icon: 'solar:user-id-bold-duotone', label: 'My Profile', route: '/profile' },
+  { icon: 'solar:settings-minimalistic-bold-duotone', label: 'Account Settings', route: '/account-settings' },
+  { divider: true },
+  { icon: 'solar:logout-3-bold-duotone', label: 'Logout', route: '/logout', color: 'error' }
+];
 
-const Profile = () => {
+// styled components
+const ProfileWrapper = styled(Box)({
+  marginLeft: 12
+});
+
+const AvatarButton = styled(ButtonBase)(({ theme, open }) => ({
+  padding: 2,
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: open ? alpha(theme.palette.secondary.main, 0.12) : 'transparent',
+  transition: 'all 0.2s ease',
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.secondary.main, 0.1)
+  }
+}));
+
+const UserAvatar = styled(Avatar)(({ theme }) => ({
+  width: 36,
+  height: 36,
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.secondary.contrastText,
+  fontSize: '0.9rem',
+  fontWeight: 600
+}));
+
+const ProfilePopper = styled(Popper)(({ theme }) => ({
+  zIndex: 1100,
+  width: 280,
+  overflow: 'hidden'
+}));
+
+const MenuPaper = styled(Paper)(({ theme }) => ({
+  width: '100%',
+  overflow: 'hidden',
+  borderRadius: theme.shape.borderRadius,
+  marginTop: 10,
+  boxShadow: '0 5px 15px rgba(0,0,0,0.08)'
+}));
+
+const ProfileHeader = styled(Box)(({ theme }) => ({
+  padding: 16,
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.secondary.contrastText
+}));
+
+const HeaderAvatar = styled(Avatar)(({ theme }) => ({
+  width: 50,
+  height: 50,
+  backgroundColor: alpha(theme.palette.secondary.dark, 0.8),
+  border: `2px solid ${theme.palette.common.white}`,
+  fontSize: '1.2rem'
+}));
+
+const UserDetail = styled(Box)(({ theme }) => ({
+  padding: '12px 16px',
+  backgroundColor: alpha(theme.palette.secondary.lighter, 0.3)
+}));
+
+const DetailItem = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  padding: '6px 0',
+  '& .icon': {
+    color: theme.palette.primary.main,
+    marginRight: 8,
+    fontSize: 16
+  },
+  '& .text': {
+    ...theme.typography.body2,
+    color: theme.palette.text.primary
+  }
+}));
+
+const MenuList = styled(List)({
+  paddingTop: 6,
+  paddingBottom: 6
+});
+
+const MenuDivider = styled(Divider)({
+  margin: '6px 0'
+});
+
+const MenuItem = styled(ListItemButton)(({ theme, selected, color }) => ({
+  position: 'relative',
+  padding: '8px 16px',
+  margin: '2px 6px',
+  borderRadius: 8,
+  transition: 'all 0.15s ease-in-out',
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.secondary.main, 0.08)
+  },
+  ...(selected && {
+    backgroundColor: alpha(theme.palette.secondary.main, 0.1),
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      left: 0,
+      top: '25%',
+      height: '50%',
+      width: 3,
+      backgroundColor: color ? theme.palette[color].main : theme.palette.secondary.main,
+      borderRadius: '0 2px 2px 0'
+    }
+  })
+}));
+
+const MenuIcon = styled(Icon)(({ theme, color, selected }) => ({
+  marginRight: 12,
+  fontSize: 18,
+  color: color ? theme.palette[color].main : selected ? theme.palette.secondary.main : theme.palette.tertiary.main
+}));
+
+const UserProfile = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { logout, user } = useAuth();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const isDark = theme.palette.mode === 'dark';
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // Get display name based on available user info
-  const getDisplayName = () => {
-    if (user?.first_name || user?.last_name) {
-      return `${user.first_name || ''} ${user.last_name || ''}`.trim();
+  // User info
+  const displayName =
+    user?.first_name && user?.last_name ? `${user.first_name} ${user.last_name}` : user?.username || 'Guest User';
+
+  const initials =
+    user?.first_name && user?.last_name
+      ? `${user.first_name[0]}${user.last_name[0]}`.toUpperCase()
+      : user?.username?.[0]?.toUpperCase() || 'U';
+
+  const handleMenuClick = (index, route) => {
+    if (route === '/logout') {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will be logged out of your account',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: theme.palette.secondary.main,
+        cancelButtonColor: theme.palette.error.main,
+        confirmButtonText: 'Yes, logout',
+        cancelButtonText: 'Cancel'
+      }).then(({ isConfirmed }) => {
+        if (isConfirmed) logout();
+      });
+    } else if (route) {
+      navigate(route);
+      setOpen(false);
     }
-    return user?.username || 'Guest User';
-  };
 
-  // Get user role
-  const getUserRole = () => {
-    return user?.isAdmin === 1 ? 'Administrator' : 'User';
-  };
-
-  // Get user initials for avatar fallback
-  const getInitials = () => {
-    if (user?.first_name && user?.last_name) {
-      return `${user.first_name[0]}${user.last_name[0]}`.toUpperCase();
-    }
-    return user?.username?.[0]?.toUpperCase() || 'U';
-  };
-
-  const handleLogout = async () => {
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'You will be logged out of your account',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: theme.palette.primary.main,
-      cancelButtonColor: theme.palette.error.main,
-      confirmButtonText: 'Yes, logout',
-      cancelButtonText: 'Cancel'
-    });
-
-    if (result.isConfirmed) {
-      try {
-        await logout();
-        Swal.fire({
-          title: 'Logged Out!',
-          text: 'You have been successfully logged out',
-          icon: 'success',
-          timer: 1500,
-          showConfirmButton: false
-        });
-      } catch (error) {
-        Swal.fire({
-          title: 'Error!',
-          text: 'Failed to logout. Please try again.',
-          icon: 'error'
-        });
-      }
-    }
-  };
-
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
-
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
-    }
-    setOpen(false);
-  };
-
-  // Generate gradient based on theme
-  const getAvatarGradient = () => {
-    if (isDark) {
-      return `linear-gradient(135deg, ${alpha(theme.palette.primary.dark, 0.8)}, ${alpha(theme.palette.primary.main, 0.4)})`;
-    }
-    return `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.7)}, ${alpha(theme.palette.secondary.main, 0.4)})`;
+    setSelectedItem(index);
   };
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-      <ButtonBase
-        sx={{
-          p: 0.25,
-          bgcolor: open ? alpha(theme.palette.primary.main, 0.12) : 'transparent',
-          borderRadius: 1.5,
-          transition: 'all 0.2s ease-in-out',
-          '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.18) : alpha(theme.palette.primary.lighter, 0.5),
-            transform: 'translateY(-2px)'
-          },
-          ...(open && {
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              bottom: -10,
-              left: '50%',
-              transform: 'translateX(-50%) rotate(45deg)',
-              width: 14,
-              height: 14,
-              bgcolor: isDark ? alpha(theme.palette.background.paper, 0.9) : theme.palette.background.paper,
-              borderLeft: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-              borderTop: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-              zIndex: 1201
-            }
-          })
-        }}
-        aria-label="open profile"
-        ref={anchorRef}
-        aria-controls={open ? 'profile-grow' : undefined}
-        aria-haspopup="true"
-        onClick={handleToggle}
-      >
-        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ p: 0.5 }}>
-          {user?.image ? (
-            <Avatar
-              src={user.image}
-              sx={{
-                width: 36,
-                height: 36,
-                background: getAvatarGradient(),
-                color: '#fff',
-                border: `2px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                transition: 'all 0.25s ease-in-out',
-                '&:hover': {
-                  boxShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}`,
-                  transform: 'scale(1.05)'
-                }
-              }}
-              aria-label="profile user"
-            />
-          ) : (
-            <Avatar
-              sx={{
-                width: 36,
-                height: 36,
-                background: getAvatarGradient(),
-                color: '#fff',
-                border: `2px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                transition: 'all 0.25s ease-in-out',
-                '&:hover': {
-                  boxShadow: `0 0 10px ${alpha(theme.palette.primary.main, 0.4)}`,
-                  transform: 'scale(1.05)'
-                }
-              }}
-              aria-label="profile user"
-            >
-              {getInitials()}
-            </Avatar>
-          )}
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: open ? theme.palette.primary.main : theme.palette.text.primary,
-              fontWeight: open ? 600 : 500,
-              transition: 'all 0.2s ease-in-out'
-            }}
-          >
-            {getDisplayName()}
-          </Typography>
-          <Box
-            sx={{
-              color: theme.palette.text.secondary,
-              transition: 'transform 0.3s ease-in-out',
-              transform: open ? 'rotate(-180deg)' : 'rotate(0deg)'
-            }}
-          >
-            <Icon icon="solar:alt-arrow-down-bold-duotone" width={16} height={16} />
-          </Box>
-        </Stack>
-      </ButtonBase>
+    <ProfileWrapper>
+      <AvatarButton ref={anchorRef} aria-label="open profile" onClick={() => setOpen(!open)} open={open}>
+        <UserAvatar src={user?.image} alt={displayName}>
+          {!user?.image && initials}
+        </UserAvatar>
+      </AvatarButton>
 
-      <Popper
-        placement="bottom-end"
+      <ProfilePopper
         open={open}
         anchorEl={anchorRef.current}
-        role={undefined}
+        placement="bottom-end"
         transition
         disablePortal
-        popperOptions={{
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, 14]
-              }
-            }
-          ]
-        }}
-        sx={{ zIndex: theme.zIndex.popup }}
+        popperOptions={{ modifiers: [{ name: 'offset', options: { offset: [0, 10] } }] }}
       >
         {({ TransitionProps }) => (
-          <Transitions type="fade" in={open} {...TransitionProps} sx={{ transformOrigin: 'top right' }}>
-            <Paper
-              sx={{
-                boxShadow: isDark ? '0 8px 24px rgba(0,0,0,0.2)' : '0 8px 24px rgba(0,0,0,0.1)',
-                borderRadius: 2,
-                border: `1px solid ${alpha(theme.palette.divider, 0.08)}`,
-                background: isDark
-                  ? `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`
-                  : `linear-gradient(${alpha(theme.palette.background.paper, 0.98)}, ${alpha(theme.palette.background.paper, 1)})`,
-                backdropFilter: 'blur(8px)',
-                width: 290,
-                overflow: 'hidden'
-              }}
-              elevation={0}
-            >
-              <ClickAwayListener onClickAway={handleClose}>
-                <MainCard elevation={0} border={false} content={false} sx={{ p: 0 }}>
-                  <CardContent>
-                    <Grid2 container justifyContent="space-between" alignItems="center">
-                      <Grid2>
-                        <Stack direction="row" spacing={1.5} alignItems="center">
-                          {user?.image ? (
-                            <Avatar
-                              src={user.image}
-                              sx={{
-                                width: 48,
-                                height: 48,
-                                background: getAvatarGradient(),
-                                border: `3px solid ${theme.palette.background.paper}`,
-                                boxShadow: `0 0 0 2px ${theme.palette.primary.main}, 0 4px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
-                                transition: 'all 0.3s ease-in-out'
-                              }}
-                            />
-                          ) : (
-                            <Avatar
-                              sx={{
-                                width: 48,
-                                height: 48,
-                                background: getAvatarGradient(),
-                                border: `3px solid ${theme.palette.background.paper}`,
-                                boxShadow: `0 0 0 2px ${theme.palette.primary.main}, 0 4px 12px ${alpha(theme.palette.primary.main, 0.4)}`,
-                                color: '#fff',
-                                transition: 'all 0.3s ease-in-out',
-                                fontSize: '1.25rem',
-                                fontWeight: 700
-                              }}
-                            >
-                              {getInitials()}
-                            </Avatar>
-                          )}
-                          <Stack>
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                fontWeight: 600,
-                                color: theme.palette.text.primary,
-                                lineHeight: 1.2
-                              }}
-                            >
-                              {getDisplayName()}
-                            </Typography>
-                            <Stack direction="row" spacing={0.5} alignItems="center">
-                              <Icon
-                                icon="solar:shield-user-bold-duotone"
-                                width={14}
-                                height={14}
-                                color={isDark ? theme.palette.primary.light : theme.palette.primary.main}
-                              />
-                              <Typography
-                                variant="caption"
-                                sx={{
-                                  color: isDark ? theme.palette.primary.light : theme.palette.primary.main,
-                                  fontWeight: 500
-                                }}
-                              >
-                                {getUserRole()}
-                              </Typography>
-                            </Stack>
-                          </Stack>
-                        </Stack>
-                      </Grid2>
-                    </Grid2>
-                  </CardContent>
+          <Transitions type="fade" {...TransitionProps}>
+            <MenuPaper elevation={2}>
+              <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <div>
+                  <ProfileHeader>
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <HeaderAvatar src={user?.image} alt={displayName}>
+                        {!user?.image && initials}
+                      </HeaderAvatar>
+                      <Stack spacing={0.5}>
+                        <Typography variant="h6" fontWeight={600}>
+                          {displayName}
+                        </Typography>
+                        <Typography variant="caption" sx={{ opacity: 0.9 }}>
+                          {user?.role || 'GIB User'}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </ProfileHeader>
 
-                  <Divider
-                    sx={{
-                      opacity: 0.7,
-                      borderColor: alpha(theme.palette.divider, 0.2)
-                    }}
-                  />
+                  <UserDetail>
+                    <DetailItem>
+                      <Icon icon="solar:user-circle-bold-duotone" className="icon" />
+                      <Typography className="text">{user?.department || 'Investment Banking'}</Typography>
+                    </DetailItem>
+                    <DetailItem>
+                      <Icon icon="solar:clock-circle-bold-duotone" className="icon" />
+                      <Typography className="text">{user?.lastLogin || 'Last login: Today'}</Typography>
+                    </DetailItem>
+                  </UserDetail>
 
-                  <Box sx={{ p: 0 }}>
-                    <ProfileTab handleLogout={handleLogout} />
-                  </Box>
-                </MainCard>
+                  <MenuList>
+                    {MENU_ITEMS.map((item, index) =>
+                      item.divider ? (
+                        <MenuDivider key={`divider-${index}`} />
+                      ) : (
+                        <MenuItem
+                          key={item.label}
+                          onClick={() => handleMenuClick(index, item.route)}
+                          selected={selectedItem === index}
+                          color={item.color}
+                        >
+                          <MenuIcon icon={item.icon} color={item.color} selected={selectedItem === index} />
+                          <Typography
+                            variant="body2"
+                            fontWeight={selectedItem === index ? 600 : 400}
+                            color={item.color ? theme.palette[item.color].main : 'inherit'}
+                          >
+                            {item.label}
+                          </Typography>
+                        </MenuItem>
+                      )
+                    )}
+                  </MenuList>
+                </div>
               </ClickAwayListener>
-            </Paper>
+            </MenuPaper>
           </Transitions>
         )}
-      </Popper>
-    </Box>
+      </ProfilePopper>
+    </ProfileWrapper>
   );
 };
 
-export default Profile;
+export default UserProfile;

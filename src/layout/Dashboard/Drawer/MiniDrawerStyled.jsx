@@ -6,28 +6,33 @@ import { DRAWER_WIDTH, HEADER_HEIGHT } from 'config';
 const openedMixin = (theme) => {
   return {
     width: DRAWER_WIDTH,
-    borderRight: `1px solid ${theme.palette.divider}`,
-    transition: theme.transitions.create('width', {
+    borderRight: `1px solid ${alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.08 : 0.06)}`,
+    transition: theme.transitions.create(['width', 'box-shadow', 'border'], {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.standard
     }),
     overflowX: 'hidden',
-    boxShadow: theme.customShadows?.drawer?.sm || 'none',
-    background: `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`,
-    backdropFilter: 'blur(8px)',
+    boxShadow: theme.palette.mode === 'dark' ? theme.customShadows?.drawer?.sm : '0 3px 10px 0 rgba(0, 0, 0, 0.03)',
+    background: theme.palette.background.paper,
     '&:before': {
       content: '""',
       position: 'absolute',
-      width: '100%',
-      height: '100%',
-      top: 0,
+      width: 3,
+      height: '30%',
+      top: '35%',
       left: 0,
-      zIndex: -1,
-      opacity: 0.05,
-      backgroundImage:
-        theme.palette.mode === 'dark'
-          ? 'radial-gradient(circle at 100% 150%, rgba(120, 120, 165, 0.1) 5%, rgba(120, 120, 165, 0.05) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(120, 120, 165, 0.15) 0%, transparent 40%)'
-          : 'radial-gradient(circle at 100% 150%, rgba(234, 228, 252, 0.5) 5%, rgba(234, 228, 252, 0.2) 15%, transparent 60%), radial-gradient(circle at 0% 50%, rgba(234, 228, 252, 0.4) 0%, transparent 40%)'
+      backgroundColor: theme.palette.secondary.main, // GIB Yellow
+      opacity: 0,
+      borderRadius: '0 2px 2px 0',
+      transition: theme.transitions.create(['opacity', 'height', 'top'], {
+        duration: theme.transitions.duration.standard
+      }),
+      pointerEvents: 'none'
+    },
+    '&:hover:before': {
+      opacity: 0.1,
+      height: '40%',
+      top: '30%'
     },
     [theme.breakpoints.down('lg')]: {
       top: HEADER_HEIGHT,
@@ -38,16 +43,35 @@ const openedMixin = (theme) => {
 
 const closedMixin = (theme) => {
   return {
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create(['width', 'box-shadow', 'border'], {
       easing: theme.transitions.easing.easeInOut,
       duration: theme.transitions.duration.standard
     }),
     overflowX: 'hidden',
     width: theme.spacing(7.5),
-    borderRight: `1px solid ${theme.palette.divider}`,
-    boxShadow: theme.customShadows?.drawer?.xs || 'none',
-    background: `linear-gradient(${alpha(theme.palette.background.paper, 0.96)}, ${alpha(theme.palette.background.paper, 0.98)})`,
-    backdropFilter: 'blur(8px)',
+    borderRight: `1px solid ${alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.05 : 0.04)}`,
+    boxShadow: theme.palette.mode === 'dark' ? theme.customShadows?.drawer?.xs : '0 2px 8px 0 rgba(0, 0, 0, 0.02)',
+    background: theme.palette.background.paper,
+    '&:before': {
+      content: '""',
+      position: 'absolute',
+      width: 3,
+      height: '15%',
+      top: '42.5%',
+      left: 0,
+      backgroundColor: theme.palette.secondary.main, // GIB Yellow
+      opacity: 0,
+      borderRadius: '0 2px 2px 0',
+      transition: theme.transitions.create(['opacity', 'height', 'top'], {
+        duration: theme.transitions.duration.standard
+      }),
+      pointerEvents: 'none'
+    },
+    '&:hover:before': {
+      opacity: 0.1,
+      height: '25%',
+      top: '37.5%'
+    },
     [theme.breakpoints.down('lg')]: {
       width: 0,
       top: HEADER_HEIGHT,

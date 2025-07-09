@@ -1,21 +1,20 @@
 // material-ui
 import { Icon } from '@iconify/react';
-import { Box, IconButton, Stack, Tooltip, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
 
 // project import
 import useConfig from 'hooks/useConfig';
-import MobileSection from './HeaderContent/MobileSection';
 import NotificationSection from './HeaderContent/NotificationSection';
-import Profile from './HeaderContent/Profile';
+import UserProfile from './HeaderContent/Profile';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
   const { mode, onChangeMode } = useConfig();
   const theme = useTheme();
-  const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
+  const isDark = theme.palette.mode === 'dark';
 
   // State for fullscreen
   const [isFullscreen, setIsFullscreen] = useState(document.fullscreenElement !== null);
@@ -73,15 +72,12 @@ const HeaderContent = () => {
             sx={{
               color: theme.palette.text.primary,
               bgcolor: 'transparent',
-              borderRadius: 1.5,
+              borderRadius: 1,
               width: 40,
               height: 40,
               transition: 'all 0.2s ease-in-out',
               '&:hover': {
-                bgcolor:
-                  theme.palette.mode === 'dark'
-                    ? alpha(theme.palette.secondary.main, 0.15)
-                    : alpha(theme.palette.secondary.main, 0.1)
+                bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.15) : alpha(theme.palette.secondary.main, 0.1)
               }
             }}
           >
@@ -101,15 +97,12 @@ const HeaderContent = () => {
             sx={{
               color: theme.palette.text.primary,
               bgcolor: 'transparent',
-              borderRadius: 1.5,
+              borderRadius: 1,
               width: 40,
               height: 40,
               transition: 'all 0.2s ease-in-out',
               '&:hover': {
-                bgcolor:
-                  theme.palette.mode === 'dark'
-                    ? alpha(theme.palette.secondary.main, 0.15)
-                    : alpha(theme.palette.secondary.main, 0.1)
+                bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.15) : alpha(theme.palette.secondary.main, 0.1)
               }
             }}
           >
@@ -122,12 +115,8 @@ const HeaderContent = () => {
         </Tooltip>
       </Stack>
 
-      {/* Right Section - Profile/Mobile */}
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {!matchDownLG ? <Profile /> : <MobileSection />}
-        </Box>
-      </Stack>
+      {/* Profile Section */}
+      <UserProfile />
     </Box>
   );
 };

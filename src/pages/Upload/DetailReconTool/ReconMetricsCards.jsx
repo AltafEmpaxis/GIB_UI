@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react';
-import { alpha, Box, Card, IconButton, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Card, Typography, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
 /**
@@ -12,22 +12,26 @@ const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isAct
   return (
     <Card
       onClick={onClick}
-      elevation={isActive ? 2 : 0}
+      elevation={isActive ? 1 : 0}
       sx={{
         height: '100%',
         position: 'relative',
-        // borderRadius: theme.shape.borderRadius,
-        backgroundColor: isActive ? alpha(color, isDark ? 0.2 : 0.08) : theme.palette.background.paper,
-        border: `1px solid ${isActive ? color : alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
+        backgroundColor: isActive ? alpha(color, isDark ? 0.15 : 0.08) : theme.palette.background.paper,
+        border: `1px solid ${isActive ? color : theme.palette.divider}`,
         overflow: 'hidden',
         cursor: 'pointer',
-        transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
+        transition: theme.transitions.create(['background-color', 'border-color', 'box-shadow', 'transform'], {
           duration: theme.transitions.duration.shorter
         }),
         '&:hover': {
-          backgroundColor: alpha(color, isDark ? 0.15 : 0.05),
-          borderColor: alpha(color, isDark ? 0.6 : 0.4),
-          boxShadow: isActive ? theme.shadows[4] : theme.shadows[2]
+          backgroundColor: alpha(color, isDark ? 0.12 : 0.06),
+          borderColor: alpha(color, 0.6),
+          boxShadow: theme.shadows[2],
+          transform: 'translateY(-2px)'
+        },
+        '&:active': {
+          transform: 'translateY(0px)',
+          boxShadow: theme.shadows[1]
         }
       }}
     >
@@ -42,74 +46,90 @@ const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isAct
       />
 
       <Box sx={{ p: 2.5 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
-          <Typography
-            variant="subtitle1"
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
+          <Box
             sx={{
-              fontWeight: 600,
-              color: theme.palette.text.primary,
               display: 'flex',
-              alignItems: 'center'
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 38,
+              height: 38,
+              borderRadius: '8px',
+              backgroundColor: alpha(color, isDark ? 0.2 : 0.12),
+              color: color,
+              mr: 1.5,
+              transition: 'transform 0.2s ease-in-out',
+              ...(isActive && {
+                transform: 'scale(1.05)',
+                boxShadow: `0 0 8px ${alpha(color, 0.4)}`
+              })
             }}
           >
-            {title}
-            {isActive && (
-              <Box
-                component="span"
+            <Icon icon={icon} width={22} height={22} />
+          </Box>
+
+          <Box sx={{ flex: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography
+                variant="subtitle2"
                 sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  ml: 1,
-                  borderRadius: '4px',
-                  bgcolor: alpha(color, 0.15),
-                  px: 0.8,
-                  py: 0.2
+                  fontWeight: 600,
+                  color: isActive ? color : theme.palette.text.primary,
+                  fontSize: '0.875rem'
                 }}
               >
-                <Icon icon="mdi:filter" width={10} height={10} style={{ color, marginRight: 4 }} />
-                <Typography variant="caption" sx={{ color, fontWeight: 600, fontSize: '0.65rem' }}>
-                  ACTIVE
-                </Typography>
-              </Box>
-            )}
-          </Typography>
+                {title}
+              </Typography>
 
-          <IconButton
-            sx={{
-              backgroundColor: alpha(color, isDark ? 0.2 : 0.12)
-            }}
-          >
-            <Icon icon={icon} width={20} height={20} />
-          </IconButton>
+              {isActive && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                    bgcolor: alpha(color, isDark ? 0.25 : 0.15),
+                    px: 0.8,
+                    py: 0.3,
+                    ml: 1,
+                    boxShadow: `0 0 4px ${alpha(color, 0.3)}`
+                  }}
+                >
+                  <Icon icon="solar:filter-bold" width={12} height={12} style={{ color, marginRight: 4 }} />
+                  <Typography variant="caption" sx={{ color, fontWeight: 600, fontSize: '0.65rem' }}>
+                    ACTIVE
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+
+            <Typography
+              variant="caption"
+              sx={{
+                color: theme.palette.text.secondary,
+                fontSize: '0.75rem',
+                display: 'block',
+                mt: 0.3
+              }}
+            >
+              {subtitle}
+            </Typography>
+          </Box>
         </Box>
 
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 700,
-            color: theme.palette.text.primary,
-            mb: 0.5
-          }}
-        >
-          {value}
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            mt: 1
-          }}
-        >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <Typography
-            variant="caption"
+            variant="h4"
             sx={{
-              color: theme.palette.text.secondary,
-              fontSize: '0.75rem'
+              fontWeight: 700,
+              color: theme.palette.text.primary,
+              transition: 'color 0.2s ease-in-out',
+              ...(isActive && {
+                color: isDark ? theme.palette.text.primary : theme.palette.text.primary
+              })
             }}
           >
-            {subtitle}
+            {value}
           </Typography>
 
           {trend && (
@@ -117,17 +137,17 @@ const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isAct
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                borderRadius: theme.shape.borderRadius / 2,
+                borderRadius: '4px',
                 px: 0.8,
                 py: 0.3,
                 backgroundColor: alpha(
                   trend.startsWith('+') ? theme.palette.success.main : theme.palette.error.main,
-                  isDark ? 0.2 : 0.1
+                  isDark ? 0.15 : 0.08
                 )
               }}
             >
               <Icon
-                icon={trend.startsWith('+') ? 'mdi:arrow-up' : 'mdi:arrow-down'}
+                icon={trend.startsWith('+') ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
                 width={12}
                 height={12}
                 style={{
@@ -137,7 +157,7 @@ const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isAct
               />
               <Typography
                 variant="caption"
-                color={trend.startsWith('+') ? theme.palette.success.main : theme.palette.error.main}
+                color={trend.startsWith('+') ? 'success.main' : 'error.main'}
                 sx={{ fontWeight: 600, fontSize: '0.7rem' }}
               >
                 {trend}

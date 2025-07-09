@@ -62,34 +62,34 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
         item.title && (
           <Box
             sx={{
-              pl: { xs: 1.5, md: 2 },
-              mb: 1,
+              pl: { xs: 1.5, md: 2.25 },
+              mb: 1.5,
               display: 'flex',
               alignItems: 'center',
-              height: 26
+              height: 28
             }}
           >
             <Typography
               variant="subtitle2"
               sx={{
-                color: isDark ? alpha(theme.palette.secondary.light, 0.8) : theme.palette.primary.main,
+                color: isDark ? alpha(theme.palette.secondary.light, 0.9) : theme.palette.primary.dark,
                 fontSize: '0.7rem',
                 fontWeight: 600,
                 lineHeight: '1.2',
                 textTransform: 'uppercase',
-                letterSpacing: '0.6px',
+                letterSpacing: '0.8px',
                 position: 'relative',
                 overflow: 'hidden',
                 '&:after': {
                   content: '""',
                   position: 'absolute',
-                  height: '1px',
-                  width: '24px',
-                  left: 'calc(100% + 10px)',
+                  height: 1,
+                  width: 30,
+                  left: 'calc(100% + 12px)',
                   top: '50%',
                   background: isDark
-                    ? `linear-gradient(90deg, ${alpha(theme.palette.secondary.light, 0.4)}, ${alpha(theme.palette.secondary.light, 0)})`
-                    : `linear-gradient(90deg, ${alpha(theme.palette.secondary.main, 0.5)}, ${alpha(theme.palette.secondary.main, 0)})`
+                    ? `linear-gradient(90deg, ${alpha(theme.palette.secondary.light, 0.5)}, ${alpha(theme.palette.secondary.light, 0)})`
+                    : `linear-gradient(90deg, ${alpha(theme.palette.secondary.main, 0.4)}, ${alpha(theme.palette.secondary.main, 0)})`
                 }
               }}
             >
@@ -99,21 +99,22 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
         )
       }
       sx={{
-        mb: 1.5,
-        py: 0,
+        mb: 2,
+        py: 0.5,
         '& .MuiListItemButton-root': {
           height: 44,
-          transition: theme.transitions.create(['background-color'], {
-            duration: theme.transitions.duration.shorter
+          position: 'relative',
+          transition: theme.transitions.create(['height', 'background-color'], {
+            duration: theme.transitions.duration.standard
           }),
           '&.Mui-selected': {
             bgcolor: 'transparent',
             '&:hover': {
-              bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.3) : alpha(theme.palette.secondary.lighter, 0.6)
+              bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.lighter, 0.4)
             }
           },
           '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.lighter, 0.4)
+            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.1) : alpha(theme.palette.secondary.lighter, 0.3)
           }
         }
       }}

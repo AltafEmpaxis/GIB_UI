@@ -1,12 +1,53 @@
 import { Icon } from '@iconify/react';
-import { alpha, Avatar, Box, Card, Chip, IconButton, Stack, Tooltip, Typography, useTheme } from '@mui/material';
+import {
+  alpha,
+  Avatar,
+  Box,
+  Card,
+  Chip,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 
 const BankingSummarySection = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Common styles
+  const sectionStyles = {
+    iconBox: {
+      width: 36,
+      height: 36,
+      borderRadius: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      mr: 1.5
+    },
+    bankChip: {
+      bgcolor: theme.palette.background.paper,
+      border: `1px solid ${theme.palette.divider}`,
+      height: 24,
+      fontWeight: 500
+    }
+  };
 
   return (
-    <Card sx={{ p: 2 }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+    <Card
+      sx={{
+        p: isMobile ? 1 : 1.5,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 1,
+        boxShadow: theme.shadows[1]
+      }}
+    >
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
         <Typography
           variant="h6"
           sx={{
@@ -22,8 +63,8 @@ const BankingSummarySection = () => {
               width: 24,
               height: 24,
               mr: 1,
-              bgcolor: theme.palette.primary.lighter,
-              color: theme.palette.primary.main
+              bgcolor: alpha(theme.palette.secondary.main, 0.2),
+              color: theme.palette.secondary.main
             }}
           >
             <Icon icon="solar:user-check-bold-duotone" width={16} />
@@ -34,8 +75,11 @@ const BankingSummarySection = () => {
           <IconButton
             size="small"
             sx={{
-              bgcolor: theme.palette.primary.lighter,
-              color: theme.palette.primary.main
+              bgcolor: alpha(theme.palette.secondary.main, 0.1),
+              color: theme.palette.secondary.main,
+              '&:hover': {
+                bgcolor: alpha(theme.palette.secondary.main, 0.2)
+              }
             }}
           >
             <Icon icon="solar:refresh-bold" width={16} />
@@ -45,15 +89,24 @@ const BankingSummarySection = () => {
 
       <Box
         sx={{
-          p: 1
+          p: 1.5,
+          mb: 1.5,
+          borderRadius: 1,
+          bgcolor: alpha(theme.palette.secondary.lighter, theme.palette.mode === 'dark' ? 0.1 : 0.3)
         }}
       >
-        <Stack spacing={1}>
+        <Stack spacing={0.75}>
           <Typography variant="body2" color="textSecondary" fontWeight={500}>
             Total Cash at Bank
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+            <Typography
+              variant={isMobile ? 'h5' : 'h4'}
+              sx={{
+                fontWeight: 700,
+                color: theme.palette.secondary.main
+              }}
+            >
               $9.38M
             </Typography>
             <Chip
@@ -61,44 +114,44 @@ const BankingSummarySection = () => {
               label="+3.6% this week"
               icon={<Icon icon="solar:arrow-up-bold" width={14} />}
               sx={{
-                bgcolor: theme.palette.primary.lighter,
-                color: theme.palette.primary.main,
+                bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                color: theme.palette.secondary.main,
                 fontWeight: 600,
                 height: 24
               }}
             />
           </Box>
-          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              mt: 0.75,
+              flexWrap: 'wrap',
+              '& .MuiChip-root': {
+                mb: 0.5
+              }
+            }}
+          >
             {['SABB', 'NCB', 'Alinma'].map((bank, i) => (
-              <Chip
-                key={i}
-                label={bank}
-                size="small"
-                sx={{
-                  bgcolor: theme.palette.background.paper,
-                  border: `1px solid ${theme.palette.divider}`,
-                  height: 24,
-                  fontWeight: 500
-                }}
-              />
+              <Chip key={i} label={bank} size="small" sx={sectionStyles.bankChip} />
             ))}
           </Stack>
         </Stack>
       </Box>
 
-      <Stack spacing={2}>
+      <Stack spacing={1.5} sx={{ flexGrow: 1 }}>
         {[
           {
             name: 'Available Funds',
             value: '$3.85M',
             icon: 'solar:wallet-money-bold-duotone',
-            color: theme.palette.primary.main
+            color: theme.palette.secondary.main
           },
           {
             name: 'Reserved Amounts',
             value: '$5.53M',
             icon: 'solar:lock-bold-duotone',
-            color: theme.palette.secondary.main
+            color: theme.palette.primary.main
           }
         ].map((item, index) => (
           <Box
@@ -109,22 +162,20 @@ const BankingSummarySection = () => {
               justifyContent: 'space-between',
               p: 1.5,
               borderRadius: 1,
-              bgcolor:
-                theme.palette.mode === 'dark' ? alpha(theme.palette.background.paper, 0.2) : theme.palette.grey[100],
-              border: `1px solid ${theme.palette.divider}`
+              bgcolor: alpha(theme.palette.background.default, 0.6),
+              border: `1px solid ${theme.palette.divider}`,
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                bgcolor: alpha(theme.palette.background.default, 0.9),
+                boxShadow: theme.shadows[1]
+              }
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Box
                 sx={{
-                  width: 36,
-                  height: 36,
-                  mr: 1.5,
+                  ...sectionStyles.iconBox,
                   bgcolor: alpha(item.color, 0.1),
-                  borderRadius: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
                   color: item.color
                 }}
               >
@@ -134,7 +185,7 @@ const BankingSummarySection = () => {
                 {item.name}
               </Typography>
             </Box>
-            <Typography variant="body1" fontWeight={700}>
+            <Typography variant="body1" fontWeight={700} color={item.color}>
               {item.value}
             </Typography>
           </Box>

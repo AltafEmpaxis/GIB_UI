@@ -1,258 +1,195 @@
 import { Icon } from '@iconify/react';
-import {
-  alpha,
-  Avatar,
-  Box,
-  Button,
-  Card,
-  Chip,
-  Grid,
-  LinearProgress,
-  Stack,
-  Typography,
-  useTheme
-} from '@mui/material';
+import { alpha, Avatar, Box, Card, LinearProgress, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 const SummaryMetricsSection = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleViewReconcileDetails = () => {
     navigate('/detail-recon-tool');
   };
 
+  // Metric card styles
+  const metricCardStyle = {
+    p: 0,
+    overflow: 'hidden',
+    borderRadius: 1,
+    height: '100%',
+    boxShadow: '0 2px 10px 0 rgba(32, 40, 45, 0.08)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: '0 4px 16px 0 rgba(32, 40, 45, 0.12)'
+    }
+  };
+
+  // Progress bar styles based on theme
+  const progressStyle = (color) => ({
+    mt: 0.5,
+    height: 6,
+    borderRadius: 1,
+    bgcolor: alpha(theme.palette.grey[200], theme.palette.mode === 'dark' ? 0.2 : 1),
+    '& .MuiLinearProgress-bar': {
+      bgcolor: color,
+      borderRadius: 1
+    }
+  });
+
+  // Metrics data
+  const metricsData = [
+    {
+      title: 'Total Accounts',
+      value: 384,
+      change: '+12',
+      isPositive: true,
+      icon: 'solar:user-id-bold-duotone',
+      color: theme.palette.secondary.main, // Yellow
+      progress: 100
+    },
+    {
+      title: 'Reconciled',
+      value: 355,
+      change: '+15',
+      isPositive: true,
+      icon: 'solar:check-circle-bold-duotone',
+      color: theme.palette.success.main, // Green
+      progress: 92
+    },
+    {
+      title: 'Unreconciled',
+      value: 29,
+      change: '-3',
+      isPositive: true,
+      icon: 'solar:close-circle-bold-duotone',
+      color: theme.palette.error.main, // Red
+      progress: 8
+    },
+    {
+      title: 'Reconciliation Rate',
+      value: '92.5%',
+      change: '+1.2%',
+      isPositive: true,
+      icon: 'solar:chart-line-bold-duotone',
+      color: theme.palette.info.main, // Blue
+      progress: 92.5
+    }
+  ];
+
   return (
-    <Grid container spacing={2}>
-      {/* Yearly Turnover - Enhanced */}
-      <Grid item xs={6}>
-        <Card
+    <Card
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 1,
+        boxShadow: theme.shadows[1]
+      }}
+    >
+      <Box
+        sx={{
+          p: 1.5,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderBottom: `1px solid ${theme.palette.divider}`
+        }}
+      >
+        <Typography
+          variant="h6"
           sx={{
-            height: '100%',
-            bgcolor: theme.palette.primary.main,
-            color: theme.palette.common.white,
-            p: 2,
-            cursor: 'pointer',
-            '&:hover': {
-              boxShadow: theme.shadows[10],
-              transform: 'translateY(-2px)',
-              transition: 'all 0.3s'
-            }
+            fontWeight: 600,
+            color: theme.palette.text.primary,
+            display: 'flex',
+            alignItems: 'center'
           }}
-          onClick={handleViewReconcileDetails}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}>
-              Reconcile Accounts
-            </Typography>
-            <Box
-              sx={{
-                bgcolor: alpha('#fff', 0.25),
-                p: 0.75,
-                borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <Icon icon="solar:graph-up-bold-duotone" width={16} />
-            </Box>
-          </Box>
-          <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: theme.palette.common.white }}>
-            384
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{ color: theme.palette.common.white, opacity: 0.9, display: 'block', mt: 0.5 }}
-          >
-            +8% from previous
-          </Typography>
-          <Button
-            size="small"
-            variant="contained"
-            fullWidth
+          <Avatar
+            variant="rounded"
             sx={{
-              bgcolor: alpha('#fff', 0.25),
-              color: '#fff',
-              fontSize: '0.7rem',
-              mt: 1.5,
-              '&:hover': {
-                bgcolor: alpha('#fff', 0.35)
-              }
+              width: 24,
+              height: 24,
+              mr: 1,
+              bgcolor: alpha(theme.palette.secondary.main, 0.2),
+              color: theme.palette.secondary.main
             }}
           >
-            View Detail
-          </Button>
-        </Card>
-      </Grid>
+            <Icon icon="solar:chart-bold-duotone" width={16} />
+          </Avatar>
+          Summary Metrics
+        </Typography>
+      </Box>
 
-      {/* Last Month - Enhanced */}
-      <Grid item xs={6}>
-        <Card
-          sx={{
-            height: '100%',
-            bgcolor: theme.palette.secondary.main,
-            color: theme.palette.common.white,
-            p: 2,
-            cursor: 'pointer',
-            '&:hover': {
-              boxShadow: theme.shadows[10],
-              transform: 'translateY(-2px)',
-              transition: 'all 0.3s'
-            }
-          }}
-          onClick={handleViewReconcileDetails}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <Typography variant="body2" sx={{ fontWeight: 500, color: theme.palette.common.white, opacity: 0.95 }}>
-              UnReconcile Accounts
-            </Typography>
-            <Box
-              sx={{
-                bgcolor: alpha('#fff', 0.25),
-                p: 0.75,
-                borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <Icon icon="solar:calendar-mark-bold-duotone" width={16} />
-            </Box>
-          </Box>
-          <Typography variant="h5" sx={{ mt: 2, fontWeight: 700, color: theme.palette.common.white }}>
-            27
-          </Typography>
-          <Typography
-            variant="caption"
-            sx={{ color: theme.palette.common.white, opacity: 0.9, display: 'block', mt: 0.5 }}
-          >
-            -3.2% from yesterday
-          </Typography>
-          <Button
-            size="small"
-            variant="contained"
-            fullWidth
-            sx={{
-              bgcolor: alpha('#fff', 0.25),
-              color: '#fff',
-              fontSize: '0.7rem',
-              mt: 1.5,
-              '&:hover': {
-                bgcolor: alpha('#fff', 0.35)
-              }
-            }}
-          >
-            View Detail
-          </Button>
-        </Card>
-      </Grid>
-
-      {/* Today's Activity - Enhanced */}
-      <Grid item xs={12}>
-        <Card sx={{ p: 2 }}>
-          <Stack spacing={2}>
-            <Box>
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-                <Avatar
-                  variant="rounded"
+      <Box sx={{ p: 1.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+        <Stack spacing={1.5} sx={{ flexGrow: 1 }}>
+          {metricsData.map((metric, index) => (
+            <Card key={index} sx={metricCardStyle}>
+              <Box
+                sx={{
+                  p: 1.5,
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                <Box
                   sx={{
-                    width: 22,
-                    height: 22,
-                    bgcolor: theme.palette.primary.lighter,
-                    color: theme.palette.primary.main
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mb: 1
                   }}
                 >
-                  <Icon icon="solar:clock-circle-bold-duotone" width={14} />
-                </Avatar>
-                <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 500 }}>
-                  Today's Received
-                </Typography>
-              </Stack>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
-                  $2,890
-                </Typography>
-                <Box>
-                  <Chip
-                    size="small"
-                    label="Live"
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Avatar
+                      sx={{
+                        width: 36,
+                        height: 36,
+                        bgcolor: alpha(metric.color, 0.2),
+                        color: metric.color,
+                        mr: 1.5
+                      }}
+                    >
+                      <Icon icon={metric.icon} width={20} />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="body2" color="text.secondary">
+                        {metric.title}
+                      </Typography>
+                      <Typography variant="h6" fontWeight={600} color="text.primary">
+                        {metric.value}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Box
                     sx={{
-                      bgcolor: theme.palette.primary.lighter,
-                      color: theme.palette.primary.main,
-                      fontWeight: 600,
-                      height: 24
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: metric.isPositive ? theme.palette.success.main : theme.palette.error.main,
+                      bgcolor: alpha(metric.isPositive ? theme.palette.success.main : theme.palette.error.main, 0.1),
+                      borderRadius: 1,
+                      py: 0.5,
+                      px: 1
                     }}
-                  />
+                  >
+                    <Icon
+                      icon={metric.isPositive ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
+                      width={16}
+                      style={{ marginRight: 4 }}
+                    />
+                    <Typography variant="caption" fontWeight={600}>
+                      {metric.change}
+                    </Typography>
+                  </Box>
                 </Box>
+                <LinearProgress variant="determinate" value={metric.progress} sx={progressStyle(metric.color)} />
               </Box>
-              <LinearProgress
-                variant="determinate"
-                value={35}
-                sx={{
-                  mt: 1,
-                  height: 6,
-                  borderRadius: 1,
-                  bgcolor: theme.palette.grey[200],
-                  '& .MuiLinearProgress-bar': {
-                    bgcolor: theme.palette.primary.main,
-                    borderRadius: 1
-                  }
-                }}
-              />
-            </Box>
-            <Box>
-              <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    width: 22,
-                    height: 22,
-                    bgcolor: theme.palette.secondary.lighter || alpha(theme.palette.secondary.main, 0.2),
-                    color: theme.palette.secondary.main
-                  }}
-                >
-                  <Icon icon="solar:dollar-minimalistic-bold-duotone" width={14} />
-                </Avatar>
-                <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 500 }}>
-                  Monthly Total
-                </Typography>
-              </Stack>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
-                  $82,890
-                </Typography>
-                <Chip
-                  size="small"
-                  label="+18%"
-                  icon={<Icon icon="solar:arrow-up-bold" width={14} />}
-                  sx={{
-                    bgcolor: theme.palette.secondary.lighter || alpha(theme.palette.secondary.main, 0.2),
-                    color: theme.palette.secondary.main,
-                    fontWeight: 600,
-                    height: 24
-                  }}
-                />
-              </Box>
-              <LinearProgress
-                variant="determinate"
-                value={82}
-                sx={{
-                  mt: 1,
-                  height: 6,
-                  borderRadius: 1,
-                  bgcolor: theme.palette.grey[200],
-                  '& .MuiLinearProgress-bar': {
-                    bgcolor: theme.palette.secondary.main,
-                    borderRadius: 1
-                  }
-                }}
-              />
-            </Box>
-          </Stack>
-        </Card>
-      </Grid>
-    </Grid>
+            </Card>
+          ))}
+        </Stack>
+      </Box>
+    </Card>
   );
 };
 

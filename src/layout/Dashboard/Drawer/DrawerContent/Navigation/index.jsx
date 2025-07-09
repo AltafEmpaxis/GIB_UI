@@ -14,6 +14,7 @@ const Navigation = () => {
   const [selectedLevel, setSelectedLevel] = useState(0);
   const { user } = useAuth();
   const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
   const currentRole = user?.isAdmin === 1 ? 'admin' : 'user';
 
   useLayoutEffect(() => {
@@ -52,23 +53,24 @@ const Navigation = () => {
   return (
     <Box
       sx={{
-        px: { xs: 1, md: 1.25 },
-        py: { xs: 1.5, md: 2 },
+        px: { xs: 1.25, md: 1.5 },
+        py: { xs: 1.5, md: 2.5 },
         '& > .MuiList-root:not(:last-child)': {
-          mb: 1.5
+          mb: 0.75
         },
         position: 'relative',
         '&:before': {
           content: '""',
           position: 'absolute',
           top: 0,
-          left: '10%',
-          right: '10%',
-          height: '1px',
+          left: '8%',
+          right: '8%',
+          height: 1,
           background: `linear-gradient(90deg,
             ${alpha(theme.palette.divider, 0)},
-            ${alpha(theme.palette.divider, theme.palette.mode === 'dark' ? 0.1 : 0.15)},
-            ${alpha(theme.palette.divider, 0)})`
+            ${alpha(theme.palette.divider, isDark ? 0.15 : 0.12)},
+            ${alpha(theme.palette.divider, 0)})`,
+          pointerEvents: 'none'
         }
       }}
     >

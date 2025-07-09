@@ -1,15 +1,52 @@
 import { Icon } from '@iconify/react';
-import { alpha, Avatar, Box, Card, Chip, Grid, MenuItem, Select, Stack, Typography, useTheme } from '@mui/material';
+import {
+  alpha,
+  Avatar,
+  Box,
+  Card,
+  Chip,
+  Grid,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import ReactApexChart from 'react-apexcharts';
 
 const AnalyticsSection = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
+  // Common styles
+  const cardStyle = {
+    height: '100%',
+    p: isMobile ? 1 : 1.5,
+    borderRadius: 1,
+    boxShadow: theme.shadows[1]
+  };
+
+  const headerStyle = {
+    fontWeight: 600,
+    color: theme.palette.text.primary,
+    display: 'flex',
+    alignItems: 'center'
+  };
+
+  const avatarStyle = {
+    width: 24,
+    height: 24,
+    mr: 1,
+    borderRadius: 1
+  };
 
   // Data Analysis Area Chart
   const dataAnalysisOptions = {
     chart: {
       type: 'area',
-      height: 180,
+      height: isMobile ? 120 : 150,
       toolbar: {
         show: false
       },
@@ -21,7 +58,8 @@ const AnalyticsSection = () => {
       },
       animations: {
         enabled: false
-      }
+      },
+      fontFamily: theme.typography.fontFamily
     },
     dataLabels: {
       enabled: false
@@ -30,10 +68,15 @@ const AnalyticsSection = () => {
       curve: 'smooth',
       width: 2
     },
-    colors: [theme.palette.primary.main],
+    colors: [theme.palette.secondary.main], // GIB Yellow
     fill: {
-      type: 'solid',
-      opacity: 0.2
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.4,
+        opacityTo: 0.1,
+        stops: [0, 90, 100]
+      }
     },
     grid: {
       borderColor: theme.palette.divider,
@@ -80,7 +123,15 @@ const AnalyticsSection = () => {
       }
     },
     tooltip: {
-      theme: theme.palette.mode === 'dark' ? 'dark' : 'light'
+      theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
+      x: {
+        show: true
+      },
+      y: {
+        title: {
+          formatter: () => 'Reports:'
+        }
+      }
     },
     legend: {
       show: false
@@ -91,7 +142,7 @@ const AnalyticsSection = () => {
   const monthlyInvoicesOptions = {
     chart: {
       type: 'bar',
-      height: 120,
+      height: isMobile ? 80 : 100,
       toolbar: {
         show: false
       },
@@ -100,7 +151,8 @@ const AnalyticsSection = () => {
       },
       animations: {
         enabled: false
-      }
+      },
+      fontFamily: theme.typography.fontFamily
     },
     plotOptions: {
       bar: {
@@ -114,7 +166,7 @@ const AnalyticsSection = () => {
     stroke: {
       show: false
     },
-    colors: [theme.palette.secondary.main],
+    colors: [theme.palette.secondary.main], // GIB Yellow
     grid: {
       padding: {
         top: 0,
@@ -144,6 +196,9 @@ const AnalyticsSection = () => {
       theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
       x: {
         show: false
+      },
+      y: {
+        formatter: (val) => `$${val}k`
       }
     },
     legend: {
@@ -152,53 +207,38 @@ const AnalyticsSection = () => {
   };
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={1}>
       {/* Data Analysis - Enhanced */}
       <Grid item xs={12} md={6}>
-        <Card
-          sx={{
-            height: '100%',
-            p: 2
-          }}
-        >
-          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                color: theme.palette.text.primary,
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
+        <Card sx={cardStyle}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1.5 }}>
+            <Typography variant="h6" sx={headerStyle}>
               <Avatar
                 variant="rounded"
                 sx={{
-                  width: 24,
-                  height: 24,
-                  mr: 1,
-                  bgcolor: theme.palette.primary.lighter,
-                  color: theme.palette.primary.main
+                  ...avatarStyle,
+                  bgcolor: alpha(theme.palette.secondary.main, 0.2),
+                  color: theme.palette.secondary.main
                 }}
               >
                 <Icon icon="solar:documents-minimalistic-bold-duotone" width={16} />
               </Avatar>
-              ad-doc Reports
+              ad-hoc Reports
             </Typography>
             <Chip
               label="This Week"
               size="small"
               sx={{
-                bgcolor: theme.palette.primary.lighter,
-                color: theme.palette.primary.main,
+                bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                color: theme.palette.secondary.main,
                 fontWeight: 500
               }}
             />
           </Stack>
 
-          <Box sx={{ mb: 2 }}>
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+          <Box sx={{ mb: 1.5 }}>
+            <Stack direction="row" spacing={1.5} alignItems="center">
+              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
                 24
               </Typography>
               <Stack spacing={0.5}>
@@ -210,7 +250,7 @@ const AnalyticsSection = () => {
                   label="+8 from last week"
                   icon={<Icon icon="solar:arrow-up-bold" width={14} />}
                   sx={{
-                    bgcolor: theme.palette.success.lighter,
+                    bgcolor: alpha(theme.palette.success.main, 0.1),
                     color: theme.palette.success.main,
                     fontWeight: 600,
                     height: 20
@@ -229,10 +269,10 @@ const AnalyticsSection = () => {
               }
             ]}
             type="area"
-            height={180}
+            height={isMobile ? 120 : 150}
           />
 
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1, mt: 1 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1, mt: 0.5 }}>
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day, index) => (
               <Typography
                 key={index}
@@ -252,30 +292,15 @@ const AnalyticsSection = () => {
 
       {/* Monthly Invoices - Enhanced */}
       <Grid item xs={12} md={6}>
-        <Card
-          sx={{
-            height: '100%',
-            p: 2
-          }}
-        >
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                color: theme.palette.text.primary,
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
+        <Card sx={cardStyle}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1.5 }}>
+            <Typography variant="h6" sx={headerStyle}>
               <Avatar
                 variant="rounded"
                 sx={{
-                  width: 24,
-                  height: 24,
-                  mr: 1,
-                  bgcolor: theme.palette.secondary.lighter || alpha(theme.palette.secondary.main, 0.1),
-                  color: theme.palette.secondary.main
+                  ...avatarStyle,
+                  bgcolor: alpha(theme.palette.primary.main, 0.2),
+                  color: theme.palette.primary.main
                 }}
               >
                 <Icon icon="solar:document-text-bold-duotone" width={16} />
@@ -287,11 +312,14 @@ const AnalyticsSection = () => {
               size="small"
               defaultValue="thisyear"
               sx={{
-                minWidth: 120,
+                minWidth: 100,
                 height: 32,
                 fontSize: '0.8rem',
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: theme.palette.divider
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: theme.palette.secondary.main
                 }
               }}
             >
@@ -300,18 +328,18 @@ const AnalyticsSection = () => {
             </Select>
           </Stack>
 
-          <Box sx={{ p: 2 }}>
-            <Stack spacing={1}>
+          <Box sx={{ p: 1.5 }}>
+            <Stack spacing={0.75}>
               <Typography variant="body2" color="textSecondary" fontWeight={500}>
                 Total Monthly Invoices
               </Typography>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
                 $24,000
               </Typography>
               <Typography
                 variant="caption"
                 sx={{
-                  color: theme.palette.primary.main,
+                  color: theme.palette.success.main,
                   display: 'flex',
                   alignItems: 'center'
                 }}
@@ -326,7 +354,7 @@ const AnalyticsSection = () => {
             <ReactApexChart
               options={{
                 ...monthlyInvoicesOptions,
-                colors: [theme.palette.secondary.main],
+                colors: [theme.palette.primary.main],
                 tooltip: {
                   theme: theme.palette.mode === 'dark' ? 'dark' : 'light',
                   y: {
@@ -349,7 +377,7 @@ const AnalyticsSection = () => {
                 }
               ]}
               type="bar"
-              height={120}
+              height={isMobile ? 80 : 100}
             />
           </Box>
 
@@ -358,13 +386,20 @@ const AnalyticsSection = () => {
               display: 'flex',
               justifyContent: 'space-between',
               px: 1,
-              mt: 1
+              mt: 0.5,
+              flexWrap: isMobile ? 'wrap' : 'nowrap',
+              '& .month-label': {
+                width: isMobile ? '16.66%' : 'auto',
+                textAlign: 'center',
+                mb: isMobile ? 0.5 : 0
+              }
             }}
           >
             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map(
               (month, index) => (
                 <Typography
                   key={index}
+                  className="month-label"
                   variant="caption"
                   color="textSecondary"
                   sx={{

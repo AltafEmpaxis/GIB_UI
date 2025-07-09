@@ -12,6 +12,7 @@ import {
   Tab,
   Tabs,
   Typography,
+  useMediaQuery,
   useTheme
 } from '@mui/material';
 import { useState } from 'react';
@@ -23,6 +24,8 @@ const CustodiansSection = ({ isLoading }) => {
   const navigate = useNavigate();
   const [viewMode, setViewMode] = useState('list');
   const [activeTab, setActiveTab] = useState(0);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
 
   // Custodian data
   const custodianData = [
@@ -30,7 +33,7 @@ const CustodiansSection = ({ isLoading }) => {
       id: 'albilad',
       name: 'Albilad Account',
       icon: 'mdi:bank',
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main, // GIB Yellow
       totalAccounts: 154,
       reconciledAccounts: 142,
       unreconciledAccounts: 12,
@@ -40,7 +43,7 @@ const CustodiansSection = ({ isLoading }) => {
       id: 'riyad',
       name: 'Riyad Account',
       icon: 'mdi:city',
-      color: theme.palette.secondary.main,
+      color: theme.palette.primary.main, // Dark Grey
       totalAccounts: 98,
       reconciledAccounts: 87,
       unreconciledAccounts: 11,
@@ -50,7 +53,7 @@ const CustodiansSection = ({ isLoading }) => {
       id: 'at',
       name: 'At Account',
       icon: 'mdi:office-building',
-      color: theme.palette.primary.main,
+      color: theme.palette.secondary.main, // GIB Yellow
       totalAccounts: 76,
       reconciledAccounts: 74,
       unreconciledAccounts: 2,
@@ -60,7 +63,7 @@ const CustodiansSection = ({ isLoading }) => {
       id: 'statestreet',
       name: 'State Street',
       icon: 'mdi:domain',
-      color: theme.palette.secondary.main,
+      color: theme.palette.primary.main, // Dark Grey
       totalAccounts: 56,
       reconciledAccounts: 52,
       unreconciledAccounts: 4,
@@ -91,34 +94,36 @@ const CustodiansSection = ({ isLoading }) => {
         },
         fontFamily: theme.typography.fontFamily
       },
-      colors: [theme.palette.primary.main, theme.palette.secondary.main || '#f59e0b'],
+      colors: [theme.palette.secondary.main, theme.palette.primary.main],
       labels: ['Reconciled', 'Unreconciled'],
-      // stroke: {
-      //   width: 0
-      // },
+      stroke: {
+        width: 1,
+        colors: [theme.palette.background.paper]
+      },
       legend: {
         show: false
-        // position: 'bottom',
-        // fontSize: '13px',
-        // fontWeight: 500,
-        // labels: {
-        //   colors: theme.palette.text.secondary
-        // },
-        // markers: {
-        //   width: 12,
-        //   height: 12,
-        //   radius: 6
-        // },
-        // formatter: function (seriesName, opts) {
-        //   // Add the count value to the legend
-        //   return [seriesName, ': ', opts.w.globals.series[opts.seriesIndex]].join('');
-        // }
       },
       dataLabels: {
-        enabled: true
+        enabled: true,
+        formatter: function (val, opts) {
+          return opts.w.config.series[opts.seriesIndex];
+        },
+        style: {
+          fontSize: '12px',
+          fontWeight: 600,
+          fontFamily: theme.typography.fontFamily
+        },
+        dropShadow: {
+          enabled: false
+        }
       },
       tooltip: {
-        enabled: true
+        enabled: true,
+        y: {
+          formatter: function (val) {
+            return val + ' accounts';
+          }
+        }
       },
       plotOptions: {
         pie: {
@@ -129,13 +134,18 @@ const CustodiansSection = ({ isLoading }) => {
               total: {
                 show: true,
                 fontSize: '16px',
+                fontWeight: 600,
                 label: 'Total',
-                formatter: function () {
-                  return custodian.totalAccounts;
+                color: theme.palette.text.primary,
+                formatter: function (w) {
+                  return w.globals.seriesTotals.reduce((a, b) => a + b, 0);
                 }
               },
               value: {
-                show: true
+                show: true,
+                fontSize: '22px',
+                fontWeight: 700,
+                color: theme.palette.text.primary
               }
             }
           }
@@ -158,66 +168,114 @@ const CustodiansSection = ({ isLoading }) => {
   };
 
   return (
-    <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Card
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 1,
+        boxShadow: theme.shadows[1]
+      }}
+    >
       <Box
         sx={{
-          p: 2,
+          p: isMobile ? 1.5 : 2,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           borderBottom: `1px solid ${theme.palette.divider}`
         }}
       >
-        <Typography variant="h6">Custodians</Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+            color: theme.palette.text.primary,
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
+          <Avatar
+            variant="rounded"
+            sx={{
+              width: 24,
+              height: 24,
+              mr: 1,
+              bgcolor: alpha(theme.palette.secondary.main, 0.2),
+              color: theme.palette.secondary.main
+            }}
+          >
+            <Icon icon="solar:buildings-3-bold-duotone" width={16} />
+          </Avatar>
+          Custodians
+        </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ mx: 1 }}>
+          <Box sx={{ mx: 0.75 }}>
             <IconButton
               size="small"
-              color={viewMode === 'list' ? 'primary' : 'default'}
+              color={viewMode === 'list' ? 'secondary' : 'default'}
               onClick={() => handleViewModeChange('list')}
               sx={{
-                mr: 1,
-                bgcolor: viewMode === 'list' ? alpha(theme.palette.primary.main, 0.1) : 'transparent'
+                mr: 0.75,
+                bgcolor: viewMode === 'list' ? alpha(theme.palette.secondary.main, 0.1) : 'transparent'
               }}
             >
               <Icon icon="mdi:format-list-bulleted" width={20} />
             </IconButton>
             <IconButton
               size="small"
-              color={viewMode === 'chart' ? 'primary' : 'default'}
+              color={viewMode === 'chart' ? 'secondary' : 'default'}
               onClick={() => handleViewModeChange('chart')}
               sx={{
-                bgcolor: viewMode === 'chart' ? alpha(theme.palette.primary.main, 0.1) : 'transparent'
+                bgcolor: viewMode === 'chart' ? alpha(theme.palette.secondary.main, 0.1) : 'transparent'
               }}
             >
               <Icon icon="mdi:chart-pie" width={20} />
             </IconButton>
           </Box>
 
-          <IconButton size="small">
+          <IconButton
+            size="small"
+            sx={{
+              color: theme.palette.primary.main,
+              '&:hover': {
+                bgcolor: alpha(theme.palette.primary.main, 0.1)
+              }
+            }}
+          >
             <Icon icon="mdi:refresh" width={20} />
           </IconButton>
         </Box>
       </Box>
 
       {viewMode === 'chart' && (
-        <Box sx={{ px: 2, pt: 1, borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={activeTab} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
+        <Box sx={{ px: 1.5, pt: 1, borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            TabIndicatorProps={{
+              style: { backgroundColor: theme.palette.secondary.main }
+            }}
+            sx={{
+              '& .MuiTab-root.Mui-selected': {
+                color: theme.palette.secondary.main
+              }
+            }}
+          >
             {custodianData.map((custodian, index) => (
               <Tab
                 key={custodian.id}
                 icon={<Icon icon={custodian.icon} width={20} />}
                 iconPosition="start"
-                label={custodian.name}
+                label={isMobile ? null : custodian.name}
                 sx={{
                   minWidth: 'auto',
-                  px: 2,
+                  px: 1.5,
                   '& .MuiTab-iconWrapper': {
                     mr: 1
-                  },
-                  '&.Mui-selected': {
-                    color: custodian.color
                   }
                 }}
               />
@@ -227,33 +285,47 @@ const CustodiansSection = ({ isLoading }) => {
       )}
 
       {isLoading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 4, flexGrow: 1 }}>
-          <CircularProgress />
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 3, flexGrow: 1 }}>
+          <CircularProgress sx={{ color: theme.palette.secondary.main }} />
         </Box>
       ) : viewMode === 'list' ? (
-        <Box sx={{ p: 2, pt: 1.5, overflow: 'auto', flexGrow: 1 }}>
-          <Stack spacing={1}>
+        <Box sx={{ p: isMobile ? 1 : 1.5, pt: 1.5, overflow: 'auto', flexGrow: 1 }}>
+          <Stack spacing={1.5}>
             {custodianData.map((custodian) => (
               <Card
                 key={custodian.id}
                 variant="outlined"
                 sx={{
                   display: 'flex',
-                  alignItems: 'center',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  alignItems: isMobile ? 'flex-start' : 'center',
                   justifyContent: 'space-between',
                   p: 1.5,
-                  borderColor: 'divider'
+                  borderColor: alpha(custodian.color, 0.3),
+                  borderRadius: 1,
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    borderColor: custodian.color,
+                    boxShadow: `0 0 0 1px ${alpha(custodian.color, 0.3)}`
+                  }
                 }}
               >
                 {/* Left - Logo + Name */}
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    mb: isMobile ? 1.5 : 0,
+                    width: isMobile ? '100%' : 'auto'
+                  }}
+                >
                   <Avatar
                     sx={{
                       bgcolor: alpha(custodian.color, 0.1),
                       color: custodian.color,
-                      width: 40,
-                      height: 40,
-                      mr: 2
+                      width: 36,
+                      height: 36,
+                      mr: 1.5
                     }}
                   >
                     <Icon icon={custodian.icon} width={24} />
@@ -269,7 +341,15 @@ const CustodiansSection = ({ isLoading }) => {
                 </Box>
 
                 {/* Right - Stats */}
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: isMobile ? 1.5 : 2,
+                    width: isMobile ? '100%' : 'auto',
+                    justifyContent: isMobile ? 'space-between' : 'flex-end'
+                  }}
+                >
                   {/* Total */}
                   <Box sx={{ textAlign: 'center' }}>
                     <Typography variant="h6" fontWeight={600} color="text.primary">
@@ -282,7 +362,7 @@ const CustodiansSection = ({ isLoading }) => {
 
                   {/* Reconciled */}
                   <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h6" fontWeight={600} color="primary.main">
+                    <Typography variant="h6" fontWeight={600} color="secondary.main">
                       {custodian.reconciledAccounts}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
@@ -295,7 +375,7 @@ const CustodiansSection = ({ isLoading }) => {
                     <Typography
                       variant="h6"
                       fontWeight={600}
-                      color={custodian.unreconciledAccounts > 0 ? 'secondary.main' : 'text.disabled'}
+                      color={custodian.unreconciledAccounts > 0 ? 'primary.main' : 'text.disabled'}
                     >
                       {custodian.unreconciledAccounts}
                     </Typography>
@@ -310,7 +390,7 @@ const CustodiansSection = ({ isLoading }) => {
                     size="small"
                     onClick={() => handleNavigateToDetailRecon(custodian.id)}
                     sx={{
-                      minWidth: 80,
+                      minWidth: 70,
                       borderColor: alpha(custodian.color, 0.5),
                       color: custodian.color,
                       '&:hover': {
@@ -336,43 +416,23 @@ const CustodiansSection = ({ isLoading }) => {
                 key={custodian.id}
                 sx={{
                   px: 1.5,
+                  py: 1.5,
                   display: activeTab === index ? 'flex' : 'none',
                   flexDirection: 'column',
                   alignItems: 'center',
                   flexGrow: 1
                 }}
               >
-                {/* Header with bank info
-                <Box sx={{ mb: 3, width: '100%', display: 'flex', alignItems: 'center' }}>
-                  <Avatar
-                    sx={{
-                      bgcolor: alpha(custodian.color, 0.1),
-                      color: custodian.color,
-                      width: 48,
-                      height: 48,
-                      mr: 2
-                    }}
-                  >
-                    <Icon icon={custodian.icon} width={28} />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="h6">{custodian.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Last updated: {custodian.lastUpdate}
-                    </Typography>
-                  </Box>
-                </Box>
-                <Divider sx={{ width: '100%', mb: 3 }} />*/}
                 {/* Chart and details side by side */}
-                <Grid container spacing={3} sx={{ flexGrow: 1, alignItems: 'center' }}>
+                <Grid container spacing={isMobile ? 1.5 : 2} sx={{ flexGrow: 1, alignItems: 'center' }}>
                   {/* Left side - Chart */}
                   <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <Box sx={{ width: '100%', maxWidth: 200, height: 200 }}>
+                    <Box sx={{ width: '100%', maxWidth: 220, height: isMobile ? 160 : 200 }}>
                       <ReactApexChart
                         options={getChartOptions(custodian)}
                         series={chartSeries}
                         type="donut"
-                        height={200}
+                        height={isMobile ? 160 : 200}
                         width="100%"
                       />
                     </Box>
@@ -383,13 +443,14 @@ const CustodiansSection = ({ isLoading }) => {
                     <Card
                       elevation={0}
                       sx={{
-                        p: 3,
+                        p: 2,
                         border: `1px solid ${alpha(theme.palette.divider, 0.5)}`,
-                        bgcolor: alpha(theme.palette.background.default, 0.4)
+                        bgcolor: alpha(theme.palette.background.default, 0.4),
+                        borderRadius: 1
                       }}
                     >
-                      <Box sx={{ mb: 2 }}>
-                        <Grid container spacing={1}>
+                      <Box sx={{ mb: 1.5 }}>
+                        <Grid container spacing={0.75}>
                           <Grid item xs={6}>
                             <Typography variant="body2" color="text.secondary">
                               Total Accounts:
@@ -403,17 +464,17 @@ const CustodiansSection = ({ isLoading }) => {
                         </Grid>
                       </Box>
 
-                      <Box sx={{ mb: 2 }}>
-                        <Grid container spacing={1}>
+                      <Box sx={{ mb: 1.5 }}>
+                        <Grid container spacing={0.75}>
                           <Grid item xs={6}>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                               <Box
                                 sx={{
-                                  width: 10,
-                                  height: 10,
+                                  width: 8,
+                                  height: 8,
                                   borderRadius: '50%',
-                                  bgcolor: theme.palette.primary.main,
-                                  mr: 1
+                                  bgcolor: theme.palette.secondary.main,
+                                  mr: 0.75
                                 }}
                               />
                               <Typography variant="body2" color="text.secondary">
@@ -422,24 +483,24 @@ const CustodiansSection = ({ isLoading }) => {
                             </Box>
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography variant="body2" fontWeight={600} color="primary.main">
+                            <Typography variant="body2" fontWeight={600} color="secondary.main">
                               {custodian.reconciledAccounts}
                             </Typography>
                           </Grid>
                         </Grid>
                       </Box>
 
-                      <Box sx={{ mb: 3 }}>
-                        <Grid container spacing={1}>
+                      <Box sx={{ mb: 2 }}>
+                        <Grid container spacing={0.75}>
                           <Grid item xs={6}>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                               <Box
                                 sx={{
-                                  width: 10,
-                                  height: 10,
+                                  width: 8,
+                                  height: 8,
                                   borderRadius: '50%',
-                                  bgcolor: theme.palette.secondary.main,
-                                  mr: 1
+                                  bgcolor: theme.palette.primary.main,
+                                  mr: 0.75
                                 }}
                               />
                               <Typography variant="body2" color="text.secondary">
@@ -451,7 +512,7 @@ const CustodiansSection = ({ isLoading }) => {
                             <Typography
                               variant="body2"
                               fontWeight={600}
-                              color={custodian.unreconciledAccounts > 0 ? 'secondary.main' : 'text.disabled'}
+                              color={custodian.unreconciledAccounts > 0 ? 'primary.main' : 'text.disabled'}
                             >
                               {custodian.unreconciledAccounts}
                             </Typography>
@@ -465,6 +526,7 @@ const CustodiansSection = ({ isLoading }) => {
                         onClick={() => handleNavigateToDetailRecon(custodian.id)}
                         sx={{
                           bgcolor: custodian.color,
+                          color: custodian.color === theme.palette.primary.main ? '#fff' : 'rgba(0,0,0,0.87)',
                           '&:hover': {
                             bgcolor: alpha(custodian.color, 0.8)
                           }
