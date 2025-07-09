@@ -1,12 +1,28 @@
 import { Icon } from '@iconify/react';
-import { alpha, Avatar, Box, Card, LinearProgress, Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
+import {
+  alpha,
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Chip,
+  Divider,
+  Grid,
+  LinearProgress,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme
+} from '@mui/material';
 import { useNavigate } from 'react-router';
 
 const SummaryMetricsSection = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
+  // Consistent spacing value
+  const spacing = 1.5;
 
   const handleViewReconcileDetails = () => {
     navigate('/detail-recon-tool');
@@ -28,7 +44,7 @@ const SummaryMetricsSection = () => {
 
   // Progress bar styles based on theme
   const progressStyle = (color) => ({
-    mt: 0.5,
+    mt: 0.75,
     height: 6,
     borderRadius: 1,
     bgcolor: alpha(theme.palette.grey[200], theme.palette.mode === 'dark' ? 0.2 : 1),
@@ -38,158 +54,238 @@ const SummaryMetricsSection = () => {
     }
   });
 
-  // Metrics data
-  const metricsData = [
-    {
-      title: 'Total Accounts',
-      value: 384,
-      change: '+12',
-      isPositive: true,
-      icon: 'solar:user-id-bold-duotone',
-      color: theme.palette.secondary.main, // Yellow
-      progress: 100
-    },
-    {
-      title: 'Reconciled',
-      value: 355,
-      change: '+15',
-      isPositive: true,
-      icon: 'solar:check-circle-bold-duotone',
-      color: theme.palette.success.main, // Green
-      progress: 92
-    },
-    {
-      title: 'Unreconciled',
-      value: 29,
-      change: '-3',
-      isPositive: true,
-      icon: 'solar:close-circle-bold-duotone',
-      color: theme.palette.error.main, // Red
-      progress: 8
-    },
-    {
-      title: 'Reconciliation Rate',
-      value: '92.5%',
-      change: '+1.2%',
-      isPositive: true,
-      icon: 'solar:chart-line-bold-duotone',
-      color: theme.palette.info.main, // Blue
-      progress: 92.5
-    }
-  ];
-
   return (
-    <Card
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 1,
-        boxShadow: theme.shadows[1]
-      }}
-    >
-      <Box
-        sx={{
-          p: 1.5,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: `1px solid ${theme.palette.divider}`
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: 600,
-            color: theme.palette.text.primary,
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          <Avatar
-            variant="rounded"
+    <Grid container spacing={spacing}>
+      {/* Reconcile Accounts Card */}
+      <Grid item xs={12} sm={6}>
+        <Card sx={metricCardStyle} onClick={handleViewReconcileDetails}>
+          <Box
             sx={{
-              width: 24,
-              height: 24,
-              mr: 1,
-              bgcolor: alpha(theme.palette.secondary.main, 0.2),
-              color: theme.palette.secondary.main
+              bgcolor: theme.palette.secondary.main, // GIB Yellow
+              p: 1.5,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
             }}
           >
-            <Icon icon="solar:chart-bold-duotone" width={16} />
-          </Avatar>
-          Summary Metrics
-        </Typography>
-      </Box>
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: 'rgba(0, 0, 0, 0.87)' }}>
+              Reconcile Accounts
+            </Typography>
+            <Avatar
+              sx={{
+                width: 28,
+                height: 28,
+                bgcolor: alpha('#000', 0.15),
+                color: 'rgba(0, 0, 0, 0.87)'
+              }}
+            >
+              <Icon icon="solar:check-circle-bold-duotone" width={16} />
+            </Avatar>
+          </Box>
 
-      <Box sx={{ p: 1.5, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <Stack spacing={1.5} sx={{ flexGrow: 1 }}>
-          {metricsData.map((metric, index) => (
-            <Card key={index} sx={metricCardStyle}>
-              <Box
+          <Box sx={{ p: spacing, pt: spacing }}>
+            <Stack direction="row" alignItems="center" spacing={spacing}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+                384
+              </Typography>
+              <Chip
+                size="small"
+                label="+8%"
+                icon={<Icon icon="solar:arrow-up-bold" width={14} />}
                 sx={{
-                  p: 1.5,
-                  display: 'flex',
-                  flexDirection: 'column'
+                  bgcolor: alpha(theme.palette.success.main, 0.1),
+                  color: theme.palette.success.main,
+                  fontWeight: 600,
+                  height: 24
                 }}
+              />
+            </Stack>
+
+            <Typography variant="body2" color="textSecondary" sx={{ mt: 0.75 }}>
+              from previous period
+            </Typography>
+
+            <LinearProgress variant="determinate" value={75} sx={progressStyle(theme.palette.secondary.main)} />
+
+            <Box sx={{ mt: spacing, textAlign: 'right' }}>
+              <Button
+                size="small"
+                variant="text"
+                sx={{
+                  color: theme.palette.secondary.main,
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.secondary.main, 0.08)
+                  }
+                }}
+                endIcon={<Icon icon="solar:arrow-right-bold" width={16} />}
               >
-                <Box
+                View Details
+              </Button>
+            </Box>
+          </Box>
+        </Card>
+      </Grid>
+
+      {/* Unreconcile Accounts Card */}
+      <Grid item xs={12} sm={6}>
+        <Card sx={metricCardStyle} onClick={handleViewReconcileDetails}>
+          <Box
+            sx={{
+              bgcolor: theme.palette.primary.main, // Dark Grey
+              p: 1.5,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <Typography variant="subtitle1" sx={{ fontWeight: 600, color: theme.palette.primary.contrastText }}>
+              Unreconcile Accounts
+            </Typography>
+            <Avatar
+              sx={{
+                width: 28,
+                height: 28,
+                bgcolor: alpha('#fff', 0.15),
+                color: theme.palette.primary.contrastText
+              }}
+            >
+              <Icon icon="solar:warning-bold-duotone" width={16} />
+            </Avatar>
+          </Box>
+
+          <Box sx={{ p: spacing, pt: spacing }}>
+            <Stack direction="row" alignItems="center" spacing={spacing}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+                27
+              </Typography>
+              <Chip
+                size="small"
+                label="-3.2%"
+                icon={<Icon icon="solar:arrow-down-bold" width={14} />}
+                sx={{
+                  bgcolor: alpha(theme.palette.error.main, 0.1),
+                  color: theme.palette.error.main,
+                  fontWeight: 600,
+                  height: 24
+                }}
+              />
+            </Stack>
+
+            <Typography variant="body2" color="textSecondary" sx={{ mt: 0.75 }}>
+              from yesterday
+            </Typography>
+
+            <LinearProgress variant="determinate" value={27} sx={progressStyle(theme.palette.primary.main)} />
+
+            <Box sx={{ mt: spacing, textAlign: 'right' }}>
+              <Button
+                size="small"
+                variant="text"
+                sx={{
+                  color: theme.palette.primary.main,
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                  '&:hover': {
+                    bgcolor: alpha(theme.palette.primary.main, 0.08)
+                  }
+                }}
+                endIcon={<Icon icon="solar:arrow-right-bold" width={16} />}
+              >
+                View Details
+              </Button>
+            </Box>
+          </Box>
+        </Card>
+      </Grid>
+
+      {/* Today's Activity Card */}
+      <Grid item xs={12}>
+        <Card sx={{ p: spacing, borderRadius: 1, boxShadow: '0 2px 10px 0 rgba(32, 40, 45, 0.08)' }}>
+          <Stack spacing={spacing}>
+            {/* Today's Received */}
+            <Box>
+              <Stack direction="row" alignItems="center" spacing={0.75} sx={{ mb: 0.75 }}>
+                <Avatar
+                  variant="rounded"
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    mb: 1
+                    width: 20,
+                    height: 20,
+                    bgcolor: alpha(theme.palette.secondary.main, 0.2),
+                    color: theme.palette.secondary.main
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        bgcolor: alpha(metric.color, 0.2),
-                        color: metric.color,
-                        mr: 1.5
-                      }}
-                    >
-                      <Icon icon={metric.icon} width={20} />
-                    </Avatar>
-                    <Box>
-                      <Typography variant="body2" color="text.secondary">
-                        {metric.title}
-                      </Typography>
-                      <Typography variant="h6" fontWeight={600} color="text.primary">
-                        {metric.value}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      color: metric.isPositive ? theme.palette.success.main : theme.palette.error.main,
-                      bgcolor: alpha(metric.isPositive ? theme.palette.success.main : theme.palette.error.main, 0.1),
-                      borderRadius: 1,
-                      py: 0.5,
-                      px: 1
-                    }}
-                  >
-                    <Icon
-                      icon={metric.isPositive ? 'solar:arrow-up-bold' : 'solar:arrow-down-bold'}
-                      width={16}
-                      style={{ marginRight: 4 }}
-                    />
-                    <Typography variant="caption" fontWeight={600}>
-                      {metric.change}
-                    </Typography>
-                  </Box>
-                </Box>
-                <LinearProgress variant="determinate" value={metric.progress} sx={progressStyle(metric.color)} />
+                  <Icon icon="solar:clock-circle-bold-duotone" width={12} />
+                </Avatar>
+                <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 500 }}>
+                  Today's Received
+                </Typography>
+              </Stack>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+                  $2,890
+                </Typography>
+                <Chip
+                  size="small"
+                  label="Live"
+                  sx={{
+                    bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                    color: theme.palette.secondary.main,
+                    fontWeight: 600,
+                    height: 24
+                  }}
+                />
               </Box>
-            </Card>
-          ))}
-        </Stack>
-      </Box>
-    </Card>
+
+              <LinearProgress variant="determinate" value={35} sx={progressStyle(theme.palette.secondary.main)} />
+            </Box>
+
+            <Divider sx={{ opacity: 0.6 }} />
+
+            {/* Monthly Total */}
+            <Box>
+              <Stack direction="row" alignItems="center" spacing={0.75} sx={{ mb: 0.75 }}>
+                <Avatar
+                  variant="rounded"
+                  sx={{
+                    width: 20,
+                    height: 20,
+                    bgcolor: alpha(theme.palette.primary.main, 0.2),
+                    color: theme.palette.primary.main
+                  }}
+                >
+                  <Icon icon="solar:dollar-minimalistic-bold-duotone" width={12} />
+                </Avatar>
+                <Typography variant="body2" color="textSecondary" sx={{ fontWeight: 500 }}>
+                  Monthly Total
+                </Typography>
+              </Stack>
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
+                  $82,890
+                </Typography>
+                <Chip
+                  size="small"
+                  label="+18%"
+                  icon={<Icon icon="solar:arrow-up-bold" width={14} />}
+                  sx={{
+                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    color: theme.palette.primary.main,
+                    fontWeight: 600,
+                    height: 24
+                  }}
+                />
+              </Box>
+
+              <LinearProgress variant="determinate" value={82} sx={progressStyle(theme.palette.primary.main)} />
+            </Box>
+          </Stack>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 

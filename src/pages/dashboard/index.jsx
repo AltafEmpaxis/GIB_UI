@@ -10,6 +10,9 @@ const Dashboard = () => {
   const theme = useTheme();
   const [isLoading, setLoading] = useState(true);
 
+  // Consistent spacing value
+  const spacing = 1.5;
+
   useEffect(() => {
     // Simulate data loading
     const timer = setTimeout(() => {
@@ -49,16 +52,16 @@ const Dashboard = () => {
         direction={{ xs: 'column', sm: 'row' }}
         alignItems={{ xs: 'flex-start', sm: 'center' }}
         justifyContent="space-between"
-        spacing={2}
+        spacing={spacing}
       >
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={spacing}>
           <Box>
             <Typography
               variant="h5"
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
+                gap: spacing * 4,
                 fontSize: '1.5rem'
               }}
             >
@@ -84,7 +87,7 @@ const Dashboard = () => {
       <meta property="og:description" content="" />
 
       <Box>
-        <MainCard title={header} elevation={0} sx={{ p: '0!important' }} contentSX={{ p: '0.5rem !important' }}>
+        <MainCard title={header} elevation={0} sx={{ p: '0!important' }} contentSX={{ p: `${spacing}px !important` }}>
           <Tabs
             value={currentTab}
             onChange={(event, newValue) => setCurrentTab(newValue)}
@@ -93,6 +96,7 @@ const Dashboard = () => {
                 backgroundColor: currentTabInfo?.color
               }
             }}
+            sx={{ px: spacing }}
           >
             {tabs.map((tab) => (
               <Tab
@@ -111,7 +115,14 @@ const Dashboard = () => {
             ))}
           </Tabs>
           <Divider />
-          {tabs.map((tab) => tab.value === currentTab && <Box key={tab.value}>{tab.component}</Box>)}
+          {tabs.map(
+            (tab) =>
+              tab.value === currentTab && (
+                <Box key={tab.value} sx={{ p: spacing }}>
+                  {tab.component}
+                </Box>
+              )
+          )}
         </MainCard>
       </Box>
     </>

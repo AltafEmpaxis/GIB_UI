@@ -19,6 +19,7 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -29,6 +30,8 @@ import mockData from '../dashbord-mockData.json';
 
 const PortfolioSecuritiesActivity = ({ isLoading }) => {
   const theme = useTheme();
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  const spacing = 1.5;
 
   // Theme-based colors instead of hardcoded values
   const primaryColor = theme.palette.primary.main;
@@ -159,12 +162,12 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
           height: '100%',
           boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 12px rgba(0,0,0,0.05)',
           '& .MuiCardContent-root': { p: 0 },
-          borderRadius: 3
+          borderRadius: 1
         }}
       >
         <CardContent>
-          <Box sx={{ p: 2 }}>
-            <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: 2 }} />
+          <Box sx={{ p: spacing }}>
+            <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: spacing }} />
           </Box>
           <Divider />
           <List sx={{ py: 0 }}>
@@ -174,7 +177,7 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
                 divider
                 sx={{
                   py: 1.5,
-                  px: 2,
+                  px: spacing,
                   borderColor: theme.palette.divider
                 }}
               >
@@ -236,7 +239,7 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
         height: '100%',
         boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
-        borderRadius: 3,
+        borderRadius: 1,
         border: '1px solid',
         borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
         position: 'relative',
@@ -259,8 +262,8 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
 
       <CardContent>
         {/* Activity Overview Section */}
-        <Box sx={{ p: 2 }}>
-          <Grid container spacing={2}>
+        <Box sx={{ p: spacing }}>
+          <Grid container spacing={spacing}>
             {activityMetrics.map((metric, index) => (
               <Grid item xs={4} key={index}>
                 <Card
@@ -343,7 +346,7 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
                 divider={index !== activities.length - 1}
                 sx={{
                   py: 1.5,
-                  px: 2.5,
+                  px: spacing,
                   transition: 'all 0.2s ease-in-out',
                   '&:hover': {
                     bgcolor: alpha(theme.palette.primary.main, 0.04)
@@ -427,7 +430,7 @@ const PortfolioSecuritiesActivity = ({ isLoading }) => {
         </List>
 
         {/* View All Button */}
-        <Box sx={{ p: 2, textAlign: 'center' }}>
+        <Box sx={{ p: spacing, textAlign: 'center' }}>
           <Button
             variant="outlined"
             color="primary"

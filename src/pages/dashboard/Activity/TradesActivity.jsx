@@ -22,6 +22,7 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
   useTheme
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -36,6 +37,8 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
   const [filter, setFilter] = useState('all');
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+  const spacing = 1.5;
 
   // Theme-based colors instead of hardcoded values
   const primaryColor = theme.palette.primary.main;
@@ -204,19 +207,19 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
           height: '100%',
           boxShadow: theme.customShadows ? theme.customShadows.z1 : '0 4px 12px rgba(0,0,0,0.05)',
           '& .MuiCardContent-root': { p: 0 },
-          borderRadius: 3
+          borderRadius: 1
         }}
       >
         <CardContent>
-          <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box sx={{ p: spacing, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Stack direction="row" alignItems="center" spacing={1}>
               <Skeleton variant="circular" width={32} height={32} />
               <Skeleton variant="text" width={180} height={28} />
             </Stack>
             <Skeleton variant="circular" width={32} height={32} />
           </Box>
-          <Box sx={{ p: 2 }}>
-            <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: 2 }} />
+          <Box sx={{ p: spacing }}>
+            <Skeleton variant="rectangular" height={110} sx={{ borderRadius: 2, mb: spacing }} />
           </Box>
           <Divider />
           <List sx={{ py: 0 }}>
@@ -226,7 +229,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                 divider
                 sx={{
                   py: 1.5,
-                  px: 2,
+                  px: spacing,
                   borderColor: theme.palette.divider
                 }}
               >
@@ -256,7 +259,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
         height: '100%',
         boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
-        borderRadius: 3,
+        borderRadius: 1,
         border: '1px solid',
         borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
         position: 'relative',
@@ -278,7 +281,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
       />
 
       <CardContent>
-        <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box sx={{ p: spacing, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
               variant="rounded"
@@ -370,8 +373,8 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
         </Box>
 
         {/* Activity Overview Section */}
-        <Box sx={{ p: 2 }}>
-          <Grid container spacing={2}>
+        <Box sx={{ p: spacing }}>
+          <Grid container spacing={spacing}>
             {activityMetrics.map((metric, index) => (
               <Grid item xs={4} key={index}>
                 <Card
@@ -455,7 +458,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                   divider={index !== activities.length - 1 || isExpanded}
                   sx={{
                     py: 1.5,
-                    px: 2.5,
+                    px: spacing,
                     transition: 'all 0.2s ease-in-out',
                     '&:hover': {
                       bgcolor: alpha(theme.palette.primary.main, 0.04)
@@ -564,12 +567,12 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
                 <Collapse in={isExpanded} timeout="auto" unmountOnExit>
                   <Box
                     sx={{
-                      p: 2,
+                      p: spacing,
                       bgcolor: alpha(theme.palette.background.default, 0.5),
                       borderBottom: index !== activities.length - 1 ? `1px solid ${theme.palette.divider}` : 'none'
                     }}
                   >
-                    <Grid container spacing={2}>
+                    <Grid container spacing={spacing}>
                       <Grid item xs={6}>
                         <Stack spacing={1}>
                           <Typography variant="caption" color="textSecondary">
@@ -611,7 +614,7 @@ const TradesActivity = ({ isLoading: parentLoading }) => {
         </List>
 
         {/* View All Button */}
-        <Box sx={{ p: 2, textAlign: 'center' }}>
+        <Box sx={{ p: spacing, textAlign: 'center' }}>
           <Button
             variant="outlined"
             color="primary"

@@ -8,25 +8,23 @@ import SummaryMetricsSection from './SummaryMetricsSection';
 
 const ReconSummary = ({ isLoading }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('md'));
   const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
 
   // Calculate dynamic spacing based on theme
   const sidebarWidth = 320; // Width of the sidebar
   const gridSpacing = 1.5;
-  const dynamicSpacing = theme.spacing(isLargeScreen ? gridSpacing : 0);
 
   return (
     <Box
       sx={{
         py: 1,
-        px: 1,
+        px: 0,
         display: 'flex',
         flexDirection: { xs: 'column', lg: 'row' },
         position: 'relative',
         minHeight: '100%',
-        gap: gridSpacing
+        gap: gridSpacing,
+        height: '100%'
       }}
     >
       {/* Main Content Area */}
@@ -35,7 +33,10 @@ const ReconSummary = ({ isLoading }) => {
           flexGrow: 1,
           width: { xs: '100%', lg: `calc(100% - ${sidebarWidth}px - ${theme.spacing(gridSpacing)})` },
           pr: isLargeScreen ? 0 : 0,
-          mb: !isLargeScreen ? gridSpacing : 0
+          mb: !isLargeScreen ? gridSpacing : 0,
+          height: { lg: '100%' },
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
         {/* Financial Summary Section */}
@@ -44,7 +45,7 @@ const ReconSummary = ({ isLoading }) => {
             <Grid
               item
               xs={12}
-              md={8}
+              md={7}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -58,7 +59,7 @@ const ReconSummary = ({ isLoading }) => {
             <Grid
               item
               xs={12}
-              md={4}
+              md={5}
               sx={{
                 order: { xs: 1, md: 2 },
                 mb: { xs: 0, md: 0 }
@@ -101,8 +102,8 @@ const ReconSummary = ({ isLoading }) => {
           p: 0,
           color: theme.palette.primary.contrastText,
           borderRadius: {
-            xs: 1,
-            lg: 1
+            xs: 0,
+            lg: '0 8px 8px 0'
           },
           position: { lg: 'relative' },
           width: { xs: '100%', lg: sidebarWidth },

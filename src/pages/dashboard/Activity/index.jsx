@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import CorporateActionActivity from './CorporateActionActivity';
 import PortfolioSecuritiesActivity from './PortfolioSecuritiesActivity';
@@ -6,9 +7,12 @@ import TradesActivity from './TradesActivity';
 
 // Accept isLoading as a prop
 export default function Activity({ isLoading }) {
+  // Use consistent grid spacing of 1.5
+  const gridSpacing = 1.5;
+
   return (
-    <div>
-      <Grid container spacing={3} sx={{ mt: 2 }}>
+    <Box sx={{ px: 0 }}>
+      <Grid container spacing={gridSpacing}>
         <Grid item xs={12} md={6} lg={6}>
           <RecentReconActivity isLoading={isLoading} />
         </Grid>
@@ -22,6 +26,6 @@ export default function Activity({ isLoading }) {
           <CorporateActionActivity isLoading={isLoading} />
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }
