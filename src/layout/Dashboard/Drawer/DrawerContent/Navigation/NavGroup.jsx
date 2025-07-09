@@ -72,7 +72,7 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
             <Typography
               variant="subtitle2"
               sx={{
-                color: isDark ? alpha(theme.palette.primary.light, 0.7) : theme.palette.primary.main,
+                color: isDark ? alpha(theme.palette.secondary.light, 0.8) : theme.palette.primary.main,
                 fontSize: '0.7rem',
                 fontWeight: 600,
                 lineHeight: '1.2',
@@ -88,8 +88,8 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
                   left: 'calc(100% + 10px)',
                   top: '50%',
                   background: isDark
-                    ? `linear-gradient(90deg, ${alpha(theme.palette.primary.light, 0.4)}, ${alpha(theme.palette.primary.light, 0)})`
-                    : `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.5)}, ${alpha(theme.palette.primary.main, 0)})`
+                    ? `linear-gradient(90deg, ${alpha(theme.palette.secondary.light, 0.4)}, ${alpha(theme.palette.secondary.light, 0)})`
+                    : `linear-gradient(90deg, ${alpha(theme.palette.secondary.main, 0.5)}, ${alpha(theme.palette.secondary.main, 0)})`
                 }
               }}
             >
@@ -103,15 +103,17 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
         py: 0,
         '& .MuiListItemButton-root': {
           height: 44,
-          transition: 'all 0.2s ease-in-out',
+          transition: theme.transitions.create(['background-color'], {
+            duration: theme.transitions.duration.shorter
+          }),
           '&.Mui-selected': {
             bgcolor: 'transparent',
             '&:hover': {
-              bgcolor: isDark ? alpha(theme.palette.primary.main, 0.12) : alpha(theme.palette.primary.lighter, 0.6)
+              bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.3) : alpha(theme.palette.secondary.lighter, 0.6)
             }
           },
           '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.08) : alpha(theme.palette.primary.lighter, 0.4)
+            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.lighter, 0.4)
           }
         }
       }}

@@ -84,12 +84,26 @@ export function themePalette(mode = 'light', presetColor = 'default') {
 
     // Actions
     action: {
-      active: isDark ? alpha(commonColors.white, 0.9) : colors.grey[700],
-      hover: isDark ? alpha(commonColors.white, 0.12) : alpha(colors.grey[700], 0.08),
-      selected: isDark ? alpha(commonColors.white, 0.2) : alpha(colors.grey[700], 0.14),
-      disabled: isDark ? alpha(commonColors.white, 0.6) : colors.grey[500],
-      disabledBackground: isDark ? alpha(colors.grey[900], 0.3) : alpha(colors.grey[200], 0.3),
-      focus: isDark ? alpha(commonColors.white, 0.16) : alpha(colors.grey[700], 0.12),
+      // Active elements (icons, text, etc.)
+      active: isDark ? alpha(colors.secondary.light, 0.8) : colors.primary.main,
+
+      // Hover state background
+      hover: isDark ? alpha(colors.secondary.main, 0.2) : alpha(colors.secondary.lighter, 0.5),
+
+      // Selected state background
+      selected: isDark ? alpha(colors.secondary.main, 0.4) : alpha(colors.secondary.lighter, 0.6),
+      selectedText: isDark ? colors.secondary.light : colors.secondary.dark,
+
+      // Disabled text
+      disabled: isDark ? alpha(commonColors.white, 0.4) : colors.tertiary.main,
+
+      // Disabled background
+      disabledBackground: isDark ? alpha(colors.grey[900], 0.2) : alpha(colors.grey[200], 0.5),
+
+      // Focus state
+      focus: isDark ? alpha(colors.secondary.main, 0.3) : alpha(colors.secondary.main, 0.1),
+
+      // Opacity values
       hoverOpacity: 0.08,
       selectedOpacity: 0.16,
       disabledOpacity: 0.38,

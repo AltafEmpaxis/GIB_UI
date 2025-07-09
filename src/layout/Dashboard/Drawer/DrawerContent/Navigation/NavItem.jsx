@@ -12,7 +12,7 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
   const itemIcon = item?.icon ? <item.icon /> : <Icon icon={icon} width={22} height={22} />;
 
   const textColor = isDark ? 'grey.400' : 'text.primary';
-  const iconSelectedColor = isDark ? 'primary.light' : 'primary.main';
+  const iconSelectedColor = 'secondary.main';
   const isSelected = selected && selectedLevel === level;
 
   return (
@@ -32,11 +32,11 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
         borderRadius: 1.5,
         backgroundColor: 'transparent',
         color: isSelected ? iconSelectedColor : textColor,
-        transition: 'all 0.18s ease-in-out',
+        transition: theme.transitions.create(['color', 'background-color'], {
+          duration: theme.transitions.duration.shorter
+        }),
         '&:hover': {
-          bgcolor: isDark
-            ? alpha(theme.palette.primary.main, isSelected ? 0.25 : 0.1)
-            : alpha(theme.palette.primary.lighter, isSelected ? 0.7 : 0.4),
+          bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.lighter, 0.7),
           color: isSelected ? iconSelectedColor : theme.palette.primary.main
         },
         '&::after': isSelected
@@ -49,18 +49,18 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
               width: 4,
               height: '60%',
               borderRadius: '2px 0 0 2px',
-              background: `linear-gradient(to bottom, ${theme.palette.primary.main}, ${alpha(theme.palette.primary.main, 0.7)})`,
+              backgroundColor: theme.palette.secondary.main,
               boxShadow: isDark
-                ? `0 0 5px ${alpha(theme.palette.primary.main, 0.5)}`
-                : `0 0 12px ${alpha(theme.palette.primary.light, 0.7)}`
+                ? `0 0 8px ${alpha(theme.palette.secondary.main, 0.7)}`
+                : `0 0 12px ${alpha(theme.palette.secondary.main, 0.5)}`
             }
           : {},
         '&.Mui-selected': {
-          bgcolor: isDark ? alpha(theme.palette.primary.main, 0.15) : alpha(theme.palette.primary.lighter, 0.5),
-          color: iconSelectedColor,
+          bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.4) : alpha(theme.palette.secondary.lighter, 0.6),
+          color: isDark ? theme.palette.secondary.light : theme.palette.secondary.dark,
           '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.primary.main, 0.25) : alpha(theme.palette.primary.lighter, 0.7),
-            color: iconSelectedColor
+            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.5) : alpha(theme.palette.secondary.lighter, 0.7),
+            color: isDark ? theme.palette.secondary.main : theme.palette.secondary.dark
           }
         }
       }}
@@ -70,7 +70,9 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
           minWidth: 30,
           color: 'inherit',
           fontSize: isSelected ? '1.125rem' : '1rem',
-          transition: 'all 0.18s ease-in-out',
+          transition: theme.transitions.create(['color', 'font-size'], {
+            duration: theme.transitions.duration.shorter
+          }),
           ...(!item?.icon && {
             borderRadius: 1.5,
             width: 36,
@@ -96,13 +98,11 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
               fontSize: '0.875rem',
               lineHeight: '1.5',
               textAlign: 'left',
-              transition: 'all 0.18s ease-in-out',
+              transition: theme.transitions.create(['font-weight', 'background'], {
+                duration: theme.transitions.duration.shorter
+              }),
               ...(isSelected && {
-                background: isDark
-                  ? `-webkit-linear-gradient(${theme.palette.primary.light}, ${alpha(theme.palette.primary.main, 0.9)})`
-                  : `-webkit-linear-gradient(${theme.palette.primary.dark}, ${theme.palette.primary.main})`,
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                color: isDark ? theme.palette.secondary.main : theme.palette.secondary.dark
               })
             }}
           >

@@ -12,11 +12,25 @@ const portfolio = {
   title: 'Portfolio/Securities',
   type: 'group',
   children: [
+    // {
+    //   id: 'portfolio',
+    //   title: 'Portfolio/Securities',
+    //   type: 'item',
+    //   url: '/portfolio',
+    //   icon: icons.PortfolioOutlined
+    // }
     {
-      id: 'portfolio',
-      title: 'Portfolio/Securities',
+      id: 'Investment Performance',
+      title: 'Investment Performance',
       type: 'item',
       url: '/portfolio',
+      icon: icons.PortfolioOutlined
+    },
+    {
+      id: 'Reports',
+      title: 'Reports',
+      type: 'item',
+      url: '/reports',
       icon: icons.PortfolioOutlined
     }
   ]

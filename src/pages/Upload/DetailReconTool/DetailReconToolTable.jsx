@@ -112,7 +112,7 @@ export default function DetailReconToolTable() {
     return [
       {
         id: 'all',
-        title: 'Total Accounts',
+        title: 'Total Accounts', //4
         value: totalAccounts,
         subtitle: 'All accounts in system',
         icon: 'solar:files-bold-duotone',
@@ -121,7 +121,7 @@ export default function DetailReconToolTable() {
       },
       {
         id: 'reconciled',
-        title: 'Reconciled',
+        title: 'Positions', //2
         value: reconciled,
         subtitle: 'Matched accounts',
         icon: 'solar:check-circle-bold-duotone',
@@ -129,8 +129,8 @@ export default function DetailReconToolTable() {
         trend: '+8%'
       },
       {
-        id: 'unreconciled',
-        title: 'Unreconciled',
+        id: 'Cash Balance', //3
+        title: 'Cash Balance',
         value: unreconciled,
         subtitle: 'Unmatched accounts',
         icon: 'solar:close-circle-bold-duotone',
@@ -138,8 +138,8 @@ export default function DetailReconToolTable() {
         trend: '-3.2%'
       },
       {
-        id: 'amount',
-        title: 'Total Amount',
+        id: 'amount', //1
+        title: 'Market Value Reconciliation',
         value: formatter.format(totalAmount),
         subtitle: 'Total reconciliation value',
         icon: 'solar:dollar-minimalistic-bold-duotone',
@@ -182,6 +182,21 @@ export default function DetailReconToolTable() {
         header: 'Date',
         size: 200,
         filterVariant: 'date'
+      },
+      {
+        accessorKey: 'Quantity',
+        header: 'Quantity',
+        size: 200
+      },
+      {
+        accessorKey: 'Security Symbol',
+        header: 'Security Symbol',
+        size: 200
+      },
+      {
+        accessorKey: 'Security Name',
+        header: 'Security Name',
+        size: 200
       },
       {
         accessorKey: 'amount',

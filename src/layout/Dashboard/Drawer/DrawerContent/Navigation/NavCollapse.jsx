@@ -17,8 +17,8 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
     setOpen(!open);
   };
 
-  const textColor = theme.palette.mode === 'dark' ? 'grey.400' : 'text.primary';
-  const iconSelectedColor = theme.palette.mode === 'dark' ? 'text.primary' : 'primary.main';
+  const textColor = isDark ? 'grey.400' : 'text.primary';
+  const iconSelectedColor = 'secondary.main';
 
   const itemIcon = menu?.icon ? <menu.icon /> : null;
 
@@ -32,10 +32,13 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
           mb: 0.25,
           borderRadius: 0.5,
           backgroundColor: 'transparent',
-          color: textColor,
+          color: open ? theme.palette.secondary.main : textColor,
+          transition: theme.transitions.create(['color', 'background-color'], {
+            duration: theme.transitions.duration.shorter
+          }),
           '&:hover': {
-            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.main, 0.12),
-            color: theme.palette.secondary.main
+            bgcolor: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.lighter, 0.5),
+            color: isDark ? theme.palette.secondary.light : theme.palette.secondary.dark
           }
         }}
         onClick={handleClick}
@@ -44,7 +47,10 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
           <ListItemIcon
             sx={{
               minWidth: 28,
-              color: 'inherit'
+              color: 'inherit',
+              transition: theme.transitions.create(['color'], {
+                duration: theme.transitions.duration.shorter
+              })
             }}
           >
             {itemIcon}
@@ -60,7 +66,9 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
                 fontSize: '0.875rem',
                 lineHeight: '1.5',
                 textAlign: 'left',
-                transition: 'all .2s ease-in-out'
+                transition: theme.transitions.create(['font-weight'], {
+                  duration: theme.transitions.duration.shorter
+                })
               }}
             >
               {menu.title}
@@ -68,14 +76,37 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
           }
         />
         {open ? (
-          <ExpandLessIcon fontSize="small" color="inherit" sx={{ ml: 0.5 }} />
+          <ExpandLessIcon
+            fontSize="small"
+            color="inherit"
+            sx={{
+              ml: 0.5,
+              color: open ? theme.palette.secondary.main : 'inherit'
+            }}
+          />
         ) : (
           <ExpandMoreIcon fontSize="small" color="inherit" sx={{ ml: 0.5 }} />
         )}
       </ListItemButton>
 
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List
+          component="div"
+          disablePadding
+          sx={{
+            position: 'relative',
+            '&:before': {
+              content: '""',
+              position: 'absolute',
+              left: level * 1.75 + 14,
+              top: 0,
+              height: '100%',
+              width: 1,
+              opacity: 0.4,
+              background: `linear-gradient(to bottom, ${alpha(theme.palette.secondary.main, 0.5)}, ${alpha(theme.palette.secondary.main, 0.1)})`
+            }
+          }}
+        >
           {menu.children?.map((item) => {
             switch (item.type) {
               case 'item':
