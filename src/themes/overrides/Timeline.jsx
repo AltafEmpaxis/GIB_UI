@@ -14,7 +14,8 @@ export default function Timeline(theme) {
     MuiTimelineContent: {
       styleOverrides: {
         root: {
-          padding: '12px 16px'
+          padding: '12px 16px',
+          color: theme.palette.primary.main // Dark Grey
         }
       }
     },
@@ -24,7 +25,12 @@ export default function Timeline(theme) {
           boxShadow: 'none',
           margin: 0,
           '&.MuiTimelineDot-filled': {
-            boxShadow: theme.customShadows?.primary
+            boxShadow: theme.customShadows?.secondary || 'none', // Use secondary shadow (Yellow-based)
+            backgroundColor: theme.palette.secondary.main // GIB Yellow
+          },
+          '&.MuiTimelineDot-outlined': {
+            borderColor: theme.palette.secondary.main, // GIB Yellow
+            color: theme.palette.secondary.main // GIB Yellow
           }
         }
       }
@@ -32,7 +38,7 @@ export default function Timeline(theme) {
     MuiTimelineConnector: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.divider
+          backgroundColor: theme.palette.tertiary.main // Medium Grey
         }
       }
     }

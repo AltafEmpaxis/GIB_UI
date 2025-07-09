@@ -53,10 +53,10 @@ const Navigation = () => {
   return (
     <Box
       sx={{
-        px: { xs: 1.25, md: 1.5 },
-        py: { xs: 1.5, md: 2.5 },
+        px: { xs: 1, md: 1.5 },
+        py: { xs: 1, md: 1.5 },
         '& > .MuiList-root:not(:last-child)': {
-          mb: 0.75
+          mb: 0.5
         },
         position: 'relative',
         '&:before': {

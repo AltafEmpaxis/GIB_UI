@@ -16,10 +16,10 @@ export default function Menu(theme) {
               width: 8
             },
             '&::-webkit-scrollbar-thumb': {
-              backgroundColor: alpha(theme.palette.grey[500], 0.2),
+              backgroundColor: alpha(theme.palette.tertiary.main, 0.3), // Medium Grey
               borderRadius: 4,
               '&:hover': {
-                backgroundColor: alpha(theme.palette.grey[500], 0.3)
+                backgroundColor: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
               }
             },
             '&::-webkit-scrollbar-track': {
@@ -48,30 +48,24 @@ export default function Menu(theme) {
             fontSize: '0.875rem',
             fontWeight: 400,
             borderRadius: theme.shape.borderRadius,
-            color: isDark ? theme.palette.grey[300] : theme.palette.grey[700],
+            color: theme.palette.primary.main, // Dark Grey
             transition: theme.transitions.create(['background-color', 'color'], {
               duration: theme.transitions.duration.shorter
             }),
             '&:hover': {
-              backgroundColor: isDark
-                ? alpha(theme.palette.secondary.main, 0.15)
-                : alpha(theme.palette.secondary.main, 0.12),
-              color: theme.palette.secondary.main
+              backgroundColor: alpha(theme.palette.secondary.main, 0.1), // 10% Yellow
+              color: theme.palette.secondary.main // GIB Yellow
             },
             '&.Mui-selected': {
-              backgroundColor: isDark
-                ? alpha(theme.palette.secondary.main, 0.15)
-                : alpha(theme.palette.secondary.main, 0.12),
-              color: theme.palette.secondary.main,
+              backgroundColor: alpha(theme.palette.secondary.main, 0.2), // 20% Yellow
+              color: theme.palette.secondary.main, // GIB Yellow
               '&:hover': {
-                backgroundColor: isDark
-                  ? alpha(theme.palette.secondary.main, 0.25)
-                  : alpha(theme.palette.secondary.main, 0.18)
+                backgroundColor: alpha(theme.palette.secondary.main, 0.3) // 30% Yellow
               }
             },
             '&.Mui-disabled': {
               opacity: 0.6,
-              color: theme.palette.text.disabled
+              color: theme.palette.tertiary.main // Medium Grey
             }
           }
         }

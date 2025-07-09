@@ -100,13 +100,13 @@ export default function Alert(theme) {
         '& .MuiAlert-message': {
           padding: theme.spacing(1, 0),
           width: '100%',
-          color: isDark ? theme.palette.grey[300] : theme.palette.grey[900]
+          color: theme.palette.primary.main // Dark Grey
         },
         '& .MuiAlert-icon': {
           fontSize: 20,
           opacity: 0.9,
           marginRight: theme.spacing(1.5),
-          color: theme.palette.grey[isDark ? 300 : 800],
+          color: theme.palette.primary.main, // Dark Grey
           display: 'flex',
           alignItems: 'center',
           '& .MuiSvgIcon-root': {
@@ -128,7 +128,7 @@ export default function Alert(theme) {
           marginBottom: theme.spacing(0.5)
         },
         '& .MuiTypography-caption': {
-          color: isDark ? alpha(theme.palette.text.primary, 0.8) : theme.palette.text.secondary,
+          color: theme.palette.tertiary.main, // Medium Grey
           display: 'block'
         }
       },
@@ -157,6 +157,26 @@ export default function Alert(theme) {
         },
         action: {
           padding: theme.spacing(0, 1, 0, 0)
+        },
+        // GIB specific alert styles
+        standardWarning: {
+          backgroundColor: alpha(theme.palette.secondary.main, 0.1), // 10% Yellow
+          color: theme.palette.primary.main, // Dark Grey
+          '& .MuiAlert-icon': {
+            color: theme.palette.secondary.main // GIB Yellow
+          }
+        },
+        standardInfo: {
+          backgroundColor: alpha(theme.palette.info.main, 0.1),
+          color: theme.palette.primary.main // Dark Grey
+        },
+        standardSuccess: {
+          backgroundColor: alpha(theme.palette.success.main, 0.1),
+          color: theme.palette.primary.main // Dark Grey
+        },
+        standardError: {
+          backgroundColor: alpha(theme.palette.error.main, 0.1),
+          color: theme.palette.primary.main // Dark Grey
         }
       },
       variants: [
@@ -169,7 +189,7 @@ export default function Alert(theme) {
     MuiAlertTitle: {
       styleOverrides: {
         root: {
-          fontWeight: theme.typography.fontWeightMedium,
+          fontWeight: 600, // Semi-bold per GIB guidelines
           marginBottom: theme.spacing(0.5),
           color: 'inherit'
         }

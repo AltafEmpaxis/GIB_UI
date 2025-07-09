@@ -1,28 +1,6 @@
 // ==============================|| THEME TYPES  ||============================== //
 
 /**
- * Available preset color themes
- */
-export const PresetColors = {
-  default: 'gib', // Default theme
-  theme1: 'theme1',
-  theme2: 'theme2',
-  theme3: 'theme3',
-  theme4: 'theme4',
-  theme5: 'theme5',
-  theme6: 'theme6',
-  blue: 'blue',
-  purple: 'purple',
-  green: 'green',
-  orange: 'orange',
-  red: 'red',
-  cyan: 'cyan',
-  teal: 'teal',
-  indigo: 'indigo',
-  gib: 'gib' // Gulf International Bank theme
-};
-
-/**
  * Available font families for the application
  */
 export const FontFamily = {
@@ -45,7 +23,10 @@ export const FontFamily = {
   ROBOTO_CONDENSED: "'Roboto Condensed', sans-serif",
   ROBOTO_CONDENSED_VARIATION: "'Roboto Condensed Variable', sans-serif",
   ROBOTO_FLEX: "'Roboto Flex', sans-serif",
-  ROBOTO_FLEX_VARIATION: "'Roboto Flex Variable', sans-serif"
+  ROBOTO_FLEX_VARIATION: "'Roboto Flex Variable', sans-serif",
+  // GIB Corporate Fonts
+  FS_EMERIC: "'FS Emeric', Arial, sans-serif",
+  GIBBETA: "'GIBbeta', Arial, sans-serif"
 };
 
 /**

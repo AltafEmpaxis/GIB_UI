@@ -7,7 +7,6 @@ import Navigation from './Navigation';
 
 const DrawerContent = () => {
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box
@@ -55,15 +54,7 @@ const DrawerContent = () => {
             flexDirection: 'column'
           },
           '& .simplebar-scrollbar': {
-            width: '4px',
-            '&:before': {
-              background: alpha(isDark ? theme.palette.secondary.light : theme.palette.secondary.dark, 0.2),
-              transition: 'background 0.3s, width 0.3s',
-              opacity: 0.4
-            },
-            '&.simplebar-visible:before': {
-              opacity: 0.6
-            }
+            width: '4px'
           }
         }}
       >

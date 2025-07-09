@@ -8,8 +8,6 @@ import Autocomplete from './Autocomplete';
 import Avatar from './Avatar';
 import Badge from './Badge';
 import Button from './Button';
-import ButtonBase from './ButtonBase';
-import ButtonGroup from './ButtonGroup';
 import Card from './Card';
 import Checkbox from './Checkbox';
 import Chip from './Chip';
@@ -40,7 +38,7 @@ import Typography from './Typography';
 export default function componentStyleOverrides(theme) {
   if (!theme) return {};
 
-  const { customShadows } = theme;
+  // const { customShadows } = theme;
 
   return merge(
     Alert(theme),
@@ -48,9 +46,7 @@ export default function componentStyleOverrides(theme) {
     Autocomplete(theme),
     Avatar(theme),
     Badge(theme),
-    Button(theme, customShadows),
-    ButtonBase(theme),
-    ButtonGroup(theme),
+    Button(theme),
     Card(theme),
     Checkbox(theme),
     Chip(theme),
@@ -62,10 +58,10 @@ export default function componentStyleOverrides(theme) {
     Progress(theme),
     Link(theme),
     ListItem(theme),
-    Menu(theme, customShadows),
+    Menu(theme),
     Pagination(theme),
     Paper(theme),
-    Popover(theme, customShadows),
+    Popover(theme),
     Radio(theme),
     Select(theme),
     Slider(theme),
@@ -73,7 +69,7 @@ export default function componentStyleOverrides(theme) {
     Table(theme),
     Tab(theme),
     Timeline(theme),
-    Tooltip(theme, customShadows),
+    Tooltip(theme),
     Typography(theme)
   );
 }

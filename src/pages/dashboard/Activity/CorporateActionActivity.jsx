@@ -215,8 +215,6 @@ const CorporateActionActivity = ({ isLoading }) => {
         boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
         '& .MuiCardContent-root': { p: 0 },
         borderRadius: 1,
-        border: '1px solid',
-        borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
         position: 'relative',
         overflow: 'hidden'
       }}

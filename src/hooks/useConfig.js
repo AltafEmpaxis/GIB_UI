@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useMemo, useCallback } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 
 import AuthContext from 'contexts/AuthContext';
 import ThemeContext from 'contexts/ThemeContext';
@@ -10,11 +10,9 @@ import useLocalStorage from './useLocalStorage';
 /**
  * @typedef {Object} ThemeConfig
  * @property {string} mode - Current theme mode ('light' | 'dark')
- * @property {string} presetColor - Current preset color
  * @property {string} fontFamily - Current font family
  * @property {number} borderRadius - Current border radius
  * @property {function} onChangeMode - Function to change theme mode
- * @property {function} onChangePresetColor - Function to change preset color
  * @property {function} onChangeFontFamily - Function to change font family
  * @property {function} onChangeBorderRadius - Function to change border radius
  * @property {boolean} isTransitioning - Whether theme is transitioning
@@ -88,7 +86,6 @@ import useLocalStorage from './useLocalStorage';
  */
 const defaultConfig = {
   mode: 'light',
-  presetColor: 'default',
   fontFamily: 'PUBLIC_SANS',
   borderRadius: 8,
   isTransitioning: false,
@@ -133,11 +130,9 @@ const useConfig = () => {
       console.warn('useConfig: ThemeContext not found, using default theme settings');
       return {
         mode: 'light',
-        presetColor: 'default',
         fontFamily: 'Public Sans',
         borderRadius: 8,
         onChangeMode: () => {},
-        onChangePresetColor: () => {},
         onChangeFontFamily: () => {},
         onChangeBorderRadius: () => {},
         isTransitioning: false,
@@ -168,8 +163,6 @@ const useConfig = () => {
   const {
     mode,
     onChangeMode,
-    presetColor,
-    onChangePresetColor,
     fontFamily,
     onChangeFontFamily,
     borderRadius,
@@ -248,8 +241,6 @@ const useConfig = () => {
       // Theme properties
       mode,
       onChangeMode,
-      presetColor,
-      onChangePresetColor,
       fontFamily,
       onChangeFontFamily,
       borderRadius,
@@ -266,18 +257,16 @@ const useConfig = () => {
       login,
       logout,
 
-      // Hooks
+      // Utility hooks
       useTheme,
       useAuth,
       useStorage,
-      useScriptRef: useScriptRefInner,
-      useLocalStorage: useLocalStorageInner
+      useLocalStorage,
+      useScriptRef: useScriptRefInner
     }),
     [
       mode,
       onChangeMode,
-      presetColor,
-      onChangePresetColor,
       fontFamily,
       onChangeFontFamily,
       borderRadius,

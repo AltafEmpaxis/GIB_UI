@@ -26,9 +26,9 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
         setSelectedLevel(level);
       }}
       sx={{
-        pl: level * 1.75,
-        py: 1,
-        mb: 0.3,
+        pl: level * 1.5,
+        py: 0.75,
+        mb: 0.25,
         borderRadius: 1,
         backgroundColor: 'transparent',
         color: isSelected ? iconSelectedColor : textColor,

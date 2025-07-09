@@ -1,15 +1,27 @@
 // ==============================|| OVERRIDES - AVATAR ||============================== //
 
 export default function Avatar(theme) {
+  // Helper to get readable text color based on background
+  const getContrastText = (bg) => {
+    if (theme.palette.getContrastText) return theme.palette.getContrastText(bg);
+    if (bg === theme.palette.secondary.main) return theme.palette.primary.main;
+    if (bg === theme.palette.primary.main) return '#fff';
+    return '#fff';
+  };
+
   return {
     MuiAvatar: {
       styleOverrides: {
         root: {
-          color: theme.palette.background.paper,
-          backgroundColor: theme.palette.primary.lighter,
+          color: getContrastText(theme.palette.secondary.main),
+          backgroundColor: theme.palette.secondary.main,
           transition: 'all .2s ease-in-out',
           '&:hover': {
-            backgroundColor: theme.palette.primary.light
+            backgroundColor: theme.palette.secondary.dark
+          },
+          '&.Mui-disabled': {
+            backgroundColor: theme.palette.grey[200],
+            color: theme.palette.tertiary.main
           }
         },
         rounded: {
@@ -21,10 +33,10 @@ export default function Avatar(theme) {
           }
         },
         colorDefault: {
-          background: theme.palette.primary.lighter,
-          color: theme.palette.primary.main,
+          background: theme.palette.secondary.main,
+          color: getContrastText(theme.palette.secondary.main),
           '&:hover': {
-            background: theme.palette.primary.light
+            background: theme.palette.secondary.dark
           }
         },
         small: {
@@ -59,9 +71,15 @@ export default function Avatar(theme) {
           '& .MuiAvatar-root': {
             borderColor: theme.palette.background.paper,
             fontSize: '0.875rem',
-            '&:first-of-type': {
-              border: `2px solid ${theme.palette.background.paper}`
-            }
+            // Odd/even: odd (1st, 3rd, ...) = GIB Yellow, even (2nd, 4th, ...) = Dark Grey
+            // Use nth-of-type(odd/even) for CSS selectors
+            backgroundColor: theme.palette.secondary.main,
+            color: getContrastText(theme.palette.secondary.main),
+            '&:nth-of-type(even)': {
+              backgroundColor: theme.palette.primary.main,
+              color: getContrastText(theme.palette.primary.main)
+            },
+            border: `2px solid ${theme.palette.background.paper}`
           }
         },
         avatar: {
@@ -72,7 +90,7 @@ export default function Avatar(theme) {
             marginLeft: -8
           },
           '&:hover': {
-            borderColor: theme.palette.primary.light,
+            borderColor: theme.palette.secondary.dark,
             cursor: 'pointer'
           }
         }

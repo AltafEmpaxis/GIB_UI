@@ -6,51 +6,60 @@ export default function Typography(theme) {
       styleOverrides: {
         // Heading styles
         h1: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 300 // Light per GIB guidelines
         },
         h2: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 300 // Light per GIB guidelines
         },
         h3: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 300 // Light per GIB guidelines
         },
         h4: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 400 // Book per GIB guidelines
         },
         h5: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 400 // Book per GIB guidelines
         },
         h6: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 400 // Book per GIB guidelines
         },
 
         // Subtitle styles
         subtitle1: {
-          color: theme.palette.text.secondary,
-          fontWeight: 500
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 500 // Regular per GIB guidelines
         },
         subtitle2: {
-          color: theme.palette.text.secondary,
-          fontWeight: 500
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 500 // Regular per GIB guidelines
         },
 
         // Body styles
         body1: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main, // Dark Grey
+          fontWeight: 500 // Regular per GIB guidelines
         },
         body2: {
-          color: theme.palette.text.secondary
+          color: theme.palette.tertiary.main, // Medium Grey
+          fontWeight: 500 // Regular per GIB guidelines
         },
 
         // Caption and overline
         caption: {
-          color: theme.palette.text.secondary
+          color: theme.palette.tertiary.main, // Medium Grey
+          fontWeight: 500 // Regular per GIB guidelines
         },
         overline: {
-          fontWeight: 500,
+          fontWeight: 600, // Semi-bold per GIB guidelines
           letterSpacing: '0.5px',
           textTransform: 'uppercase',
-          color: theme.palette.text.secondary
+          color: theme.palette.tertiary.main // Medium Grey
         },
 
         // Common styles

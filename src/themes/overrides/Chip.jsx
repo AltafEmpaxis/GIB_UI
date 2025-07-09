@@ -1,3 +1,5 @@
+import { alpha } from '@mui/material/styles';
+
 // ==============================|| OVERRIDES - CHIP ||============================== //
 
 export default function Chip(theme) {
@@ -64,27 +66,27 @@ export default function Chip(theme) {
             color: isDark ? theme.palette.grey[100] : theme.palette.grey[900]
           },
           '&.MuiChip-colorPrimary': {
-            backgroundColor: isDark ? theme.palette.primary.dark : theme.palette.primary.main,
-            color: theme.palette.primary.contrastText
+            backgroundColor: theme.palette.primary.main, // Dark Grey
+            color: theme.palette.common.white
           },
           '&.MuiChip-colorSecondary': {
-            backgroundColor: isDark ? theme.palette.secondary.dark : theme.palette.secondary.main,
-            color: theme.palette.secondary.contrastText
+            backgroundColor: theme.palette.secondary.main, // GIB Yellow
+            color: theme.palette.primary.main // Dark Grey text on yellow
           },
           '&.MuiChip-colorInfo': {
-            backgroundColor: isDark ? theme.palette.info.dark : theme.palette.info.main,
+            backgroundColor: theme.palette.info.main,
             color: theme.palette.info.contrastText
           },
           '&.MuiChip-colorSuccess': {
-            backgroundColor: isDark ? theme.palette.success.dark : theme.palette.success.main,
+            backgroundColor: theme.palette.success.main,
             color: theme.palette.success.contrastText
           },
           '&.MuiChip-colorWarning': {
-            backgroundColor: isDark ? theme.palette.warning.dark : theme.palette.warning.main,
+            backgroundColor: theme.palette.warning.main,
             color: theme.palette.warning.contrastText
           },
           '&.MuiChip-colorError': {
-            backgroundColor: isDark ? theme.palette.error.dark : theme.palette.error.main,
+            backgroundColor: theme.palette.error.main,
             color: theme.palette.error.contrastText
           }
         },
@@ -92,64 +94,58 @@ export default function Chip(theme) {
         outlined: {
           borderWidth: 1,
           '&.MuiChip-colorDefault': {
-            borderColor: isDark ? theme.palette.grey[400] : theme.palette.grey[500],
-            color: isDark ? theme.palette.grey[100] : theme.palette.grey[900],
+            borderColor: theme.palette.tertiary.main, // Medium Grey
+            color: theme.palette.primary.main, // Dark Grey
             '&:hover': {
-              backgroundColor: isDark ? theme.palette.grey[700] : theme.palette.grey[100]
+              backgroundColor: alpha(theme.palette.tertiary.main, 0.1) // 10% Medium Grey
             }
           },
           '&.MuiChip-colorPrimary': {
-            borderColor: theme.palette.primary.main,
-            color: theme.palette.primary.main,
+            borderColor: theme.palette.primary.main, // Dark Grey
+            color: theme.palette.primary.main, // Dark Grey
             '&:hover': {
-              backgroundColor: theme.palette.primary.lighter,
-              color: isDark ? theme.palette.primary.light : theme.palette.primary.dark
+              backgroundColor: alpha(theme.palette.primary.main, 0.1) // 10% Dark Grey
             }
           },
           '&.MuiChip-colorSecondary': {
-            borderColor: theme.palette.secondary.main,
-            color: theme.palette.secondary.main,
+            borderColor: theme.palette.secondary.main, // GIB Yellow
+            color: theme.palette.secondary.main, // GIB Yellow
             '&:hover': {
-              backgroundColor: theme.palette.secondary.lighter,
-              color: isDark ? theme.palette.secondary.light : theme.palette.secondary.dark
+              backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
             }
           },
           '&.MuiChip-colorInfo': {
             borderColor: theme.palette.info.main,
             color: theme.palette.info.main,
             '&:hover': {
-              backgroundColor: theme.palette.info.lighter,
-              color: isDark ? theme.palette.info.light : theme.palette.info.dark
+              backgroundColor: alpha(theme.palette.info.main, 0.1)
             }
           },
           '&.MuiChip-colorSuccess': {
             borderColor: theme.palette.success.main,
             color: theme.palette.success.main,
             '&:hover': {
-              backgroundColor: theme.palette.success.lighter,
-              color: isDark ? theme.palette.success.light : theme.palette.success.dark
+              backgroundColor: alpha(theme.palette.success.main, 0.1)
             }
           },
           '&.MuiChip-colorWarning': {
             borderColor: theme.palette.warning.main,
             color: theme.palette.warning.main,
             '&:hover': {
-              backgroundColor: theme.palette.warning.lighter,
-              color: isDark ? theme.palette.warning.light : theme.palette.warning.dark
+              backgroundColor: alpha(theme.palette.warning.main, 0.1)
             }
           },
           '&.MuiChip-colorError': {
             borderColor: theme.palette.error.main,
             color: theme.palette.error.main,
             '&:hover': {
-              backgroundColor: theme.palette.error.lighter,
-              color: isDark ? theme.palette.error.light : theme.palette.error.dark
+              backgroundColor: alpha(theme.palette.error.main, 0.1)
             }
           }
         },
         // Label styles
         label: {
-          fontWeight: 500,
+          fontWeight: 600, // Semi-bold per GIB guidelines
           display: 'inline-flex',
           alignItems: 'center'
         },

@@ -6,35 +6,36 @@ export default function Pagination(theme) {
       defaultProps: {
         shape: 'rounded',
         variant: 'outlined',
-        color: 'primary'
+        color: 'secondary' // Use secondary color (GIB Yellow)
       },
       styleOverrides: {
         root: {
           '& .MuiPaginationItem-root': {
-            fontWeight: 500,
+            fontWeight: 600, // Semi-bold per GIB guidelines
             transition: theme.transitions.create(['color', 'background-color'], {
               duration: theme.transitions.duration.shorter
             }),
             '&.Mui-selected': {
-              backgroundColor: theme.palette.primary.main,
-              color: theme.palette.primary.contrastText,
+              backgroundColor: theme.palette.secondary.main, // GIB Yellow
+              color: theme.palette.primary.main, // Dark Grey text
               '&:hover': {
-                backgroundColor: theme.palette.primary.dark
+                backgroundColor: theme.palette.secondary.dark // Yellow dark variant
               }
             },
             '&.MuiPaginationItem-outlined': {
-              borderColor: theme.palette.grey[300],
+              borderColor: theme.palette.tertiary.main, // Medium Grey
+              color: theme.palette.primary.main, // Dark Grey text
               '&:hover': {
                 backgroundColor: theme.palette.action.hover,
-                borderColor: theme.palette.primary.main
+                borderColor: theme.palette.secondary.main // GIB Yellow
               },
               '&.Mui-selected': {
-                backgroundColor: theme.palette.primary.lighter,
-                borderColor: theme.palette.primary.main,
-                color: theme.palette.primary.main,
+                backgroundColor: theme.palette.secondary.lighter, // Light Yellow
+                borderColor: theme.palette.secondary.main, // GIB Yellow
+                color: theme.palette.primary.main, // Dark Grey text
                 '&:hover': {
-                  backgroundColor: theme.palette.primary.lighter,
-                  borderColor: theme.palette.primary.dark
+                  backgroundColor: theme.palette.secondary.light, // Lighter Yellow
+                  borderColor: theme.palette.secondary.dark // Yellow dark variant
                 }
               }
             }

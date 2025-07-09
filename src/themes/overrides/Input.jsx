@@ -10,7 +10,7 @@ export default function Input(theme) {
           '&.Mui-disabled': {
             backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1),
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: alpha(theme.palette.grey[300], 0.5)
+              borderColor: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
             }
           },
           '&.Mui-error': {
@@ -25,15 +25,15 @@ export default function Input(theme) {
         },
         input: {
           backgroundColor: 'transparent',
-          color: theme.palette.text.primary,
+          color: theme.palette.primary.main, // Dark Grey
           '&::placeholder': {
-            color: theme.palette.text.secondary,
+            color: theme.palette.tertiary.main, // Medium Grey
             opacity: 0.7
           },
           '&:-webkit-autofill': {
             WebkitBoxShadow: '0 0 0 100px #fff inset',
             WebkitTextFillColor: 'inherit',
-            caretColor: theme.palette.text.primary
+            caretColor: theme.palette.primary.main // Dark Grey
           }
         },
         sizeSmall: {
@@ -52,20 +52,20 @@ export default function Input(theme) {
         root: {
           backgroundColor: 'transparent',
           '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.grey[300],
+            borderColor: theme.palette.tertiary.main, // Medium Grey
             borderWidth: 1,
             transition: theme.transitions.create(['border-color', 'box-shadow'])
           },
           '&:hover:not(.Mui-disabled):not(.Mui-error):not(.Mui-focused) .MuiOutlinedInput-notchedOutline': {
-            borderColor: theme.palette.primary.main,
+            borderColor: theme.palette.secondary.main, // GIB Yellow
             borderWidth: 1
           },
           '&.Mui-focused': {
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: theme.palette.primary.main,
+              borderColor: theme.palette.secondary.main, // GIB Yellow
               borderWidth: 2
             },
-            boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.15)}`
+            boxShadow: `0 0 0 2px ${alpha(theme.palette.secondary.main, 0.15)}` // 15% Yellow
           },
           '&.Mui-error': {
             '& .MuiOutlinedInput-notchedOutline': {
@@ -79,7 +79,7 @@ export default function Input(theme) {
           '&.Mui-disabled': {
             backgroundColor: alpha(theme.palette.action.disabledBackground, 0.1),
             '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: alpha(theme.palette.grey[300], 0.5)
+              borderColor: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
             }
           }
         },
@@ -94,7 +94,7 @@ export default function Input(theme) {
           '&:-webkit-autofill': {
             WebkitBoxShadow: '0 0 0 100px #fff inset',
             WebkitTextFillColor: 'inherit',
-            caretColor: theme.palette.text.primary,
+            caretColor: theme.palette.primary.main, // Dark Grey
             borderRadius: 'inherit'
           }
         },
@@ -133,19 +133,19 @@ export default function Input(theme) {
       styleOverrides: {
         root: {
           '&:before': {
-            borderBottom: `1px solid ${theme.palette.grey[300]}`
+            borderBottom: `1px solid ${theme.palette.tertiary.main}` // Medium Grey
           },
           '&:hover:not(.Mui-disabled):before': {
-            borderBottom: `2px solid ${theme.palette.primary.main}`
+            borderBottom: `2px solid ${theme.palette.secondary.main}` // GIB Yellow
           },
           '&.Mui-focused:after': {
-            borderBottom: `2px solid ${theme.palette.primary.main}`
+            borderBottom: `2px solid ${theme.palette.secondary.main}` // GIB Yellow
           },
           '&.Mui-error:after': {
             borderBottom: `2px solid ${theme.palette.error.main}`
           },
           '&.Mui-disabled:before': {
-            borderBottom: `1px solid ${alpha(theme.palette.grey[300], 0.5)}`
+            borderBottom: `1px solid ${alpha(theme.palette.tertiary.main, 0.5)}` // Medium Grey
           }
         },
         input: {
@@ -159,16 +159,16 @@ export default function Input(theme) {
     MuiInputLabel: {
       styleOverrides: {
         root: {
-          color: theme.palette.grey[600],
+          color: theme.palette.tertiary.main, // Medium Grey
           fontSize: '0.875rem',
           '&.Mui-focused': {
-            color: theme.palette.primary.main
+            color: theme.palette.secondary.main // GIB Yellow
           },
           '&.Mui-error': {
             color: theme.palette.error.main
           },
           '&.Mui-disabled': {
-            color: theme.palette.text.disabled
+            color: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
           }
         },
         outlined: {
@@ -196,11 +196,12 @@ export default function Input(theme) {
           marginRight: 8,
           marginTop: 4,
           fontSize: '0.75rem',
+          color: theme.palette.tertiary.main, // Medium Grey
           '&.Mui-error': {
             color: theme.palette.error.main
           },
           '&.Mui-disabled': {
-            color: theme.palette.text.disabled
+            color: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
           }
         }
       }

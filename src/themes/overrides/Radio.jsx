@@ -1,24 +1,26 @@
+import { alpha } from '@mui/material/styles';
+
 // ==============================|| OVERRIDES - RADIO ||============================== //
 
 export default function Radio(theme) {
   return {
     MuiRadio: {
       defaultProps: {
-        color: 'primary',
+        color: 'secondary', // Default to GIB Yellow
         size: 'medium'
       },
       styleOverrides: {
         root: {
-          color: theme.palette.text.secondary,
+          color: theme.palette.tertiary.main, // Medium Grey
           padding: 9,
           borderRadius: '50%',
           transition: theme.transitions.create(['color', 'background-color'], {
             duration: theme.transitions.duration.shorter
           }),
           '&:hover': {
-            backgroundColor: theme.palette.action.hover,
+            backgroundColor: alpha(theme.palette.secondary.main, 0.1), // 10% Yellow
             '& .MuiSvgIcon-root': {
-              color: theme.palette.primary.light
+              color: theme.palette.secondary.main // GIB Yellow
             }
           },
           '& .MuiSvgIcon-root': {
@@ -30,40 +32,40 @@ export default function Radio(theme) {
           '&.Mui-checked': {
             '& .MuiSvgIcon-root': {
               transform: 'scale(1.1)',
-              color: theme.palette.primary.main
+              color: theme.palette.secondary.main // GIB Yellow
             },
             '&:hover': {
-              backgroundColor: theme.palette.primary.lighter
+              backgroundColor: alpha(theme.palette.secondary.main, 0.2) // 20% Yellow
             }
           },
           '&.Mui-disabled': {
             opacity: 0.6,
-            color: theme.palette.action.disabled,
+            color: theme.palette.tertiary.main, // Medium Grey
             '&.Mui-checked': {
               '& .MuiSvgIcon-root': {
-                color: theme.palette.action.disabled
+                color: theme.palette.tertiary.main // Medium Grey
               }
             }
           },
           '&.Mui-focusVisible': {
-            outline: `2px solid ${theme.palette.primary.main}`,
+            outline: `2px solid ${theme.palette.secondary.main}`, // GIB Yellow
             outlineOffset: 2
           }
         },
         // Color variants
         colorPrimary: {
           '&.Mui-checked': {
-            color: theme.palette.primary.main,
+            color: theme.palette.primary.main, // Dark Grey
             '&:hover': {
-              backgroundColor: theme.palette.primary.lighter
+              backgroundColor: alpha(theme.palette.primary.main, 0.1) // 10% Dark Grey
             }
           }
         },
         colorSecondary: {
           '&.Mui-checked': {
-            color: theme.palette.secondary.main,
+            color: theme.palette.secondary.main, // GIB Yellow
             '&:hover': {
-              backgroundColor: theme.palette.secondary.lighter
+              backgroundColor: alpha(theme.palette.secondary.main, 0.2) // 20% Yellow
             }
           }
         },
@@ -71,7 +73,7 @@ export default function Radio(theme) {
           '&.Mui-checked': {
             color: theme.palette.success.main,
             '&:hover': {
-              backgroundColor: theme.palette.success.lighter
+              backgroundColor: alpha(theme.palette.success.main, 0.1)
             }
           }
         },
@@ -79,7 +81,7 @@ export default function Radio(theme) {
           '&.Mui-checked': {
             color: theme.palette.warning.main,
             '&:hover': {
-              backgroundColor: theme.palette.warning.lighter
+              backgroundColor: alpha(theme.palette.warning.main, 0.1)
             }
           }
         },
@@ -87,7 +89,7 @@ export default function Radio(theme) {
           '&.Mui-checked': {
             color: theme.palette.info.main,
             '&:hover': {
-              backgroundColor: theme.palette.info.lighter
+              backgroundColor: alpha(theme.palette.info.main, 0.1)
             }
           }
         },
@@ -95,7 +97,7 @@ export default function Radio(theme) {
           '&.Mui-checked': {
             color: theme.palette.error.main,
             '&:hover': {
-              backgroundColor: theme.palette.error.lighter
+              backgroundColor: alpha(theme.palette.error.main, 0.1)
             }
           }
         },
@@ -129,10 +131,10 @@ export default function Radio(theme) {
           }
         },
         label: {
-          color: theme.palette.text.primary,
+          color: theme.palette.primary.main, // Dark Grey
           fontSize: '0.875rem',
           '&.Mui-disabled': {
-            color: theme.palette.text.disabled
+            color: theme.palette.tertiary.main // Medium Grey
           }
         }
       }

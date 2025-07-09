@@ -1,7 +1,8 @@
 import { GlobalStyles as MuiGlobalStyles } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
-// ==============================|| GLOBAL STYLES ||============================== //
+// ==============================|| GLOBAL STYLES ||============================== */
+// Global styles that dynamically use theme values
 
 export default function GlobalStyles() {
   return (
@@ -17,11 +18,17 @@ export default function GlobalStyles() {
           WebkitFontSmoothing: 'antialiased',
           MozOsxFontSmoothing: 'grayscale',
           height: '100%',
-          width: '100%'
+          width: '100%',
+          fontFamily: theme.typography.fontFamily
+        },
+        'html[lang="ar"]': {
+          fontFamily: "'GIBbeta', Arial, sans-serif",
+          direction: 'rtl'
         },
         body: {
           height: '100%',
-          width: '100%'
+          width: '100%',
+          color: theme.palette.text.primary
         },
         '#root': {
           height: '100%',
@@ -30,7 +37,7 @@ export default function GlobalStyles() {
 
         // Text Selection Styling
         '::selection': {
-          backgroundColor: alpha(theme.palette.primary.main, 0.2),
+          backgroundColor: alpha(theme.palette.secondary.main, 0.2), // GIB Yellow highlight
           color: theme.palette.text.primary
         },
 
@@ -48,7 +55,7 @@ export default function GlobalStyles() {
           transition: 'background-color 0.2s'
         },
         '::-webkit-scrollbar-thumb:hover': {
-          backgroundColor: alpha(theme.palette.primary.main, 0.7)
+          backgroundColor: alpha(theme.palette.secondary.main, 0.7) // GIB Yellow on hover
         },
 
         // Enhanced ApexCharts Custom Styles
@@ -59,7 +66,7 @@ export default function GlobalStyles() {
           '& .apexcharts-theme-light': {
             '& .apexcharts-selection-icon:not(.apexcharts-selected):hover svg, & .apexcharts-zoom-icon:not(.apexcharts-selected):hover svg, & .apexcharts-zoomin-icon:hover svg, & .apexcharts-zoomout-icon:hover svg, & .apexcharts-reset-icon:hover svg, & .apexcharts-menu-icon:hover svg':
               {
-                fill: theme.palette.primary.main
+                fill: theme.palette.secondary.main // GIB Yellow
               }
           },
 
@@ -86,23 +93,63 @@ export default function GlobalStyles() {
 
           // Enhanced Tooltip
           '& .apexcharts-tooltip': {
-            backgroundColor: alpha(theme.palette.background.paper, 0.95),
+            minWidth: '80px',
+            color: theme.palette.text.primary,
             borderColor: theme.palette.divider,
             boxShadow: theme.shadows[3],
             borderRadius: theme.shape.borderRadius,
             backdropFilter: 'blur(8px)',
+            backgroundColor: alpha(theme.palette.background.paper, 0.95)
+          },
 
-            '& .apexcharts-tooltip-title': {
-              backgroundColor: alpha(theme.palette.grey[200], 0.8),
-              borderColor: theme.palette.divider,
-              ...theme.typography.subtitle2
+          '& .apexcharts-xaxistooltip': {
+            borderRadius: '10px',
+            borderColor: 'transparent',
+            backdropFilter: 'blur(6px)',
+            color: theme.palette.text.primary,
+            boxShadow: theme.customShadows ? theme.customShadows.dropdown : theme.shadows[3],
+            backgroundColor: alpha(theme.palette.background.paper, 0.9),
+            '&::before': {
+              borderBottomColor: alpha(theme.palette.grey[500], 0.16)
             },
-
-            '& .apexcharts-tooltip-series-group': {
-              '&.active': {
-                backgroundColor: alpha(theme.palette.primary.main, 0.2)
-              }
+            '&::after': {
+              borderBottomColor: alpha(theme.palette.background.paper, 0.9)
             }
+          },
+
+          '& .apexcharts-tooltip-title': {
+            fontWeight: 700,
+            textAlign: 'center',
+            color: theme.palette.text.secondary,
+            borderColor: theme.palette.divider,
+            ...theme.typography.subtitle2,
+            backgroundColor: theme.palette.background.neutral
+          },
+
+          '& .apexcharts-tooltip-series-group': {
+            '&.active': {
+              backgroundColor: alpha(theme.palette.secondary.main, 0.2) // GIB Yellow
+            },
+            padding: '4px 12px'
+          },
+
+          '& .apexcharts-tooltip-marker': {
+            marginRight: '8px'
+          },
+
+          // Legend
+          '& .apexcharts-legend': {
+            padding: 0
+          },
+
+          '& .apexcharts-legend-marker': {
+            marginRight: '6px'
+          },
+
+          '& .apexcharts-legend-text': {
+            marginLeft: 0,
+            paddingLeft: 0,
+            lineHeight: '18px'
           },
 
           // Theme-aware toolbar
@@ -115,7 +162,7 @@ export default function GlobalStyles() {
               backdropFilter: 'blur(8px)',
 
               '& .apexcharts-menu-item:hover': {
-                backgroundColor: alpha(theme.palette.primary.main, 0.1)
+                backgroundColor: alpha(theme.palette.secondary.main, 0.1) // GIB Yellow
               }
             }
           },
@@ -328,10 +375,10 @@ export default function GlobalStyles() {
             },
 
             '& .swal2-confirm': {
-              backgroundColor: `${theme.palette.primary.main} !important`,
-              color: `${theme.palette.primary.contrastText} !important`,
+              backgroundColor: `${theme.palette.secondary.main} !important`, // GIB Yellow
+              color: `${theme.palette.primary.main} !important`, // Dark Grey text
               '&:hover': {
-                backgroundColor: `${theme.palette.primary.dark} !important`,
+                backgroundColor: `${theme.palette.secondary.dark} !important`, // Darker yellow
                 boxShadow: theme.shadows[2]
               }
             },

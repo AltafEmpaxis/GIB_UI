@@ -61,11 +61,12 @@ const Dashboard = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: spacing * 4,
+                justifyContent: 'center',
+                gap: spacing,
                 fontSize: '1.5rem'
               }}
             >
-              <Icon icon="fluent-emoji:bank" />
+              <Icon icon="fluent-emoji:bank" width={30} height={30} />
               GIB SmartOPS
             </Typography>
           </Box>

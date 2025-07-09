@@ -62,11 +62,11 @@ const NavGroup = ({ item, selectedItems, selectedLevel, setSelectedItems, setSel
         item.title && (
           <Box
             sx={{
-              pl: { xs: 1.5, md: 2.25 },
-              mb: 1.5,
+              pl: { xs: 1.5, md: 2 },
+              mb: 0.5,
               display: 'flex',
               alignItems: 'center',
-              height: 28
+              height: 24
             }}
           >
             <Typography

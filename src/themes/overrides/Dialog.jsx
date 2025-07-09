@@ -69,8 +69,8 @@ export default function Dialog(theme) {
           padding: theme.spacing(3),
           paddingBottom: theme.spacing(1),
           fontSize: theme.typography.h5.fontSize,
-          fontWeight: theme.typography.h5.fontWeight,
-          color: theme.palette.text.primary,
+          fontWeight: 300, // Light per GIB guidelines
+          color: theme.palette.primary.main, // Dark Grey
           [`@media (max-width: ${theme.breakpoints.values.sm}px)`]: {
             padding: theme.spacing(2)
           }
@@ -89,7 +89,8 @@ export default function Dialog(theme) {
           },
           [`@media (max-width: ${theme.breakpoints.values.sm}px)`]: {
             padding: theme.spacing(2)
-          }
+          },
+          color: theme.palette.primary.main // Dark Grey
         },
         dividers: {
           borderTop: `1px dashed ${alpha(theme.palette.divider, 0.12)}`,
@@ -108,6 +109,20 @@ export default function Dialog(theme) {
           padding: theme.spacing(2, 3),
           '& .MuiButton-root': {
             margin: 0
+          },
+          '& .MuiButton-contained': {
+            backgroundColor: theme.palette.secondary.main, // GIB Yellow
+            color: theme.palette.primary.main, // Dark Grey text
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.dark // Yellow dark variant
+            }
+          },
+          '& .MuiButton-outlined': {
+            borderColor: theme.palette.secondary.main, // GIB Yellow
+            color: theme.palette.secondary.main, // GIB Yellow
+            '&:hover': {
+              backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
+            }
           },
           [`@media (max-width: ${theme.breakpoints.values.sm}px)`]: {
             padding: theme.spacing(1.5, 2),

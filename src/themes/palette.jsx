@@ -1,107 +1,205 @@
 // material-ui
 import { alpha } from '@mui/material/styles';
 
-// project import
-import { presetPalettes } from './presets';
-
 // Common colors for light and dark modes
-const commonColors = {
+const COMMON = {
   black: '#000',
   white: '#fff'
 };
 
+// Primary color - Dark Grey (Pantone Cool Gray 11C)
+const PRIMARY = {
+  lighter: '#e9e9e9',
+  light: '#888a8e',
+  main: '#53565A', // Dark Grey - R:83 G:86 B:90
+  dark: '#424448',
+  darker: '#323438',
+  contrastText: '#ffffff'
+};
+
+// Secondary color - GIB Yellow (Pantone 123C)
+const SECONDARY = {
+  lighter: '#fff8e1',
+  light: '#ffe082',
+  main: '#FFC72C', // GIB Yellow - R:255 G:199 B:44
+  dark: '#ffb300',
+  darker: '#ff8f00',
+  contrastText: 'rgba(0, 0, 0, 0.87)'
+};
+
+// Tertiary color - Medium Grey (Pantone 429C)
+const TERTIARY = {
+  lighter: '#eaecee',
+  light: '#cdd1d4',
+  main: '#A2AAAD', // Medium Grey - R:162 G:170 B:173
+  dark: '#8a9195',
+  darker: '#73797e',
+  contrastText: 'rgba(0, 0, 0, 0.87)'
+};
+
+// Standard MUI colors
+const ERROR = {
+  light: '#ef5350',
+  main: '#f44336',
+  dark: '#e53935',
+  contrastText: '#ffffff'
+};
+
+const WARNING = {
+  light: '#ffb74d',
+  main: '#ff9800',
+  dark: '#f57c00',
+  contrastText: 'rgba(0, 0, 0, 0.87)'
+};
+
+const INFO = {
+  light: '#64b5f6',
+  main: '#2196f3',
+  dark: '#1976d2',
+  contrastText: '#ffffff'
+};
+
+const SUCCESS = {
+  light: '#66bb6a',
+  main: '#4caf50',
+  dark: '#43a047',
+  contrastText: '#ffffff'
+};
+
+// Grey palette
+const GREY = {
+  50: '#fafafa',
+  100: '#f5f5f5',
+  200: '#D9D9D6', // Light Grey - R:217 G:217 B:214
+  300: '#e0e0e0',
+  400: '#bdbdbd',
+  500: '#9e9e9e',
+  600: '#757575',
+  700: '#616161',
+  800: '#424242',
+  900: '#212121',
+  A100: '#f5f5f5',
+  A200: '#eeeeee',
+  A400: '#bdbdbd',
+  A700: '#616161'
+};
+
+// Text colors
+const TEXT = {
+  primary: '#53565A', // Dark Grey
+  secondary: '#A2AAAD', // Medium Grey
+  disabled: 'rgba(0, 0, 0, 0.38)'
+};
+
+// Action colors - following MUI conventions
+const ACTION = {
+  active: 'rgba(0, 0, 0, 0.54)',
+  hover: 'rgba(0, 0, 0, 0.04)',
+  selected: 'rgba(255, 199, 44, 0.16)', // 16% Yellow
+  disabled: 'rgba(0, 0, 0, 0.26)',
+  disabledBackground: 'rgba(0, 0, 0, 0.12)',
+  focus: 'rgba(255, 199, 44, 0.12)' // 12% Yellow
+};
+
+// Background properties
+const BACKGROUND = {
+  paper: '#ffffff',
+  default: '#f5f3f1',
+  dark: {
+    paper: '#111936',
+    default: '#151c2c'
+  }
+};
+
 // ==============================|| DEFAULT THEME - PALETTE  ||============================== //
 
-export function themePalette(mode = 'light', presetColor = 'default') {
-  const colors = presetPalettes[presetColor || 'default'];
+export function themePalette(mode = 'light') {
   const isDark = mode === 'dark';
 
   return {
     mode,
-    common: commonColors,
+    common: COMMON,
 
     // Primary color with dark mode handling
     primary: {
-      ...colors.primary,
-      main: isDark ? alpha(colors.primary.main, 0.98) : colors.primary.main,
-      light: isDark ? alpha(colors.primary.light, 0.98) : colors.primary.light,
-      dark: isDark ? alpha(colors.primary.dark, 0.98) : colors.primary.dark
+      ...PRIMARY,
+      main: isDark ? alpha(PRIMARY.main, 0.98) : PRIMARY.main,
+      light: isDark ? alpha(PRIMARY.light, 0.98) : PRIMARY.light,
+      dark: isDark ? alpha(PRIMARY.dark, 0.98) : PRIMARY.dark
     },
 
     // Secondary color with dark mode handling
     secondary: {
-      ...colors.secondary,
-      main: isDark ? alpha(colors.secondary.main, 0.98) : colors.secondary.main,
-      light: isDark ? alpha(colors.secondary.light, 0.98) : colors.secondary.light,
-      dark: isDark ? alpha(colors.secondary.dark, 0.98) : colors.secondary.dark
+      ...SECONDARY,
+      main: isDark ? alpha(SECONDARY.main, 0.98) : SECONDARY.main,
+      light: isDark ? alpha(SECONDARY.light, 0.98) : SECONDARY.light,
+      dark: isDark ? alpha(SECONDARY.dark, 0.98) : SECONDARY.dark
     },
 
-    // Dynamically add tertiary color if available in the preset
-    ...(colors.tertiary && {
-      tertiary: {
-        ...colors.tertiary,
-        main: isDark ? alpha(colors.tertiary.main, 0.98) : colors.tertiary.main,
-        light: isDark ? alpha(colors.tertiary.light, 0.98) : colors.tertiary.light,
-        dark: isDark ? alpha(colors.tertiary.dark, 0.98) : colors.tertiary.dark
-      }
-    }),
+    // Tertiary color
+    tertiary: {
+      ...TERTIARY,
+      main: isDark ? alpha(TERTIARY.main, 0.98) : TERTIARY.main,
+      light: isDark ? alpha(TERTIARY.light, 0.98) : TERTIARY.light,
+      dark: isDark ? alpha(TERTIARY.dark, 0.98) : TERTIARY.dark
+    },
 
     // Standard colors with dark mode handling
     error: {
-      ...colors.error,
-      main: isDark ? alpha(colors.error.main, 0.98) : colors.error.main,
-      light: isDark ? alpha(colors.error.light, 0.98) : colors.error.light,
-      dark: isDark ? alpha(colors.error.dark, 0.98) : colors.error.dark
+      ...ERROR,
+      main: isDark ? alpha(ERROR.main, 0.98) : ERROR.main,
+      light: isDark ? alpha(ERROR.light, 0.98) : ERROR.light,
+      dark: isDark ? alpha(ERROR.dark, 0.98) : ERROR.dark
     },
     warning: {
-      ...colors.warning,
-      main: isDark ? alpha(colors.warning.main, 0.98) : colors.warning.main,
-      light: isDark ? alpha(colors.warning.light, 0.98) : colors.warning.light,
-      dark: isDark ? alpha(colors.warning.dark, 0.98) : colors.warning.dark
+      ...WARNING,
+      main: isDark ? alpha(WARNING.main, 0.98) : WARNING.main,
+      light: isDark ? alpha(WARNING.light, 0.98) : WARNING.light,
+      dark: isDark ? alpha(WARNING.dark, 0.98) : WARNING.dark
     },
     info: {
-      ...colors.info,
-      main: isDark ? alpha(colors.info.main, 0.98) : colors.info.main,
-      light: isDark ? alpha(colors.info.light, 0.98) : colors.info.light,
-      dark: isDark ? alpha(colors.info.dark, 0.98) : colors.info.dark
+      ...INFO,
+      main: isDark ? alpha(INFO.main, 0.98) : INFO.main,
+      light: isDark ? alpha(INFO.light, 0.98) : INFO.light,
+      dark: isDark ? alpha(INFO.dark, 0.98) : INFO.dark
     },
     success: {
-      ...colors.success,
-      main: isDark ? alpha(colors.success.main, 0.98) : colors.success.main,
-      light: isDark ? alpha(colors.success.light, 0.98) : colors.success.light,
-      dark: isDark ? alpha(colors.success.dark, 0.98) : colors.success.dark
+      ...SUCCESS,
+      main: isDark ? alpha(SUCCESS.main, 0.98) : SUCCESS.main,
+      light: isDark ? alpha(SUCCESS.light, 0.98) : SUCCESS.light,
+      dark: isDark ? alpha(SUCCESS.dark, 0.98) : SUCCESS.dark
     },
 
     // Grey palette
-    grey: colors.grey,
+    grey: GREY,
 
     // Text colors
     text: {
-      primary: isDark ? alpha(commonColors.white, 0.98) : colors.grey[900],
-      secondary: isDark ? alpha(commonColors.white, 0.85) : colors.grey[700],
-      disabled: isDark ? alpha(commonColors.white, 0.6) : colors.grey[500]
+      primary: isDark ? alpha(COMMON.white, 0.98) : TEXT.primary,
+      secondary: isDark ? alpha(COMMON.white, 0.85) : TEXT.secondary,
+      disabled: isDark ? alpha(COMMON.white, 0.6) : TEXT.disabled
     },
 
     // Actions
     action: {
       // Active elements (icons, text, etc.)
-      active: isDark ? alpha(colors.secondary.light, 0.8) : colors.primary.main,
+      active: isDark ? alpha(SECONDARY.light, 0.8) : ACTION.active,
 
       // Hover state background
-      hover: isDark ? alpha(colors.secondary.main, 0.2) : alpha(colors.secondary.lighter, 0.5),
+      hover: isDark ? alpha(SECONDARY.main, 0.2) : ACTION.hover,
 
       // Selected state background
-      selected: isDark ? alpha(colors.secondary.main, 0.4) : alpha(colors.secondary.lighter, 0.6),
-      selectedText: isDark ? colors.secondary.light : colors.secondary.dark,
+      selected: isDark ? alpha(SECONDARY.main, 0.4) : ACTION.selected,
+      selectedText: isDark ? SECONDARY.light : SECONDARY.dark,
 
       // Disabled text
-      disabled: isDark ? alpha(commonColors.white, 0.4) : colors.tertiary.main,
+      disabled: isDark ? alpha(COMMON.white, 0.4) : TERTIARY.main,
 
       // Disabled background
-      disabledBackground: isDark ? alpha(colors.grey[900], 0.2) : alpha(colors.grey[200], 0.5),
+      disabledBackground: isDark ? alpha(GREY[900], 0.2) : alpha(GREY[200], 0.5),
 
       // Focus state
-      focus: isDark ? alpha(colors.secondary.main, 0.3) : alpha(colors.secondary.main, 0.1),
+      focus: isDark ? alpha(SECONDARY.main, 0.3) : ACTION.focus,
 
       // Opacity values
       hoverOpacity: 0.08,
@@ -111,15 +209,15 @@ export function themePalette(mode = 'light', presetColor = 'default') {
       activatedOpacity: 0.24
     },
 
-    // Background colors - dynamically use custom dark background if defined in theme
+    // Background colors
     background: {
-      default: isDark ? colors.darkBackground || colors.darkPaper : colors.backgroundDefault,
-      paper: isDark ? alpha(colors.darkBackground || colors.darkPaper, 0.98) : colors.paper,
-      neutral: isDark ? alpha(colors.grey[900], 0.92) : colors.grey[100]
+      default: isDark ? BACKGROUND.dark.default : BACKGROUND.default,
+      paper: isDark ? alpha(BACKGROUND.dark.paper, 0.98) : BACKGROUND.paper,
+      neutral: isDark ? alpha(GREY[900], 0.92) : GREY[100]
     },
 
     // Divider
-    divider: isDark ? alpha(colors.grey[500], 0.28) : colors.grey[200]
+    divider: isDark ? alpha(GREY[500], 0.28) : GREY[200]
   };
 }
 

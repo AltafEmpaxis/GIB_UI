@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { Icon } from '@iconify/react';
 import {
+  alpha,
   Box,
   Button,
   Card,
   CardContent,
   Chip,
-  Grid,
-  Stack,
-  Typography,
-  useTheme,
-  alpha,
-  useMediaQuery,
-  Paper,
   CircularProgress,
+  Grid,
+  Paper,
+  Stack,
+  ToggleButton,
   ToggleButtonGroup,
-  ToggleButton
+  Typography,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
-import { Icon } from '@iconify/react';
+import { useEffect, useState } from 'react';
 
 // Sample news data
 const newsData = [
@@ -59,21 +59,9 @@ const newsData = [
     isNew: false,
     readTime: '2 min read'
   },
+
   {
     id: 4,
-    category: 'MARKET UPDATES',
-    date: '21 MAY 2025',
-    title: 'Riyadh Air unveils its leading interior cabin designs',
-    summary:
-      'Riyadh Air reveals innovative cabin designs that will set new standards for passenger comfort and experience.',
-    image: 'https://images.unsplash.com/photo-1525193612562-0ec53b0e5965?ixlib=rb-4.0.3&q=80&w=400&h=250&fit=crop',
-    url: '#',
-    featured: false,
-    isNew: false,
-    readTime: '5 min read'
-  },
-  {
-    id: 5,
     category: 'INSIGHTS',
     date: '19 MAY 2025',
     title: 'GIB brings together more than 1,000 board members and executives of its portfolio companies',
@@ -86,7 +74,7 @@ const newsData = [
     readTime: '4 min read'
   },
   {
-    id: 6,
+    id: 5,
     category: 'PRESS RELEASES',
     date: '19 MAY 2025',
     title: 'GIB opens subsidiary company office in Paris, latest step in its global expansion',
@@ -99,7 +87,7 @@ const newsData = [
     readTime: '3 min read'
   },
   {
-    id: 7,
+    id: 6,
     category: 'INSIGHTS',
     date: '12 MAY 2025',
     title: "Emerging trends in sustainable finance: GIB's perspective",
@@ -111,7 +99,7 @@ const newsData = [
     readTime: '6 min read'
   },
   {
-    id: 8,
+    id: 7,
     category: 'MARKET UPDATES',
     date: '05 MAY 2025',
     title: 'Quarterly market review: Economic outlook and investment strategy',
@@ -124,234 +112,190 @@ const newsData = [
   }
 ];
 
-// Extract unique categories for filter
 const categories = ['ALL', ...new Set(newsData.map((item) => item.category))];
 
 const LatestNewsAndInsights = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
 
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [visibleCount, setVisibleCount] = useState(5);
   const [selectedCategory, setSelectedCategory] = useState('ALL');
-  const [filteredNews, setFilteredNews] = useState(newsData);
-  const [isLoading, setIsLoading] = useState(true);
   const [viewMode, setViewMode] = useState('grid');
+  const [showAll, setShowAll] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Filter news based on selected category
+  // Filtered news based on category
+  const filteredNews =
+    selectedCategory === 'ALL' ? newsData : newsData.filter((item) => item.category === selectedCategory);
+
+  // Items to show: 1 featured + 3 cards, or all
+  const visibleNews = showAll ? filteredNews : filteredNews.slice(0, 4);
+
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
-      if (selectedCategory === 'ALL') {
-        setFilteredNews(newsData);
-      } else {
-        setFilteredNews(newsData.filter((item) => item.category === selectedCategory));
-      }
-      setIsLoading(false);
-    }, 400);
-  }, [selectedCategory]);
+    const timer = setTimeout(() => setIsLoading(false), 400);
+    return () => clearTimeout(timer);
+  }, [selectedCategory, showAll]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
-    setVisibleCount(5);
+    setShowAll(false);
   };
 
-  const handleShowMore = () => {
-    setVisibleCount(filteredNews.length);
-  };
-
-  const handleShowLess = () => {
-    setVisibleCount(5);
-  };
+  const handleShowMore = () => setShowAll(true);
+  const handleShowLess = () => setShowAll(false);
 
   const handleViewModeChange = (event, newViewMode) => {
-    if (newViewMode !== null) {
-      setViewMode(newViewMode);
-    }
+    if (newViewMode) setViewMode(newViewMode);
   };
 
-  const renderNewsCard = (item, index) => {
-    const isFirst = index === 0 && viewMode === 'grid';
-
-    return (
-      <Card
+  const renderNewsCard = (item, index, isFeatured = false) => (
+    <Card
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: viewMode === 'list' ? 'row' : 'column',
+        boxShadow: theme.customShadows.z1
+      }}
+    >
+      {/* Image Section */}
+      <Box
         sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: viewMode === 'list' ? 'row' : 'column',
-          boxShadow: theme.customShadows.z1
+          position: 'relative',
+          height: viewMode === 'list' ? 'auto' : isFeatured ? 300 : 180,
+          width: viewMode === 'list' ? { xs: '100%', sm: 150, md: 200 } : '100%',
+          flexShrink: 0,
+          overflow: 'hidden'
         }}
-        onMouseEnter={() => setHoveredItem(item.id)}
-        onMouseLeave={() => setHoveredItem(null)}
       >
-        {/* Image Section */}
         <Box
+          component="img"
+          src={item.image}
+          alt={item.title}
           sx={{
-            position: 'relative',
-            height: viewMode === 'list' ? 'auto' : isFirst ? 300 : 180,
-            width: viewMode === 'list' ? { xs: '100%', sm: 150, md: 200 } : '100%',
-            flexShrink: 0,
-            overflow: 'hidden'
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.3s ease-in-out',
+            '&:hover': { transform: 'scale(1.05)' },
+            display: 'block'
           }}
-        >
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = '/assets/gib-news-placeholder.png';
+          }}
+        />
+        {item.isNew && (
           <Box
-            component="img"
-            src={item.image}
-            alt={item.title}
-            sx={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transition: 'transform 0.3s ease-in-out',
-              '&:hover': {
-                transform: 'scale(1.05)'
-              },
-              display: 'block'
-            }}
-            onError={(e) => {
-              e.target.src = 'https://via.placeholder.com/400x250?text=GIB+News';
-            }}
-          />
-
-          {/* New badge */}
-          {item.isNew && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 12,
-                left: 12,
-                zIndex: 2,
-                bgcolor: theme.palette.error.main,
-                color: '#fff',
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                px: 1,
-                py: 0.5,
-                textTransform: 'uppercase'
-              }}
-            >
-              New
-            </Box>
-          )}
-
-          {/* Category chip */}
-          <Chip
-            label={item.category
-              .split(' ')
-              .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
-              .join(' ')}
-            size="small"
             sx={{
               position: 'absolute',
-              bottom: 12,
+              top: 12,
               left: 12,
-              bgcolor: alpha(theme.palette.background.paper, 0.9),
-              color: theme.palette.text.primary,
-              fontWeight: 600,
+              zIndex: 2,
+              bgcolor: theme.palette.error.main,
+              color: '#fff',
               fontSize: '0.7rem',
-              height: 24
+              fontWeight: 700,
+              px: 1,
+              py: 0.5,
+              textTransform: 'uppercase'
             }}
-          />
-        </Box>
-
-        {/* Content Section */}
-        <CardContent
+          >
+            New
+          </Box>
+        )}
+        <Chip
+          label={item.category
+            .split(' ')
+            .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
+            .join(' ')}
+          size="small"
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1,
-            p: isFirst ? 2.5 : 2
+            position: 'absolute',
+            bottom: 12,
+            left: 12,
+            bgcolor: alpha(theme.palette.background.paper, 0.9),
+            color: theme.palette.text.primary,
+            fontWeight: 600,
+            fontSize: '0.7rem',
+            height: 24
+          }}
+        />
+      </Box>
+      {/* Content Section */}
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, p: isFeatured ? 2.5 : 2 }}>
+        <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1 }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: theme.palette.text.secondary,
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Icon icon="solar:calendar-linear" width={14} style={{ marginRight: 4 }} />
+            {item.date}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: theme.palette.text.secondary,
+              fontWeight: 500,
+              fontSize: '0.75rem',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <Icon icon="solar:clock-circle-linear" width={14} style={{ marginRight: 4 }} />
+            {item.readTime}
+          </Typography>
+        </Stack>
+        <Typography
+          variant={isFeatured ? 'h5' : 'subtitle1'}
+          sx={{
+            fontWeight: 600,
+            mb: isFeatured ? 1.5 : 1,
+            color: theme.palette.text.primary,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: isFeatured ? 3 : 2,
+            WebkitBoxOrient: 'vertical'
           }}
         >
-          <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1 }}>
-            <Typography
-              variant="caption"
-              sx={{
-                color: theme.palette.text.secondary,
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <Icon icon="solar:calendar-linear" width={14} style={{ marginRight: 4 }} />
-              {item.date}
-            </Typography>
-
-            <Typography
-              variant="caption"
-              sx={{
-                color: theme.palette.text.secondary,
-                fontWeight: 500,
-                fontSize: '0.75rem',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              <Icon icon="solar:clock-circle-linear" width={14} style={{ marginRight: 4 }} />
-              {item.readTime}
-            </Typography>
-          </Stack>
-
+          {item.title}
+        </Typography>
+        {(isFeatured || viewMode === 'list' || !isMobile) && (
           <Typography
-            variant={isFirst ? 'h5' : 'subtitle1'}
+            variant="body2"
+            color="text.secondary"
             sx={{
-              fontWeight: 600,
-              mb: isFirst ? 1.5 : 1,
-              color: hoveredItem === item.id ? theme.palette.primary.main : theme.palette.text.primary,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
+              mb: 2,
               display: '-webkit-box',
-              WebkitLineClamp: isFirst ? 3 : 2,
-              WebkitBoxOrient: 'vertical'
+              WebkitLineClamp: isFeatured ? 3 : 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              flexGrow: 1
             }}
           >
-            {item.title}
+            {item.summary}
           </Typography>
-
-          {(isFirst || viewMode === 'list' || !isMobile) && (
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                mb: 2,
-                display: '-webkit-box',
-                WebkitLineClamp: isFirst ? 3 : 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                flexGrow: 1
-              }}
-            >
-              {item.summary}
-            </Typography>
-          )}
-
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              mt: 'auto'
-            }}
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', mt: 'auto' }}>
+          <Button
+            variant="text"
+            color="primary"
+            size="small"
+            endIcon={<Icon icon="solar:arrow-right-linear" width={16} />}
+            sx={{ fontWeight: 600, textTransform: 'none' }}
           >
-            <Button
-              variant="text"
-              color="primary"
-              size="small"
-              endIcon={<Icon icon="solar:arrow-right-linear" width={16} />}
-              sx={{
-                fontWeight: 600,
-                textTransform: 'none'
-              }}
-            >
-              Read Article
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
-    );
-  };
+            Read Article
+          </Button>
+        </Box>
+      </CardContent>
+    </Card>
+  );
 
   const renderLoadingState = () => (
     <Box sx={{ display: 'flex', justifyContent: 'center', my: 6 }}>
@@ -385,10 +329,7 @@ const LatestNewsAndInsights = () => {
           icon="solar:documents-minimalistic-bold"
           width={40}
           height={40}
-          style={{
-            opacity: 0.7,
-            color: theme.palette.primary.main
-          }}
+          style={{ opacity: 0.7, color: theme.palette.primary.main }}
         />
       </Box>
       <Typography variant="h6" color="textPrimary" gutterBottom>
@@ -424,20 +365,13 @@ const LatestNewsAndInsights = () => {
         }}
       >
         <Box sx={{ mb: { xs: 2, md: 0 } }}>
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 700,
-              color: theme.palette.text.primary
-            }}
-          >
+          <Typography variant="h4" sx={{ fontWeight: 700, color: theme.palette.text.primary }}>
             Latest News & Insights
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 1, maxWidth: 500 }}>
             Get the latest updates on GIB Capital's activities, market insights, and financial news.
           </Typography>
         </Box>
-
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <ToggleButtonGroup
             value={viewMode}
@@ -458,16 +392,8 @@ const LatestNewsAndInsights = () => {
           </Button>
         </Box>
       </Box>
-
       {/* Category filter chips */}
-      <Box
-        sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 1,
-          mb: 3
-        }}
-      >
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
         {categories.map((category) => (
           <Chip
             key={category}
@@ -482,55 +408,48 @@ const LatestNewsAndInsights = () => {
             onClick={() => handleCategoryChange(category)}
             variant={selectedCategory === category ? 'filled' : 'outlined'}
             color={selectedCategory === category ? 'primary' : 'default'}
-            sx={{
-              fontWeight: 600,
-              fontSize: '0.85rem'
-            }}
+            sx={{ fontWeight: 600, fontSize: '0.85rem' }}
           />
         ))}
       </Box>
-
       {/* News content */}
       {isLoading ? (
         renderLoadingState()
       ) : filteredNews.length === 0 ? (
         renderEmptyState()
-      ) : (
-        <Box>
-          {viewMode === 'grid' ? (
-            <Grid container spacing={2}>
-              {filteredNews.slice(0, visibleCount).map((item, index) => (
-                <Grid item xs={12} sm={index === 0 ? 12 : 6} md={index === 0 ? 12 : 4} key={item.id}>
-                  {renderNewsCard(item, index)}
-                </Grid>
-              ))}
+      ) : viewMode === 'grid' ? (
+        <Grid container spacing={2}>
+          {/* Featured (first) card, full width */}
+          {visibleNews.length > 0 && (
+            <Grid item xs={12} key={visibleNews[0].id}>
+              {renderNewsCard(visibleNews[0], 0, true)}
             </Grid>
-          ) : (
-            <Stack spacing={2}>
-              {filteredNews.slice(0, visibleCount).map((item, index) => (
-                <Box key={item.id}>{renderNewsCard(item, index)}</Box>
-              ))}
-            </Stack>
           )}
-
-          {/* Load More/Less Button */}
-          {filteredNews.length > 5 && (
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={visibleCount === 5 ? handleShowMore : handleShowLess}
-                startIcon={
-                  <Icon
-                    icon={visibleCount === 5 ? 'solar:alt-arrow-down-bold' : 'solar:alt-arrow-up-bold'}
-                    width={18}
-                  />
-                }
-              >
-                {visibleCount === 5 ? 'Load More Articles' : 'Show Less'}
-              </Button>
-            </Box>
-          )}
+          {/* Next cards */}
+          {visibleNews.slice(1).map((item, idx) => (
+            <Grid item xs={12} sm={6} md={4} key={item.id}>
+              {renderNewsCard(item, idx + 1)}
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Stack spacing={2}>
+          {visibleNews.map((item, idx) => (
+            <Box key={item.id}>{renderNewsCard(item, idx, idx === 0)}</Box>
+          ))}
+        </Stack>
+      )}
+      {/* Load More/Less Button */}
+      {filteredNews.length > 4 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={showAll ? handleShowLess : handleShowMore}
+            startIcon={<Icon icon={showAll ? 'solar:alt-arrow-up-bold' : 'solar:alt-arrow-down-bold'} width={18} />}
+          >
+            {showAll ? 'Show Less' : 'Load More Articles'}
+          </Button>
         </Box>
       )}
     </Box>

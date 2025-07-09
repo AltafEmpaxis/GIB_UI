@@ -15,28 +15,48 @@ export default function Badge(theme) {
           },
 
           '&.MuiBadge-colorPrimary': {
-            backgroundColor: theme.palette.primary.main
+            backgroundColor: theme.palette.primary.main, // Dark Grey
+            color: theme.palette.common.white
           },
 
           '&.MuiBadge-colorSecondary': {
-            backgroundColor: theme.palette.secondary.main
+            backgroundColor: theme.palette.secondary.main, // GIB Yellow
+            color: theme.palette.primary.main // Dark Grey text on yellow
           },
 
           '&.MuiBadge-colorError': {
-            backgroundColor: theme.palette.error.main
+            backgroundColor: theme.palette.error.main,
+            color: theme.palette.error.contrastText
           },
 
           '&.MuiBadge-colorSuccess': {
-            backgroundColor: theme.palette.success.main
+            backgroundColor: theme.palette.success.main,
+            color: theme.palette.success.contrastText
           },
 
           '&.MuiBadge-colorWarning': {
-            backgroundColor: theme.palette.warning.main
+            backgroundColor: theme.palette.warning.main,
+            color: theme.palette.warning.contrastText
           },
 
           '&.MuiBadge-colorInfo': {
-            backgroundColor: theme.palette.info.main
-          }
+            backgroundColor: theme.palette.info.main,
+            color: theme.palette.info.contrastText
+          },
+
+          // Standard badge styles
+          fontSize: '0.75rem',
+          fontWeight: 600, // Semi-bold per GIB guidelines
+          padding: '0 6px',
+          minWidth: 20,
+          height: 20,
+          borderRadius: 10
+        },
+
+        // Badge positions
+        anchorOriginTopRight: {
+          top: 4,
+          right: 4
         },
 
         anchorOriginBottomRight: {

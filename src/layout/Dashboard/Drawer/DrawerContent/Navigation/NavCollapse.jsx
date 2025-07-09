@@ -27,9 +27,9 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
       <ListItemButton
         disabled={menu.disabled}
         sx={{
-          pl: level * 1.75,
-          py: 1,
-          mb: 0.3,
+          pl: level * 1.5,
+          py: 0.75,
+          mb: 0.25,
           borderRadius: 1,
           backgroundColor: 'transparent',
           color: open ? theme.palette.secondary.main : textColor,
@@ -131,7 +131,7 @@ const NavCollapse = ({ menu, level, selectedItems, selectedLevel, setSelectedIte
             '&:before': {
               content: '""',
               position: 'absolute',
-              left: level * 1.75 + 14,
+              left: level * 1.5 + 14,
               top: 0,
               height: '100%',
               width: 1,

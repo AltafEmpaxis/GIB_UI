@@ -25,7 +25,8 @@ const SummaryMetricsSection = () => {
   const spacing = 1.5;
 
   const handleViewReconcileDetails = () => {
-    navigate('/detail-recon-tool');
+    // Navigate to the recon-tool page and set the tab to detailReconTool
+    navigate('/recon-tool', { state: { defaultTab: 'detailReconTool' } });
   };
 
   // Metric card styles
@@ -58,7 +59,7 @@ const SummaryMetricsSection = () => {
     <Grid container spacing={spacing}>
       {/* Reconcile Accounts Card */}
       <Grid item xs={12} sm={6}>
-        <Card sx={metricCardStyle} onClick={handleViewReconcileDetails}>
+        <Card sx={metricCardStyle}>
           <Box
             sx={{
               bgcolor: theme.palette.secondary.main, // GIB Yellow
@@ -111,6 +112,7 @@ const SummaryMetricsSection = () => {
               <Button
                 size="small"
                 variant="text"
+                onClick={handleViewReconcileDetails}
                 sx={{
                   color: theme.palette.secondary.main,
                   fontWeight: 600,
@@ -130,7 +132,7 @@ const SummaryMetricsSection = () => {
 
       {/* Unreconcile Accounts Card */}
       <Grid item xs={12} sm={6}>
-        <Card sx={metricCardStyle} onClick={handleViewReconcileDetails}>
+        <Card sx={metricCardStyle}>
           <Box
             sx={{
               bgcolor: theme.palette.primary.main, // Dark Grey
@@ -183,6 +185,7 @@ const SummaryMetricsSection = () => {
               <Button
                 size="small"
                 variant="text"
+                onClick={handleViewReconcileDetails}
                 sx={{
                   color: theme.palette.primary.main,
                   fontWeight: 600,

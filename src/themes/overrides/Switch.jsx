@@ -4,7 +4,7 @@ export default function Switch(theme) {
   return {
     MuiSwitch: {
       defaultProps: {
-        color: 'primary'
+        color: 'secondary' // Use secondary color (GIB Yellow)
       },
       styleOverrides: {
         root: {
@@ -20,7 +20,7 @@ export default function Switch(theme) {
               transform: 'translateX(16px)',
               color: theme.palette.common.white,
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.primary.main,
+                backgroundColor: theme.palette.secondary.main, // GIB Yellow
                 opacity: 1,
                 border: 0
               }
@@ -34,7 +34,7 @@ export default function Switch(theme) {
               }
             },
             '&.Mui-focusVisible .MuiSwitch-thumb': {
-              color: theme.palette.primary.main,
+              color: theme.palette.secondary.main, // GIB Yellow
               border: `6px solid ${theme.palette.common.white}`
             }
           },
@@ -50,7 +50,7 @@ export default function Switch(theme) {
           },
           '& .MuiSwitch-track': {
             borderRadius: 13,
-            backgroundColor: theme.palette.mode === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            backgroundColor: theme.palette.mode === 'light' ? theme.palette.tertiary.main : theme.palette.grey[700], // Medium Grey
             opacity: 1,
             transition: theme.transitions.create(['background-color'], {
               duration: 500
@@ -65,13 +65,13 @@ export default function Switch(theme) {
             },
             '&:before': {
               backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                theme.palette.grey[500]
+                theme.palette.primary.main // Dark Grey
               )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
               left: 4
             },
             '&:after': {
               backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                theme.palette.grey[500]
+                theme.palette.primary.main // Dark Grey
               )}" d="M19,13H5V11H19V13Z" /></svg>')`,
               right: 4
             }
@@ -119,7 +119,7 @@ export default function Switch(theme) {
           '& .MuiSwitch-switchBase': {
             '&.Mui-checked': {
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.primary.main
+                backgroundColor: theme.palette.primary.main // Dark Grey
               },
               '& .MuiSwitch-thumb': {
                 backgroundColor: theme.palette.common.white
@@ -128,10 +128,18 @@ export default function Switch(theme) {
           }
         },
         colorSecondary: {
+          '& .MuiSwitch-thumb': {
+            '&:hover': {
+              backgroundColor: theme.palette.secondary.lighter // Light Yellow
+            }
+          },
           '& .MuiSwitch-switchBase': {
             '&.Mui-checked': {
               '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.secondary.main
+                backgroundColor: theme.palette.secondary.main // GIB Yellow
+              },
+              '& .MuiSwitch-thumb': {
+                backgroundColor: theme.palette.primary.main // Dark Grey
               }
             }
           }

@@ -8,20 +8,20 @@ export default function Tab(theme) {
       styleOverrides: {
         root: {
           minHeight: 46,
-          color: theme.palette.text.secondary,
+          color: theme.palette.tertiary.main, // Medium Grey
           textAlign: 'center',
           padding: theme.spacing(1.5, 3),
           fontWeight: theme.typography.fontWeightMedium,
           borderRadius: theme.shape.borderRadius,
           '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.08),
-            color: theme.palette.primary.main
+            backgroundColor: alpha(theme.palette.secondary.main, 0.08), // 8% Yellow
+            color: theme.palette.secondary.main // GIB Yellow
           },
           '&.Mui-selected': {
-            color: theme.palette.primary.main,
-            backgroundColor: alpha(theme.palette.primary.main, 0.12),
+            color: theme.palette.secondary.main, // GIB Yellow
+            backgroundColor: alpha(theme.palette.secondary.main, 0.12), // 12% Yellow
             '&:hover': {
-              backgroundColor: alpha(theme.palette.primary.main, 0.2)
+              backgroundColor: alpha(theme.palette.secondary.main, 0.2) // 20% Yellow
             }
           },
           '& .MuiSvgIcon-root': {
@@ -29,7 +29,7 @@ export default function Tab(theme) {
             marginBottom: 1
           },
           '&.Mui-disabled': {
-            color: theme.palette.text.disabled
+            color: theme.palette.tertiary.main // Medium Grey
           }
         },
         labelIcon: {
@@ -58,7 +58,7 @@ export default function Tab(theme) {
           position: 'relative',
 
           '& .MuiTabs-indicator': {
-            backgroundColor: theme.palette.primary.main,
+            backgroundColor: theme.palette.secondary.main, // GIB Yellow
             height: '2px',
             borderRadius: '2px 2px 0 0',
             transition: theme.transitions.create(['left', 'right', 'width'], {
@@ -85,9 +85,9 @@ export default function Tab(theme) {
           },
           '& .MuiSvgIcon-root': {
             fontSize: '1.1rem',
-            color: theme.palette.text.secondary,
+            color: theme.palette.tertiary.main, // Medium Grey
             '&:hover': {
-              color: theme.palette.text.primary
+              color: theme.palette.secondary.main // GIB Yellow
             }
           }
         }

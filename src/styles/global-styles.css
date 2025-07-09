@@ -1,6 +1,97 @@
 /* ==============================|| GLOBAL STYLES ||============================== */
+/* GIB Corporate Typefaces */
 
-/* Base Styles */
+/* 1. FS Emeric - English UI */
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 300; /* Light - for large display headings */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-Light.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 300; /* Light Italic */
+    font-style: italic;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-LightItalic.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 400; /* Book - for subheadings & captions */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-Book.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 400; /* Book Italic */
+    font-style: italic;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-BookItalic.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 500; /* Regular - for body text */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-Regular.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 500; /* Regular Italic */
+    font-style: italic;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-Italic.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 600; /* Semi-bold - for buttons, key labels */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-SemiBold.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "FS Emeric";
+    font-weight: 600; /* Semi-bold Italic */
+    font-style: italic;
+    src: url("/fonts/GIB Fonts/FSEmeric-Full/FSEmeric-SemiBoldItalic.otf") format("opentype");
+    font-display: swap;
+}
+
+/* 2. GIBbeta - Arabic UI */
+@font-face {
+    font-family: "GIBbeta";
+    font-weight: 400; /* Regular - for body copy */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/GIB-Beta-Arabic/GIBbeta-Roman.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "GIBbeta";
+    font-weight: 500; /* Medium - for subheads, signage */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/GIB-Beta-Arabic/GIBbeta-Medium.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "GIBbeta";
+    font-weight: 700; /* Bold */
+    font-style: normal;
+    src: url("/fonts/GIB Fonts/GIB-Beta-Arabic/GIBbeta-Bold.ttf") format("truetype");
+    font-display: swap;
+}
+
+/* ======== || Base Styles || ======== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -11,6 +102,10 @@ html {
     height: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+html[lang="ar"] {
+    direction: rtl;
 }
 
 body {

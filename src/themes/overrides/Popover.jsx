@@ -16,10 +16,10 @@ export default function Popover(theme) {
               width: 8
             },
             '&::-webkit-scrollbar-thumb': {
-              backgroundColor: alpha(theme.palette.grey[500], 0.2),
+              backgroundColor: alpha(theme.palette.tertiary.main, 0.3), // Medium Grey
               borderRadius: 4,
               '&:hover': {
-                backgroundColor: alpha(theme.palette.grey[500], 0.3)
+                backgroundColor: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
               }
             },
             '&::-webkit-scrollbar-track': {
@@ -35,10 +35,10 @@ export default function Popover(theme) {
               width: 8
             },
             '&::-webkit-scrollbar-thumb': {
-              backgroundColor: alpha(theme.palette.grey[500], 0.2),
+              backgroundColor: alpha(theme.palette.tertiary.main, 0.3), // Medium Grey
               borderRadius: 4,
               '&:hover': {
-                backgroundColor: alpha(theme.palette.grey[500], 0.3)
+                backgroundColor: alpha(theme.palette.tertiary.main, 0.5) // Medium Grey
               }
             },
             '&::-webkit-scrollbar-track': {
@@ -51,7 +51,7 @@ export default function Popover(theme) {
             ? `0 4px 8px ${alpha(theme.palette.common.black, 0.4)}`
             : `0 4px 8px ${alpha(theme.palette.common.black, 0.1)}`,
           borderRadius: theme.shape.borderRadius,
-          border: `1px solid ${theme.palette.divider}`,
+          border: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
           backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.98) : theme.palette.background.paper,
           maxHeight: 'calc(100vh - 64px)',
           overflowX: 'hidden'

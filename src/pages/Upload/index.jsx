@@ -2,12 +2,15 @@ import { Icon } from '@iconify/react';
 import { Box, Divider, IconButton, Stack, Tab, Tabs, Tooltip, Typography, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router';
 import DetailReconTool from './DetailReconTool';
 import UploadData from './UploadData';
 import ViewData from './ViewData';
 
 const Upload = () => {
-  const [currentTab, setCurrentTab] = useState('upload');
+  const location = useLocation();
+  const defaultTab = location.state?.defaultTab || 'upload';
+  const [currentTab, setCurrentTab] = useState(defaultTab);
   const theme = useTheme();
   const [isLoading, setLoading] = useState(true);
 
@@ -19,6 +22,13 @@ const Upload = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Update tab if location state changes
+  useEffect(() => {
+    if (location.state?.defaultTab) {
+      setCurrentTab(location.state.defaultTab);
+    }
+  }, [location.state]);
 
   const tabs = useMemo(
     () => [
@@ -39,7 +49,7 @@ const Upload = () => {
       {
         value: 'detailReconTool',
         label: 'Detail Recon Tool',
-        icon: <Icon icon="mdi:eye" width={20} height={20} />,
+        icon: <Icon icon="mdi:chart-bar" width={20} height={20} />,
         component: <DetailReconTool />,
         color: theme.palette.secondary.main
       }

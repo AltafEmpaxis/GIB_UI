@@ -43,8 +43,7 @@ const DashboardLayout = () => {
           open={true}
           onClick={handleBackdropClick}
           sx={{
-            zIndex: theme.zIndex.drawer - 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
+            zIndex: theme.zIndex.drawer - 1
           }}
         />
       )}
@@ -69,7 +68,7 @@ const DashboardLayout = () => {
       >
         <Box
           sx={{
-            p: { xs: 1.25, sm: 1.75, lg: 2.5 },
+            p: { xs: 1.25, sm: 1.75, lg: 1.5 },
             minHeight: `calc(100vh - ${HEADER_HEIGHT + 10}px)`,
             backgroundColor: theme.palette.background.default,
             borderRadius: {

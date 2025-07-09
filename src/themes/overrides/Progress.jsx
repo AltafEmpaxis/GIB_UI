@@ -34,7 +34,7 @@ export default function Progress(theme) {
           height: 2,
           borderRadius: 3,
           overflow: 'hidden',
-          backgroundColor: theme.palette.grey[200],
+          backgroundColor: theme.palette.grey[200], // Light Grey
           ...({ ownerState }) => rootStyle(ownerState)
         },
         bar: {
@@ -42,15 +42,15 @@ export default function Progress(theme) {
         },
         // Color variants
         colorPrimary: {
-          backgroundColor: alpha(theme.palette.primary.main, 0.12),
+          backgroundColor: alpha(theme.palette.primary.main, 0.12), // 12% Dark Grey
           '& .MuiLinearProgress-bar': {
-            backgroundColor: theme.palette.primary.main
+            backgroundColor: theme.palette.primary.main // Dark Grey
           }
         },
         colorSecondary: {
-          backgroundColor: alpha(theme.palette.secondary.main, 0.12),
+          backgroundColor: alpha(theme.palette.secondary.main, 0.12), // 12% GIB Yellow
           '& .MuiLinearProgress-bar': {
-            backgroundColor: theme.palette.secondary.main
+            backgroundColor: theme.palette.secondary.main // GIB Yellow
           }
         },
         colorSuccess: {
@@ -105,7 +105,7 @@ export default function Progress(theme) {
         }
       },
       defaultProps: {
-        color: 'primary'
+        color: 'secondary' // Default to GIB Yellow
       }
     }
   };

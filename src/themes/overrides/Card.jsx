@@ -18,7 +18,8 @@ export default function Card(theme) {
         root: {
           position: 'relative',
           borderRadius: theme.shape.borderRadius,
-          border: `1px solid ${theme.palette.grey[200]}`,
+          border: '1px solid',
+          borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
           transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
             duration: theme.transitions.duration.shorter
           }),

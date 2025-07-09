@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import useLocalStorage from 'hooks/useLocalStorage';
 import { config } from 'themes/config';
-import { PresetColors } from 'themes/types';
 
 // ==============================|| THEME CONTEXT & PROVIDER ||============================== //
 
@@ -13,7 +12,6 @@ const ThemeContext = createContext(null);
 // Default theme settings
 const defaultThemeSettings = {
   mode: config.mode,
-  presetColor: config.presetColor,
   fontFamily: config.fontFamily,
   borderRadius: config.borderRadius
 };
@@ -26,7 +24,7 @@ export const ThemeProvider = ({ children }) => {
   const [themeSettings, setThemeSettings] = useLocalStorage('themeSettings', defaultThemeSettings);
 
   // Extract individual settings from the themeSettings object
-  const { mode, presetColor, fontFamily, borderRadius } = themeSettings;
+  const { mode, fontFamily, borderRadius } = themeSettings;
 
   // Track animation state separately from the actual theme change
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -58,23 +56,6 @@ export const ThemeProvider = ({ children }) => {
       }
     },
     [mode, updateThemeSetting, startTransition]
-  );
-
-  // Optimized preset color change handler
-  const onChangePresetColor = useCallback(
-    (newPresetColor) => {
-      if (newPresetColor in PresetColors) {
-        startTransition(() => {
-          updateThemeSetting('presetColor', newPresetColor);
-        });
-      } else {
-        console.warn(`Invalid preset color: ${newPresetColor}`);
-        startTransition(() => {
-          updateThemeSetting('presetColor', config.presetColor);
-        });
-      }
-    },
-    [updateThemeSetting, startTransition]
   );
 
   // Optimized font family change handler
@@ -117,8 +98,6 @@ export const ThemeProvider = ({ children }) => {
     () => ({
       mode,
       onChangeMode,
-      presetColor,
-      onChangePresetColor,
       fontFamily,
       onChangeFontFamily,
       borderRadius,
@@ -131,8 +110,6 @@ export const ThemeProvider = ({ children }) => {
     [
       mode,
       onChangeMode,
-      presetColor,
-      onChangePresetColor,
       fontFamily,
       onChangeFontFamily,
       borderRadius,

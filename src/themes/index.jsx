@@ -19,7 +19,7 @@ import { themeTypography } from './typography';
 // ==============================|| DEFAULT THEME - MAIN ||============================== //
 
 export default function ThemeCustomization({ children }) {
-  const { mode, presetColor, fontFamily, borderRadius } = useConfig();
+  const { mode, fontFamily, borderRadius } = useConfig();
 
   const theme = useMemo(() => {
     try {
@@ -40,7 +40,7 @@ export default function ThemeCustomization({ children }) {
             }
           }
         },
-        palette: themePalette(mode, presetColor),
+        palette: themePalette(mode),
         shape: {
           borderRadius: borderRadius || config.borderRadius,
           borderRadiusXs: Math.max(2, (borderRadius || config.borderRadius) - 6),
@@ -80,7 +80,7 @@ export default function ThemeCustomization({ children }) {
       // Return a minimal fallback theme
       return createTheme();
     }
-  }, [mode, presetColor, fontFamily, borderRadius]);
+  }, [mode, fontFamily, borderRadius]);
 
   return (
     <StyledEngineProvider injectFirst>

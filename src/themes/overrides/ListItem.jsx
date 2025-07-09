@@ -10,14 +10,14 @@ export default function ListItem(theme) {
         root: {
           padding: theme.spacing(1.5),
           '&.Mui-selected': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.12),
-            color: theme.palette.primary.main,
+            backgroundColor: alpha(theme.palette.secondary.main, 0.2), // 20% Yellow
+            color: theme.palette.secondary.main, // GIB Yellow
             '&:hover': {
-              backgroundColor: alpha(theme.palette.primary.main, 0.18)
+              backgroundColor: alpha(theme.palette.secondary.main, 0.3) // 30% Yellow
             }
           },
           '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.08)
+            backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
           }
         }
       }
@@ -28,14 +28,14 @@ export default function ListItem(theme) {
           borderRadius: theme.shape.borderRadius,
           padding: theme.spacing(1),
           '&.Mui-selected': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.12),
-            color: theme.palette.primary.main,
+            backgroundColor: alpha(theme.palette.secondary.main, 0.2), // 20% Yellow
+            color: theme.palette.secondary.main, // GIB Yellow
             '&:hover': {
-              backgroundColor: alpha(theme.palette.primary.main, 0.18)
+              backgroundColor: alpha(theme.palette.secondary.main, 0.3) // 30% Yellow
             }
           },
           '&:hover': {
-            backgroundColor: alpha(theme.palette.primary.main, 0.08)
+            backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
           }
         }
       }
@@ -45,12 +45,12 @@ export default function ListItem(theme) {
         root: {
           minWidth: 24,
           marginRight: theme.spacing(2),
-          color: theme.palette.grey[700],
+          color: theme.palette.tertiary.main, // Medium Grey
           '& svg': {
             fontSize: '1.5rem'
           },
           '.MuiListItemButton-root.Mui-selected &': {
-            color: theme.palette.primary.main
+            color: theme.palette.secondary.main // GIB Yellow
           }
         }
       }
@@ -58,10 +58,10 @@ export default function ListItem(theme) {
     MuiListItemText: {
       styleOverrides: {
         primary: {
-          color: theme.palette.text.primary
+          color: theme.palette.primary.main // Dark Grey
         },
         secondary: {
-          color: theme.palette.text.secondary
+          color: theme.palette.tertiary.main // Medium Grey
         }
       }
     }

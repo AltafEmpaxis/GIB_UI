@@ -6,6 +6,30 @@ import { alpha } from '@mui/material/styles';
 export default function DataGrid(theme) {
   const isDark = theme.palette.mode === 'dark';
 
+  // Theme colors for better visual hierarchy
+  const colors = {
+    header: {
+      bg: isDark ? alpha(theme.palette.grey[900], 0.85) : alpha(theme.palette.secondary.main, 0.1), // 10% Yellow
+      text: isDark ? theme.palette.common.white : theme.palette.primary.main, // Dark Grey
+      border: isDark
+        ? `1px solid ${alpha(theme.palette.secondary.main, 0.25)}`
+        : `2px solid ${theme.palette.secondary.main}` // GIB Yellow
+    },
+    body: {
+      odd: isDark ? alpha(theme.palette.grey[800], 0.4) : alpha(theme.palette.secondary.main, 0.05), // 5% Yellow
+      even: isDark ? alpha(theme.palette.grey[900], 0.5) : theme.palette.background.paper,
+      hover: isDark ? alpha(theme.palette.secondary.main, 0.2) : alpha(theme.palette.secondary.main, 0.1), // 10-20% Yellow
+      selected: isDark ? alpha(theme.palette.secondary.main, 0.3) : alpha(theme.palette.secondary.main, 0.2), // 20-30% Yellow
+      selectedHover: isDark ? alpha(theme.palette.secondary.main, 0.35) : alpha(theme.palette.secondary.main, 0.3), // 30-35% Yellow
+      border: isDark ? alpha(theme.palette.divider, 0.2) : alpha(theme.palette.tertiary.main, 0.15) // Medium Grey
+    },
+    pagination: {
+      bg: isDark ? alpha(theme.palette.grey[900], 0.75) : alpha(theme.palette.secondary.main, 0.05), // 5% Yellow
+      hover: isDark ? alpha(theme.palette.secondary.main, 0.25) : alpha(theme.palette.secondary.main, 0.15), // 15-25% Yellow
+      text: isDark ? theme.palette.grey[300] : theme.palette.primary.main // Dark Grey
+    }
+  };
+
   return {
     MuiDataGrid: {
       defaultProps: {
@@ -22,11 +46,11 @@ export default function DataGrid(theme) {
           border: `1px solid ${theme.palette.divider}`,
           '& .MuiDataGrid-main': {
             '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: isDark ? alpha(theme.palette.grey[800], 0.5) : alpha(theme.palette.primary.lighter, 0.3),
-              borderBottom: `2px solid ${isDark ? theme.palette.divider : theme.palette.primary.light}`,
+              backgroundColor: colors.header.bg,
+              borderBottom: colors.header.border,
               '& .MuiDataGrid-columnHeader': {
-                color: isDark ? theme.palette.grey[100] : theme.palette.text.primary,
-                fontWeight: 700,
+                color: colors.header.text,
+                fontWeight: 600, // Semi-bold per GIB guidelines
                 fontSize: '0.875rem'
               }
             },
@@ -43,24 +67,18 @@ export default function DataGrid(theme) {
             },
             '& .MuiDataGrid-row': {
               '&:nth-of-type(odd)': {
-                backgroundColor: isDark ? alpha(theme.palette.grey[800], 0.3) : alpha(theme.palette.grey[100], 0.5)
+                backgroundColor: colors.body.odd
               },
               '&:nth-of-type(even)': {
-                backgroundColor: isDark ? alpha(theme.palette.grey[900], 0.3) : theme.palette.background.paper
+                backgroundColor: colors.body.even
               },
               '&:hover': {
-                backgroundColor: isDark
-                  ? alpha(theme.palette.primary.dark, 0.15)
-                  : alpha(theme.palette.primary.lighter, 0.35)
+                backgroundColor: colors.body.hover
               },
               '&.Mui-selected': {
-                backgroundColor: isDark
-                  ? alpha(theme.palette.primary.darker, 0.2)
-                  : alpha(theme.palette.primary.lighter, 0.35),
+                backgroundColor: colors.body.selected,
                 '&:hover': {
-                  backgroundColor: isDark
-                    ? alpha(theme.palette.primary.darker, 0.25)
-                    : alpha(theme.palette.primary.lighter, 0.45)
+                  backgroundColor: colors.body.selectedHover
                 }
               }
             }
@@ -68,12 +86,12 @@ export default function DataGrid(theme) {
         },
         toolbarContainer: {
           padding: '8px 16px',
-          backgroundColor: isDark ? alpha(theme.palette.grey[800], 0.5) : alpha(theme.palette.primary.lighter, 0.2),
+          backgroundColor: colors.header.bg,
           '& .MuiButton-root': {
             marginRight: 8,
-            color: theme.palette.text.secondary,
+            color: colors.header.text,
             '&:hover': {
-              backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.1) : alpha(theme.palette.primary.main, 0.05)
+              backgroundColor: alpha(theme.palette.secondary.main, 0.2) // 20% Yellow
             }
           }
         },
@@ -88,9 +106,9 @@ export default function DataGrid(theme) {
             }
           },
           '& .MuiDataGrid-columnHeaderTitle': {
-            color: isDark ? theme.palette.grey[100] : theme.palette.grey[900],
+            color: colors.header.text,
             fontSize: '0.875rem',
-            fontWeight: 600,
+            fontWeight: 600, // Semi-bold per GIB guidelines
             textTransform: 'uppercase',
             letterSpacing: '0.1em'
           }
@@ -98,7 +116,7 @@ export default function DataGrid(theme) {
         columnHeaderCheckbox: {
           '& .MuiSvgIcon-root': {
             fontSize: '1.1rem',
-            color: isDark ? theme.palette.grey[400] : theme.palette.grey[600]
+            color: theme.palette.tertiary.main // Medium Grey
           }
         },
         cell: {
@@ -112,12 +130,12 @@ export default function DataGrid(theme) {
         cellCheckbox: {
           '& .MuiSvgIcon-root': {
             fontSize: '1.1rem',
-            color: isDark ? theme.palette.grey[400] : theme.palette.grey[600]
+            color: theme.palette.tertiary.main // Medium Grey
           }
         },
         footer: {
           borderTop: `2px solid ${theme.palette.divider}`,
-          backgroundColor: isDark ? alpha(theme.palette.grey[800], 0.3) : alpha(theme.palette.primary.lighter, 0.1)
+          backgroundColor: colors.pagination.bg
         },
         columnSeparator: {
           color: theme.palette.divider
@@ -128,33 +146,29 @@ export default function DataGrid(theme) {
           '& .MuiMenuItem-root': {
             fontSize: '0.875rem',
             '&:hover': {
-              backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.1) : alpha(theme.palette.primary.main, 0.05)
+              backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
             }
           }
         },
         sortIcon: {
           fontSize: '1rem',
           marginLeft: 8,
-          color: isDark ? theme.palette.grey[400] : theme.palette.grey[600]
+          color: theme.palette.tertiary.main // Medium Grey
         },
         menuIcon: {
           fontSize: '1.25rem',
           marginLeft: 4,
-          color: isDark ? theme.palette.grey[400] : theme.palette.grey[600]
+          color: theme.palette.tertiary.main // Medium Grey
         },
         filterIcon: {
           fontSize: '1.25rem',
-          color: isDark ? theme.palette.grey[400] : theme.palette.grey[600]
+          color: theme.palette.tertiary.main // Medium Grey
         },
         row: {
           '&.Mui-selected': {
-            backgroundColor: isDark
-              ? alpha(theme.palette.primary.darker, 0.2)
-              : alpha(theme.palette.primary.lighter, 0.35),
+            backgroundColor: colors.body.selected,
             '&:hover': {
-              backgroundColor: isDark
-                ? alpha(theme.palette.primary.darker, 0.25)
-                : alpha(theme.palette.primary.lighter, 0.45)
+              backgroundColor: colors.body.selectedHover
             }
           }
         },
@@ -167,16 +181,16 @@ export default function DataGrid(theme) {
             background: isDark ? theme.palette.grey[800] : theme.palette.grey[100]
           },
           '&::-webkit-scrollbar-thumb': {
-            backgroundColor: isDark ? theme.palette.grey[600] : theme.palette.grey[400],
+            backgroundColor: theme.palette.tertiary.main, // Medium Grey
             borderRadius: 4,
             '&:hover': {
-              background: isDark ? theme.palette.grey[500] : theme.palette.grey[500]
+              background: theme.palette.tertiary.dark // Medium Grey dark variant
             }
           }
         },
         selectedRowCount: {
           margin: '0 8px',
-          color: theme.palette.text.secondary
+          color: colors.pagination.text
         }
       }
     }

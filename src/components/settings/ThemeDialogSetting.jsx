@@ -2,14 +2,13 @@ import { Icon } from '@iconify/react';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Typography } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState, useCallback, useTransition, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 
-import BorderRadiusSlider from './BorderRadiusSlider';
-import FontFamilySelect from './FontFamilySelect';
-import PresetColorSelect from './PresetColorSelect';
-import ThemeModeSelect from './ThemeModeSelect';
 import useConfig from 'hooks/useConfig';
 import { config } from 'themes/config';
+import BorderRadiusSlider from './BorderRadiusSlider';
+import FontFamilySelect from './FontFamilySelect';
+import ThemeModeSelect from './ThemeModeSelect';
 
 // ==============================|| THEME DIALOG SETTINGS ||============================== //
 
@@ -45,14 +44,11 @@ RenderButton.propTypes = {
 
 function ThemeDialogSetting({ renderButton }) {
   const [open, setOpen] = useState(false);
-  const theme = useTheme();
   const {
     mode,
-    presetColor,
     fontFamily,
     borderRadius,
     onChangeMode,
-    onChangePresetColor,
     onChangeFontFamily,
     onChangeBorderRadius,
     themeSettings,
@@ -62,7 +58,6 @@ function ThemeDialogSetting({ renderButton }) {
   // Create a temporary copy of the entire theme settings object
   const [tempSettings, setTempSettings] = useState({
     mode,
-    presetColor,
     fontFamily,
     borderRadius: borderRadius || config.borderRadius
   });
@@ -70,7 +65,6 @@ function ThemeDialogSetting({ renderButton }) {
   // Store original values for cancel
   const [originalSettings, setOriginalSettings] = useState({
     mode,
-    presetColor,
     fontFamily,
     borderRadius: borderRadius || config.borderRadius
   });
@@ -84,7 +78,6 @@ function ThemeDialogSetting({ renderButton }) {
       if (themeSettings) {
         setTempSettings({
           mode: themeSettings.mode,
-          presetColor: themeSettings.presetColor,
           fontFamily: themeSettings.fontFamily,
           borderRadius: themeSettings.borderRadius || config.borderRadius
         });
@@ -92,13 +85,12 @@ function ThemeDialogSetting({ renderButton }) {
         // Fallback to individual properties
         setTempSettings({
           mode,
-          presetColor,
           fontFamily,
           borderRadius: borderRadius || config.borderRadius
         });
       }
     }
-  }, [mode, presetColor, fontFamily, borderRadius, themeSettings, open]);
+  }, [mode, fontFamily, borderRadius, themeSettings, open]);
 
   const handleModeChange = useCallback(
     (event) => {
@@ -112,20 +104,6 @@ function ThemeDialogSetting({ renderButton }) {
       });
     },
     [onChangeMode]
-  );
-
-  const handlePresetColorChange = useCallback(
-    (event) => {
-      event.stopPropagation();
-      setTempSettings((prev) => ({
-        ...prev,
-        presetColor: event.target.value
-      }));
-      startTransition(() => {
-        onChangePresetColor(event.target.value);
-      });
-    },
-    [onChangePresetColor]
   );
 
   const handleFontFamilyChange = useCallback(
@@ -170,7 +148,6 @@ function ThemeDialogSetting({ renderButton }) {
     // Create a copy of the current settings
     const currentSettings = {
       mode,
-      presetColor,
       fontFamily,
       borderRadius: borderRadius || config.borderRadius
     };
@@ -183,7 +160,7 @@ function ThemeDialogSetting({ renderButton }) {
 
     // Open the dialog
     setOpen(true);
-  }, [mode, presetColor, fontFamily, borderRadius]);
+  }, [mode, fontFamily, borderRadius]);
 
   const handleCancel = useCallback(() => {
     startTransition(() => {
@@ -194,7 +171,6 @@ function ThemeDialogSetting({ renderButton }) {
       } else {
         // Fallback to individual updates if setThemeSettings is not available
         onChangeMode(originalSettings.mode);
-        onChangePresetColor(originalSettings.presetColor);
         onChangeFontFamily(originalSettings.fontFamily);
         if (onChangeBorderRadius) {
           onChangeBorderRadius(Number(originalSettings.borderRadius));
@@ -202,7 +178,7 @@ function ThemeDialogSetting({ renderButton }) {
       }
     });
     setOpen(false);
-  }, [originalSettings, onChangeMode, onChangePresetColor, onChangeFontFamily, onChangeBorderRadius, setThemeSettings]);
+  }, [originalSettings, onChangeMode, onChangeFontFamily, onChangeBorderRadius, setThemeSettings]);
 
   const handleApply = useCallback(() => {
     setOpen(false);
@@ -212,7 +188,6 @@ function ThemeDialogSetting({ renderButton }) {
     // Get default settings from config
     const defaultSettings = {
       mode: config.mode,
-      presetColor: config.presetColor,
       fontFamily: config.fontFamily,
       borderRadius: config.borderRadius
     };
@@ -227,14 +202,13 @@ function ThemeDialogSetting({ renderButton }) {
       } else {
         // Fallback to individual updates if setThemeSettings is not available
         onChangeMode(defaultSettings.mode);
-        onChangePresetColor(defaultSettings.presetColor);
         onChangeFontFamily(defaultSettings.fontFamily);
         if (onChangeBorderRadius) {
           onChangeBorderRadius(Number(defaultSettings.borderRadius));
         }
       }
     });
-  }, [onChangeMode, onChangePresetColor, onChangeFontFamily, onChangeBorderRadius, setThemeSettings]);
+  }, [onChangeMode, onChangeFontFamily, onChangeBorderRadius, setThemeSettings]);
 
   // Memoize dialog content to prevent unnecessary re-renders
   const dialogContent = useMemo(
@@ -253,17 +227,7 @@ function ThemeDialogSetting({ renderButton }) {
 
           <Box>
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-              <Icon icon="solar:palette-bold-duotone" width={20} />
-              <Typography variant="subtitle2" color="text.secondary">
-                Preset Colors
-              </Typography>
-            </Stack>
-            <PresetColorSelect value={tempSettings.presetColor} onChange={handlePresetColorChange} />
-          </Box>
-
-          <Box>
-            <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
-              <Icon icon="solar:text-bold-duotone" width={20} />
+              <Icon icon="solar:font-size-bold-duotone" width={20} />
               <Typography variant="subtitle2" color="text.secondary">
                 Font Family
               </Typography>
@@ -271,109 +235,56 @@ function ThemeDialogSetting({ renderButton }) {
             <FontFamilySelect value={tempSettings.fontFamily} onChange={handleFontFamilyChange} />
           </Box>
 
-          <BorderRadiusSlider value={tempSettings.borderRadius} onChange={handleBorderRadiusChange} />
+          <Box>
+            <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 1 }}>
+              <Icon icon="solar:square-top-round-bold-duotone" width={20} />
+              <Typography variant="subtitle2" color="text.secondary">
+                Border Radius
+              </Typography>
+            </Stack>
+            <BorderRadiusSlider
+              min={4}
+              max={24}
+              step={2}
+              value={tempSettings.borderRadius}
+              onChange={handleBorderRadiusChange}
+              marks
+              size="medium"
+            />
+          </Box>
         </Box>
       </DialogContent>
     ),
-    [tempSettings, handleModeChange, handlePresetColorChange, handleFontFamilyChange, handleBorderRadiusChange]
+    [tempSettings, handleModeChange, handleFontFamilyChange, handleBorderRadiusChange]
   );
 
   return (
-    <>
+    <div>
       <RenderButton onClick={handleClickOpen} renderButton={renderButton} />
-      <Dialog
-        disableEscapeKeyDown
-        open={open}
-        onClose={(_, reason) => {
-          if (reason !== 'backdropClick') {
-            handleCancel();
-          }
-        }}
-        maxWidth="xs"
-        fullWidth
-        onClick={(e) => e.stopPropagation()}
-        aria-modal="true"
-        aria-labelledby="theme-settings-dialog-title"
-        disableEnforceFocus={false}
-        disableAutoFocus={false}
-        TransitionProps={{
-          onEntering: () => {
-            // Pre-load any resources needed for the dialog
-          }
-        }}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            borderRadius: 2,
-            border: `1px solid ${theme.palette.divider}`,
-            boxShadow: theme.customShadows.z1,
-            opacity: isPending ? 0.8 : 1,
-            transition: 'opacity 0.2s'
-          }
-        }}
-      >
-        <DialogTitle id="theme-settings-dialog-title">
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Icon icon="solar:settings-minimalistic-bold-duotone" width={24} aria-hidden="true" />
-            <Typography variant="h5">Theme Settings</Typography>
-          </Stack>
-        </DialogTitle>
-
+      <Dialog open={open} onClose={() => setOpen(false)} maxWidth="sm" fullWidth>
+        <DialogTitle>Theme Customization</DialogTitle>
         {dialogContent}
-
-        <DialogActions sx={{ p: 2, gap: 1 }}>
+        <DialogActions>
           <Button
             variant="outlined"
-            onClick={() => startTransition(handleDefault)}
+            color="error"
+            onClick={handleDefault}
+            disabled={isPending}
             startIcon={<Icon icon="solar:restart-bold-duotone" />}
-            disabled={isPending}
-            sx={{
-              borderColor: theme.palette.divider,
-              opacity: isPending ? 0.7 : 1,
-              transition: 'opacity 0.2s',
-              '&:hover': {
-                bgcolor: alpha(theme.palette.warning.main, 0.08)
-              }
-            }}
           >
-            Default
+            Reset
           </Button>
-          <Box sx={{ flex: 1 }} />
-          <Button
-            variant="outlined"
-            onClick={() => startTransition(handleCancel)}
-            startIcon={<Icon icon="solar:close-circle-bold-duotone" />}
-            disabled={isPending}
-            sx={{
-              borderColor: theme.palette.divider,
-              opacity: isPending ? 0.7 : 1,
-              transition: 'opacity 0.2s',
-              '&:hover': {
-                bgcolor: alpha(theme.palette.error.main, 0.08)
-              }
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => startTransition(handleApply)}
-            startIcon={<Icon icon="solar:check-circle-bold-duotone" />}
-            disabled={isPending}
-            sx={{
-              bgcolor: theme.palette.primary.main,
-              opacity: isPending ? 0.7 : 1,
-              transition: 'opacity 0.2s',
-              '&:hover': {
-                bgcolor: theme.palette.primary.dark
-              }
-            }}
-          >
-            Apply
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button variant="outlined" color="inherit" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleApply}>
+              Apply
+            </Button>
+          </Stack>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
 
@@ -381,4 +292,4 @@ ThemeDialogSetting.propTypes = {
   renderButton: PropTypes.func
 };
 
-export default React.memo(ThemeDialogSetting);
+export default ThemeDialogSetting;
