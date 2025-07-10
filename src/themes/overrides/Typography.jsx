@@ -1,65 +1,76 @@
+// material-ui
+import { alpha } from '@mui/material/styles';
+
 // ==============================|| OVERRIDES - TYPOGRAPHY ||============================== //
 
 export default function Typography(theme) {
+  const isDark = theme.palette.mode === 'dark';
+
   return {
     MuiTypography: {
       styleOverrides: {
-        // Heading styles
+        // Heading styles - Updated to match themeTypography
         h1: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main, // White in dark mode, Dark Grey in light mode
           fontWeight: 300 // Light per GIB guidelines
         },
         h2: {
-          color: theme.palette.primary.main, // Dark Grey
-          fontWeight: 300 // Light per GIB guidelines
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
+          fontWeight: 400 // Book per GIB guidelines
         },
         h3: {
-          color: theme.palette.primary.main, // Dark Grey
-          fontWeight: 300 // Light per GIB guidelines
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
+          fontWeight: 400 // Book per GIB guidelines
         },
         h4: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
           fontWeight: 400 // Book per GIB guidelines
         },
         h5: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
           fontWeight: 400 // Book per GIB guidelines
         },
         h6: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
           fontWeight: 400 // Book per GIB guidelines
         },
 
         // Subtitle styles
         subtitle1: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
           fontWeight: 500 // Regular per GIB guidelines
         },
         subtitle2: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
           fontWeight: 500 // Regular per GIB guidelines
         },
 
         // Body styles
         body1: {
-          color: theme.palette.primary.main, // Dark Grey
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main,
           fontWeight: 500 // Regular per GIB guidelines
         },
         body2: {
-          color: theme.palette.tertiary.main, // Medium Grey
+          color: isDark ? alpha(theme.palette.common.white, 0.8) : theme.palette.tertiary.main, // Slightly dimmed white in dark mode, Medium Grey in light mode
           fontWeight: 500 // Regular per GIB guidelines
         },
 
         // Caption and overline
         caption: {
-          color: theme.palette.tertiary.main, // Medium Grey
-          fontWeight: 500 // Regular per GIB guidelines
+          color: isDark ? alpha(theme.palette.common.white, 0.7) : theme.palette.tertiary.main, // Medium Grey with adjusted opacity for dark mode
+          fontWeight: 400 // Book per GIB guidelines
         },
         overline: {
           fontWeight: 600, // Semi-bold per GIB guidelines
-          letterSpacing: '0.5px',
+          letterSpacing: '1px', // Match typography.jsx
           textTransform: 'uppercase',
-          color: theme.palette.tertiary.main // Medium Grey
+          color: isDark ? alpha(theme.palette.common.white, 0.7) : theme.palette.tertiary.main // Medium Grey with adjusted opacity for dark mode
+        },
+
+        // Button styles - ensure consistent with typography.jsx
+        button: {
+          fontWeight: 600, // Semi-bold for buttons per GIB guidelines
+          textTransform: 'capitalize'
         },
 
         // Common styles

@@ -1,4 +1,4 @@
-import { Box, alpha, useTheme } from '@mui/material';
+import { alpha, Box, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 
 import LogoSection from 'components/logo/index';
@@ -14,7 +14,7 @@ const DrawerHeader = ({ open }) => {
         sx={{
           width: '100%',
           display: 'flex',
-          justifyContent: open ? 'flex-start' : 'center',
+          justifyContent: open ? 'center' : 'center',
           alignItems: 'center',
           height: '100%',
           position: 'relative',

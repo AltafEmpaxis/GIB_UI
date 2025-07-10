@@ -1,8 +1,11 @@
 // material-ui
+import { alpha } from '@mui/material/styles';
 
 // ==============================|| OVERRIDES - PAPER ||============================== //
 
 export default function Paper(theme) {
+  const isDark = theme.palette.mode === 'dark';
+
   return {
     MuiPaper: {
       defaultProps: {
@@ -19,11 +22,11 @@ export default function Paper(theme) {
             textDecorationLine: 'none'
           },
           '&.MuiPaper-outlined': {
-            borderColor: theme.palette.divider
+            borderColor: isDark ? alpha(theme.palette.common.white, 0.15) : theme.palette.divider
           }
         },
         outlined: {
-          borderColor: theme.palette.divider,
+          borderColor: isDark ? alpha(theme.palette.common.white, 0.15) : theme.palette.divider,
           background: theme.palette.background.paper
         },
         elevation: {
@@ -31,25 +34,25 @@ export default function Paper(theme) {
             boxShadow: 'none'
           },
           '&.MuiPaper-elevation1': {
-            boxShadow: theme.shadows[1]
+            boxShadow: isDark ? theme.customShadows?.z1 : theme.shadows[1]
           },
           '&.MuiPaper-elevation4': {
-            boxShadow: theme.shadows[4]
+            boxShadow: isDark ? theme.customShadows?.z8 : theme.shadows[4]
           },
           '&.MuiPaper-elevation8': {
-            boxShadow: theme.shadows[8]
+            boxShadow: isDark ? theme.customShadows?.z12 : theme.shadows[8]
           },
           '&.MuiPaper-elevation12': {
-            boxShadow: theme.shadows[12]
+            boxShadow: isDark ? theme.customShadows?.z16 : theme.shadows[12]
           },
           '&.MuiPaper-elevation16': {
-            boxShadow: theme.shadows[16]
+            boxShadow: isDark ? theme.customShadows?.z20 : theme.shadows[16]
           },
           '&.MuiPaper-elevation20': {
-            boxShadow: theme.shadows[20]
+            boxShadow: isDark ? theme.customShadows?.z24 : theme.shadows[20]
           },
           '&.MuiPaper-elevation24': {
-            boxShadow: theme.shadows[24]
+            boxShadow: isDark ? theme.customShadows?.z24 : theme.shadows[24]
           }
         }
       }

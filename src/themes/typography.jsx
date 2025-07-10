@@ -9,8 +9,11 @@
  * - Body copy: 16px, line-height 1.5
  * - Caption & labels: 12-14px, line-height 1.4
  *
- * @param {string} fontFamily - The font family to use throughout the application
- * @returns {Object} Typography configuration object for MUI theme
+ * FS Emeric font weights:
+ * - 300: Light (for large display headings)
+ * - 400: Book (for subheadings & captions)
+ * - 500: Regular (for body text)
+ * - 600: SemiBold (for buttons, key labels)
  */
 export function themeTypography(fontFamily) {
   return {
@@ -26,7 +29,7 @@ export function themeTypography(fontFamily) {
       letterSpacing: '-0.5px'
     },
     h2: {
-      fontWeight: 400, // Book weight for subheadings
+      fontWeight: 400, // Book weight for subheadings per GIB guidelines
       fontSize: {
         xs: '1.5rem', // 24px
         sm: '1.625rem', // 26px
@@ -36,45 +39,42 @@ export function themeTypography(fontFamily) {
       letterSpacing: '-0.25px'
     },
     h3: {
-      fontWeight: 400, // Book weight for subheadings
+      fontWeight: 400, // Book weight for subheadings per GIB guidelines
       fontSize: {
-        xs: '1.25rem', // 20px
-        sm: '1.375rem', // 22px
-        md: '1.5rem' // 24px
+        xs: '1.5rem', // 24px - updated to match 24px minimum for subheadings
+        sm: '1.625rem', // 26px
+        md: '1.75rem' // 28px
       },
       lineHeight: 1.3,
       letterSpacing: '0'
     },
     h4: {
-      fontWeight: 500, // Regular weight for smaller headings
-      fontSize: {
-        xs: '1.125rem', // 18px
-        md: '1.25rem' // 20px
-      },
+      fontWeight: 400, // Book weight for smaller headings
+      fontSize: '1.25rem', // 20px
       lineHeight: 1.4,
       letterSpacing: '0.15px'
     },
     h5: {
-      fontWeight: 500, // Regular weight
+      fontWeight: 400, // Book weight
       fontSize: '1rem', // 16px
       lineHeight: 1.5,
       letterSpacing: '0'
     },
     h6: {
-      fontWeight: 500, // Regular weight
+      fontWeight: 400, // Book weight
       fontSize: '0.875rem', // 14px
       lineHeight: 1.4,
       letterSpacing: '0.15px'
     },
     subtitle1: {
       fontSize: '0.875rem', // 14px
-      fontWeight: 400, // Book weight
+      fontWeight: 500, // Regular weight for emphasis
       lineHeight: 1.4,
       letterSpacing: '0.1px'
     },
     subtitle2: {
       fontSize: '0.75rem', // 12px
-      fontWeight: 400, // Book weight
+      fontWeight: 500, // Regular weight for emphasis
       lineHeight: 1.4,
       letterSpacing: '0.1px'
     },
@@ -94,12 +94,17 @@ export function themeTypography(fontFamily) {
       textTransform: 'capitalize',
       fontWeight: 600, // Semi-bold for buttons per guideline
       letterSpacing: '0.4px',
-      fontSize: '0.875rem', // 14px
+      fontSize: {
+        xs: '0.875rem', // 14px - updated to match 14px minimum for buttons
+        sm: '0.9375rem', // 15px
+        md: '1rem', // 16px
+        lg: '1.125rem' // 18px
+      },
       lineHeight: 1.4
     },
     caption: {
       fontSize: '0.75rem', // 12px
-      fontWeight: 400, // Book weight for captions
+      fontWeight: 400, // Book weight for captions per guideline
       lineHeight: 1.4,
       letterSpacing: '0.4px'
     },
@@ -109,29 +114,6 @@ export function themeTypography(fontFamily) {
       letterSpacing: '1px',
       lineHeight: 1.4,
       textTransform: 'uppercase'
-    },
-    // Custom text styles
-    customHeading: {
-      fontWeight: 300, // Light weight for display headings
-      fontSize: '2rem', // 32px
-      lineHeight: 1.25,
-      letterSpacing: '-0.25px',
-      marginBottom: '1rem'
-    },
-    customSubheading: {
-      fontWeight: 400, // Book weight
-      fontSize: '1.5rem', // 24px
-      lineHeight: 1.3,
-      marginBottom: '0.75rem'
-    },
-    accent: {
-      fontWeight: 600 // Semi-bold
-    },
-    customCaption: {
-      fontSize: '0.75rem', // 12px
-      fontWeight: 400, // Book weight
-      lineHeight: 1.4,
-      fontStyle: 'italic'
     }
   };
 }

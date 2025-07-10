@@ -96,7 +96,7 @@ export default function Table(theme) {
             }
           },
           '& .MuiTableRow-root': {
-            transition: 'all .25s ease',
+            transition: 'all .2s cubic-bezier(0.4, 0, 0.2, 1)',
             '&:nth-of-type(odd)': {
               backgroundColor: colors.body.odd
             },

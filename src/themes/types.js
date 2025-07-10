@@ -26,6 +26,7 @@ export const FontFamily = {
   ROBOTO_FLEX_VARIATION: "'Roboto Flex Variable', sans-serif",
   // GIB Corporate Fonts
   FS_EMERIC: "'FS Emeric', Arial, sans-serif",
+  FS_EMERIC_CORE: "'FS Emeric Core', 'FS Emeric', Arial, sans-serif",
   GIBBETA: "'GIBbeta', Arial, sans-serif"
 };
 

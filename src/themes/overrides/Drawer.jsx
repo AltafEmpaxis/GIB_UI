@@ -3,19 +3,21 @@ import { alpha } from '@mui/material';
 // ==============================|| OVERRIDES - DRAWER ||============================== //
 
 export default function Drawer(theme) {
+  const isDark = theme.palette.mode === 'dark';
+
   return {
     MuiDrawer: {
       styleOverrides: {
         paper: {
           backgroundColor: theme.palette.background.default,
-          color: theme.palette.primary.main, // Dark Grey
-          borderRight: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main, // White in dark mode, Dark Grey in light mode
+          borderRight: `1px solid ${isDark ? alpha(theme.palette.common.white, 0.1) : alpha(theme.palette.divider, 0.12)}`,
           transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.shorter
           }),
           '& .MuiListItemButton-root:hover': {
-            backgroundColor: alpha(theme.palette.secondary.main, 0.1), // 10% Yellow
+            backgroundColor: alpha(theme.palette.secondary.main, isDark ? 0.15 : 0.1), // Adjusted Yellow opacity
             '& .MuiListItemIcon-root': {
               color: theme.palette.secondary.main // GIB Yellow
             },
@@ -24,7 +26,7 @@ export default function Drawer(theme) {
             }
           },
           '& .MuiListItemButton-root.Mui-selected': {
-            backgroundColor: alpha(theme.palette.secondary.main, 0.2), // 20% Yellow
+            backgroundColor: alpha(theme.palette.secondary.main, isDark ? 0.25 : 0.2), // Adjusted Yellow opacity
             '& .MuiListItemIcon-root': {
               color: theme.palette.secondary.main // GIB Yellow
             },
@@ -32,24 +34,24 @@ export default function Drawer(theme) {
               color: theme.palette.secondary.main // GIB Yellow
             },
             '&:hover': {
-              backgroundColor: alpha(theme.palette.secondary.main, 0.3) // 30% Yellow
+              backgroundColor: alpha(theme.palette.secondary.main, isDark ? 0.35 : 0.3) // Adjusted Yellow opacity
             }
           }
         },
         paperAnchorLeft: {
-          borderRight: `1px solid ${alpha(theme.palette.divider, 0.12)}`
+          borderRight: `1px solid ${isDark ? alpha(theme.palette.common.white, 0.1) : alpha(theme.palette.divider, 0.12)}`
         },
         paperAnchorRight: {
-          borderLeft: `1px solid ${alpha(theme.palette.divider, 0.12)}`
+          borderLeft: `1px solid ${isDark ? alpha(theme.palette.common.white, 0.1) : alpha(theme.palette.divider, 0.12)}`
         },
         modal: {
           '& .MuiBackdrop-root': {
-            backgroundColor: alpha(theme.palette.common.black, 0.5)
+            backgroundColor: alpha(theme.palette.common.black, isDark ? 0.6 : 0.5)
           }
         },
         docked: {
           '& .MuiPaper-root': {
-            boxShadow: 'none'
+            boxShadow: isDark ? theme.customShadows?.drawer : 'none'
           }
         }
       }

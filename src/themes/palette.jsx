@@ -14,6 +14,15 @@ const PRIMARY = {
   main: '#53565A', // Dark Grey - R:83 G:86 B:90
   dark: '#424448',
   darker: '#323438',
+  100: '#e9e9e9', // Matches lighter
+  200: '#d3d3d3',
+  300: '#bcbcbc',
+  400: '#a6a6a6',
+  500: '#8f8f8f',
+  600: '#53565A', // Matches main
+  700: '#424448', // Matches dark
+  800: '#323438', // Matches darker
+  900: '#212328',
   contrastText: '#ffffff'
 };
 
@@ -24,6 +33,15 @@ const SECONDARY = {
   main: '#FFC72C', // GIB Yellow - R:255 G:199 B:44
   dark: '#ffb300',
   darker: '#ff8f00',
+  100: '#fff8e1', // Matches lighter
+  200: '#ffecb3',
+  300: '#ffe082', // Matches light
+  400: '#ffd54f',
+  500: '#ffca28',
+  600: '#FFC72C', // Matches main
+  700: '#ffb300', // Matches dark
+  800: '#ffa000',
+  900: '#ff8f00', // Matches darker
   contrastText: 'rgba(0, 0, 0, 0.87)'
 };
 
@@ -34,6 +52,15 @@ const TERTIARY = {
   main: '#A2AAAD', // Medium Grey - R:162 G:170 B:173
   dark: '#8a9195',
   darker: '#73797e',
+  100: '#eaecee', // Matches lighter
+  200: '#d5d9dc',
+  300: '#c0c5c9',
+  400: '#A2AAAD', // Matches main
+  500: '#8a9195', // Matches dark
+  600: '#73797e', // Matches darker
+  700: '#5c6267',
+  800: '#444a50',
+  900: '#2d3339',
   contrastText: 'rgba(0, 0, 0, 0.87)'
 };
 
@@ -66,11 +93,11 @@ const SUCCESS = {
   contrastText: '#ffffff'
 };
 
-// Grey palette
+// Grey palette - Updated to align with GIB Light Grey
 const GREY = {
   50: '#fafafa',
   100: '#f5f5f5',
-  200: '#D9D9D6', // Light Grey - R:217 G:217 B:214
+  200: '#D9D9D6', // Light Grey - R:217 G:217 B:214 (Pantone Cool Gray 1C)
   300: '#e0e0e0',
   400: '#bdbdbd',
   500: '#9e9e9e',
@@ -78,10 +105,11 @@ const GREY = {
   700: '#616161',
   800: '#424242',
   900: '#212121',
-  A100: '#f5f5f5',
-  A200: '#eeeeee',
+  A100: '#f5f5f5', // Alternative light backgrounds
+  A200: '#eeeeee', // Alternative borders
   A400: '#bdbdbd',
-  A700: '#616161'
+  A700: '#616161',
+  main: '#D9D9D6' // Adding main to match guidelines
 };
 
 // Text colors
@@ -91,23 +119,29 @@ const TEXT = {
   disabled: 'rgba(0, 0, 0, 0.38)'
 };
 
-// Action colors - following MUI conventions
+// Action colors - Updated to match GIB guidelines for opacity variants
 const ACTION = {
   active: 'rgba(0, 0, 0, 0.54)',
-  hover: 'rgba(0, 0, 0, 0.04)',
-  selected: 'rgba(255, 199, 44, 0.16)', // 16% Yellow
+  hover: 'rgba(255, 199, 44, 0.7)', // 70% Yellow for hover states per guidelines
+  selected: 'rgba(255, 199, 44, 0.4)', // 40% Yellow for selected states per guidelines
   disabled: 'rgba(0, 0, 0, 0.26)',
   disabledBackground: 'rgba(0, 0, 0, 0.12)',
-  focus: 'rgba(255, 199, 44, 0.12)' // 12% Yellow
+  focus: 'rgba(255, 199, 44, 0.1)', // 10% Yellow for focus rings per guidelines
+  disabledOpacity: 0.38,
+  focusOpacity: 0.12,
+  activatedOpacity: 0.24,
+  hoverOpacity: 0.08,
+  selectedOpacity: 0.16
 };
 
-// Background properties
+// Background properties - Updated with neutral dark greys (no blue tint)
 const BACKGROUND = {
   paper: '#ffffff',
   default: '#f5f3f1',
   dark: {
-    paper: '#111936',
-    default: '#151c2c'
+    paper: '#262626', // Neutral dark grey instead of bluish #111936
+    default: '#1E1E1E', // Neutral dark grey instead of bluish #151c2c
+    darker: '#121212'
   }
 };
 
@@ -202,18 +236,19 @@ export function themePalette(mode = 'light') {
       focus: isDark ? alpha(SECONDARY.main, 0.3) : ACTION.focus,
 
       // Opacity values
-      hoverOpacity: 0.08,
-      selectedOpacity: 0.16,
-      disabledOpacity: 0.38,
-      focusOpacity: 0.12,
-      activatedOpacity: 0.24
+      hoverOpacity: ACTION.hoverOpacity,
+      selectedOpacity: ACTION.selectedOpacity,
+      disabledOpacity: ACTION.disabledOpacity,
+      focusOpacity: ACTION.focusOpacity,
+      activatedOpacity: ACTION.activatedOpacity
     },
 
     // Background colors
     background: {
       default: isDark ? BACKGROUND.dark.default : BACKGROUND.default,
-      paper: isDark ? alpha(BACKGROUND.dark.paper, 0.98) : BACKGROUND.paper,
-      neutral: isDark ? alpha(GREY[900], 0.92) : GREY[100]
+      paper: isDark ? BACKGROUND.dark.paper : BACKGROUND.paper,
+      neutral: isDark ? alpha(GREY[900], 0.92) : GREY[100],
+      darker: isDark ? BACKGROUND.dark.darker : BACKGROUND.default
     },
 
     // Divider

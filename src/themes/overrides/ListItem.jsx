@@ -18,6 +18,9 @@ export default function ListItem(theme) {
           },
           '&:hover': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
+          },
+          '&:active': {
+            backgroundColor: alpha(theme.palette.secondary.main, 0.25) // 25% Yellow
           }
         }
       }
@@ -36,6 +39,9 @@ export default function ListItem(theme) {
           },
           '&:hover': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.1) // 10% Yellow
+          },
+          '&:active': {
+            backgroundColor: alpha(theme.palette.secondary.main, 0.25) // 25% Yellow
           }
         }
       }

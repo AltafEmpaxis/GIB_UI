@@ -1,7 +1,7 @@
 import { ButtonBase, Stack } from '@mui/material';
+import { HEADER_HEIGHT } from 'config';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { HEADER_HEIGHT } from 'config';
 
 import Logo from './LogoMain';
 

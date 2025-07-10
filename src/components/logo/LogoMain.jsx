@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import gibLogo from 'assets/logo/gib_logo.jpg';
+import gibLogo from 'assets/logo/gib_logo.svg';
 import PropTypes from 'prop-types';
 
 const Logo = ({

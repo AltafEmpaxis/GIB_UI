@@ -10,7 +10,7 @@ const DrawerHeaderStyled = styled(Box, { shouldForwardProp: (prop) => prop !== '
   minHeight: HEADER_HEIGHT,
   display: 'flex',
   alignItems: 'center',
-  justifyContent: open ? 'flex-start' : 'center',
+  justifyContent: open ? 'center' : 'center',
   padding: theme.spacing(open ? 0.25 : 0.5),
   paddingLeft: open ? theme.spacing(1) : theme.spacing(0.25),
   paddingRight: open ? theme.spacing(1) : theme.spacing(0.25),

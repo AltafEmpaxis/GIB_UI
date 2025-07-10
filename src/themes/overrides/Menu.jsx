@@ -48,7 +48,7 @@ export default function Menu(theme) {
             fontSize: '0.875rem',
             fontWeight: 400,
             borderRadius: theme.shape.borderRadius,
-            color: theme.palette.primary.main, // Dark Grey
+            color: isDark ? theme.palette.grey[100] : theme.palette.primary.main, // Improved contrast for dark mode
             transition: theme.transitions.create(['background-color', 'color'], {
               duration: theme.transitions.duration.shorter
             }),

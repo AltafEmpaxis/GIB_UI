@@ -12,7 +12,8 @@ export default function Tab(theme) {
           textAlign: 'center',
           padding: theme.spacing(1.5, 3),
           fontWeight: theme.typography.fontWeightMedium,
-          borderRadius: theme.shape.borderRadius,
+          borderTopLeftRadius: theme.shape.borderRadius,
+          borderTopRightRadius: theme.shape.borderRadius,
           '&:hover': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.08), // 8% Yellow
             color: theme.palette.secondary.main // GIB Yellow
@@ -23,6 +24,10 @@ export default function Tab(theme) {
             '&:hover': {
               backgroundColor: alpha(theme.palette.secondary.main, 0.2) // 20% Yellow
             }
+          },
+          '&:focus-visible': {
+            outline: `2px solid ${alpha(theme.palette.secondary.main, 0.5)}`,
+            outlineOffset: 2
           },
           '& .MuiSvgIcon-root': {
             fontSize: '1.25rem',

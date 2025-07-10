@@ -44,7 +44,8 @@ export default function Select(theme) {
           '&.Mui-focused': {
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: theme.palette.secondary.main, // GIB Yellow
-              borderWidth: 2
+              borderWidth: 2,
+              boxShadow: `0 0 0 3px ${alpha(theme.palette.secondary.main, 0.2)}`
             }
           },
           '&.Mui-error': {

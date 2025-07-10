@@ -16,6 +16,7 @@ export default function Button(theme) {
         theme.palette[color]?.main || theme.palette.common.black,
         theme.palette.mode === 'dark' ? 0.18 : 0.12
       )
+      // transform: 'translateY(-1px)'
     },
     '&:active': {
       backgroundColor: alpha(
@@ -49,6 +50,7 @@ export default function Button(theme) {
                 : theme.palette.mode === 'dark'
                   ? alpha(colors.main, 0.85)
                   : colors.dark
+            // transform: 'translateY(-1px)'
           },
           '&.Mui-disabled': {
             backgroundColor: theme.palette.tertiary.main,
@@ -62,6 +64,7 @@ export default function Button(theme) {
           '&:hover': {
             backgroundColor: alpha(colors.main, 0.08),
             borderColor: colors.main
+            // transform: 'translateY(-1px)'
           },
           '&.Mui-disabled': {
             color: theme.palette.text.disabled,
@@ -73,6 +76,7 @@ export default function Button(theme) {
           color: colors.main,
           '&:hover': {
             backgroundColor: alpha(colors.main, 0.08)
+            // transform: 'translateY(-1px)'
           },
           '&.Mui-disabled': {
             color: theme.palette.text.disabled
@@ -92,7 +96,7 @@ export default function Button(theme) {
           fontFamily: theme.typography.fontFamily,
           fontWeight: 600, // Semi-bold for buttons per GIB guidelines
           outline: 'none',
-          transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
+          transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color', 'transform'], {
             duration: theme.transitions.duration.shorter
           }),
           '&:focus-visible': {
@@ -108,6 +112,7 @@ export default function Button(theme) {
             '&:hover': {
               backgroundColor: alpha(theme.palette.secondary.main, 0.08),
               color: theme.palette.secondary.main
+              // transform: 'translateY(-1px)'
             },
             '&.Mui-selected': {
               backgroundColor: alpha(theme.palette.secondary.main, 0.1),
@@ -128,6 +133,7 @@ export default function Button(theme) {
             borderRadius: theme.shape.borderRadius,
             '&:hover': {
               backgroundColor: alpha(theme.palette.secondary.main, 0.08)
+              // transform: 'translateY(-1px)'
             },
             '&.Mui-selected': {
               backgroundColor: alpha(theme.palette.secondary.main, 0.1),
@@ -158,6 +164,9 @@ export default function Button(theme) {
           '&:active': {
             transform: 'scale(0.98)'
           },
+          // '&:hover': {
+          //    transform: 'translateY(-1px)'
+          // },
           '&.Mui-disabled': {
             '&.MuiButton-contained': {
               backgroundColor: theme.palette.tertiary.main,
@@ -176,6 +185,7 @@ export default function Button(theme) {
           boxShadow: 'none',
           '&:hover': {
             boxShadow: 'none'
+            // transform: 'translateY(-1px)'
           },
           '&:active': {
             boxShadow: 'none'
@@ -186,6 +196,7 @@ export default function Button(theme) {
           '&:hover': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.08),
             borderColor: theme.palette.secondary.main
+            //transform: 'translateY(-1px)'
           },
           '&:active': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.15)
@@ -194,6 +205,7 @@ export default function Button(theme) {
         text: {
           '&:hover': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.08)
+            // transform: 'translateY(-1px)'
           },
           '&:active': {
             backgroundColor: alpha(theme.palette.secondary.main, 0.15)
@@ -227,6 +239,7 @@ export default function Button(theme) {
           color: '#ffffff',
           '&:hover': {
             backgroundColor: theme.palette.primary.dark
+            // transform: 'translateY(-1px)'
           }
         },
         containedSecondary: {
@@ -234,6 +247,7 @@ export default function Button(theme) {
           color: theme.palette.primary.main, // Dark Grey text on yellow buttons
           '&:hover': {
             backgroundColor: theme.palette.secondary.dark // ffb300
+            // transform: 'translateY(-1px)'
           }
         },
         containedError: {
@@ -241,6 +255,7 @@ export default function Button(theme) {
           color: theme.palette.error.contrastText,
           '&:hover': {
             backgroundColor: theme.palette.error.dark
+            // transform: 'translateY(-1px)'
           }
         },
         containedSuccess: {
@@ -248,6 +263,7 @@ export default function Button(theme) {
           color: theme.palette.success.contrastText,
           '&:hover': {
             backgroundColor: theme.palette.success.dark
+            // transform: 'translateY(-1px)'
           }
         },
         containedInfo: {
@@ -255,6 +271,7 @@ export default function Button(theme) {
           color: theme.palette.info.contrastText,
           '&:hover': {
             backgroundColor: theme.palette.info.dark
+            // transform: 'translateY(-1px)'
           }
         },
         containedWarning: {
@@ -262,6 +279,7 @@ export default function Button(theme) {
           color: theme.palette.warning.contrastText,
           '&:hover': {
             backgroundColor: theme.palette.warning.dark
+            // transform: 'translateY(-1px)'
           }
         },
         // Sizes
