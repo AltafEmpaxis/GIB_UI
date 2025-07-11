@@ -1,9 +1,5 @@
 // material-ui
-import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-
-// project import
+import { Box } from '@mui/material';
 import AuthLogin from './auth-forms/AuthLogin';
 import AuthWrapper from './AuthWrapper';
 
@@ -12,23 +8,17 @@ import AuthWrapper from './AuthWrapper';
 export default function Login() {
   return (
     <>
-      <title>Login - GIB UI</title>
-      <meta name="description" content="Login to access GIB UI - Investment Reconciliation System" />
-      <meta property="og:title" content="Login - GIB UI" />
-      <meta property="og:description" content="Login to access GIB UI - Investment Reconciliation System" />
+      <title>Login - GIB Capital</title>
+      <meta name="description" content="Access GIB Capital's secure investment management platform" />
+      <meta property="og:title" content="Login - GIB Capital" />
+      <meta property="og:description" content="Access GIB Capital's secure investment management platform" />
 
-      <AuthWrapper>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-              <Typography variant="h3">Login</Typography>
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <AuthLogin />
-          </Grid>
-        </Grid>
-      </AuthWrapper>
+      <Box sx={{ position: 'relative', minHeight: '100vh', pb: '10px' }}>
+        <AuthWrapper>
+          <AuthLogin />
+        </AuthWrapper>
+        {/* <AuthFooter /> */}
+      </Box>
     </>
   );
 }
