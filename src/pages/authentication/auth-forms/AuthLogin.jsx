@@ -13,6 +13,7 @@ import {
   OutlinedInput,
   Paper,
   Stack,
+  Tooltip,
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -25,6 +26,7 @@ import * as yup from 'yup';
 // project imports
 import AnimateButton from 'components/@extended/AnimateButton';
 import useAuth from 'hooks/useAuth';
+import useConfig from 'hooks/useConfig';
 import useLocalStorage from 'hooks/useLocalStorage';
 // assets
 import Crypto from 'utils/Crypto';
@@ -37,6 +39,7 @@ const validationSchema = yup.object().shape({
 export default function AuthLogin() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
+  const { mode, onChangeMode } = useConfig();
   const [rememberMe, setRememberMe] = useLocalStorage('rememberMe', false);
   const [rememberedUsername, setRememberedUsername] = useLocalStorage('rememberedUsername', '');
   const [showPassword, setShowPassword] = useState(false);
@@ -115,6 +118,12 @@ export default function AuthLogin() {
     }
   };
 
+  // Toggle theme
+  const toggleTheme = () => {
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    onChangeMode(newMode);
+  };
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -146,9 +155,22 @@ export default function AuthLogin() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        p: { xs: 2, sm: 2.5, md: 1.5 }
+        p: { xs: 2, sm: 2.5, md: 1.5 },
+        position: 'relative'
       }}
     >
+      {/* Light/Dark Mode Toggle Icon */}
+      <Box sx={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}>
+        <Tooltip arrow placement="top" title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>
+          <IconButton onClick={toggleTheme} color="secondary">
+            {theme.palette.mode === 'dark' ? (
+              <Icon icon="solar:sun-bold-duotone" width={24} height={24} />
+            ) : (
+              <Icon icon="solar:moon-bold-duotone" width={24} height={24} />
+            )}
+          </IconButton>
+        </Tooltip>
+      </Box>
       <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ width: '100%' }}>
         <motion.div variants={itemVariants}>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
