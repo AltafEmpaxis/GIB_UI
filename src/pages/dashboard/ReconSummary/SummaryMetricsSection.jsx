@@ -19,7 +19,6 @@ import { useNavigate } from 'react-router';
 const SummaryMetricsSection = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Consistent spacing value
   const spacing = 1.5;
@@ -153,7 +152,7 @@ const SummaryMetricsSection = () => {
                 color: theme.palette.primary.contrastText
               }}
             >
-              <Icon icon="solar:warning-bold-duotone" width={16} />
+              <Icon icon="mdi:account-question" width={16} />
             </Avatar>
           </Box>
 

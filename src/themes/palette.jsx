@@ -251,8 +251,8 @@ export function themePalette(mode = 'light') {
       darker: isDark ? BACKGROUND.dark.darker : BACKGROUND.default
     },
 
-    // Divider
-    divider: isDark ? alpha(GREY[500], 0.28) : GREY[200]
+    // Divider following GIB guidelines
+    divider: isDark ? alpha(GREY[200], 0.28) : GREY[200]
   };
 }
 

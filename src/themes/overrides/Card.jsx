@@ -4,6 +4,8 @@ import { alpha } from '@mui/material/styles';
 // ==============================|| OVERRIDES - CARD ||============================== //
 
 export default function Card(theme) {
+  const isDark = theme.palette.mode === 'dark';
+  
   const getColorStyle = (color) => ({
     backgroundColor: alpha(theme.palette[color].main, 0.05),
     borderColor: alpha(theme.palette[color].main, 0.25),
@@ -19,10 +21,11 @@ export default function Card(theme) {
           position: 'relative',
           borderRadius: theme.shape.borderRadius,
           border: '1px solid',
-          borderColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
+          borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
           transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
             duration: theme.transitions.duration.shorter
           }),
+          boxShadow: theme.customShadows.card,
           '&.MuiPaper-outlined': {
             borderColor: theme.palette.divider
           },
@@ -33,7 +36,8 @@ export default function Card(theme) {
           },
           '&.card-hover': {
             '&:hover': {
-              boxShadow: theme.shadows[8]
+              boxShadow: isDark ? theme.customShadows.z8 : theme.customShadows.z1,
+              transform: 'translateY(-2px)'
             }
           },
           // Color variants
@@ -42,7 +46,15 @@ export default function Card(theme) {
           '&.card-error': getColorStyle('error'),
           '&.card-warning': getColorStyle('warning'),
           '&.card-info': getColorStyle('info'),
-          '&.card-success': getColorStyle('success')
+          '&.card-success': getColorStyle('success'),
+          
+          // MainCard specific styling - will apply to all MainCard components
+          '&.MainCard': {
+            backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.9) : theme.palette.background.paper,
+            '&:hover': {
+              boxShadow: isDark ? theme.customShadows.z8 : theme.customShadows.z1
+            }
+          }
         }
       }
     },

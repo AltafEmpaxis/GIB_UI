@@ -1,5 +1,6 @@
 // material-ui
 import { Box } from '@mui/material';
+import AuthFooter from 'pages/authentication/AuthFooter';
 import AuthLogin from './auth-forms/AuthLogin';
 import AuthWrapper from './AuthWrapper';
 
@@ -13,11 +14,22 @@ export default function Login() {
       <meta property="og:title" content="Login - GIB Capital" />
       <meta property="og:description" content="Access GIB Capital's secure investment management platform" />
 
-      <Box sx={{ position: 'relative', minHeight: '100vh', pb: '10px' }}>
-        <AuthWrapper>
-          <AuthLogin />
-        </AuthWrapper>
-        {/* <AuthFooter /> */}
+      <Box sx={{ 
+        position: 'relative', 
+        minHeight: '100vh', 
+        display: 'flex',
+        flexDirection: 'column'
+      }}>
+        <Box sx={{ 
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column'
+        }}>
+          <AuthWrapper>
+            <AuthLogin />
+          </AuthWrapper>
+        </Box>
+        <AuthFooter />
       </Box>
     </>
   );

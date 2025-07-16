@@ -8,12 +8,6 @@ import {
   IconButton,
   Paper,
   Tab,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   Tooltip,
   Typography,
@@ -23,351 +17,14 @@ import { alpha } from '@mui/material/styles';
 import CustodianUploadAction from 'components/Upload/CustodianUploadAction';
 import NotificationBar from 'components/Upload/NotificationBar';
 import React, { useState } from 'react';
-
-// Format bytes to human readable format
-const formatBytes = (bytes, decimals = 2) => {
-  if (bytes === 0) return '0 Bytes';
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-};
-
-// Upload Steps Component
-const UploadSteps = ({ activeStep }) => {
-  const theme = useTheme();
-
-  const steps = [
-    { label: 'Select Custodian', icon: 'mdi:folder-multiple' },
-    { label: 'Upload Files', icon: 'mdi:cloud-upload' },
-    { label: 'Processing', icon: 'mdi:cog' },
-    { label: 'Complete', icon: 'mdi:check-circle' }
-  ];
-
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 2.5,
-        mb: 3,
-        borderRadius: 2,
-        bgcolor: alpha(theme.palette.primary.main, 0.03),
-        border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          position: 'relative'
-        }}
-      >
-        {/* Connecting line */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 20,
-            left: 32,
-            right: 32,
-            height: 4,
-            bgcolor: alpha(theme.palette.divider, 0.6),
-            zIndex: 0
-          }}
-        />
-
-        {/* Steps */}
-        {steps.map((step, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              position: 'relative',
-              zIndex: 1
-            }}
-          >
-            <Avatar
-              sx={{
-                width: 40,
-                height: 40,
-                bgcolor:
-                  index <= activeStep
-                    ? index === activeStep
-                      ? theme.palette.primary.main
-                      : theme.palette.success.main
-                    : alpha(theme.palette.text.secondary, 0.1),
-                color: index <= activeStep ? 'white' : theme.palette.text.secondary,
-                mb: 1,
-                transition: 'all 0.3s',
-                transform: index === activeStep ? 'scale(1.1)' : 'scale(1)',
-                boxShadow: index === activeStep ? theme.shadows[4] : 'none'
-              }}
-            >
-              <Icon icon={step.icon} width={24} />
-            </Avatar>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: index <= activeStep ? 600 : 400,
-                color: index <= activeStep ? 'text.primary' : 'text.secondary'
-              }}
-            >
-              {step.label}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-    </Paper>
-  );
-};
-
-// Raw Data Table component for custodian uploads
-const RawDataTable = ({ uploadedFiles }) => {
-  const theme = useTheme();
-  const [expandedCustodian, setExpandedCustodian] = useState(null);
-
-  const handleExpandClick = (custodian) => {
-    setExpandedCustodian(expandedCustodian === custodian ? null : custodian);
-  };
-
-  return (
-    <Paper
-      elevation={0}
-      sx={{
-        mt: 3,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: 2,
-        overflow: 'hidden'
-      }}
-    >
-      <Box
-        sx={{
-          p: 2,
-          bgcolor: alpha(theme.palette.primary.main, 0.05),
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
-        <Typography variant="h6">Raw Data Files</Typography>
-        <Tooltip title="View uploaded raw data files for each custodian">
-          <IconButton size="small">
-            <Icon icon="mdi:information" width={20} />
-          </IconButton>
-        </Tooltip>
-      </Box>
-
-      {uploadedFiles.length === 0 ? (
-        <Box sx={{ p: 3, textAlign: 'center' }}>
-          <Icon icon="mdi:file-document-outline" style={{ fontSize: 40, opacity: 0.5, marginBottom: 10 }} />
-          <Typography variant="body1" color="textSecondary">
-            No files have been uploaded yet
-          </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
-            Use the upload options above to add files
-          </Typography>
-        </Box>
-      ) : (
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow sx={{ bgcolor: alpha(theme.palette.primary.main, 0.05) }}>
-                <TableCell width="30%">Custodian</TableCell>
-                <TableCell width="40%">Files</TableCell>
-                <TableCell align="center" width="15%">
-                  Status
-                </TableCell>
-                <TableCell align="center" width="15%">
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {uploadedFiles.map((custodian) => (
-                <React.Fragment key={custodian.id}>
-                  <TableRow
-                    sx={{
-                      '&:hover': { bgcolor: alpha(theme.palette.primary.main, 0.02) },
-                      cursor: 'pointer',
-                      bgcolor: expandedCustodian === custodian.id ? alpha(custodian.color, 0.05) : 'inherit'
-                    }}
-                    onClick={() => handleExpandClick(custodian.id)}
-                  >
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar
-                          sx={{
-                            bgcolor: alpha(custodian.color, 0.2),
-                            color: custodian.color,
-                            width: 36,
-                            height: 36,
-                            mr: 1.5
-                          }}
-                        >
-                          <Icon icon={custodian.icon} width={20} />
-                        </Avatar>
-                        <Typography variant="subtitle2">{custodian.name}</Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Typography variant="body2">
-                          {custodian.files.length} {custodian.files.length === 1 ? 'file' : 'files'} uploaded
-                        </Typography>
-                        {custodian.files.length > 0 && (
-                          <Chip
-                            size="small"
-                            label={`${custodian.files
-                              .reduce((total, file) => total + (file.size || 0), 0)
-                              .toLocaleString()} bytes`}
-                            sx={{ ml: 1, height: 20, fontSize: '0.7rem' }}
-                          />
-                        )}
-                      </Box>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Chip
-                        label={custodian.status}
-                        size="small"
-                        color={
-                          custodian.status === 'Processed'
-                            ? 'success'
-                            : custodian.status === 'Processing'
-                              ? 'warning'
-                              : custodian.status === 'Error'
-                                ? 'error'
-                                : 'default'
-                        }
-                        sx={{ minWidth: 85 }}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        size="small"
-                        color="primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleExpandClick(custodian.id);
-                        }}
-                      >
-                        <Icon
-                          icon={expandedCustodian === custodian.id ? 'mdi:chevron-up' : 'mdi:chevron-down'}
-                          width={20}
-                        />
-                      </IconButton>
-                      {custodian.files.length > 0 && (
-                        <IconButton
-                          size="small"
-                          color="error"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            // Handle delete action
-                          }}
-                          sx={{ ml: 1 }}
-                        >
-                          <Icon icon="mdi:delete-outline" width={20} />
-                        </IconButton>
-                      )}
-                    </TableCell>
-                  </TableRow>
-
-                  {/* Expanded section with file details */}
-                  {expandedCustodian === custodian.id && (
-                    <TableRow>
-                      <TableCell colSpan={4} sx={{ p: 0, borderBottom: 0 }}>
-                        <Box
-                          sx={{
-                            p: 2,
-                            bgcolor: alpha(custodian.color, 0.03),
-                            borderTop: `1px dashed ${alpha(custodian.color, 0.3)}`
-                          }}
-                        >
-                          {custodian.files.length > 0 ? (
-                            <TableContainer>
-                              <Table size="small">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>File Name</TableCell>
-                                    <TableCell align="center">Type</TableCell>
-                                    <TableCell align="center">Size</TableCell>
-                                    <TableCell align="right">Upload Time</TableCell>
-                                    <TableCell align="center">Status</TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {custodian.files.map((file, idx) => (
-                                    <TableRow key={idx}>
-                                      <TableCell>
-                                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                          <Icon
-                                            icon={`mdi:file-${file.type === 'csv' ? 'excel' : file.type}`}
-                                            width={20}
-                                            style={{ marginRight: 8 }}
-                                          />
-                                          <Typography variant="body2">{file.name}</Typography>
-                                        </Box>
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        <Chip
-                                          label={file.type.toUpperCase()}
-                                          size="small"
-                                          sx={{ height: 20, fontSize: '0.7rem' }}
-                                        />
-                                      </TableCell>
-                                      <TableCell align="center">{file.size ? formatBytes(file.size) : 'N/A'}</TableCell>
-                                      <TableCell align="right">
-                                        <Typography variant="caption">{file.uploadTime}</Typography>
-                                      </TableCell>
-                                      <TableCell align="center">
-                                        <Chip
-                                          label={file.status || 'Pending'}
-                                          size="small"
-                                          color={
-                                            file.status === 'Valid'
-                                              ? 'success'
-                                              : file.status === 'Processing'
-                                                ? 'warning'
-                                                : file.status === 'Error'
-                                                  ? 'error'
-                                                  : 'default'
-                                          }
-                                          sx={{ height: 20, fontSize: '0.7rem', minWidth: 60 }}
-                                        />
-                                      </TableCell>
-                                    </TableRow>
-                                  ))}
-                                </TableBody>
-                              </Table>
-                            </TableContainer>
-                          ) : (
-                            <Typography variant="body2" color="textSecondary" align="center">
-                              No files for this custodian yet
-                            </Typography>
-                          )}
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-    </Paper>
-  );
-};
+import GIBStepper from './GIBStepper';
+import RawDataFilesTable from './RawDataFilesTable';
 
 const UploadData = ({ isLoading }) => {
   const theme = useTheme();
   const [activeTab, setActiveTab] = useState('custodian');
-  const [uploadStep, setUploadStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
   const [notification, setNotification] = useState({
     message: '',
     type: '',
@@ -414,13 +71,18 @@ const UploadData = ({ isLoading }) => {
   const handleTabChange = (e, newValue) => {
     setActiveTab(newValue);
     // Reset upload steps when switching tabs
-    setUploadStep(0);
+    setActiveStep(0);
+    setCompleted({});
   };
+
+  // Steps for the stepper
+  const steps = ['Select Custodian', 'Upload Files', 'Processing', 'Complete'];
 
   // Handle custodian upload
   const handleCustodianUpload = (custodianType) => {
     // Set to upload step
-    setUploadStep(1);
+    setActiveStep(1);
+    setCompleted({ 0: true }); // Mark first step as completed
 
     // Show an uploading notification with indeterminate progress first
     setNotification({
@@ -435,9 +97,10 @@ const UploadData = ({ isLoading }) => {
     const interval = setInterval(() => {
       progress += Math.floor(Math.random() * 15) + 5; // Random progress between 5-20%
 
-      if (progress >= 50 && uploadStep < 2) {
+      if (progress >= 50 && activeStep < 2) {
         // Move to processing step
-        setUploadStep(2);
+        setActiveStep(2);
+        setCompleted({ 0: true, 1: true }); // Mark first and second steps as completed
       }
 
       if (progress >= 100) {
@@ -445,7 +108,8 @@ const UploadData = ({ isLoading }) => {
         progress = 100;
 
         // Set to complete step
-        setUploadStep(3);
+        setActiveStep(3);
+        setCompleted({ 0: true, 1: true, 2: true }); // Mark all steps as completed
 
         // Add mock file to the custodian files
         const mockFile = {
@@ -597,6 +261,135 @@ const UploadData = ({ isLoading }) => {
     }
   ];
 
+  // Custom content renderer for GIBStepper
+  const renderStepContent = (step, handleNext, handleBack, handleComplete) => {
+    switch (step) {
+      case 0: // Select Custodian
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Select a custodian to upload data
+            </Typography>
+            <Grid container spacing={3}>
+              {custodianOptions.map((option, index) => (
+                <Grid item xs={12} md={6} lg={3} key={index}>
+                  <CustodianUploadAction
+                    title={option.title}
+                    icon={option.icon}
+                    color={option.color}
+                    onUpload={option.handler}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        );
+
+      case 1: // Upload Files
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Uploading Files
+            </Typography>
+            <Box
+              sx={{
+                p: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: alpha(theme.palette.primary.main, 0.05),
+                borderRadius: 2,
+                border: `1px dashed ${alpha(theme.palette.primary.main, 0.3)}`
+              }}
+            >
+              <Icon icon="mdi:cloud-upload" width={60} height={60} color={theme.palette.primary.main} />
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                Your files are being prepared for upload...
+              </Typography>
+            </Box>
+          </Box>
+        );
+
+      case 2: // Processing
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Processing Files
+            </Typography>
+            <Box
+              sx={{
+                p: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: alpha(theme.palette.warning.main, 0.05),
+                borderRadius: 2,
+                border: `1px dashed ${alpha(theme.palette.warning.main, 0.3)}`
+              }}
+            >
+              <Icon
+                icon="mdi:cog"
+                className="spinning-icon"
+                width={60}
+                height={60}
+                color={theme.palette.warning.main}
+              />
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                Your files are currently being processed...
+              </Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
+                This may take a few moments
+              </Typography>
+            </Box>
+          </Box>
+        );
+
+      case 3: // Complete
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Upload Complete
+            </Typography>
+            <Box
+              sx={{
+                p: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                bgcolor: alpha(theme.palette.success.main, 0.05),
+                borderRadius: 2,
+                border: `1px dashed ${alpha(theme.palette.success.main, 0.3)}`
+              }}
+            >
+              <Icon icon="mdi:check-circle" width={60} height={60} color={theme.palette.success.main} />
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                Your files have been successfully uploaded and processed.
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2, borderRadius: 2 }}
+                startIcon={<Icon icon="mdi:file-document-outline" />}
+                onClick={() => {
+                  // Reset steps to start new upload
+                  setActiveStep(0);
+                  setCompleted({});
+                }}
+              >
+                Upload More Files
+              </Button>
+            </Box>
+          </Box>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box sx={{ p: 2 }}>
       {/* Notification */}
@@ -651,23 +444,31 @@ const UploadData = ({ isLoading }) => {
               />
             </Box>
 
-            <UploadSteps activeStep={uploadStep} />
-
-            <Grid container spacing={3} sx={{ mt: 2 }}>
-              {custodianOptions.map((option, index) => (
-                <Grid item xs={12} md={6} lg={3} key={index}>
-                  <CustodianUploadAction
-                    title={option.title}
-                    icon={option.icon}
-                    color={option.color}
-                    onUpload={option.handler}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            {/* GIB Stepper Component */}
+            <Paper
+              elevation={0}
+              sx={{
+                p: 3,
+                mb: 3,
+                borderRadius: 2,
+                bgcolor: alpha(theme.palette.primary.main, 0.03),
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
+              }}
+            >
+              <GIBStepper
+                steps={steps}
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+                completed={completed}
+                setCompleted={setCompleted}
+                alternativeLabel={true}
+                showControls={false}
+                contentRenderer={renderStepContent}
+              />
+            </Paper>
 
             {/* Raw Data Table for uploaded files */}
-            <RawDataTable uploadedFiles={custodianFiles} />
+            <RawDataFilesTable uploadedFiles={custodianFiles} />
           </Box>
         </>
       )}
@@ -780,6 +581,21 @@ const UploadData = ({ isLoading }) => {
           </Box>
         </>
       )}
+
+      {/* Add CSS for spinning icon animation */}
+      <style jsx global>{`
+        .spinning-icon {
+          animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </Box>
   );
 };

@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 
@@ -14,18 +14,15 @@ import PropTypes from 'prop-types';
 const MainCard = forwardRef(
   (
     {
-      border = true,
-      boxShadow,
       children,
       content = true,
       contentSX = {},
       darkTitle,
       divider = true,
-      elevation,
       secondary,
-      shadow,
       sx = {},
       title,
+      color, // Added color prop for card variants
       ...others
     },
     ref
@@ -33,39 +30,66 @@ const MainCard = forwardRef(
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 
+    // Get color style based on color prop (similar to Card.jsx)
+    const getColorStyle = (colorName) => ({
+      backgroundColor: alpha(theme.palette[colorName].main, 0.05),
+      borderColor: alpha(theme.palette[colorName].main, 0.25),
+      '&:hover': {
+        backgroundColor: alpha(theme.palette[colorName].main, 0.1)
+      }
+    });
+
+    // Determine card style based on color prop
+    const colorStyle = color ? getColorStyle(color) : {};
+
     return (
       <Card
-        // elevation={elevation !== undefined ? elevation : 1}
         ref={ref}
+        className="MainCard"
         {...others}
         sx={{
-          position: 'relative',
-          border: border ? `1px solid ${theme.palette.divider}` : 'none',
-          borderRadius: 2,
-          ':hover': {
-            boxShadow: boxShadow ? shadow || (isDark ? theme.customShadows.z2 : theme.customShadows.z1) : 'inherit'
-          },
+          ...(color && { ...colorStyle }),
           ...sx
         }}
       >
         {/* card header and action */}
         {!title ? null : (
           <CardHeader
-            sx={{ p: 2.5 }}
-            title={
-              <Typography variant="h5" sx={{ color: darkTitle ? theme.palette.grey[900] : 'inherit' }}>
-                {title}
-              </Typography>
-            }
+            sx={{
+              p: 2.5,
+              '& .MuiCardHeader-title': {
+                fontSize: '1rem',
+                fontWeight: 500,
+                color: darkTitle ? theme.palette.text.primary : 'inherit'
+              }
+            }}
+            title={<Typography variant="h5">{title}</Typography>}
             action={secondary}
           />
         )}
 
         {/* content & header divider */}
-        {title && divider && <Divider />}
+        {title && divider && (
+          <Divider
+            sx={{
+              opacity: isDark ? 0.2 : 0.4,
+              borderColor: theme.palette.divider
+            }}
+          />
+        )}
 
         {/* card content */}
-        {content && <CardContent sx={{ p: 2.5, ...contentSX }}>{children}</CardContent>}
+        {content && (
+          <CardContent
+            sx={{
+              p: 2.5,
+              '&:last-child': { pb: 2.5 },
+              ...contentSX
+            }}
+          >
+            {children}
+          </CardContent>
+        )}
         {!content && children}
       </Card>
     );
@@ -86,7 +110,8 @@ MainCard.propTypes = {
   sx: PropTypes.object,
   title: PropTypes.string,
   content: PropTypes.bool,
-  children: PropTypes.node
+  children: PropTypes.node,
+  color: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'error', 'warning', 'info', 'success']) // Added color prop types
 };
 
 export default MainCard;

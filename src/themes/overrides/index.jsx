@@ -26,6 +26,7 @@ import Progress from './Progress';
 import Radio from './Radio';
 import Select from './Select';
 import Slider from './Slider';
+import Stepper from './Stepper';
 import Switch from './Switch';
 import Tab from './Tab';
 import Table from './Table';
@@ -65,6 +66,7 @@ export default function componentStyleOverrides(theme) {
     Radio(theme),
     Select(theme),
     Slider(theme),
+    Stepper(theme),
     Switch(theme),
     Table(theme),
     Tab(theme),

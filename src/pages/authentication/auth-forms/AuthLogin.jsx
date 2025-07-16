@@ -10,11 +10,12 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  OutlinedInput,
   Paper,
   Stack,
+  TextField,
   Tooltip,
-  Typography
+  Typography,
+  Divider
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
@@ -155,32 +156,55 @@ export default function AuthLogin() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        p: { xs: 2, sm: 2.5, md: 1.5 },
         position: 'relative'
       }}
     >
       {/* Light/Dark Mode Toggle Icon */}
-      <Box sx={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}>
+      <Box sx={{ position: 'absolute', top: 0, right: 8, zIndex: 10 }}>
         <Tooltip arrow placement="top" title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>
-          <IconButton onClick={toggleTheme} color="secondary">
+          <IconButton 
+            onClick={toggleTheme} 
+            color="secondary"
+            sx={{
+              bgcolor: alpha(theme.palette.background.default, 0.1),
+              backdropFilter: 'blur(8px)',
+              '&:hover': {
+                bgcolor: alpha(theme.palette.background.default, 0.2)
+              }
+            }}
+          >
             {theme.palette.mode === 'dark' ? (
-              <Icon icon="solar:sun-bold-duotone" width={24} height={24} />
+              <Icon icon="solar:sun-bold-duotone" width={22} height={22} />
             ) : (
-              <Icon icon="solar:moon-bold-duotone" width={24} height={24} />
+              <Icon icon="solar:moon-bold-duotone" width={22} height={22} />
             )}
           </IconButton>
         </Tooltip>
       </Box>
+      
       <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ width: '100%' }}>
         <motion.div variants={itemVariants}>
           <Box sx={{ mb: 3, textAlign: 'center' }}>
             <Typography
               variant="h3"
               sx={{
-                fontWeight: 400,
-                color: isDark ? '#FFFFFF' : theme.palette.primary.main,
+                fontWeight: 600, // SemiBold from global-styles.css
+                color: isDark ? theme.palette.common.white : theme.palette.primary.main,
                 letterSpacing: '-0.5px',
-                mb: 1
+                mb: 1,
+                position: 'relative',
+                display: 'inline-block',
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  bottom: -8,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: '40px',
+                  height: '3px',
+                  background: theme.palette.secondary.main,
+                  borderRadius: '2px'
+                }
               }}
             >
               Welcome to GIB Capital
@@ -189,7 +213,8 @@ export default function AuthLogin() {
               variant="body2"
               sx={{
                 color: isDark ? theme.palette.grey[400] : theme.palette.text.secondary,
-                fontSize: '0.9rem'
+                fontSize: '0.9rem',
+                mt: 2
               }}
             >
               Enter your credentials to access your account
@@ -198,7 +223,7 @@ export default function AuthLogin() {
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: 2 }}>
             <Paper
               elevation={0}
               sx={{
@@ -210,7 +235,7 @@ export default function AuthLogin() {
                 bgcolor: isDark
                   ? alpha(theme.palette.secondary.darker, 0.15)
                   : alpha(theme.palette.secondary.lighter, 0.4),
-                borderRadius: 2,
+                borderRadius: theme.shape.borderRadius,
                 backdropFilter: 'blur(8px)',
                 border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`
               }}
@@ -243,23 +268,28 @@ export default function AuthLogin() {
           <Grid container spacing={2.5}>
             <Grid item xs={12}>
               <motion.div variants={itemVariants}>
-                <OutlinedInput
+                <TextField
                   id="username-login"
+                  label="Username or Email"
+                  variant="outlined"
                   type="text"
-                  {...register('username')}
-                  placeholder="Username or Email"
+                  placeholder="Enter your username or email"
                   fullWidth
                   error={Boolean(errors.username)}
-                  startAdornment={
-                    <InputAdornment position="start" sx={{ ml: 0.5 }}>
-                      <Icon
-                        icon="solar:user-bold"
-                        width={18}
-                        height={18}
-                        color={isDark ? theme.palette.tertiary.main : theme.palette.tertiary.darker}
-                      />
-                    </InputAdornment>
-                  }
+                  {...register('username')}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Icon
+                          icon="solar:user-bold"
+                          width={18}
+                          height={18}
+                          color={isDark ? theme.palette.tertiary.main : theme.palette.tertiary.darker}
+                        />
+                      </InputAdornment>
+                    )
+                  }}
+                 
                 />
                 {errors.username && (
                   <FormHelperText error sx={{ ml: 1, mt: 0.5 }}>
@@ -271,37 +301,45 @@ export default function AuthLogin() {
 
             <Grid item xs={12}>
               <motion.div variants={itemVariants}>
-                <OutlinedInput
+                <TextField
+                  id="password-login"
+                  label="Password"
+                  variant="outlined"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
                   fullWidth
                   error={Boolean(errors.password)}
-                  id="password-login"
-                  type={showPassword ? 'text' : 'password'}
                   {...register('password')}
-                  placeholder="Password"
-                  startAdornment={
-                    <InputAdornment position="start" sx={{ ml: 0.5 }}>
-                      <Icon
-                        icon="solar:lock-bold"
-                        width={18}
-                        height={18}
-                        color={isDark ? theme.palette.tertiary.main : theme.palette.tertiary.darker}
-                      />
-                    </InputAdornment>
-                  }
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        color="secondary"
-                        sx={{ color: theme.palette.tertiary.main }}
-                      >
-                        <Icon icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'} width={18} height={18} />
-                      </IconButton>
-                    </InputAdornment>
-                  }
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Icon
+                          icon="solar:lock-bold"
+                          width={18}
+                          height={18}
+                          color={isDark ? theme.palette.tertiary.main : theme.palette.tertiary.darker}
+                        />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                          color="secondary"
+                        >
+                          <Icon
+                            icon={showPassword ? 'solar:eye-bold' : 'solar:eye-closed-bold'}
+                            width={18}
+                            height={18}
+                          />
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                 
                 />
                 {errors.password && (
                   <FormHelperText error sx={{ ml: 1, mt: 0.5 }}>
@@ -321,6 +359,12 @@ export default function AuthLogin() {
                         onChange={(e) => setRememberMe(e.target.checked)}
                         name="rememberMe"
                         size="small"
+                        sx={{
+                          color: theme.palette.secondary.main,
+                          '&.Mui-checked': {
+                            color: theme.palette.secondary.main
+                          }
+                        }}
                       />
                     }
                     label={
@@ -378,20 +422,7 @@ export default function AuthLogin() {
                     type="submit"
                     variant="contained"
                     color="secondary"
-                    sx={{
-                      height: 48,
-                      borderRadius: 2,
-                      fontSize: '0.95rem',
-                      fontWeight: 600,
-                      letterSpacing: 0.5,
-                      bgcolor: theme.palette.secondary.main,
-                      color: theme.palette.primary.main,
-                      boxShadow: `0 5px 12px ${alpha(theme.palette.secondary.main, 0.3)}`,
-                      '&:hover': {
-                        bgcolor: theme.palette.secondary.dark,
-                        boxShadow: `0 8px 16px ${alpha(theme.palette.secondary.main, 0.4)}`
-                      }
-                    }}
+                   
                     startIcon={
                       isLoading ? (
                         <Icon icon="svg-spinners:180-ring" width={20} height={20} />
@@ -400,7 +431,6 @@ export default function AuthLogin() {
                           icon="solar:login-bold"
                           width={18}
                           height={18}
-                          color={theme.palette.primary.main}
                           style={{ marginRight: '8px' }}
                         />
                       )
@@ -415,7 +445,15 @@ export default function AuthLogin() {
         </form>
 
         <motion.div variants={itemVariants}>
-          <Box sx={{ mt: 3, textAlign: 'center' }}>
+          <Divider sx={{ 
+            my: 3,
+            opacity: 0.6,
+            '&::before, &::after': {
+              borderColor: alpha(theme.palette.divider, 0.2)
+            }
+          }}/>
+          
+          <Box sx={{ textAlign: 'center' }}>
             <Stack spacing={1} direction="row" justifyContent="center" sx={{ mb: 1 }}>
               <Icon
                 icon="solar:shield-keyhole-minimalistic-line-duotone"

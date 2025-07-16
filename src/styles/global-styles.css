@@ -316,6 +316,7 @@ pre.language-mermaid {
     height: 8px;
     opacity: 0.7;
     transition: all 0.3s ease;
+    margin: 0 6px;
 }
 
 .auth-swiper .swiper-pagination-bullet-active {
@@ -323,42 +324,6 @@ pre.language-mermaid {
     border-radius: 4px;
     opacity: 1;
 }
-
-/* .auth-swiper .autoplay-progress {
-    position: absolute;
-    right: 30px;
-    bottom: 100px;
-    z-index: 10;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
-
-/* .auth-swiper .autoplay-progress svg {
-    --progress: 0;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 10;
-    width: 100%;
-    height: 100%;
-    stroke-width: 2px;
-    transform: rotate(-90deg);
-    fill: none;
-} */
-
-/* .auth-swiper .autoplay-progress svg circle {
-    stroke-dashoffset: calc(125.6 * (1 - var(--progress)));
-    stroke-dasharray: 125.6;
-}
-
-.auth-swiper .autoplay-progress span {
-    position: absolute;
-    font-size: 0.8rem;
-    font-weight: 600;
-} */
 
 /* Icon fixes */
 .iconify {
