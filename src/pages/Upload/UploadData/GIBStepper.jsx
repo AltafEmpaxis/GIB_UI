@@ -5,83 +5,106 @@ import {
   Stepper,
   Step,
   StepLabel,
-  StepButton,
-  StepConnector,
   Button,
   Typography,
   styled,
   useTheme,
-  alpha
+  alpha,
+  CircularProgress,
+  StepConnector,
+  Tooltip
 } from '@mui/material';
 import { stepConnectorClasses } from '@mui/material/StepConnector';
 import { Icon } from '@iconify/react';
 import CheckIcon from '@mui/icons-material/Check';
 
-// Custom connector with GIB theme colors
-const GIBConnector = styled(StepConnector)(({ theme }) => {
-  const isDark = theme.palette.mode === 'dark';
-  
-  return {
-    [`&.${stepConnectorClasses.alternativeLabel}`]: {
-      top: 22,
-      left: 'calc(-50% + 20px)',
-      right: 'calc(50% + 20px)',
-    },
-    [`&.${stepConnectorClasses.active}`]: {
-      [`& .${stepConnectorClasses.line}`]: {
-        backgroundImage: `linear-gradient(95deg, 
-          ${theme.palette.primary.main} 0%, 
-          ${theme.palette.secondary.main} 50%, 
-          ${theme.palette.primary.dark} 100%)`,
-      },
-    },
-    [`&.${stepConnectorClasses.completed}`]: {
-      [`& .${stepConnectorClasses.line}`]: {
-        backgroundImage: `linear-gradient(95deg, 
-          ${theme.palette.secondary.main} 0%, 
-          ${theme.palette.secondary.dark} 100%)`,
-      },
-    },
+// Custom connector with animated gradient progress
+const AnimatedConnector = styled(StepConnector)(({ theme }) => ({
+  [`&.${stepConnectorClasses.alternativeLabel}`]: {
+    top: 22,
+  },
+  [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      height: 3,
-      border: 0,
-      backgroundColor: isDark ? theme.palette.grey[700] : theme.palette.grey[300],
-      borderRadius: 1,
-    },
-  };
-});
-
-// Custom Step Icon
-const GIBStepIconRoot = styled('div')(({ theme, ownerState }) => {
-  const isDark = theme.palette.mode === 'dark';
-  
-  return {
-    backgroundColor: isDark ? theme.palette.grey[700] : theme.palette.grey[300],
-    zIndex: 1,
-    color: '#fff',
-    width: 50,
-    height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxShadow: theme.shadows[1],
-    transition: 'all 0.3s ease',
-    ...(ownerState.active && {
-      backgroundImage: `linear-gradient(136deg, 
+      backgroundImage: `linear-gradient(95deg, 
         ${theme.palette.primary.main} 0%, 
         ${theme.palette.secondary.main} 50%, 
         ${theme.palette.primary.dark} 100%)`,
-      boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-      transform: 'scale(1.1)'
-    }),
-    ...(ownerState.completed && {
-      backgroundImage: `linear-gradient(136deg, 
-        ${theme.palette.secondary.main} 0%, 
-        ${theme.palette.secondary.dark} 100%)`,
-    }),
-  };
-});
+      backgroundSize: '200% 200%',
+      animation: 'gradient-animation 2s ease infinite',
+    },
+  },
+  [`&.${stepConnectorClasses.completed}`]: {
+    [`& .${stepConnectorClasses.line}`]: {
+      backgroundImage: `linear-gradient(95deg, 
+        ${theme.palette.primary.main} 0%, 
+        ${theme.palette.primary.dark} 100%)`,
+    },
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    height: 3,
+    border: 0,
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[300],
+    borderRadius: 1,
+  },
+  '@keyframes gradient-animation': {
+    '0%': {
+      backgroundPosition: '0% 50%',
+    },
+    '50%': {
+      backgroundPosition: '100% 50%',
+    },
+    '100%': {
+      backgroundPosition: '0% 50%',
+    },
+  },
+}));
+
+// Custom Step Icon
+const GIBStepIconRoot = styled('div')(({ theme, ownerState }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[300],
+  zIndex: 1,
+  color: '#fff',
+  width: 40,
+  height: 40,
+  display: 'flex',
+  borderRadius: '50%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  boxShadow: theme.shadows[1],
+  transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.3s ease',
+  ...(ownerState.active && {
+    backgroundImage: `linear-gradient(135deg, 
+      ${theme.palette.primary.main} 0%, 
+      ${theme.palette.secondary.main} 50%, 
+      ${theme.palette.primary.dark} 100%)`,
+    backgroundSize: '200% 200%',
+    animation: 'gradient-icon-animation 2s ease infinite',
+    transform: 'scale(1.2)',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+  }),
+  ...(ownerState.completed && {
+    backgroundColor: theme.palette.primary.main,
+  }),
+  '@keyframes gradient-icon-animation': {
+    '0%': {
+      backgroundPosition: '0% 50%',
+    },
+    '50%': {
+      backgroundPosition: '100% 50%',
+    },
+    '100%': {
+      backgroundPosition: '0% 50%',
+    },
+  },
+  '@keyframes spin': {
+    '0%': {
+      transform: 'rotate(0deg)',
+    },
+    '100%': {
+      transform: 'rotate(360deg)',
+    },
+  },
+}));
 
 // Custom Step Icon Component
 function GIBStepIcon(props) {
@@ -89,15 +112,20 @@ function GIBStepIcon(props) {
   const theme = useTheme();
 
   const icons = {
-    1: <Icon icon="mdi:folder-multiple" width={24} />,
-    2: <Icon icon="mdi:cloud-upload" width={24} />,
-    3: <Icon icon="mdi:cog" width={24} />,
-    4: <Icon icon="mdi:check-circle" width={24} />
+    1: <Icon icon="mdi:folder-multiple" width={20} />,
+    2: <Icon icon="mdi:cloud-upload" width={20} className={active ? "spinning-icon" : ""} />,
+    3: <Icon icon="mdi:check-circle" width={20} />
   };
 
   return (
     <GIBStepIconRoot ownerState={{ completed, active }} className={className}>
-      {completed ? <CheckIcon /> : icons[String(icon)]}
+      {completed ? (
+        <CheckIcon fontSize="small" />
+      ) : active && icon === 2 ? (
+        <Icon icon="mdi:cog" width={22} className="spinning-icon" />
+      ) : (
+        icons[String(icon)]
+      )}
     </GIBStepIconRoot>
   );
 }
@@ -109,6 +137,20 @@ GIBStepIcon.propTypes = {
   icon: PropTypes.node
 };
 
+// Step instruction tooltips
+const getStepTooltip = (step) => {
+  switch(step) {
+    case 0:
+      return "Step 1: Select a custodian type to upload data from. Accepted formats: XLSX, CSV, XML (max 50MB)";
+    case 1:
+      return "Step 2: Files are being uploaded to the server. Please wait until the process completes.";
+    case 2:
+      return "Step 3: Upload complete! Review your files or upload additional data.";
+    default:
+      return "";
+  }
+};
+
 // Main GIBStepper component
 const GIBStepper = ({ 
   steps, 
@@ -116,296 +158,80 @@ const GIBStepper = ({
   setActiveStep, 
   completed = {}, 
   setCompleted = () => {},
-  skippable = false,
-  showControls = true,
-  alternativeLabel = true,
-  nonLinear = false,
-  orientation = 'horizontal',
-  className = '',
   contentRenderer = null
 }) => {
   const theme = useTheme();
-  const isDark = theme.palette.mode === 'dark';
-
-  // Helper functions for stepper control
-  const totalSteps = () => steps.length;
-  const completedSteps = () => Object.keys(completed).length;
-  const isLastStep = () => activeStep === totalSteps() - 1;
-  const allStepsCompleted = () => completedSteps() === totalSteps();
-
-  // Check if a step is optional (can be customized)
-  const isStepOptional = (step) => {
-    return skippable && step === 1; // Example: second step is optional
-  };
-
-  // Check if a step has been skipped
-  const isStepSkipped = (step) => {
-    return Object.keys(completed).some(skippedStep => 
-      parseInt(skippedStep) > step && !completed[step]
-    );
-  };
-
-  // Handle next button click
-  const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
-  };
-
-  // Handle back button click
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  // Handle step click (for non-linear stepper)
-  const handleStep = (step) => () => {
-    if (nonLinear) {
-      setActiveStep(step);
-    }
-  };
-
-  // Handle complete step
-  const handleComplete = () => {
-    const newCompleted = { ...completed };
-    newCompleted[activeStep] = true;
-    setCompleted(newCompleted);
-    
-    if (!isLastStep()) {
-      handleNext();
-    }
-  };
-
-  // Handle skip step
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    
-    const newCompleted = { ...completed };
-    newCompleted[activeStep] = false; // Mark as skipped
-    setCompleted(newCompleted);
-  };
-
-  // Handle reset
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
-
-  // Render step content
-  const renderStepContent = () => {
-    if (contentRenderer) {
-      return contentRenderer(activeStep, handleNext, handleBack, handleComplete);
-    }
-
-    if (allStepsCompleted()) {
-      return (
-        <React.Fragment>
-          <Box 
-            sx={{ 
-              mt: 4, 
-              mb: 2, 
-              p: 3, 
-              borderRadius: 2,
-              bgcolor: alpha(theme.palette.success.main, 0.1),
-              border: `1px solid ${alpha(theme.palette.success.main, 0.3)}`
-            }}
-          >
-            <Typography variant="h6" color="success.main" align="center" sx={{ mb: 1 }}>
-              <Icon icon="mdi:check-circle" style={{ verticalAlign: 'middle', marginRight: 8 }} width={24} />
-              All steps completed successfully
-            </Typography>
-            <Typography variant="body2" color="text.secondary" align="center">
-              You have completed all the required steps in this process.
-            </Typography>
-          </Box>
-          {showControls && (
-            <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Box sx={{ flex: '1 1 auto' }} />
-              <Button 
-                variant="outlined"
-                color="secondary"
-                onClick={handleReset}
-                sx={{ 
-                  borderRadius: 2,
-                  px: 3
-                }}
-              >
-                Reset
-              </Button>
-            </Box>
-          )}
-        </React.Fragment>
-      );
-    }
-
-    return (
-      <React.Fragment>
-        <Box 
-          sx={{ 
-            mt: 4, 
-            mb: 2, 
-            p: 3, 
-            borderRadius: 2,
-            bgcolor: alpha(theme.palette.primary.main, 0.05),
-            border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`
-          }}
-        >
-          <Typography variant="h6" sx={{ mb: 1 }}>
-            {steps[activeStep]}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {`Step ${activeStep + 1} of ${steps.length}`}
-          </Typography>
-        </Box>
-        
-        {showControls && (
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ 
-                mr: 1,
-                borderRadius: 2,
-                px: 3,
-                color: theme.palette.text.secondary
-              }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-            
-            {isStepOptional(activeStep) && (
-              <Button 
-                color="inherit" 
-                onClick={handleSkip} 
-                sx={{ 
-                  mr: 1,
-                  borderRadius: 2,
-                  px: 3,
-                  color: theme.palette.text.secondary
-                }}
-              >
-                Skip
-              </Button>
-            )}
-            
-            {activeStep === totalSteps() - 1 ? (
-              <Button 
-                variant="contained"
-                color="secondary"
-                onClick={handleComplete}
-                sx={{ 
-                  borderRadius: 2,
-                  px: 4,
-                  py: 1
-                }}
-              >
-                Finish
-              </Button>
-            ) : completed[activeStep] ? (
-              <Button 
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                sx={{ 
-                  borderRadius: 2,
-                  px: 4,
-                  py: 1
-                }}
-              >
-                Next
-              </Button>
-            ) : (
-              <Button 
-                variant="contained"
-                color="secondary"
-                onClick={handleComplete}
-                sx={{ 
-                  borderRadius: 2,
-                  px: 4,
-                  py: 1
-                }}
-              >
-                Complete Step
-              </Button>
-            )}
-          </Box>
-        )}
-      </React.Fragment>
-    );
-  };
 
   return (
-    <Box sx={{ width: '100%' }} className={className}>
-      {nonLinear ? (
-        <Stepper 
-          nonLinear 
-          activeStep={activeStep} 
-          alternativeLabel={alternativeLabel} 
-          orientation={orientation}
-          connector={<GIBConnector />}
-        >
+    <Box sx={{ width: '100%' }}>
+      {/* Stepper with custom connector and icons */}
+      <Box sx={{ position: 'relative' }}>
+        <Stepper activeStep={activeStep} alternativeLabel connector={<AnimatedConnector />}>
           {steps.map((label, index) => (
             <Step key={label} completed={completed[index]}>
-              <StepButton 
-                color="inherit" 
-                onClick={handleStep(index)}
-                optional={
-                  isStepOptional(index) ? (
-                    <Typography variant="caption" sx={{ color: theme.palette.secondary.main }}>
-                      Optional
-                    </Typography>
-                  ) : null
-                }
-              >
-                <StepLabel StepIconComponent={GIBStepIcon}>{label}</StepLabel>
-              </StepButton>
+              <Tooltip title={getStepTooltip(index)} arrow placement="top">
+                <StepLabel StepIconComponent={GIBStepIcon}>
+                  {label}
+                </StepLabel>
+              </Tooltip>
             </Step>
           ))}
         </Stepper>
-      ) : (
-        <Stepper 
-          activeStep={activeStep} 
-          alternativeLabel={alternativeLabel} 
-          orientation={orientation}
-          connector={<GIBConnector />}
-          className="GIB-stepper-gradient"
-        >
-          {steps.map((label, index) => {
-            const stepProps = {};
-            const labelProps = {};
-            
-            if (isStepOptional(index)) {
-              labelProps.optional = (
-                <Typography variant="caption" sx={{ color: theme.palette.secondary.main }}>
-                  Optional
-                </Typography>
-              );
-            }
-            
-            if (isStepSkipped(index)) {
-              stepProps.completed = false;
-            }
-            
-            return (
-              <Step key={label} {...stepProps}>
-                <StepLabel StepIconComponent={GIBStepIcon} {...labelProps}>
-                  {label}
-                </StepLabel>
-              </Step>
-            );
-          })}
-        </Stepper>
-      )}
+        {activeStep === 1 && (
+          <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', pointerEvents: 'none', zIndex: -1 }}>
+            <Box 
+              sx={{ 
+                position: 'absolute',
+                top: 22,
+                left: 'calc(25% + 20px)',
+                right: 'calc(75% - 20px)',
+                height: 3,
+                background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                backgroundSize: '200% 200%',
+                animation: 'progress-animation 1.5s ease infinite',
+                borderRadius: 1.5,
+              }}
+            />
+          </Box>
+        )}
+      </Box>
       
-      {renderStepContent()}
+      {/* Content area */}
+      <Box sx={{ mt: 4 }}>
+        {contentRenderer ? (
+          contentRenderer(activeStep)
+        ) : (
+          <Typography variant="body1" align="center" color="text.secondary">
+            {steps[activeStep]}
+          </Typography>
+        )}
+      </Box>
+
+      {/* Add CSS for animations */}
+      <style jsx global>{`
+        .spinning-icon {
+          animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        @keyframes progress-animation {
+          0% {
+            backgroundPosition: 0% 50%;
+          }
+          50% {
+            backgroundPosition: 100% 50%;
+          }
+          100% {
+            backgroundPosition: 0% 50%;
+          }
+        }
+      `}</style>
     </Box>
   );
 };
@@ -416,12 +242,6 @@ GIBStepper.propTypes = {
   setActiveStep: PropTypes.func.isRequired,
   completed: PropTypes.object,
   setCompleted: PropTypes.func,
-  skippable: PropTypes.bool,
-  showControls: PropTypes.bool,
-  alternativeLabel: PropTypes.bool,
-  nonLinear: PropTypes.bool,
-  orientation: PropTypes.oneOf(['horizontal', 'vertical']),
-  className: PropTypes.string,
   contentRenderer: PropTypes.func
 };
 

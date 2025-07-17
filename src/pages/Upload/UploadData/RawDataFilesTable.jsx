@@ -1,20 +1,18 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Icon } from '@iconify/react';
 import {
-  Avatar,
   Box,
   Chip,
   IconButton,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tooltip,
   Typography,
-  useTheme
+  useTheme,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import ReusableTable from 'components/Table/ReusableTable';
@@ -32,120 +30,218 @@ const formatBytes = (bytes, decimals = 2) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
 
-// Raw Data Files Table component using Material React Table
+// Raw Data Files Table component using ReusableTable
 const RawDataFilesTable = ({ uploadedFiles }) => {
   const theme = useTheme();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState(null);
 
-  // Define columns for the table
+  // Process data for the table
+  const tableData = useMemo(() => {
+    return uploadedFiles.flatMap((custodian) =>
+      custodian.files.length > 0
+        ? custodian.files.map((file) => ({
+            id: `${custodian.id}-${file.name}`,
+            custodianId: custodian.id,
+            custodianName: custodian.name,
+            custodianIcon: custodian.icon,
+            custodianColor: custodian.color,
+            fileName: file.name,
+            fileType: file.type,
+            fileSize: file.size,
+            uploadTime: file.uploadTime,
+            status: file.status,
+            file: file
+          }))
+        : [
+            {
+              id: custodian.id,
+              custodianId: custodian.id,
+              custodianName: custodian.name,
+              custodianIcon: custodian.icon,
+              custodianColor: custodian.color,
+              isEmpty: true
+            }
+          ]
+    );
+  }, [uploadedFiles]);
+
+  // Define table columns
   const columns = useMemo(
     () => [
       {
-        accessorKey: 'name',
+        accessorKey: 'custodianName',
         header: 'Custodian',
+        size: 200,
         Cell: ({ row }) => (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar
+            <Box
               sx={{
-                bgcolor: alpha(row.original.color, 0.2),
-                color: row.original.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 width: 36,
                 height: 36,
+                bgcolor: alpha(row.original.custodianColor, 0.15),
+                borderRadius: '50%',
                 mr: 1.5
               }}
             >
-              <Icon icon={row.original.icon} width={20} />
-            </Avatar>
-            <Typography variant="subtitle2">{row.original.name}</Typography>
+              <Icon icon={row.original.custodianIcon} color={row.original.custodianColor} width={20} />
+            </Box>
+            <Typography variant="body1">{row.original.custodianName}</Typography>
           </Box>
-        ),
-        size: 250
+        )
       },
       {
-        accessorKey: 'files',
-        header: 'Files',
-        Cell: ({ row }) => (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="body2">
-              {row.original.files.length} {row.original.files.length === 1 ? 'file' : 'files'} uploaded
-            </Typography>
-            {row.original.files.length > 0 && (
-              <Chip
-                size="small"
-                label={`${row.original.files
-                  .reduce((total, file) => total + (file.size || 0), 0)
-                  .toLocaleString()} bytes`}
-                sx={{ ml: 1, height: 20, fontSize: '0.7rem' }}
+        accessorKey: 'fileName',
+        header: 'File Name',
+        size: 350,
+        Cell: ({ row }) => {
+          if (row.original.isEmpty) {
+            return (
+              <Typography variant="body2" color="text.secondary" fontStyle="italic">
+                No files uploaded yet
+              </Typography>
+            );
+          }
+          return (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Icon
+                icon={`mdi:file-${row.original.fileType === 'csv' ? 'excel' : row.original.fileType}`}
+                width={20}
+                color={row.original.custodianColor}
+                style={{ marginRight: 8 }}
               />
-            )}
-          </Box>
-        ),
-        size: 250
+              <Typography variant="body2">{row.original.fileName}</Typography>
+            </Box>
+          );
+        }
+      },
+      {
+        accessorKey: 'fileType',
+        header: 'Type',
+        size: 200,
+        Cell: ({ row }) => {
+          if (row.original.isEmpty) return null;
+          return <Chip size="small" label={row.original.fileType.toUpperCase()} />;
+        }
+      },
+      {
+        accessorKey: 'fileSize',
+        header: 'Size',
+        size: 200,
+        Cell: ({ row }) => {
+          if (row.original.isEmpty) return null;
+          return <Typography variant="body2">{formatBytes(row.original.fileSize)}</Typography>;
+        }
+      },
+      {
+        accessorKey: 'uploadTime',
+        header: 'Upload Time',
+        size: 200,
+        Cell: ({ row }) => {
+          if (row.original.isEmpty) return null;
+          return <Typography variant="body2">{row.original.uploadTime}</Typography>;
+        }
       },
       {
         accessorKey: 'status',
         header: 'Status',
-        Cell: ({ row }) => (
-          <Chip
-            label={row.original.status}
-            size="small"
-            color={
-              row.original.status === 'Processed'
-                ? 'success'
-                : row.original.status === 'Processing'
-                  ? 'warning'
-                  : row.original.status === 'Error'
-                    ? 'error'
-                    : 'default'
-            }
-            sx={{ minWidth: 85 }}
-          />
-        ),
-        size: 150
+        size: 150,
+        Cell: ({ row }) => {
+          if (row.original.isEmpty) {
+            return <Chip size="small" label="Ready" color="default" />;
+          }
+          return (
+            <Chip
+              size="small"
+              label={row.original.status}
+              color={
+                row.original.status === 'Valid'
+                  ? 'success'
+                  : row.original.status === 'Processing'
+                    ? 'warning'
+                    : row.original.status === 'Error'
+                      ? 'error'
+                      : 'default'
+              }
+            />
+          );
+        }
+      },
+      {
+        id: 'actions',
+        header: 'Actions',
+        size: 150,
+        Cell: ({ row }) => {
+          if (row.original.isEmpty) return null;
+          return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+              <Tooltip title="View file">
+                <IconButton size="small">
+                  <Icon icon="mdi:eye" width={16} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Download file">
+                <IconButton size="small">
+                  <Icon icon="mdi:download" width={16} />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete file">
+                <IconButton
+                  size="small"
+                  color="error"
+                  onClick={() => {
+                    setFileToDelete({
+                      custodianId: row.original.custodianId,
+                      fileIndex: uploadedFiles
+                        .find((c) => c.id === row.original.custodianId)
+                        .files.findIndex((f) => f.name === row.original.fileName)
+                    });
+                    setDeleteDialogOpen(true);
+                  }}
+                >
+                  <Icon icon="mdi:delete" width={16} />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          );
+        }
       }
     ],
-    []
+    [uploadedFiles]
   );
 
-  // Configure table props
+  // Handle file delete confirmation
+  const handleDeleteConfirm = () => {
+    // Here you would add actual delete logic
+    console.log(`Deleting file from ${fileToDelete.custodianId}, index: ${fileToDelete.fileIndex}`);
+    setDeleteDialogOpen(false);
+  };
+
+  // Table props
   const tableProps = {
-    enableExpandAll: false,
-    enableColumnActions: false,
     enableColumnFilters: false,
-    enablePagination: false,
     enableFilters: false,
-    enableGlobalFilter: false,
-    enableColumnResizing: false,
-    enableRowNumbers: false,
-    enableBottomToolbar: false,
-    enableColumnDragging: false,
-    enableColumnOrdering: false,
-    enablePinning: false,
-    enableSorting: true,
-    enableTopToolbar: true,
-    // muiTableContainerProps: {
-    //   sx: {
-    //     maxHeight: 'unset'
-    //   }
-    // },
-
-    // // Custom expand button rotation
-    // muiExpandButtonProps: ({ row, table }) => ({
-    //   onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), // Only 1 detail panel open at a time
-    //   sx: {
-    //     transform: row.getIsExpanded() ? 'rotate(0deg)' : 'rotate(-90deg)',
-    //     transition: 'transform 0.2s'
-    //   }
-    // }),
-
-    // // Detail panel styling
-    // muiDetailPanelProps: ({ row }) => ({
-    //   sx: {
-    //     bgcolor: alpha(row.original.color || theme.palette.primary.main, 0.02),
-    //     borderTop: `1px dashed ${alpha(row.original.color || theme.palette.primary.main, 0.2)}`
-    //   }
-    // }),
-
-    // Custom top toolbar with Raw Data Files heading
+    enableGlobalFilter: true,
+    enableColumnActions: false,
+    enableDensityToggle: false,
+    enableFullScreenToggle: false,
+    enableHiding: false,
+    enablePagination: tableData.length > 10,
+    muiTableContainerProps: {
+      sx: {
+        maxHeight: tableData.length > 5 ? '500px' : 'unset'
+      }
+    },
+    initialState: {
+      density: 'compact',
+      pagination: {
+        pageSize: 10,
+        pageIndex: 0
+      }
+    },
     renderTopToolbar: ({ table }) => (
       <Box
         sx={{
@@ -168,141 +264,13 @@ const RawDataFilesTable = ({ uploadedFiles }) => {
           />
           <Typography variant="h6">Raw Data Files</Typography>
         </Box>
-        <Tooltip title="View uploaded raw data files for each custodian">
-          <IconButton size="small">
+        <Tooltip title="View uploaded raw data files from each custodian. These files contain the original unprocessed data.">
+          <IconButton size="small" aria-label="Information about raw data files">
             <Icon icon="mdi:information" width={20} />
           </IconButton>
         </Tooltip>
       </Box>
     ),
-
-    // Detail panel content with tabular format
-    renderDetailPanel: ({ row }) => (
-      <Box sx={{ p: 0 }}>
-        {row.original.files.length > 0 ? (
-          <TableContainer
-            component={Paper}
-            elevation={0}
-            sx={{
-              border: `1px solid ${alpha(theme.palette.divider, 0.7)}`,
-              borderRadius: 0,
-              overflow: 'hidden'
-            }}
-          >
-            <Table sx={{ minWidth: 950 }}>
-              <TableHead sx={{ bgcolor: alpha(row.original.color || theme.palette.primary.main, 0.05) }}>
-                <TableRow>
-                  <TableCell width="5%">#</TableCell>
-                  <TableCell width="30%">File Name</TableCell>
-                  <TableCell width="8%">Type</TableCell>
-                  <TableCell width="12%">Size</TableCell>
-                  <TableCell width="10%">Status</TableCell>
-                  <TableCell width="12%">Uploaded By</TableCell>
-                  <TableCell width="13%">Upload Time</TableCell>
-                  <TableCell width="10%" align="center">
-                    Actions
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {row.original.files.map((file, idx) => (
-                  <TableRow
-                    key={idx}
-                    sx={{
-                      '&:hover': {
-                        bgcolor: alpha(theme.palette.primary.main, 0.02)
-                      }
-                    }}
-                  >
-                    <TableCell>{idx + 1}</TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Avatar
-                          sx={{
-                            bgcolor: alpha(row.original.color, 0.2),
-                            color: row.original.color,
-                            width: 32,
-                            height: 32,
-                            mr: 1.5
-                          }}
-                        >
-                          <Icon icon={`mdi:file-${file.type === 'csv' ? 'excel' : file.type}`} width={18} />
-                        </Avatar>
-                        <Box>
-                          <Typography variant="body2" fontWeight={500}>
-                            {file.name}
-                          </Typography>
-                          {file.processingInfo && (
-                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                              {file.processingInfo}
-                            </Typography>
-                          )}
-                        </Box>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Chip label={file.type.toUpperCase()} size="small" sx={{ height: 20, fontSize: '0.7rem' }} />
-                    </TableCell>
-                    <TableCell>{file.size ? formatBytes(file.size) : 'N/A'}</TableCell>
-                    <TableCell>
-                      <Chip
-                        label={file.status || 'Pending'}
-                        size="small"
-                        color={
-                          file.status === 'Valid'
-                            ? 'success'
-                            : file.status === 'Processing'
-                              ? 'warning'
-                              : file.status === 'Error'
-                                ? 'error'
-                                : 'default'
-                        }
-                        sx={{ height: 20, fontSize: '0.7rem', minWidth: 60 }}
-                      />
-                    </TableCell>
-                    <TableCell>{file.uploadedBy || 'System User'}</TableCell>
-                    <TableCell>{file.uploadTime}</TableCell>
-                    <TableCell align="center">
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Tooltip title="View file details">
-                          <IconButton size="small" color="primary">
-                            <Icon icon="mdi:eye" width={16} />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Download file">
-                          <IconButton size="small" color="secondary" sx={{ ml: 0.5 }}>
-                            <Icon icon="mdi:download" width={16} />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete file">
-                          <IconButton size="small" color="error" sx={{ ml: 0.5 }}>
-                            <Icon icon="mdi:delete-outline" width={16} />
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ) : (
-          <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Icon
-              icon="mdi:folder-open-outline"
-              style={{ fontSize: 48, opacity: 0.5, marginBottom: 16, color: theme.palette.text.secondary }}
-            />
-            <Typography variant="body1" color="text.secondary">
-              No files for this custodian yet
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Use the upload options above to add files
-            </Typography>
-          </Box>
-        )}
-      </Box>
-    ),
-
     renderEmptyState: () => (
       <Box sx={{ p: 4, textAlign: 'center' }}>
         <Icon
@@ -322,7 +290,29 @@ const RawDataFilesTable = ({ uploadedFiles }) => {
     )
   };
 
-  return <ReusableTable columns={columns} data={uploadedFiles} tableProps={tableProps} />;
+  return (
+    <>
+      <ReusableTable columns={columns} data={tableData} tableProps={tableProps} />
+
+      {/* Delete confirmation dialog */}
+      <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+        <DialogTitle>Delete File</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete this file? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeleteDialogOpen(false)} color="inherit">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
 };
 
 export default RawDataFilesTable;

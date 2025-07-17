@@ -25,7 +25,7 @@ const pages = {
       type: 'item',
       url: '/user-management',
       icon: icons.UserManagementOutlined,
-      roles: ['admin'] // Only admin can access
+      roles: ['admin', 'user'] // Only admin can access
     }
 
     // {

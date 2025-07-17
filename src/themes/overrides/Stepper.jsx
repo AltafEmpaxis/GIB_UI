@@ -6,7 +6,7 @@ import { stepConnectorClasses } from '@mui/material/StepConnector';
 
 export default function Stepper(theme) {
   const isDark = theme.palette.mode === 'dark';
-  
+
   return {
     MuiStepper: {
       styleOverrides: {
@@ -29,7 +29,18 @@ export default function Stepper(theme) {
         },
         line: {
           borderWidth: 2,
-          borderColor: isDark ? theme.palette.grey[700] : theme.palette.grey[300]
+          borderColor: 'transparent',
+          backgroundImage: `linear-gradient(90deg, 
+            ${theme.palette.primary.main} 0%, 
+            ${theme.palette.secondary.main} 50%, 
+            ${theme.palette.primary.dark} 100%)`,
+          backgroundSize: '200% 200%',
+          height: 3,
+          borderRadius: 1,
+          opacity: 0.5,
+          transition: theme.transitions.create(['opacity', 'background-position'], {
+            duration: theme.transitions.duration.standard
+          })
         },
         alternativeLabel: {
           top: 22,
@@ -37,12 +48,27 @@ export default function Stepper(theme) {
           right: 'calc(50% + 20px)',
           [`&.${stepConnectorClasses.active}`]: {
             [`& .${stepConnectorClasses.line}`]: {
-              borderColor: theme.palette.primary.main
+              borderColor: 'transparent',
+              backgroundImage: `linear-gradient(95deg, 
+                ${theme.palette.primary.main} 0%, 
+                ${theme.palette.secondary.main} 50%, 
+                ${theme.palette.primary.dark} 100%)`,
+              backgroundSize: '200% 200%',
+              animation: 'gradient-animation 2s ease infinite',
+              height: 3,
+              borderRadius: 1,
+              opacity: 1
             }
           },
           [`&.${stepConnectorClasses.completed}`]: {
             [`& .${stepConnectorClasses.line}`]: {
-              borderColor: theme.palette.primary.main
+              borderColor: 'transparent',
+              backgroundImage: `linear-gradient(95deg, 
+                ${theme.palette.primary.main} 0%, 
+                ${theme.palette.primary.dark} 100%)`,
+              height: 3,
+              borderRadius: 1,
+              opacity: 1
             }
           }
         }
@@ -106,8 +132,16 @@ export default function Stepper(theme) {
           fontSize: '1rem',
           color: isDark ? theme.palette.grey[700] : theme.palette.grey[300],
           '&.Mui-active': {
-            color: theme.palette.primary.main,
-            boxShadow: `0 0 0 2px ${alpha(theme.palette.primary.main, 0.2)}`
+            color: 'transparent',
+            backgroundImage: `linear-gradient(135deg, 
+              ${theme.palette.primary.main} 0%, 
+              ${theme.palette.secondary.main} 50%, 
+              ${theme.palette.primary.dark} 100%)`,
+            backgroundSize: '200% 200%',
+            animation: 'gradient-icon-animation 2s ease infinite',
+            boxShadow: `0 4px 10px 0 ${alpha(theme.palette.primary.main, 0.3)}`,
+            transform: 'scale(1.1)',
+            transition: 'transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55), background-color 0.2s ease'
           },
           '&.Mui-completed': {
             color: theme.palette.primary.main
@@ -161,6 +195,36 @@ export default function Stepper(theme) {
         background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
         height: 3
       }
+    },
+    '@keyframes gradient-animation': {
+      '0%': {
+        backgroundPosition: '0% 50%'
+      },
+      '50%': {
+        backgroundPosition: '100% 50%'
+      },
+      '100%': {
+        backgroundPosition: '0% 50%'
+      }
+    },
+    '@keyframes gradient-icon-animation': {
+      '0%': {
+        backgroundPosition: '0% 50%'
+      },
+      '50%': {
+        backgroundPosition: '100% 50%'
+      },
+      '100%': {
+        backgroundPosition: '0% 50%'
+      }
+    },
+    '@keyframes spinning-icon': {
+      '0%': {
+        transform: 'rotate(0deg)'
+      },
+      '100%': {
+        transform: 'rotate(360deg)'
+      }
     }
   };
-} 
+}

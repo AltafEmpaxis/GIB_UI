@@ -14,6 +14,7 @@ const ReconTool = Loadable(lazy(() => import('pages/Upload')));
 const CustodiansSection = Loadable(lazy(() => import('pages/CustodiansDesign')));
 const DetailReconTool = Loadable(lazy(() => import('pages/Upload/DetailReconTool')));
 
+const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
 // ==============================|| ROUTING RENDER ||============================== //
 
 const UnderConstruction = Loadable(lazy(() => import('pages/UnderConstruction')));
@@ -54,11 +55,7 @@ const MainRoutes = {
     },
     {
       path: 'user-management',
-      element: (
-        <RoleBasedGuard roles={['admin']}>
-          <Navigate to="/under-construction" replace />
-        </RoleBasedGuard>
-      )
+      element: <UserManagement />
     },
     {
       path: 'profile',

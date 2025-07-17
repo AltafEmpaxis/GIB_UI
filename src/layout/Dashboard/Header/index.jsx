@@ -35,17 +35,6 @@ const Header = ({ open, handleDrawerToggle }) => {
         edge="start"
         color="secondary"
         size="medium"
-        sx={{
-          color: theme.palette.text.primary,
-          bgcolor: open ? theme.palette.action.selected : 'transparent',
-          '&:hover': {
-            bgcolor:
-              theme.palette.mode === 'dark'
-                ? alpha(theme.palette.secondary.main, 0.2)
-                : alpha(theme.palette.secondary.main, 0.12),
-            color: theme.palette.secondary.main
-          }
-        }}
       >
         {open ? (
           <Icon icon="solar:close-square-bold-duotone" width={24} height={24} />
