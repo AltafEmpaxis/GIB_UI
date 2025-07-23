@@ -42,18 +42,18 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
         }),
         '&:hover': {
           bgcolor: 'transparent',
-          backgroundImage: `linear-gradient(135deg, 
-            ${alpha(gradientStart, isDark ? 0.15 : 0.05)} 0%, 
-            ${alpha(gradientMiddle, isDark ? 0.15 : 0.05)} 50%, 
+          backgroundImage: `linear-gradient(135deg,
+            ${alpha(gradientStart, isDark ? 0.15 : 0.05)} 0%,
+            ${alpha(gradientMiddle, isDark ? 0.15 : 0.05)} 50%,
             ${alpha(gradientEnd, isDark ? 0.15 : 0.05)} 100%)`,
           color: isSelected ? iconSelectedColor : theme.palette.primary.main,
           boxShadow: isSelected ? 'none' : 'none'
         },
         '&.Mui-selected': {
           bgcolor: 'transparent',
-          backgroundImage: `linear-gradient(135deg, 
-            ${alpha(gradientStart, isDark ? 0.2 : 0.1)} 0%, 
-            ${alpha(gradientMiddle, isDark ? 0.2 : 0.1)} 50%, 
+          backgroundImage: `linear-gradient(135deg,
+            ${alpha(gradientStart, isDark ? 0.2 : 0.1)} 0%,
+            ${alpha(gradientMiddle, isDark ? 0.2 : 0.1)} 50%,
             ${alpha(gradientEnd, isDark ? 0.2 : 0.1)} 100%)`,
           color: isDark ? theme.palette.secondary.light : theme.palette.secondary.dark,
           position: 'relative',
@@ -66,18 +66,18 @@ const NavItem = ({ item, level, selected, selectedLevel, setSelectedItems, setSe
             height: '60%',
             width: 3,
             borderRadius: '0 2px 2px 0',
-            background: `linear-gradient(to bottom, 
-              ${gradientStart} 0%, 
-              ${gradientMiddle} 50%, 
+            background: `linear-gradient(to bottom,
+              ${gradientStart} 0%,
+              ${gradientMiddle} 50%,
               ${gradientEnd} 100%)`,
             transition: theme.transitions.create(['height', 'opacity'], {
               duration: theme.transitions.duration.shorter
             })
           },
           '&:hover': {
-            backgroundImage: `linear-gradient(135deg, 
-              ${alpha(gradientStart, isDark ? 0.3 : 0.15)} 0%, 
-              ${alpha(gradientMiddle, isDark ? 0.3 : 0.15)} 50%, 
+            backgroundImage: `linear-gradient(135deg,
+              ${alpha(gradientStart, isDark ? 0.3 : 0.15)} 0%,
+              ${alpha(gradientMiddle, isDark ? 0.3 : 0.15)} 50%,
               ${alpha(gradientEnd, isDark ? 0.3 : 0.15)} 100%)`,
             color: isDark ? theme.palette.secondary.main : theme.palette.secondary.dark
           }

@@ -21,7 +21,7 @@ import CheckIcon from '@mui/icons-material/Check';
 // Custom connector with animated gradient progress
 const AnimatedConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 22,
+    top: 22
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
@@ -30,33 +30,33 @@ const AnimatedConnector = styled(StepConnector)(({ theme }) => ({
         ${theme.palette.secondary.main} 50%, 
         ${theme.palette.primary.dark} 100%)`,
       backgroundSize: '200% 200%',
-      animation: 'gradient-animation 2s ease infinite',
-    },
+      animation: 'gradient-animation 2s ease infinite'
+    }
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
       backgroundImage: `linear-gradient(95deg, 
         ${theme.palette.primary.main} 0%, 
-        ${theme.palette.primary.dark} 100%)`,
-    },
+        ${theme.palette.primary.dark} 100%)`
+    }
   },
   [`& .${stepConnectorClasses.line}`]: {
     height: 3,
     border: 0,
     backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[300],
-    borderRadius: 1,
+    borderRadius: 1
   },
   '@keyframes gradient-animation': {
     '0%': {
-      backgroundPosition: '0% 50%',
+      backgroundPosition: '0% 50%'
     },
     '50%': {
-      backgroundPosition: '100% 50%',
+      backgroundPosition: '100% 50%'
     },
     '100%': {
-      backgroundPosition: '0% 50%',
-    },
-  },
+      backgroundPosition: '0% 50%'
+    }
+  }
 }));
 
 // Custom Step Icon
@@ -80,30 +80,30 @@ const GIBStepIconRoot = styled('div')(({ theme, ownerState }) => ({
     backgroundSize: '200% 200%',
     animation: 'gradient-icon-animation 2s ease infinite',
     transform: 'scale(1.2)',
-    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)'
   }),
   ...(ownerState.completed && {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.primary.main
   }),
   '@keyframes gradient-icon-animation': {
     '0%': {
-      backgroundPosition: '0% 50%',
+      backgroundPosition: '0% 50%'
     },
     '50%': {
-      backgroundPosition: '100% 50%',
+      backgroundPosition: '100% 50%'
     },
     '100%': {
-      backgroundPosition: '0% 50%',
-    },
+      backgroundPosition: '0% 50%'
+    }
   },
   '@keyframes spin': {
     '0%': {
-      transform: 'rotate(0deg)',
+      transform: 'rotate(0deg)'
     },
     '100%': {
-      transform: 'rotate(360deg)',
-    },
-  },
+      transform: 'rotate(360deg)'
+    }
+  }
 }));
 
 // Custom Step Icon Component
@@ -113,7 +113,7 @@ function GIBStepIcon(props) {
 
   const icons = {
     1: <Icon icon="mdi:folder-multiple" width={20} />,
-    2: <Icon icon="mdi:cloud-upload" width={20} className={active ? "spinning-icon" : ""} />,
+    2: <Icon icon="mdi:cloud-upload" width={20} className={active ? 'spinning-icon' : ''} />,
     3: <Icon icon="mdi:check-circle" width={20} />
   };
 
@@ -139,24 +139,24 @@ GIBStepIcon.propTypes = {
 
 // Step instruction tooltips
 const getStepTooltip = (step) => {
-  switch(step) {
+  switch (step) {
     case 0:
-      return "Step 1: Select a custodian type to upload data from. Accepted formats: XLSX, CSV, XML (max 50MB)";
+      return 'Step 1: Select a custodian type to upload data from. Accepted formats: XLSX, CSV, XML (max 50MB)';
     case 1:
-      return "Step 2: Files are being uploaded to the server. Please wait until the process completes.";
+      return 'Step 2: Files are being uploaded to the server. Please wait until the process completes.';
     case 2:
-      return "Step 3: Upload complete! Review your files or upload additional data.";
+      return 'Step 3: Upload complete! Review your files or upload additional data.';
     default:
-      return "";
+      return '';
   }
 };
 
 // Main GIBStepper component
-const GIBStepper = ({ 
-  steps, 
-  activeStep, 
-  setActiveStep, 
-  completed = {}, 
+const GIBStepper = ({
+  steps,
+  activeStep,
+  setActiveStep,
+  completed = {},
   setCompleted = () => {},
   contentRenderer = null
 }) => {
@@ -170,17 +170,17 @@ const GIBStepper = ({
           {steps.map((label, index) => (
             <Step key={label} completed={completed[index]}>
               <Tooltip title={getStepTooltip(index)} arrow placement="top">
-                <StepLabel StepIconComponent={GIBStepIcon}>
-                  {label}
-                </StepLabel>
+                <StepLabel StepIconComponent={GIBStepIcon}>{label}</StepLabel>
               </Tooltip>
             </Step>
           ))}
         </Stepper>
         {activeStep === 1 && (
-          <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', pointerEvents: 'none', zIndex: -1 }}>
-            <Box 
-              sx={{ 
+          <Box
+            sx={{ position: 'absolute', top: 0, left: 0, right: 0, height: '100%', pointerEvents: 'none', zIndex: -1 }}
+          >
+            <Box
+              sx={{
                 position: 'absolute',
                 top: 22,
                 left: 'calc(25% + 20px)',
@@ -189,13 +189,13 @@ const GIBStepper = ({
                 background: `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
                 backgroundSize: '200% 200%',
                 animation: 'progress-animation 1.5s ease infinite',
-                borderRadius: 1.5,
+                borderRadius: 1.5
               }}
             />
           </Box>
         )}
       </Box>
-      
+
       {/* Content area */}
       <Box sx={{ mt: 4 }}>
         {contentRenderer ? (
@@ -222,13 +222,13 @@ const GIBStepper = ({
         }
         @keyframes progress-animation {
           0% {
-            backgroundPosition: 0% 50%;
+            backgroundposition: 0% 50%;
           }
           50% {
-            backgroundPosition: 100% 50%;
+            backgroundposition: 100% 50%;
           }
           100% {
-            backgroundPosition: 0% 50%;
+            backgroundposition: 0% 50%;
           }
         }
       `}</style>
@@ -245,4 +245,4 @@ GIBStepper.propTypes = {
   contentRenderer: PropTypes.func
 };
 
-export default GIBStepper; 
+export default GIBStepper;

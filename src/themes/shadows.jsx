@@ -11,7 +11,7 @@ export default function shadows(theme) {
   const darkTransparent = alpha(theme.palette.common.black, isDark ? 0.35 : 0.25);
 
   // GIB brand-specific shadows
-  // Use yellow (secondary) for subtle highlights and dark grey (primary) for shadows
+  // Use dark grey (primary) for shadows and yellow (secondary) for subtle highlights
   const primaryShadow = alpha(theme.palette.primary.main, isDark ? 0.3 : 0.2);
   const secondaryGlow = alpha(theme.palette.secondary.main, isDark ? 0.2 : 0.1);
 

@@ -4,8 +4,8 @@ import { Box, Button, Chip, Grid, Paper, Typography, useTheme, LinearProgress } 
 import { alpha } from '@mui/material/styles';
 import CustodianUploadAction from 'components/Upload/CustodianUploadAction';
 import NotificationBar from 'components/Upload/NotificationBar';
-import GIBStepper from '../GIBStepper';
-import RawDataFilesTable from '../RawDataFilesTable';
+import GIBStepper from './GIBStepper';
+import RawDataFilesTable from './RawDataFilesTable';
 
 export default function CustodianFile() {
   const theme = useTheme();

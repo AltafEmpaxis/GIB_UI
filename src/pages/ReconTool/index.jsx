@@ -48,7 +48,7 @@ const Upload = () => {
       },
       {
         value: 'detailReconTool',
-        label: 'Detail Recon Tool',
+        label: 'Reconciletion Report',
         icon: <Icon icon="mdi:chart-bar" width={20} height={20} />,
         component: <DetailReconTool />,
         color: theme.palette.secondary.main

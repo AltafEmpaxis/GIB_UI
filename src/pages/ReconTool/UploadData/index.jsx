@@ -1,24 +1,15 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Icon } from '@iconify/react';
 import { Box, Divider, Tab, Tabs, useTheme } from '@mui/material';
 
 import MainCard from 'components/MainCard';
-import CustodianFile from './CustodianFile';
-import APXFile from './APXFile';
+import CustodianFile from './CustodianUpload/CustodianFile';
+import APXFile from './Apx/APXFile';
 
-const CustodianUpload = ({ activeTab }) => {
+const CustodianUpload = () => {
   const [currentTab, setCurrentTab] = useState('custodian-file');
   const theme = useTheme();
-
-  // Update the internal tab based on the parent's activeTab prop
-  useEffect(() => {
-    if (activeTab === 'custodian') {
-      setCurrentTab('custodian-file');
-    } else if (activeTab === 'apx') {
-      setCurrentTab('apx-file');
-    }
-  }, [activeTab]);
 
   const tabs = useMemo(
     () => [
@@ -55,7 +46,33 @@ const CustodianUpload = ({ activeTab }) => {
       <meta property="og:title" content={currentTabInfo?.title} />
       <meta property="og:description" content={currentTabInfo?.description} />
 
-      <MainCard contentSX={{ p: '0 !important' }}>
+      <MainCard elevation={0} sx={{ mt: '10px !important', p: '0 !important' }} contentSX={{ p: '0 !important' }}>
+        <Tabs
+          value={currentTab}
+          onChange={(event, newValue) => setCurrentTab(newValue)}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: currentTabInfo?.color
+            }
+          }}
+        >
+          {tabs.map((tab) => (
+            <Tab
+              key={tab.value}
+              value={tab.value}
+              label={tab.label}
+              icon={tab.icon}
+              iconPosition="start"
+              sx={{
+                fontWeight: 500,
+                '&.Mui-selected': {
+                  color: tab.color
+                }
+              }}
+            />
+          ))}
+        </Tabs>
+        <Divider />
         {tabs.map((tab) => tab.value === currentTab && <Box key={tab.value}>{tab.component}</Box>)}
       </MainCard>
     </Box>

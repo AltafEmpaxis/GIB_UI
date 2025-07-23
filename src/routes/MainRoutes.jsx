@@ -1,7 +1,6 @@
 import { lazy } from 'react';
 
 import { Navigate } from 'react-router';
-import RoleBasedGuard from './Guard/RoleBasedGuard';
 // Components
 import Loadable from 'components/Loader/Loadable';
 import DashboardLayout from 'layout/Dashboard';
@@ -10,9 +9,10 @@ import AuthGuard from 'routes/Guard/AuthGuard';
 // Lazy load components
 const Home = Loadable(lazy(() => import('pages/home')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard')));
-const ReconTool = Loadable(lazy(() => import('pages/Upload')));
-const CustodiansSection = Loadable(lazy(() => import('pages/CustodiansDesign')));
-const DetailReconTool = Loadable(lazy(() => import('pages/Upload/DetailReconTool')));
+const ReconTool = Loadable(lazy(() => import('pages/ReconTool')));
+const DetailReconTool = Loadable(lazy(() => import('pages/ReconTool/DetailReconTool')));
+const InvestmentPerformance = Loadable(lazy(() => import('pages/Report/InvestmentPerformance')));
+const QualityControl = Loadable(lazy(() => import('pages/Report/QualityControl')));
 
 const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
 // ==============================|| ROUTING RENDER ||============================== //
@@ -42,10 +42,6 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
-      path: 'custodians-design',
-      element: <CustodiansSection />
-    },
-    {
       path: 'recon-tool',
       element: <ReconTool />
     },
@@ -56,6 +52,14 @@ const MainRoutes = {
     {
       path: 'user-management',
       element: <UserManagement />
+    },
+    {
+      path: 'investment-performance',
+      element: <InvestmentPerformance />
+    },
+    {
+      path: 'quality-control',
+      element: <QualityControl />
     },
     {
       path: 'profile',

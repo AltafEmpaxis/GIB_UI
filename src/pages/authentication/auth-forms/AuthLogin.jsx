@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Divider,
   FormControlLabel,
   FormHelperText,
   Grid,
@@ -14,8 +15,7 @@ import {
   Stack,
   TextField,
   Tooltip,
-  Typography,
-  Divider
+  Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { motion } from 'framer-motion';
@@ -162,8 +162,8 @@ export default function AuthLogin() {
       {/* Light/Dark Mode Toggle Icon */}
       <Box sx={{ position: 'absolute', top: 0, right: 8, zIndex: 10 }}>
         <Tooltip arrow placement="top" title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>
-          <IconButton 
-            onClick={toggleTheme} 
+          <IconButton
+            onClick={toggleTheme}
             color="secondary"
             sx={{
               bgcolor: alpha(theme.palette.background.default, 0.1),
@@ -181,17 +181,17 @@ export default function AuthLogin() {
           </IconButton>
         </Tooltip>
       </Box>
-      
+
       <motion.div initial="hidden" animate="visible" variants={containerVariants} style={{ width: '100%' }}>
         <motion.div variants={itemVariants}>
-          <Box sx={{ mb: 3, textAlign: 'center' }}>
+          <Box sx={{ mb: 2, textAlign: 'center' }}>
             <Typography
               variant="h3"
               sx={{
                 fontWeight: 600, // SemiBold from global-styles.css
                 color: isDark ? theme.palette.common.white : theme.palette.primary.main,
                 letterSpacing: '-0.5px',
-                mb: 1,
+                mb: 2,
                 position: 'relative',
                 display: 'inline-block',
                 '&::after': {
@@ -231,11 +231,11 @@ export default function AuthLogin() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 py: 1.5,
-                px: 2.5,
+                px: 1.5,
                 bgcolor: isDark
                   ? alpha(theme.palette.secondary.darker, 0.15)
                   : alpha(theme.palette.secondary.lighter, 0.4),
-                borderRadius: theme.shape.borderRadius,
+                // borderRadius: theme.shape.borderRadius,
                 backdropFilter: 'blur(8px)',
                 border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`
               }}
@@ -265,7 +265,7 @@ export default function AuthLogin() {
         </motion.div>
 
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2.5}>
+          <Grid container spacing={2}>
             <Grid item xs={12}>
               <motion.div variants={itemVariants}>
                 <TextField
@@ -289,7 +289,6 @@ export default function AuthLogin() {
                       </InputAdornment>
                     )
                   }}
-                 
                 />
                 {errors.username && (
                   <FormHelperText error sx={{ ml: 1, mt: 0.5 }}>
@@ -339,7 +338,6 @@ export default function AuthLogin() {
                       </InputAdornment>
                     )
                   }}
-                 
                 />
                 {errors.password && (
                   <FormHelperText error sx={{ ml: 1, mt: 0.5 }}>
@@ -422,17 +420,11 @@ export default function AuthLogin() {
                     type="submit"
                     variant="contained"
                     color="secondary"
-                   
                     startIcon={
                       isLoading ? (
                         <Icon icon="svg-spinners:180-ring" width={20} height={20} />
                       ) : (
-                        <Icon
-                          icon="solar:login-bold"
-                          width={18}
-                          height={18}
-                          style={{ marginRight: '8px' }}
-                        />
+                        <Icon icon="solar:login-bold" width={18} height={18} style={{ marginRight: '8px' }} />
                       )
                     }
                   >
@@ -445,14 +437,16 @@ export default function AuthLogin() {
         </form>
 
         <motion.div variants={itemVariants}>
-          <Divider sx={{ 
-            my: 3,
-            opacity: 0.6,
-            '&::before, &::after': {
-              borderColor: alpha(theme.palette.divider, 0.2)
-            }
-          }}/>
-          
+          <Divider
+            sx={{
+              my: 3,
+              opacity: 0.6,
+              '&::before, &::after': {
+                borderColor: alpha(theme.palette.divider, 0.2)
+              }
+            }}
+          />
+
           <Box sx={{ textAlign: 'center' }}>
             <Stack spacing={1} direction="row" justifyContent="center" sx={{ mb: 1 }}>
               <Icon

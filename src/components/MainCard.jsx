@@ -30,12 +30,13 @@ const MainCard = forwardRef(
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 
-    // Get color style based on color prop (similar to Card.jsx)
+    // Get color style based on color prop (following GIB guidelines)
     const getColorStyle = (colorName) => ({
       backgroundColor: alpha(theme.palette[colorName].main, 0.05),
       borderColor: alpha(theme.palette[colorName].main, 0.25),
       '&:hover': {
-        backgroundColor: alpha(theme.palette[colorName].main, 0.1)
+        backgroundColor: alpha(theme.palette[colorName].main, 0.1),
+        boxShadow: colorName === 'secondary' ? theme.customShadows.secondaryButton : theme.customShadows.z2
       }
     });
 
@@ -48,6 +49,17 @@ const MainCard = forwardRef(
         className="MainCard"
         {...others}
         sx={{
+          position: 'relative',
+          border: '1px solid',
+          borderColor: isDark ? alpha(theme.palette.common.white, 0.08) : alpha(theme.palette.grey[300], 0.8),
+          borderRadius: 2,
+          boxShadow: theme.customShadows.card,
+          transition: theme.transitions.create(['box-shadow', 'border-color', 'background-color'], {
+            duration: theme.transitions.duration.short
+          }),
+          '&:hover': {
+            boxShadow: isDark ? theme.customShadows.z8 : theme.customShadows.z1
+          },
           ...(color && { ...colorStyle }),
           ...sx
         }}
@@ -63,7 +75,7 @@ const MainCard = forwardRef(
                 color: darkTitle ? theme.palette.text.primary : 'inherit'
               }
             }}
-            title={<Typography variant="h5">{title}</Typography>}
+            title={typeof title === 'string' ? <Typography variant="h5">{title}</Typography> : title}
             action={secondary}
           />
         )}
@@ -108,10 +120,10 @@ MainCard.propTypes = {
   secondary: PropTypes.node,
   shadow: PropTypes.string,
   sx: PropTypes.object,
-  title: PropTypes.string,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   content: PropTypes.bool,
   children: PropTypes.node,
-  color: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'error', 'warning', 'info', 'success']) // Added color prop types
+  color: PropTypes.oneOf(['primary', 'secondary', 'tertiary', 'error', 'warning', 'info', 'success'])
 };
 
 export default MainCard;

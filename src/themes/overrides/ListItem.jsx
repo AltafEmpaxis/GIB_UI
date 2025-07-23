@@ -50,7 +50,7 @@ export default function ListItem(theme) {
       styleOverrides: {
         root: {
           minWidth: 24,
-          marginRight: theme.spacing(2),
+          marginRight: theme.spacing(1),
           color: theme.palette.tertiary.main, // Medium Grey
           '& svg': {
             fontSize: '1.5rem'

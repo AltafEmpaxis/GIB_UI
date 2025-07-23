@@ -9,12 +9,12 @@ const COMMON = {
 
 // Primary color - Dark Grey (Pantone Cool Gray 11C)
 const PRIMARY = {
-  lighter: '#e9e9e9',
-  light: '#888a8e',
+  lighter: '#97999C', // light grey, ~40% white mix
+  light: '#75777B', // medium grey, ~20% white mix
   main: '#53565A', // Dark Grey - R:83 G:86 B:90
-  dark: '#424448',
-  darker: '#323438',
-  100: '#e9e9e9', // Matches lighter
+  dark: '#424448', // near-charcoal, ~20% black mix
+  darker: '#313336', // charcoal black, ~40% black mix
+  100: '#e9e9e9',
   200: '#d3d3d3',
   300: '#bcbcbc',
   400: '#a6a6a6',
@@ -23,26 +23,26 @@ const PRIMARY = {
   700: '#424448', // Matches dark
   800: '#323438', // Matches darker
   900: '#212328',
-  contrastText: '#ffffff'
+  contrastText: '#ffffff' // white text on dark grey for contrast
 };
 
 // Secondary color - GIB Yellow (Pantone 123C)
 const SECONDARY = {
-  lighter: '#fff8e1',
-  light: '#ffe082',
+  lighter: '#FFDD80', // light pastel yellow, ~40% white mix
+  light: '#FFD256', // softer yellow, ~20% white mix
   main: '#FFC72C', // GIB Yellow - R:255 G:199 B:44
-  dark: '#ffb300',
-  darker: '#ff8f00',
-  100: '#fff8e1', // Matches lighter
+  dark: '#CC9F23', // deep amber, ~20% black mix
+  darker: '#99771A', // dark gold tone, ~40% black mix
+  100: '#fff8e1',
   200: '#ffecb3',
-  300: '#ffe082', // Matches light
+  300: '#ffe082',
   400: '#ffd54f',
   500: '#ffca28',
   600: '#FFC72C', // Matches main
-  700: '#ffb300', // Matches dark
+  700: '#ffb300',
   800: '#ffa000',
-  900: '#ff8f00', // Matches darker
-  contrastText: 'rgba(0, 0, 0, 0.87)'
+  900: '#ff8f00',
+  contrastText: '#000000' // black text on yellow for readability
 };
 
 // Tertiary color - Medium Grey (Pantone 429C)
@@ -64,7 +64,7 @@ const TERTIARY = {
   contrastText: 'rgba(0, 0, 0, 0.87)'
 };
 
-// Standard MUI colors
+// Updated colors based on MUI standard colors
 const ERROR = {
   light: '#ef5350',
   main: '#f44336',
@@ -100,11 +100,11 @@ const GREY = {
   200: '#D9D9D6', // Light Grey - R:217 G:217 B:214 (Pantone Cool Gray 1C)
   300: '#e0e0e0',
   400: '#bdbdbd',
-  500: '#9e9e9e',
+  500: '#A2AAAD', // Medium Grey - Pantone 429C
   600: '#757575',
   700: '#616161',
   800: '#424242',
-  900: '#212121',
+  900: '#53565A', // Dark Grey - Pantone Cool Gray 11C
   A100: '#f5f5f5', // Alternative light backgrounds
   A200: '#eeeeee', // Alternative borders
   A400: '#bdbdbd',
@@ -159,7 +159,9 @@ export function themePalette(mode = 'light') {
       ...PRIMARY,
       main: isDark ? alpha(PRIMARY.main, 0.98) : PRIMARY.main,
       light: isDark ? alpha(PRIMARY.light, 0.98) : PRIMARY.light,
-      dark: isDark ? alpha(PRIMARY.dark, 0.98) : PRIMARY.dark
+      dark: isDark ? alpha(PRIMARY.dark, 0.98) : PRIMARY.dark,
+      lighter: isDark ? alpha(PRIMARY.lighter, 0.98) : PRIMARY.lighter,
+      darker: isDark ? alpha(PRIMARY.darker, 0.98) : PRIMARY.darker
     },
 
     // Secondary color with dark mode handling
@@ -167,7 +169,9 @@ export function themePalette(mode = 'light') {
       ...SECONDARY,
       main: isDark ? alpha(SECONDARY.main, 0.98) : SECONDARY.main,
       light: isDark ? alpha(SECONDARY.light, 0.98) : SECONDARY.light,
-      dark: isDark ? alpha(SECONDARY.dark, 0.98) : SECONDARY.dark
+      dark: isDark ? alpha(SECONDARY.dark, 0.98) : SECONDARY.dark,
+      lighter: isDark ? alpha(SECONDARY.lighter, 0.98) : SECONDARY.lighter,
+      darker: isDark ? alpha(SECONDARY.darker, 0.98) : SECONDARY.darker
     },
 
     // Tertiary color
@@ -175,7 +179,9 @@ export function themePalette(mode = 'light') {
       ...TERTIARY,
       main: isDark ? alpha(TERTIARY.main, 0.98) : TERTIARY.main,
       light: isDark ? alpha(TERTIARY.light, 0.98) : TERTIARY.light,
-      dark: isDark ? alpha(TERTIARY.dark, 0.98) : TERTIARY.dark
+      dark: isDark ? alpha(TERTIARY.dark, 0.98) : TERTIARY.dark,
+      lighter: isDark ? alpha(TERTIARY.lighter, 0.98) : TERTIARY.lighter,
+      darker: isDark ? alpha(TERTIARY.darker, 0.98) : TERTIARY.darker
     },
 
     // Standard colors with dark mode handling
@@ -247,7 +253,7 @@ export function themePalette(mode = 'light') {
     background: {
       default: isDark ? BACKGROUND.dark.default : BACKGROUND.default,
       paper: isDark ? BACKGROUND.dark.paper : BACKGROUND.paper,
-      neutral: isDark ? alpha(GREY[900], 0.92) : GREY[100],
+      neutral: isDark ? alpha(GREY[900], 0.92) : GREY[200],
       darker: isDark ? BACKGROUND.dark.darker : BACKGROUND.default
     },
 

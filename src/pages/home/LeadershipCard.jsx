@@ -209,7 +209,7 @@ const LeadershipCard = () => {
                         bgcolor: alpha(theme.palette.primary.dark, 0.85),
                         backdropFilter: 'blur(5px)',
                         p: { xs: 3, sm: 3.5, md: 4 },
-                        borderRadius: 3,
+                        borderRadius: 2,
                         border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`
                       }}
                     >
@@ -257,7 +257,7 @@ const LeadershipCard = () => {
                               backgroundColor: alpha(theme.palette.secondary.main, 0.15),
                               color: theme.palette.secondary.main,
                               padding: '2px 6px',
-                              borderRadius: '4px',
+                              borderRadius: 1,
                               border: `1px solid ${alpha(theme.palette.secondary.main, 0.3)}`
                             }}
                           >
@@ -285,8 +285,8 @@ const LeadershipCard = () => {
 
           {/* Navigation controls */}
           <Box
-      sx={{
-        display: 'flex',
+            sx={{
+              display: 'flex',
               justifyContent: 'center',
               mt: 3,
               gap: 2
@@ -295,22 +295,36 @@ const LeadershipCard = () => {
             <IconButton
               onClick={goToPrevSlide}
               disabled={activeIndex === 0}
-        sx={{
+              sx={{
                 backgroundColor: alpha(theme.palette.secondary.main, 0.12),
-                color: theme.palette.secondary.main
+                color: theme.palette.secondary.main,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.2)
+                },
+                '&:disabled': {
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.05),
+                  color: alpha(theme.palette.secondary.main, 0.5)
+                }
               }}
             >
-              <Icon icon="mdi:chevron-left" width={28} height={28} style={{ color: theme.palette.secondary.main }} />
+              <Icon icon="mdi:chevron-left" width={28} height={28} style={{ color: 'inherit' }} />
             </IconButton>
             <IconButton
               onClick={goToNextSlide}
               disabled={activeIndex === testimonials.length - 1}
-        sx={{
+              sx={{
                 backgroundColor: alpha(theme.palette.secondary.main, 0.12),
-                color: theme.palette.secondary.main
+                color: theme.palette.secondary.main,
+                '&:hover': {
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.2)
+                },
+                '&:disabled': {
+                  backgroundColor: alpha(theme.palette.secondary.main, 0.05),
+                  color: alpha(theme.palette.secondary.main, 0.5)
+                }
               }}
             >
-              <Icon icon="mdi:chevron-right" width={28} height={28} style={{ color: theme.palette.secondary.main }} />
+              <Icon icon="mdi:chevron-right" width={28} height={28} style={{ color: 'inherit' }} />
             </IconButton>
           </Box>
         </Box>
@@ -354,13 +368,14 @@ const LeadershipCard = () => {
               {testimonials.map((item) => (
                 <SwiperSlide key={`card-${item.id}`}>
                   <Box
-            sx={{
+                    sx={{
                       position: 'relative',
                       width: '100%',
                       height: '100%',
-              borderRadius: 2,
-              overflow: 'hidden',
-                      border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`
+                      borderRadius: 2,
+                      overflow: 'hidden',
+                      border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+                      boxShadow: theme.customShadows.z8
                     }}
                   >
                     <Box
@@ -377,15 +392,18 @@ const LeadershipCard = () => {
 
                     {/* Name and Bio Button overlay */}
                     <Box
-        sx={{
+                      sx={{
                         position: 'absolute',
                         bottom: 0,
                         left: 0,
                         right: 0,
                         py: 2,
                         px: 3,
-                        background: `linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4) 60%, rgba(0,0,0,0))`,
-          display: 'flex',
+                        background: `linear-gradient(to top, 
+                          rgba(${theme.palette.primary.darker}, 0.9), 
+                          rgba(${theme.palette.primary.darker}, 0.6) 60%, 
+                          rgba(${theme.palette.primary.darker}, 0))`,
+                        display: 'flex',
                         flexDirection: 'column',
                         gap: 1.5
                       }}
@@ -408,7 +426,7 @@ const LeadershipCard = () => {
                             backgroundColor: alpha(theme.palette.secondary.main, 0.2),
                             color: '#fff',
                             padding: '1px 5px',
-                            borderRadius: '3px',
+                            borderRadius: theme.shape.borderRadius / 2,
                             border: `1px solid ${alpha(theme.palette.common.white, 0.3)}`
                           }}
                         >
@@ -422,18 +440,19 @@ const LeadershipCard = () => {
                         startIcon={<Icon icon="mdi:account" />}
                         endIcon={<Icon icon="proicons:open" />}
                         size="small"
-          sx={{
+                        sx={{
                           alignSelf: 'flex-start',
                           backgroundColor: theme.palette.secondary.main,
                           color: theme.palette.secondary.contrastText,
                           '&:hover': {
-                            backgroundColor: theme.palette.secondary.dark
+                            backgroundColor: theme.palette.secondary.dark,
+                            boxShadow: theme.customShadows.secondaryButton
                           },
                           textTransform: 'none',
                           fontWeight: 500,
                           px: 2,
                           py: 0.5,
-                          borderRadius: 2
+                          borderRadius: theme.shape.borderRadius
                         }}
                       >
                         Read Bio
@@ -445,23 +464,23 @@ const LeadershipCard = () => {
             </Swiper>
 
             {/* Circular progress indicator */}
-          <Box
-            sx={{
-              position: 'absolute',
+            <Box
+              sx={{
+                position: 'absolute',
                 right: '20px',
                 bottom: '20px',
                 zIndex: 20,
                 width: '52px',
                 height: '52px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 color: theme.palette.secondary.main,
                 background: alpha(theme.palette.background.paper, 0.1),
                 backdropFilter: 'blur(8px)',
                 borderRadius: '50%',
                 border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
-                boxShadow: theme.shadows[4],
+                boxShadow: theme.customShadows.z4,
                 '& svg': {
                   width: '100%',
                   height: '100%',
@@ -509,8 +528,9 @@ const LeadershipCard = () => {
             sx={{
               width: activeIndex === idx ? 24 : 8,
               height: 8,
-              borderRadius: activeIndex === idx ? 4 : '50%',
+              borderRadius: activeIndex === idx ? theme.shape.borderRadius : '50%',
               bgcolor: activeIndex === idx ? theme.palette.secondary.main : alpha(theme.palette.secondary.main, 0.3),
+              boxShadow: activeIndex === idx ? `0 0 8px ${alpha(theme.palette.secondary.main, 0.6)}` : 'none',
               transition: 'all 0.3s ease',
               cursor: 'pointer'
             }}

@@ -5,7 +5,7 @@ import { alpha } from '@mui/material/styles';
 
 export default function Card(theme) {
   const isDark = theme.palette.mode === 'dark';
-  
+
   const getColorStyle = (color) => ({
     backgroundColor: alpha(theme.palette[color].main, 0.05),
     borderColor: alpha(theme.palette[color].main, 0.25),
@@ -21,13 +21,13 @@ export default function Card(theme) {
           position: 'relative',
           borderRadius: theme.shape.borderRadius,
           border: '1px solid',
-          borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(230,230,230,0.8)',
+          borderColor: isDark ? alpha(theme.palette.common.white, 0.08) : alpha(theme.palette.grey[300], 0.8),
           transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
-            duration: theme.transitions.duration.shorter
+            duration: theme.transitions.duration.short
           }),
           boxShadow: theme.customShadows.card,
           '&.MuiPaper-outlined': {
-            borderColor: theme.palette.divider
+            borderColor: isDark ? alpha(theme.palette.common.white, 0.12) : theme.palette.divider
           },
           '&.card-background': {
             backgroundPosition: 'center',
@@ -40,14 +40,15 @@ export default function Card(theme) {
               transform: 'translateY(-2px)'
             }
           },
-          // Color variants
+          // Color variants following GIB guidelines
           '&.card-primary': getColorStyle('primary'),
           '&.card-secondary': getColorStyle('secondary'),
+          '&.card-tertiary': getColorStyle('tertiary'),
           '&.card-error': getColorStyle('error'),
           '&.card-warning': getColorStyle('warning'),
           '&.card-info': getColorStyle('info'),
           '&.card-success': getColorStyle('success'),
-          
+
           // MainCard specific styling - will apply to all MainCard components
           '&.MainCard': {
             backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.9) : theme.palette.background.paper,
@@ -114,9 +115,12 @@ export default function Card(theme) {
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          backgroundColor: theme.palette.grey[200],
+          backgroundColor: isDark ? theme.palette.background.default : theme.palette.grey[200],
+          borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0 0`,
           '&.card-media-hover': {
-            transition: theme.transitions.create('transform'),
+            transition: theme.transitions.create('transform', {
+              duration: theme.transitions.duration.standard
+            }),
             '&:hover': {
               transform: 'scale(1.05)'
             }

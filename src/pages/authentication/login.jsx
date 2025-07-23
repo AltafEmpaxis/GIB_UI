@@ -14,17 +14,22 @@ export default function Login() {
       <meta property="og:title" content="Login - GIB Capital" />
       <meta property="og:description" content="Access GIB Capital's secure investment management platform" />
 
-      <Box sx={{ 
-        position: 'relative', 
-        minHeight: '100vh', 
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        <Box sx={{ 
-          flex: 1,
+      <Box
+        sx={{
+          position: 'relative',
+          height: { xs: 'calc(100vh - 100px)', sm: 'calc(100vh - 100px)', md: 'calc(100vh - 0px)' }, // Account for footer height
           display: 'flex',
           flexDirection: 'column'
-        }}>
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column'
+            // overflow: 'hidden'
+          }}
+        >
           <AuthWrapper>
             <AuthLogin />
           </AuthWrapper>

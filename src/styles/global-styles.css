@@ -257,11 +257,6 @@ pre.language-mermaid {
 }
 
 .swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #444;
-
-    /* Center slide text vertically */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -286,8 +281,7 @@ pre.language-mermaid {
 .auth-swiper .swiper-button-prev {
     opacity: 0.7;
     transition: opacity 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(4px);
+    /* backdrop-filter: blur(4px); */
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -325,8 +319,4 @@ pre.language-mermaid {
     opacity: 1;
 }
 
-/* Icon fixes */
-.iconify {
-    display: inline-block;
-    vertical-align: middle;
-}
+

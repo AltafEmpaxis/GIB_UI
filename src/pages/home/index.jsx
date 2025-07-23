@@ -47,7 +47,7 @@ const Home = () => {
               </Stack>
             }
           >
-          <LeadershipCard />
+            <LeadershipCard />
           </MainCard>
         </Grid>
 
@@ -73,13 +73,17 @@ const Home = () => {
               <Chip
                 label="Real-time Data"
                 size="small"
-                color="primary"
+                color="secondary"
                 variant="filled"
                 sx={{
                   fontSize: '0.75rem',
-                  height: 24
+                  height: 24,
+                  color: theme.palette.secondary.contrastText,
+                  fontWeight: 500
                 }}
-                icon={<Icon icon="solar:refresh-bold-duotone" width={14} />}
+                icon={
+                  <Icon icon="solar:refresh-bold-duotone" width={14} color={theme.palette.secondary.contrastText} />
+                }
               />
             }
           >
@@ -109,35 +113,34 @@ const Home = () => {
             }
             secondary={
               <Stack direction="row" spacing={1}>
-                <Chip label="New" size="small" color="primary" variant="filled" />
+                <Chip
+                  label="New"
+                  size="small"
+                  color="secondary"
+                  variant="filled"
+                  sx={{
+                    color: theme.palette.secondary.contrastText,
+                    fontWeight: 500
+                  }}
+                />
                 <Chip
                   label="3 updates"
                   size="small"
                   color="primary"
                   variant="outlined"
                   icon={<Icon icon="solar:document-text-bold-duotone" width={14} />}
+                  sx={{ fontWeight: 500 }}
                 />
               </Stack>
             }
           >
             <InternalUpdates />
           </MainCard>
-              </Grid>
+        </Grid>
 
         {/* Latest News & Insights - Full width */}
         <Grid item xs={12} sx={{ mt: 3 }}>
-          <MainCard
-            contentSX={{ p: { xs: 2, sm: 3 } }}
-                  sx={{
-              borderRadius: 2,
-              boxShadow: theme.customShadows.z1,
-              background: theme.palette.background.paper,
-                    overflow: 'hidden',
-                          '&:hover': {
-                boxShadow: theme.customShadows.z2
-              }
-            }}
-          >
+          <MainCard contentSX={{ p: { xs: 2, sm: 3 } }} color="secondary">
             <LatestNewsAndInsights />
           </MainCard>
         </Grid>

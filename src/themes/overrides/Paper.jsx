@@ -15,14 +15,16 @@ export default function Paper(theme) {
         root: {
           backgroundImage: 'none',
           backgroundColor: theme.palette.background.paper,
+          borderRadius: theme.shape.borderRadius,
           transition: theme.transitions.create(['background-color', 'box-shadow', 'border-color'], {
-            duration: theme.transitions.duration.shorter
+            duration: theme.transitions.duration.short
           }),
           '&[href]': {
             textDecorationLine: 'none'
           },
           '&.MuiPaper-outlined': {
-            borderColor: isDark ? alpha(theme.palette.common.white, 0.15) : theme.palette.divider
+            borderColor: isDark ? alpha(theme.palette.common.white, 0.15) : theme.palette.divider,
+            boxShadow: 'none'
           }
         },
         outlined: {
@@ -34,25 +36,25 @@ export default function Paper(theme) {
             boxShadow: 'none'
           },
           '&.MuiPaper-elevation1': {
-            boxShadow: isDark ? theme.customShadows?.z1 : theme.shadows[1]
+            boxShadow: isDark ? theme.customShadows.z1 : theme.shadows[1]
           },
           '&.MuiPaper-elevation4': {
-            boxShadow: isDark ? theme.customShadows?.z8 : theme.shadows[4]
+            boxShadow: isDark ? theme.customShadows.z8 : theme.shadows[4]
           },
           '&.MuiPaper-elevation8': {
-            boxShadow: isDark ? theme.customShadows?.z12 : theme.shadows[8]
+            boxShadow: isDark ? theme.customShadows.z12 : theme.shadows[8]
           },
           '&.MuiPaper-elevation12': {
-            boxShadow: isDark ? theme.customShadows?.z16 : theme.shadows[12]
+            boxShadow: isDark ? theme.customShadows.z16 : theme.shadows[12]
           },
           '&.MuiPaper-elevation16': {
-            boxShadow: isDark ? theme.customShadows?.z20 : theme.shadows[16]
+            boxShadow: isDark ? theme.customShadows.z20 : theme.shadows[16]
           },
           '&.MuiPaper-elevation20': {
-            boxShadow: isDark ? theme.customShadows?.z24 : theme.shadows[20]
+            boxShadow: isDark ? theme.customShadows.z24 : theme.shadows[20]
           },
           '&.MuiPaper-elevation24': {
-            boxShadow: isDark ? theme.customShadows?.z24 : theme.shadows[24]
+            boxShadow: isDark ? theme.customShadows.z24 : theme.shadows[24]
           }
         }
       }

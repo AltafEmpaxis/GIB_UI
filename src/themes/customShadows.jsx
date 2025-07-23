@@ -10,8 +10,8 @@ export default function customShadows(theme) {
   const transparent = alpha(theme.palette.common.black, isDark ? 0.25 : 0.15);
 
   // GIB brand color shadows
-  const primaryShadow = alpha(theme.palette.primary.main, isDark ? 0.35 : 0.2);
-  const secondaryShadow = alpha(theme.palette.secondary.main, isDark ? 0.25 : 0.15);
+  const primaryShadow = alpha(theme.palette.primary.main, isDark ? 0.35 : 0.2); // Dark Grey shadow
+  const secondaryShadow = alpha(theme.palette.secondary.main, isDark ? 0.25 : 0.15); // Yellow shadow
   const tertiaryShadow = alpha(theme.palette.tertiary.main, isDark ? 0.3 : 0.15);
 
   // Yellow glow for highlighting

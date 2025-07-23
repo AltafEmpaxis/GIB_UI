@@ -1,17 +1,17 @@
 // material-ui
 import { Icon } from '@iconify/react';
-import { 
-  Box, 
-  Button, 
-  Container, 
-  Divider, 
-  IconButton, 
-  Link, 
-  Stack, 
-  Tooltip, 
-  Typography, 
-  alpha, 
-  useMediaQuery 
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  IconButton,
+  Link,
+  Stack,
+  Tooltip,
+  Typography,
+  alpha,
+  useMediaQuery
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
@@ -24,25 +24,25 @@ export default function AuthFooter() {
   const isDark = theme.palette.mode === 'dark';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-  
+
   // Hover state for interactive elements
   const [hoveredLink, setHoveredLink] = useState(null);
 
   // Social media icons with enhanced data
   const socialIcons = [
-    { 
-      icon: 'mdi:linkedin', 
-      link: 'https://www.linkedin.com/company/gibcapitalksa/', 
+    {
+      icon: 'mdi:linkedin',
+      link: 'https://www.linkedin.com/company/gibcapitalksa/',
       color: '#0A66C2',
       label: 'LinkedIn'
     },
-    { 
-      icon: 'mdi:twitter', 
-      link: 'https://twitter.com/gibcapitalksa', 
+    {
+      icon: 'mdi:twitter',
+      link: 'https://twitter.com/gibcapitalksa',
       color: '#1DA1F2',
       label: 'Twitter'
-    },
-    // { 
+    }
+    // {
     //   icon: 'mdi:instagram',
     //   link: 'https://www.instagram.com/gibcapital/',
     //   color: '#E4405F',
@@ -62,7 +62,8 @@ export default function AuthFooter() {
     <Box
       component="footer"
       sx={{
-        py: { xs: 0.5, sm: 0.75 },
+        py: { xs: 0.5, sm: 0.75, md: 0.75 },
+        px: { xs: 0.5, sm: 0.75, md: 0.75 },
         width: '100%',
         position: 'fixed',
         bottom: 0,
@@ -85,18 +86,18 @@ export default function AuthFooter() {
           direction={{ xs: 'column', sm: 'row' }}
           alignItems="center"
           justifyContent="space-between"
-          spacing={{ xs: 1.5, sm: 0 }}
-          sx={{ py: { xs: 0.5, sm: 0 } }}
+          spacing={{ xs: 1.5, sm: 0, md: 0 }}
+          sx={{ py: { xs: 0.5, sm: 0, md: 0 }, px: { xs: 0.5, sm: 0, md: 0 } }}
         >
           {/* Copyright Section with Security Badge */}
-          <Stack 
-            direction="row" 
-            alignItems="center" 
+          <Stack
+            direction="row"
+            alignItems="center"
             spacing={1.5}
-            sx={{ 
-              order: { xs: 2, sm: 1 },
-              mt: { xs: 1, sm: 0 },
-              mb: { xs: 1, sm: 0 }
+            sx={{
+              order: { xs: 2, sm: 1, md: 1 },
+              mt: { xs: 1, sm: 0, md: 0 },
+              mb: { xs: 1, sm: 0, md: 0 }
             }}
           >
             <Tooltip title="Secure Connection" arrow placement="top">
@@ -132,20 +133,20 @@ export default function AuthFooter() {
           </Stack>
 
           {/* Social Media Section */}
-          <Box 
-            sx={{ 
-              width: { xs: '100%', sm: 'auto' }, 
-              display: 'flex', 
-              alignItems: 'center', 
+          <Box
+            sx={{
+              width: { xs: '100%', sm: 'auto' },
+              display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
-              order: { xs: 1, sm: 2 },
-              my: { xs: 1, sm: 0 }
+              order: { xs: 1, sm: 2, md: 2 },
+              my: { xs: 1, sm: 0, md: 0 }
             }}
           >
-            <Stack 
-              direction="row" 
-              spacing={1.5} 
-              sx={{ 
+            <Stack
+              direction="row"
+              spacing={1.5}
+              sx={{
                 display: 'flex',
                 justifyContent: { xs: 'center', sm: 'flex-start' }
               }}
@@ -186,11 +187,11 @@ export default function AuthFooter() {
           <Stack
             direction={{ xs: 'row', sm: 'row' }}
             spacing={{ xs: 2, sm: 2.5 }}
-            sx={{ 
-              order: { xs: 3, sm: 3 },
-              justifyContent: { xs: 'center', sm: 'flex-end' },
-              mt: { xs: 0, sm: 0 },
-              mb: { xs: 1, sm: 0 },
+            sx={{
+              order: { xs: 3, sm: 3, md: 3 },
+              justifyContent: { xs: 'center', sm: 'flex-end', md: 'flex-end' },
+              mt: { xs: 0, sm: 0, md: 0 },
+              mb: { xs: 1, sm: 1, md: 0 },
               width: { xs: '100%', sm: 'auto' }
             }}
             divider={
@@ -208,10 +209,10 @@ export default function AuthFooter() {
           >
             {!isTablet && (
               <Tooltip title="SSL Encrypted Connection" arrow placement="top">
-                <Box 
-                  sx={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
                     gap: 0.5,
                     bgcolor: alpha(theme.palette.success.main, 0.05),
                     px: 1,
@@ -252,14 +253,17 @@ export default function AuthFooter() {
                 onMouseEnter={() => setHoveredLink(index)}
                 onMouseLeave={() => setHoveredLink(null)}
                 sx={{
-                  color: hoveredLink === index 
-                    ? theme.palette.secondary.main 
-                    : isDark ? theme.palette.grey[400] : theme.palette.text.secondary,
+                  color:
+                    hoveredLink === index
+                      ? theme.palette.secondary.main
+                      : isDark
+                        ? theme.palette.grey[400]
+                        : theme.palette.text.secondary,
                   fontSize: '0.75rem',
                   fontWeight: 500,
                   transition: 'all 0.2s ease',
                   position: 'relative',
-                  '&:hover': { 
+                  '&:hover': {
                     color: theme.palette.secondary.main,
                     transform: 'translateY(-2px)'
                   },
