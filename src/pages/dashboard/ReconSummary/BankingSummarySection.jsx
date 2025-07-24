@@ -104,7 +104,7 @@ const BankingSummarySection = () => {
               variant={isMobile ? 'h5' : 'h4'}
               sx={{
                 fontWeight: 700,
-                color: theme.palette.secondary.main
+                color: theme.palette.primary.main
               }}
             >
               $9.38M

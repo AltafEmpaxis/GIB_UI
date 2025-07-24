@@ -238,7 +238,7 @@ const AnalyticsSection = () => {
 
           <Box sx={{ mb: 1.5 }}>
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
                 24
               </Typography>
               <Stack spacing={0.5}>

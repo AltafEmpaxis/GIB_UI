@@ -6,8 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 // project import
 import useConfig from 'hooks/useConfig';
-import NotificationSection from './HeaderContent/NotificationSection';
-import UserProfile from './HeaderContent/Profile';
+import UserProfile from './Profile';
 
 // ==============================|| HEADER - CONTENT ||============================== //
 
@@ -62,7 +61,7 @@ const HeaderContent = () => {
       {/* Action Buttons */}
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mr: 1 }}>
         {/* Notification */}
-        <NotificationSection />
+        {/* <NotificationSection /> */}
 
         {/* Dark/Light Mode Toggle */}
         <Tooltip title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>

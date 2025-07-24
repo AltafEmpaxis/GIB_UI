@@ -86,16 +86,16 @@ const reportsGroup = {
 };
 
 // Utility Action Group
-const corporateGroup = {
+const utilityActionGroup = {
   id: 'group-utility',
   title: 'Utility',
   type: 'group',
   children: [
     {
-      id: 'corporate',
+      id: 'corporate-action',
       title: 'Corporate Action',
       type: 'item',
-      url: '/corporate',
+      url: '/corporate-action',
       icon: icons.CorporateOutlined
     }
   ]
@@ -119,7 +119,7 @@ const postingGroup = {
 
 // Export all groups as items array
 const pages = {
-  items: [reconToolGroup, reportsGroup, corporateGroup, postingGroup, managementGroup]
+  items: [reconToolGroup, reportsGroup, utilityActionGroup, postingGroup, managementGroup]
 };
 
 export default pages;

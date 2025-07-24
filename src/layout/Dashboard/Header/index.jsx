@@ -1,6 +1,6 @@
 import { Icon } from '@iconify/react';
 import { AppBar, IconButton, Toolbar, useMediaQuery } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
 // material-ui

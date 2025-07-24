@@ -362,7 +362,7 @@ const CustodiansSection = ({ isLoading }) => {
 
                   {/* Reconciled */}
                   <Box sx={{ textAlign: 'center' }}>
-                    <Typography variant="h6" fontWeight={600} color="secondary.main">
+                    <Typography variant="h6" fontWeight={600} color="text.primary">
                       {custodian.reconciledAccounts}
                     </Typography>
                     <Typography variant="caption" color="text.secondary">
@@ -483,7 +483,7 @@ const CustodiansSection = ({ isLoading }) => {
                             </Box>
                           </Grid>
                           <Grid item xs={6}>
-                            <Typography variant="body2" fontWeight={600} color="secondary.main">
+                            <Typography variant="body2" fontWeight={600} color="primary.main">
                               {custodian.reconciledAccounts}
                             </Typography>
                           </Grid>

@@ -13,6 +13,8 @@ const ReconTool = Loadable(lazy(() => import('pages/ReconTool')));
 const DetailReconTool = Loadable(lazy(() => import('pages/ReconTool/DetailReconTool')));
 const InvestmentPerformance = Loadable(lazy(() => import('pages/Report/InvestmentPerformance')));
 const QualityControl = Loadable(lazy(() => import('pages/Report/QualityControl')));
+const CorporateAction = Loadable(lazy(() => import('pages/Utility/CorporateAction')));
+// User Management
 
 const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
 // ==============================|| ROUTING RENDER ||============================== //
@@ -60,6 +62,10 @@ const MainRoutes = {
     {
       path: 'quality-control',
       element: <QualityControl />
+    },
+    {
+      path: 'corporate-action',
+      element: <CorporateAction />
     },
     {
       path: 'profile',

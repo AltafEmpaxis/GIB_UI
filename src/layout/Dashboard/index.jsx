@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Backdrop, Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { Outlet } from 'react-router';
 
 import SessionTimeout from 'components/SessionTimeout/index';
 import { DRAWER_WIDTH, HEADER_HEIGHT } from 'config';
 
+import { Outlet } from 'react-router';
 import Drawer from './Drawer';
 import Header from './Header';
 
@@ -15,14 +15,14 @@ const DashboardLayout = () => {
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   // Dashboard layout to keep the drawer closed by default when landing on the page.
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
   // Dashboard layout to keep the drawer open by default when landing on the page.
-  // const [open, setOpen] = useState(!matchDownLG);
+  const [open, setOpen] = useState(!matchDownLG);
 
-  // useEffect(() => {
-  //   setOpen(!matchDownLG);
-  // }, [matchDownLG]);
+  useEffect(() => {
+    setOpen(!matchDownLG);
+  }, [matchDownLG]);
 
   const handleDrawerToggle = () => {
     setOpen(!open);
@@ -68,7 +68,7 @@ const DashboardLayout = () => {
       >
         <Box
           sx={{
-            p: { xs: 1.25, sm: 1.75, lg: 1.5 },
+            p: { xs: 1.25, sm: 1.5, lg: 1 },
             minHeight: `calc(100vh - ${HEADER_HEIGHT + 10}px)`,
             backgroundColor: theme.palette.background.default,
             borderRadius: {

@@ -11,7 +11,6 @@ import {
   LinearProgress,
   Stack,
   Typography,
-  useMediaQuery,
   useTheme
 } from '@mui/material';
 import { useNavigate } from 'react-router';
@@ -85,7 +84,7 @@ const SummaryMetricsSection = () => {
 
           <Box sx={{ p: spacing, pt: spacing }}>
             <Stack direction="row" alignItems="center" spacing={spacing}>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
                 384
               </Typography>
               <Chip
@@ -226,7 +225,7 @@ const SummaryMetricsSection = () => {
               </Stack>
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.secondary.main }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: theme.palette.primary.main }}>
                   $2,890
                 </Typography>
                 <Chip
