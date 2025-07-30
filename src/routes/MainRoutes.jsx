@@ -14,6 +14,7 @@ const DetailReconTool = Loadable(lazy(() => import('pages/ReconTool/DetailReconT
 const InvestmentPerformance = Loadable(lazy(() => import('pages/Report/InvestmentPerformance')));
 const QualityControl = Loadable(lazy(() => import('pages/Report/QualityControl')));
 const CorporateAction = Loadable(lazy(() => import('pages/Utility/CorporateAction')));
+const Posting = Loadable(lazy(() => import('pages/Posting')));
 // User Management
 
 const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
@@ -50,6 +51,10 @@ const MainRoutes = {
     {
       path: 'detail-recon-tool',
       element: <DetailReconTool />
+    },
+    {
+      path: 'posting',
+      element: <Posting />
     },
     {
       path: 'user-management',

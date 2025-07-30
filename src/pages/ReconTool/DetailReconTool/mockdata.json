@@ -1,0 +1,289 @@
+[
+  {
+    "portfolioCode": "DPM01",
+    "assetClass": "Equity",
+    "apxMarketValue": 14442988.89,
+    "brokerMarketValue": 14442177.59,
+    "marketValueDiff": 811.3
+  },
+  {
+    "portfolioCode": "DPM01",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 178730.99,
+    "brokerMarketValue": 178731.46,
+    "marketValueDiff": -0.47
+  },
+  {
+    "portfolioCode": "DPM07",
+    "assetClass": "Equity",
+    "apxMarketValue": 61054431.42,
+    "brokerMarketValue": 61054431.42,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM07",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 1249860.08,
+    "brokerMarketValue": 1400392.63,
+    "marketValueDiff": -150532.55
+  },
+  {
+    "portfolioCode": "DPM16",
+    "assetClass": "Equity",
+    "apxMarketValue": 20157710.04,
+    "brokerMarketValue": 20156965.32,
+    "marketValueDiff": 744.72
+  },
+  {
+    "portfolioCode": "DPM16",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 53387.77,
+    "brokerMarketValue": 53388.31,
+    "marketValueDiff": -0.54
+  },
+  {
+    "portfolioCode": "DPM34",
+    "assetClass": "Equity",
+    "apxMarketValue": 127939791.8,
+    "brokerMarketValue": 127939791.8,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM34",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 512818.39,
+    "brokerMarketValue": 512818.72,
+    "marketValueDiff": -0.33
+  },
+  {
+    "portfolioCode": "DPM38",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 208.28,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM40",
+    "assetClass": "Equity",
+    "apxMarketValue": 43472256.95,
+    "brokerMarketValue": 43468120.65,
+    "marketValueDiff": 4136.3
+  },
+  {
+    "portfolioCode": "DPM40",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 460697.86,
+    "brokerMarketValue": 460698.34,
+    "marketValueDiff": -0.48
+  },
+  {
+    "portfolioCode": "DPM41",
+    "assetClass": "Equity",
+    "apxMarketValue": 25423471.17,
+    "brokerMarketValue": 25423471.17,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM41",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 144909.32,
+    "brokerMarketValue": 144909.33,
+    "marketValueDiff": -0.01
+  },
+  {
+    "portfolioCode": "DPM42",
+    "assetClass": "Equity",
+    "apxMarketValue": 23962804.94,
+    "brokerMarketValue": 23962804.92,
+    "marketValueDiff": 0.02
+  },
+  {
+    "portfolioCode": "DPM42",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 150146.54,
+    "brokerMarketValue": 150149.84,
+    "marketValueDiff": -3.3
+  },
+  {
+    "portfolioCode": "DPM45",
+    "assetClass": "Equity",
+    "apxMarketValue": 115851844.6,
+    "brokerMarketValue": 115847202.9,
+    "marketValueDiff": 4641.7
+  },
+  {
+    "portfolioCode": "DPM45",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 8341503.49,
+    "brokerMarketValue": 8341503.97,
+    "marketValueDiff": -0.48
+  },
+  {
+    "portfolioCode": "DPM45-1",
+    "assetClass": "Equity",
+    "apxMarketValue": 271553633,
+    "brokerMarketValue": 271553633,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM45-1",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 13291,
+    "brokerMarketValue": 13291,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM53",
+    "assetClass": "Equity",
+    "apxMarketValue": 8027197.49,
+    "brokerMarketValue": 8027197.49,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM53",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 56591.84,
+    "brokerMarketValue": 56591.84,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM54",
+    "assetClass": "Equity",
+    "apxMarketValue": 8432302.5,
+    "brokerMarketValue": 8432302.5,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM54",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 51828.59,
+    "brokerMarketValue": 51828.59,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM55",
+    "assetClass": "Equity",
+    "apxMarketValue": 11267156.33,
+    "brokerMarketValue": 11267156.33,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM55",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 61118.73,
+    "brokerMarketValue": 61125.38,
+    "marketValueDiff": -6.65
+  },
+  {
+    "portfolioCode": "DPM56",
+    "assetClass": "Equity",
+    "apxMarketValue": 11394738.87,
+    "brokerMarketValue": 11394738.87,
+    "marketValueDiff": 0
+  },
+  {
+    "portfolioCode": "DPM56",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 56663.87,
+    "brokerMarketValue": 56663.86,
+    "marketValueDiff": 0.01
+  },
+  {
+    "portfolioCode": "DPM62",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 678.77,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM74",
+    "assetClass": "Equity",
+    "apxMarketValue": 82221005.66,
+    "brokerMarketValue": 687800000,
+    "marketValueDiff": -605578994.3
+  },
+  {
+    "portfolioCode": "DPM74",
+    "assetClass": "CASH USD",
+    "apxMarketValue": 0.04,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM74",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 45965.45,
+    "brokerMarketValue": 88750,
+    "marketValueDiff": -42784.55
+  },
+  {
+    "portfolioCode": "DPM75",
+    "assetClass": "Equity",
+    "apxMarketValue": 100052262.9,
+    "brokerMarketValue": 50000000,
+    "marketValueDiff": 50052262.92
+  },
+  {
+    "portfolioCode": "DPM75",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": -72551.11,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM76",
+    "assetClass": "Equity",
+    "apxMarketValue": 62166163.97,
+    "brokerMarketValue": 50000000,
+    "marketValueDiff": 12166163.97
+  },
+  {
+    "portfolioCode": "DPM76",
+    "assetClass": "CASH USD",
+    "apxMarketValue": 586225.02,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM76",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": -28674.8,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM77",
+    "assetClass": "Equity",
+    "apxMarketValue": 62259817.97,
+    "brokerMarketValue": 50000000,
+    "marketValueDiff": 12259817.97
+  },
+  {
+    "portfolioCode": "DPM77",
+    "assetClass": "CASH USD",
+    "apxMarketValue": -0.04,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM77",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": -45191.11,
+    "brokerMarketValue": null,
+    "marketValueDiff": null
+  },
+  {
+    "portfolioCode": "DPM83",
+    "assetClass": "Equity",
+    "apxMarketValue": 32773472.07,
+    "brokerMarketValue": 32772261.77,
+    "marketValueDiff": 1210.3
+  },
+  {
+    "portfolioCode": "DPM83",
+    "assetClass": "CASH SAR",
+    "apxMarketValue": 179263.39,
+    "brokerMarketValue": 178759.75,
+    "marketValueDiff": 503.64
+  }
+]

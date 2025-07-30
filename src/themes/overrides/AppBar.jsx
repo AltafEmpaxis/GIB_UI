@@ -18,7 +18,8 @@ export default function AppBar(theme) {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.shorter
           }),
-          borderBottom: `1px solid ${alpha(theme.palette.divider, 0.12)}`,
+          borderRadius: 0,
+          borderBottom: `1px solid ${isDark ? alpha(theme.palette.common.white, 0.1) : alpha(theme.palette.divider, 0.12)}`,
           '&.MuiAppBar-colorDefault': {
             backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.98) : theme.palette.background.paper,
             color: theme.palette.primary.main // Dark Grey text
@@ -35,7 +36,7 @@ export default function AppBar(theme) {
           // Elevation styles
           '&.MuiPaper-elevation0': {
             boxShadow: 'none',
-            borderBottom: `1px solid ${alpha(theme.palette.divider, 0.12)}`
+            borderBottom: `1px solid ${isDark ? alpha(theme.palette.common.white, 0.1) : alpha(theme.palette.divider, 0.12)}`
           },
           '&.MuiPaper-elevation1': {
             boxShadow: `0 2px 4px ${alpha(theme.palette.common.black, 0.08)}`

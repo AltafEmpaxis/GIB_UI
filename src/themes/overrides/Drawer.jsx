@@ -12,6 +12,7 @@ export default function Drawer(theme) {
           backgroundColor: theme.palette.background.default,
           color: isDark ? theme.palette.common.white : theme.palette.primary.main, // White in dark mode, Dark Grey in light mode
           borderRight: `1px solid ${isDark ? alpha(theme.palette.common.white, 0.1) : alpha(theme.palette.divider, 0.12)}`,
+          borderRadius: 0,
           transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.shorter

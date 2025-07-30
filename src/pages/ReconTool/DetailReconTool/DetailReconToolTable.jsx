@@ -155,7 +155,6 @@ const mockAccounts = [
 
 export default function DetailReconToolTable() {
   const theme = useTheme();
-  const [activeFilter, setActiveFilter] = useState('all');
   const [columnFilters, setColumnFilters] = useState([]);
 
   // Metrics calculation
@@ -332,24 +331,6 @@ export default function DetailReconToolTable() {
     []
   );
 
-  // Handle filter change from metric cards
-  const handleMetricCardFilter = (filter) => {
-    // Toggle filter if clicking the same one
-    const newFilter = activeFilter === filter ? 'all' : filter;
-    setActiveFilter(newFilter);
-
-    // Apply filter to table
-    if (newFilter === 'all') {
-      setColumnFilters([]);
-    } else if (newFilter === 'market_value') {
-      setColumnFilters([{ id: 'amount', value: { min: 1 } }]);
-    } else if (newFilter === 'positions') {
-      setColumnFilters([{ id: 'quantity', value: { min: 1 } }]);
-    } else if (newFilter === 'cash_balance') {
-      setColumnFilters([{ id: 'cash_balance', value: { min: 0.01 } }]);
-    }
-  };
-
   // Table props configuration
   const tableProps = {
     state: { columnFilters },
@@ -399,8 +380,6 @@ export default function DetailReconToolTable() {
                   icon={card.icon}
                   color={card.color}
                   trend={card.trend}
-                  onClick={() => handleMetricCardFilter(card.id)}
-                  isActive={activeFilter === card.id}
                 />
               </Grid>
             ))}

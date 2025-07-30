@@ -107,7 +107,6 @@ const ReconSummary = ({ isLoading }) => {
           },
           position: { lg: 'relative' },
           width: { xs: '100%', lg: sidebarWidth },
-          height: { lg: '100%' },
           overflowY: { lg: 'auto' },
           ml: isLargeScreen ? 0 : 0
         }}
