@@ -143,7 +143,7 @@ const ReusableTable = ({ columns, data, initialState = {}, tableProps = {} }) =>
     enableRowNumbers: true,
     rowNumberDisplayMode: 'static',
     paginationDisplayMode: 'pages',
-    positionToolbarAlertBanner: 'bottom',
+    positionToolbarAlertBanner: 'top',
     positionPagination: 'bottom',
 
     // Enable state persistence

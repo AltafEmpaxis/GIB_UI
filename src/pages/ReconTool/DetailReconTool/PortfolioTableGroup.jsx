@@ -1,6 +1,6 @@
-import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 import { useEffect, useMemo, useState } from 'react';
 import mockData from './mockdataGroup.json';
+import ReusableTable from 'components/Table/ReusableTable';
 
 const PortfolioTableGroup = () => {
   const [data, setData] = useState([]);
@@ -169,14 +169,14 @@ const PortfolioTableGroup = () => {
     []
   );
 
-  const table = useMaterialReactTable({
+  const tableProps = {
     columns,
     data,
-    // enableGrouping: true,
+    enableGrouping: true,
     enableSorting: true,
     enableFiltering: true,
     enablePagination: true,
-    // enableRowSelection: false,
+    // enableRowSelection: true,
     enableColumnFilters: true,
     enableGlobalFilter: true,
     enableDensityToggle: true,
@@ -184,24 +184,23 @@ const PortfolioTableGroup = () => {
     enableColumnOrdering: true,
     enableColumnResizing: true,
     initialState: {
-      pagination: {
-        pageSize: 25,
-        pageIndex: 0
-      },
+      density: 'compact',
+      pagination: { pageSize: 10, pageIndex: 0 },
+      showColumnFilters: true,
       showGlobalFilter: true,
-      // grouping: ['portfolioCode'],
-      expanded: true,
-      density: 'compact'
+      grouping: ['portfolioCode'],
+      expanded: true
     },
+
     state: {
       isLoading: data.length === 0
     }
-  });
+  };
 
   return (
     <div style={{ margin: '20px' }}>
       <h2>Portfolio Holdings Analysis ({data.length} records)</h2>
-      <MaterialReactTable table={table} />
+      <ReusableTable tableProps={tableProps} />
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useMemo } from 'react';
+import ReusableTable from 'components/Table/ReusableTable';
 import mockData from './mockdata.json';
 
 const PortfolioTable = () => {
-  // console.log('Mock Data:', mockData);
-  // console.log('Mock Data length:', mockData?.length);
+  const theme = useTheme();
 
   // Memoize the data
   const data = useMemo(() => {
@@ -20,11 +20,11 @@ const PortfolioTable = () => {
     }).format(value);
   };
 
-  // Color code for market value difference
+  // Color code for market value difference using theme colors
   const getDiffColor = (value) => {
     if (value === null || value === undefined) return 'inherit';
-    if (value > 0) return '#4caf50';
-    if (value < 0) return '#f44336';
+    if (value > 0) return theme.palette.success.main;
+    if (value < 0) return theme.palette.error.main;
     return 'inherit';
   };
 
@@ -32,44 +32,59 @@ const PortfolioTable = () => {
     () => [
       {
         accessorKey: 'portfolioCode',
-        header: 'Portfolio Code'
+        header: 'Portfolio Code',
+        size: 250
       },
       {
         accessorKey: 'assetClass',
-        header: 'Asset Class'
+        header: 'Asset Class',
+        size: 250
       },
       {
         accessorKey: 'apxMarketValue',
         header: 'APX Market Value',
+        size: 280,
         Cell: ({ cell }) => formatNumber(cell.getValue())
       },
       {
         accessorKey: 'brokerMarketValue',
         header: 'Broker Market Value',
+        size: 280,
         Cell: ({ cell }) => formatNumber(cell.getValue())
       },
       {
         accessorKey: 'marketValueDiff',
         header: 'Market Value Diff',
+        size: 260,
         Cell: ({ cell }) => {
           const value = cell.getValue();
           return <span style={{ color: getDiffColor(value), fontWeight: 'bold' }}>{formatNumber(value)}</span>;
         }
       }
     ],
-    []
+    [theme]
   );
 
-  const table = useMaterialReactTable({
+  const tableProps = {
     columns,
-    data
-  });
+    data: data,
+    initialState: {
+      density: 'compact',
+      pagination: { pageSize: 10, pageIndex: 0 },
+      showColumnFilters: true,
+      showGlobalFilter: true
+    },
+
+    enableRowSelection: false,
+    manualPagination: true,
+    manualFiltering: true,
+    manualSorting: true
+  };
 
   return (
-    <div style={{ margin: '20px' }}>
-      <h2>Portfolio Market Value Analysis</h2>
-      <MaterialReactTable table={table} />
-    </div>
+    <Box sx={{ m: 2.5 }}>
+      <ReusableTable tableProps={tableProps} />
+    </Box>
   );
 };
 
