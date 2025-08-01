@@ -5,7 +5,17 @@ import PropTypes from 'prop-types';
 /**
  * MetricCard - A component for displaying metrics following GIB design system
  */
-const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isActive }) => {
+const MetricCard = ({
+  title = '',
+  value = '',
+  subtitle = '',
+  icon = '',
+  color = '',
+  trend = '',
+  onClick = () => {},
+  isActive = false,
+  sx = {}
+}) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 
@@ -17,7 +27,8 @@ const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isAct
         position: 'relative',
         backgroundColor: theme.palette.background.paper,
         border: `1px solid ${theme.palette.divider}`,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        ...sx
       }}
     >
       {/* Accent top bar */}
@@ -126,14 +137,15 @@ const MetricCard = ({ title, value, subtitle, icon, color, trend, onClick, isAct
 };
 
 MetricCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  subtitle: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  subtitle: PropTypes.string,
+  icon: PropTypes.string,
+  color: PropTypes.string,
   trend: PropTypes.string,
   onClick: PropTypes.func,
-  isActive: PropTypes.bool
+  isActive: PropTypes.bool,
+  sx: PropTypes.object
 };
 
 MetricCard.defaultProps = {

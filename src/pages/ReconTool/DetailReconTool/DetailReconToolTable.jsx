@@ -3,17 +3,19 @@ import { Box, Button, Card, Chip, Grid, Typography, useTheme } from '@mui/materi
 import MainCard from 'components/MainCard';
 import ReusableTable from 'components/Table/ReusableTable';
 import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 import MetricCard from './ReconMetricsCards';
 
 // Mock data for reconciliation details - updated with real Saudi companies and GIB funds
+// Account numbers now correspond to actual portfolio codes for easy mapping
 const mockAccounts = [
   {
     id: 1,
-    account_number: 'GIB-1001',
+    account_number: 'DPM01',
     account_name: 'GIB MENA ESG Equity Fund',
     status: 'reconciled',
     date: '2024-06-10',
-    amount: 3250000.75,
+    amount: 14621719.88,
     currency: 'SAR',
     reconciled_by: 'Ahmad Al-Saud',
     portfolio: 'ESG Investments',
@@ -21,15 +23,15 @@ const mockAccounts = [
     quantity: 12500,
     security_symbol: 'GIBMESG',
     security_name: 'GIB MENA ESG Equity Fund',
-    cash_balance: 812500.19
+    cash_balance: 178730.99
   },
   {
     id: 2,
-    account_number: 'GIB-1002',
+    account_number: 'DPM07',
     account_name: 'GIB Opportunistic MENA Equity Fund',
     status: 'reconciled',
     date: '2024-06-10',
-    amount: 4750000.25,
+    amount: 62304291.5,
     currency: 'SAR',
     reconciled_by: 'Mohammed Al-Qahtani',
     portfolio: 'Opportunistic Investments',
@@ -37,15 +39,15 @@ const mockAccounts = [
     quantity: 18500,
     security_symbol: 'GIBOMEF',
     security_name: 'GIB Opportunistic MENA Equity Fund',
-    cash_balance: 1187500.06
+    cash_balance: 1249860.08
   },
   {
     id: 3,
-    account_number: 'GIB-1003',
-    account_name: 'Saudi Aramco',
+    account_number: 'DPM16',
+    account_name: 'Saudi Aramco Portfolio',
     status: 'unreconciled',
     date: '2024-06-09',
-    amount: 8520000.0,
+    amount: 20211097.81,
     currency: 'SAR',
     reconciled_by: '-',
     portfolio: 'Saudi Equities',
@@ -53,15 +55,15 @@ const mockAccounts = [
     quantity: 25000,
     security_symbol: '2222.SR',
     security_name: 'Saudi Arabian Oil Co',
-    cash_balance: 2130000.0
+    cash_balance: 53387.77
   },
   {
     id: 4,
-    account_number: 'GIB-1004',
-    account_name: 'SABIC',
+    account_number: 'DPM34',
+    account_name: 'SABIC Portfolio',
     status: 'reconciled',
     date: '2024-06-10',
-    amount: 3720500.5,
+    amount: 128452610.19,
     currency: 'SAR',
     reconciled_by: 'Fatima Al-Otaibi',
     portfolio: 'Saudi Equities',
@@ -69,15 +71,15 @@ const mockAccounts = [
     quantity: 12500,
     security_symbol: '2010.SR',
     security_name: 'Saudi Basic Industries Corp',
-    cash_balance: 930125.13
+    cash_balance: 512818.39
   },
   {
     id: 5,
-    account_number: 'GIB-1005',
-    account_name: 'Al Rajhi Bank',
+    account_number: 'DPM40',
+    account_name: 'Al Rajhi Bank Portfolio',
     status: 'reconciled',
     date: '2024-06-10',
-    amount: 5250000.0,
+    amount: 43932954.81,
     currency: 'SAR',
     reconciled_by: 'Ali Al-Ghamdi',
     portfolio: 'Saudi Banking',
@@ -85,15 +87,15 @@ const mockAccounts = [
     quantity: 17500,
     security_symbol: '1120.SR',
     security_name: 'Al Rajhi Banking & Investment Corp',
-    cash_balance: 1312500.0
+    cash_balance: 460697.86
   },
   {
     id: 6,
-    account_number: 'GIB-1006',
-    account_name: 'Saudi Telecom Company',
+    account_number: 'DPM41',
+    account_name: 'Saudi Telecom Portfolio',
     status: 'unreconciled',
     date: '2024-06-09',
-    amount: 4350000.0,
+    amount: 25568380.49,
     currency: 'SAR',
     reconciled_by: '-',
     portfolio: 'Saudi Telecom',
@@ -101,15 +103,15 @@ const mockAccounts = [
     quantity: 14500,
     security_symbol: '7010.SR',
     security_name: 'Saudi Telecom Company',
-    cash_balance: 1087500.0
+    cash_balance: 144909.32
   },
   {
     id: 7,
-    account_number: 'GIB-1007',
+    account_number: 'DPM42',
     account_name: 'GIB Sukuk Fund',
     status: 'reconciled',
     date: '2024-06-10',
-    amount: 6750000.5,
+    amount: 24112951.48,
     currency: 'SAR',
     reconciled_by: 'Khalid Al-Sharif',
     portfolio: 'Fixed Income',
@@ -117,15 +119,15 @@ const mockAccounts = [
     quantity: 22500,
     security_symbol: 'GIBSUK',
     security_name: 'GIB Sukuk Fund',
-    cash_balance: 1687500.13
+    cash_balance: 150146.54
   },
   {
     id: 8,
-    account_number: 'GIB-1008',
-    account_name: 'Saudi National Bank',
+    account_number: 'DPM45',
+    account_name: 'Saudi National Bank Portfolio',
     status: 'unreconciled',
     date: '2024-06-09',
-    amount: 3850000.25,
+    amount: 124193348.09,
     currency: 'SAR',
     reconciled_by: '-',
     portfolio: 'Saudi Banking',
@@ -133,15 +135,15 @@ const mockAccounts = [
     quantity: 12800,
     security_symbol: '1180.SR',
     security_name: 'Saudi National Bank',
-    cash_balance: 962500.06
+    cash_balance: 8341503.49
   },
   {
     id: 9,
-    account_number: 'GIB-1009',
-    account_name: 'ACWA Power',
+    account_number: 'DPM53',
+    account_name: 'ACWA Power Portfolio',
     status: 'reconciled',
     date: '2024-06-10',
-    amount: 2950000.75,
+    amount: 8083789.33,
     currency: 'SAR',
     reconciled_by: 'Noura Al-Zahrani',
     portfolio: 'Saudi Utilities',
@@ -149,13 +151,14 @@ const mockAccounts = [
     quantity: 9800,
     security_symbol: '2082.SR',
     security_name: 'ACWA Power Company',
-    cash_balance: 737500.19
+    cash_balance: 56591.84
   }
 ];
 
 export default function DetailReconToolTable() {
   const theme = useTheme();
   const [columnFilters, setColumnFilters] = useState([]);
+  const navigate = useNavigate();
 
   // Metrics calculation
   const metrics = useMemo(() => {
@@ -220,7 +223,28 @@ export default function DetailReconToolTable() {
       {
         accessorKey: 'account_number',
         header: 'Account Number',
-        size: 220
+        size: 220,
+        Cell: ({ cell }) => {
+          // Account number IS the portfolio code - simple direct mapping
+          const portfolioCode = cell.getValue();
+
+          return (
+            <Button
+              variant="text"
+              color="secondary"
+              onClick={() => navigate(`/Portfolio-Holdings-Analysis?portfolio=${portfolioCode}`)}
+              sx={{
+                textDecoration: 'underline',
+                color: theme.palette.secondary.main,
+                textTransform: 'none',
+                padding: 0,
+                minWidth: 0
+              }}
+            >
+              {cell.getValue()}
+            </Button>
+          );
+        }
       },
       {
         accessorKey: 'account_name',
@@ -328,7 +352,7 @@ export default function DetailReconToolTable() {
         )
       }
     ],
-    []
+    [navigate, theme.palette.secondary.main]
   );
 
   // Table props configuration

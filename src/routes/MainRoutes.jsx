@@ -15,6 +15,9 @@ const InvestmentPerformance = Loadable(lazy(() => import('pages/Report/Investmen
 const QualityControl = Loadable(lazy(() => import('pages/Report/QualityControl')));
 const CorporateAction = Loadable(lazy(() => import('pages/Utility/CorporateAction')));
 const Posting = Loadable(lazy(() => import('pages/Posting')));
+const PortfolioHoldingsAnalysis = Loadable(
+  lazy(() => import('pages/ReconTool/DetailReconTool/PortfolioHoldingsAnalysis'))
+);
 // User Management
 
 const UserManagement = Loadable(lazy(() => import('pages/UserManagement/UserManagement')));
@@ -71,6 +74,10 @@ const MainRoutes = {
     {
       path: 'corporate-action',
       element: <CorporateAction />
+    },
+    {
+      path: 'Portfolio-Holdings-Analysis',
+      element: <PortfolioHoldingsAnalysis />
     },
     {
       path: 'profile',
