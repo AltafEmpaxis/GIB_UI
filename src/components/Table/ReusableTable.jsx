@@ -1,10 +1,10 @@
-import { memo } from 'react';
-import { alpha, darken, lighten } from '@mui/material';
+import { Icon } from '@iconify/react';
+import { alpha, lighten } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { motion } from 'framer-motion';
 import { MaterialReactTable, useMaterialReactTable } from 'material-react-table';
 import PropTypes from 'prop-types';
-import { Icon } from '@iconify/react';
-import { motion } from 'framer-motion';
+import { memo } from 'react';
 
 import SimpleBar from 'components/@extended/SimpleBar';
 
@@ -108,9 +108,23 @@ const tableIcons = {
 const ReusableTable = ({ columns, data, initialState = {}, tableProps = {} }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
-  const baseBackgroundColor = isDark
-    ? alpha(theme.palette.background.default, 0.85)
-    : alpha(theme.palette.background.paper, 0.98);
+
+  // GIB brand-aligned background colors
+  const baseBackgroundColor = isDark ? alpha(theme.palette.background.paper, 0.95) : theme.palette.background.paper;
+
+  const alternateRowColor = isDark ? alpha(theme.palette.grey[800], 0.3) : alpha(theme.palette.grey[200], 0.4); // Using GIB Light Grey
+
+  const hoverRowColor = isDark
+    ? alpha(theme.palette.secondary.main, 0.15) // GIB Yellow for hover
+    : alpha(theme.palette.secondary.main, 0.08);
+
+  const selectedRowColor = isDark
+    ? alpha(theme.palette.secondary.main, 0.25) // GIB Yellow for selection
+    : alpha(theme.palette.secondary.main, 0.15);
+
+  const headerBackgroundColor = isDark
+    ? alpha(theme.palette.primary.dark, 0.8) // Dark Grey variant
+    : alpha(theme.palette.grey[200], 0.6); // Light Grey for headers
 
   const defaultProps = {
     // Core Features
@@ -149,80 +163,174 @@ const ReusableTable = ({ columns, data, initialState = {}, tableProps = {} }) =>
     // Enable state persistence
     enablePersistentState: false,
 
-    // Styling Props
+    // Styling Props - GIB brand aligned
     muiTablePaperProps: {
       elevation: 0,
       sx: {
         overflow: 'hidden',
-        // borderRadius: theme.shape.borderRadius * .5,
-        border: `1px solid ${alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
-        backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.98) : theme.palette.background.paper
+        // borderRadius: theme.shape.borderRadius,
+        border: `1px solid ${isDark ? alpha(theme.palette.divider) : alpha(theme.palette.grey[200], 0.5)}`,
+        backgroundColor: baseBackgroundColor,
+        boxShadow: isDark ? theme.customShadows.card : theme.shadows[1]
       }
     },
     muiTableContainerProps: {
       component: SimpleBar,
       sx: {
         maxHeight: '600px',
+        backgroundColor: baseBackgroundColor,
         '&::-webkit-scrollbar': {
+          width: 8,
+          height: 8,
           display: 'none'
         }
+        // '&::-webkit-scrollbar-track': {
+        //   background: isDark ? alpha(theme.palette.grey[900], 0.4) : alpha(theme.palette.grey[200], 0.8)
+        // },
+        // '&::-webkit-scrollbar-thumb': {
+        //   backgroundColor: isDark ? alpha(theme.palette.grey[700], 0.9) : alpha(theme.palette.grey[400], 0.9),
+        //   borderRadius: 4,
+        //   '&:hover': {
+        //     backgroundColor: alpha(theme.palette.secondary.main, isDark ? 0.8 : 0.7) // GIB Yellow on hover
+        //   }
+        // }
       }
     },
     muiTableBodyProps: {
       sx: {
+        // Alternating row colors using GIB brand colors
         '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]) > td': {
-          backgroundColor: darken(baseBackgroundColor, isDark ? 0.1 : 0.02)
-        },
-        '& tr:nth-of-type(odd):not([data-selected="true"]):not([data-pinned="true"]):hover > td': {
-          backgroundColor: darken(baseBackgroundColor, isDark ? 0.15 : 0.05)
+          backgroundColor: baseBackgroundColor
         },
         '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]) > td': {
-          backgroundColor: lighten(baseBackgroundColor, isDark ? 0.05 : 0.02)
+          backgroundColor: alternateRowColor
         },
-        '& tr:nth-of-type(even):not([data-selected="true"]):not([data-pinned="true"]):hover > td': {
-          backgroundColor: darken(baseBackgroundColor, isDark ? 0.15 : 0.05)
+        // Hover states with GIB Yellow
+        '& tr:not([data-selected="true"]):not([data-pinned="true"]):hover > td': {
+          backgroundColor: hoverRowColor,
+          transition: theme.transitions.create(['background-color'], {
+            duration: theme.transitions.duration.shorter
+          })
+        },
+        // Selected rows with GIB Yellow
+        '& tr[data-selected="true"] > td': {
+          backgroundColor: selectedRowColor
+          // borderColor: isDark ? alpha(theme.palette.secondary.main, 0.5) : alpha(theme.palette.secondary.main, 0.3)
+        },
+        // Pinned rows styling
+        '& tr[data-pinned="true"] > td': {
+          backgroundColor: isDark ? alpha(theme.palette.primary.main, 0.2) : alpha(theme.palette.primary.lighter, 0.3)
+          // borderBottom: `2px solid ${theme.palette.secondary.main}`
         }
       }
     },
     muiTableHeadProps: {
       sx: {
         '& .MuiTableCell-head': {
-          backgroundColor: isDark ? alpha(theme.palette.grey[800], 0.6) : alpha(theme.palette.primary.lighter, 0.35),
-          fontWeight: 600,
-          fontSize: '0.875rem',
-          color: isDark ? theme.palette.grey[100] : theme.palette.text.primary
+          backgroundColor: headerBackgroundColor,
+          fontWeight: theme.typography.subtitle1.fontWeight, // 500 per GIB guidelines
+          fontSize: theme.typography.subtitle1.fontSize, // 14px per GIB guidelines
+          color: isDark ? theme.palette.common.white : theme.palette.primary.main, // Dark Grey text
+          // borderBottom: `2px solid ${isDark ? alpha(theme.palette.secondary.main, 0.3) : theme.palette.grey[300]}`,
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+          padding: theme.spacing(1.5, 2),
+          '&:hover': {
+            backgroundColor: isDark
+              ? alpha(theme.palette.secondary.main, 0.1)
+              : alpha(theme.palette.secondary.main, 0.05)
+          }
+        }
+      }
+    },
+    muiTableFooterRowProps: {
+      sx: {
+        backgroundColor: headerBackgroundColor,
+        borderTop: `1px solid ${isDark ? alpha(theme.palette.primary.dark, 0.8) : alpha(theme.palette.grey[200], 0.6)}`,
+        '& td': {
+          fontWeight: 'bold',
+          borderTop: `1px solid ${isDark ? alpha(theme.palette.primary.dark, 0.8) : alpha(theme.palette.grey[200], 0.6)}`,
+          py: 2
         }
       }
     },
     muiTableBodyCellProps: {
       sx: {
-        fontSize: '0.875rem',
-        borderBottom: `1px solid ${alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`,
-        backgroundColor: isDark ? alpha(theme.palette.grey[900], 0.6) : alpha(theme.palette.grey[50], 0.6)
+        fontSize: theme.typography.body2.fontSize, // 14px per GIB guidelines
+        fontWeight: theme.typography.body2.fontWeight, // 500 per GIB guidelines
+        color: isDark ? theme.palette.common.white : theme.palette.text.primary,
+        // borderBottom: `1px solid ${isDark ? alpha(theme.palette.divider, 0.25) : theme.palette.grey[200]}`,
+        padding: theme.spacing(1.25, 2),
+        transition: theme.transitions.create(['background-color', 'color'], {
+          duration: theme.transitions.duration.shorter
+        })
       }
     },
     muiSearchTextFieldProps: {
       size: 'small',
       variant: 'outlined',
       sx: {
-        minWidth: '250px'
+        minWidth: '250px',
+        '& .MuiOutlinedInput-root': {
+          // backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.8) : theme.palette.background.paper,
+          // borderRadius: theme.shape.borderRadius,
+          // '&:hover .MuiOutlinedInput-notchedOutline': {
+          //   borderColor: theme.palette.secondary.main // GIB Yellow on hover
+          // }
+          // '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+          //   borderColor: theme.palette.secondary.main,
+          //   borderWidth: 2
+          // }
+        },
+        '& .MuiInputLabel-root.Mui-focused': {
+          // color: theme.palette.secondary.main
+        }
       }
     },
     muiFilterTextFieldProps: {
       size: 'small',
       variant: 'outlined',
       sx: {
-        minWidth: '150px'
+        minWidth: '150px',
+        '& .MuiOutlinedInput-root': {
+          // backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.8) : theme.palette.background.paper,
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            // borderColor: theme.palette.secondary.main
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            // borderColor: theme.palette.secondary.main,
+            // borderWidth: 2
+          }
+        },
+        '& .MuiInputLabel-root.Mui-focused': {
+          // color: theme.palette.secondary.main
+        }
       }
     },
     muiPaginationProps: {
-      color: 'primary',
+      color: 'secondary', // Use GIB Yellow for pagination
       rowsPerPageOptions: [10, 25, 50, 100],
       shape: 'rounded',
       variant: 'outlined',
       sx: {
         mt: 1,
         mb: 0.5
+        // '& .MuiPaginationItem-root': {
+        //   borderColor: isDark ? alpha(theme.palette.grey[600], 0.5) : theme.palette.grey[300],
+        //   color: isDark ? theme.palette.common.white : theme.palette.text.primary,
+        //   '&:hover': {
+        //     backgroundColor: alpha(theme.palette.secondary.main, 0.1),
+        //     borderColor: theme.palette.secondary.main
+        //   },
+        //   '&.Mui-selected': {
+        //     backgroundColor: theme.palette.secondary.main,
+        //     color: theme.palette.secondary.contrastText,
+        //     borderColor: theme.palette.secondary.main,
+        //     '&:hover': {
+        //       backgroundColor: theme.palette.secondary.dark
+        //     }
+        //   }
+        // }
       }
     },
     displayColumnDefOptions: {
@@ -230,22 +338,50 @@ const ReusableTable = ({ columns, data, initialState = {}, tableProps = {} }) =>
         size: 150,
         grow: false,
         muiTableHeadCellProps: {
-          align: 'center'
+          align: 'center',
+          sx: {
+            backgroundColor: headerBackgroundColor,
+            borderBottom: `2px solid ${isDark ? alpha(theme.palette.secondary.main, 0.3) : theme.palette.grey[300]}`
+          }
         },
         muiTableBodyCellProps: {
           align: 'center'
+          // sx: {
+          //   '& .MuiIconButton-root': {
+          //     color: isDark ? theme.palette.common.white : theme.palette.text.primary,
+          //     '&:hover': {
+          //       backgroundColor: alpha(theme.palette.secondary.main, 0.1),
+          //       color: theme.palette.secondary.main
+          //     }
+          //   }
+          // }
+        }
+      },
+      'mrt-row-numbers': {
+        muiTableHeadCellProps: {
+          sx: {
+            backgroundColor: headerBackgroundColor
+          }
+        },
+        muiTableBodyCellProps: {
+          sx: {
+            color: isDark ? theme.palette.grey[400] : theme.palette.text.secondary,
+            fontWeight: theme.typography.caption.fontWeight
+          }
         }
       }
     },
 
-    // Theme Customization
+    // Theme Customization - GIB brand aligned
     mrtTheme: {
       baseBackgroundColor,
-      draggingBorderColor: theme.palette.primary.main,
-      matchHighlightColor: isDark ? darken(theme.palette.warning.dark, 0.3) : lighten(theme.palette.warning.light, 0.5),
-      menuBackgroundColor: lighten(baseBackgroundColor, isDark ? 0.05 : 0.02),
-      pinnedRowBackgroundColor: alpha(theme.palette.primary.main, isDark ? 0.15 : 0.08),
-      selectedRowBackgroundColor: alpha(theme.palette.primary.main, isDark ? 0.25 : 0.15)
+      draggingBorderColor: theme.palette.secondary.main, // GIB Yellow for dragging
+      matchHighlightColor: isDark ? alpha(theme.palette.secondary.main, 0.4) : alpha(theme.palette.secondary.main, 0.2), // GIB Yellow for search highlights
+      menuBackgroundColor: isDark ? alpha(theme.palette.background.paper, 0.95) : theme.palette.background.paper,
+      pinnedRowBackgroundColor: isDark
+        ? alpha(theme.palette.primary.main, 0.2)
+        : alpha(theme.palette.primary.lighter, 0.3),
+      selectedRowBackgroundColor: selectedRowColor
     },
 
     // Initial State with proper defaults
@@ -267,17 +403,44 @@ const ReusableTable = ({ columns, data, initialState = {}, tableProps = {} }) =>
     // Icons configuration
     icons: tableIcons,
 
-    // Additional toolbar customization
+    // Additional toolbar customization - GIB brand aligned
     muiTopToolbarProps: {
       sx: {
-        display: 'flex',
-        gap: '0.5rem',
-        p: '0.75rem',
-        width: '100%',
-        backgroundColor: isDark
-          ? alpha(theme.palette.background.paper, 0.98)
-          : alpha(theme.palette.background.paper, 0.98),
-        borderBottom: `1px solid ${alpha(theme.palette.divider, isDark ? 0.28 : 0.12)}`
+        // display: 'flex',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // gap: theme.spacing(1),
+        // p: theme.spacing(1.5),
+        // width: '100%',
+        backgroundColor: isDark ? alpha(theme.palette.background.paper, 0.95) : lighten(theme.palette.grey[200], 0.5), // Subtle GIB Light Grey background
+        borderBottom: `2px solid ${isDark ? alpha(theme.palette.secondary.main, 0.2) : theme.palette.grey[300]}`
+        // '& .MuiIconButton-root': {
+        //   color: isDark ? theme.palette.common.white : theme.palette.text.primary,
+        //   '&:hover': {
+        //     backgroundColor: alpha(theme.palette.secondary.main, 0.1),
+        //     color: theme.palette.secondary.main
+        //   }
+        // }
+        // '& .MuiButton-root': {
+        //   borderRadius: theme.shape.borderRadius,
+        //   textTransform: 'none',
+        //   fontWeight: theme.typography.button.fontWeight,
+        //   '&.MuiButton-contained': {
+        //     backgroundColor: theme.palette.secondary.main,
+        //     color: theme.palette.secondary.contrastText,
+        //     '&:hover': {
+        //       backgroundColor: theme.palette.secondary.dark
+        //     }
+        //   },
+        //   '&.MuiButton-outlined': {
+        //     borderColor: isDark ? theme.palette.grey[600] : theme.palette.grey[400],
+        //     color: isDark ? theme.palette.common.white : theme.palette.text.primary,
+        //     '&:hover': {
+        //       borderColor: theme.palette.secondary.main,
+        //       backgroundColor: alpha(theme.palette.secondary.main, 0.1)
+        //     }
+        //   }
+        // }
       }
     }
   };

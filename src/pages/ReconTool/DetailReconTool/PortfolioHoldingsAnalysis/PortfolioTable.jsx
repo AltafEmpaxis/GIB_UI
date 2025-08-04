@@ -1,242 +1,5 @@
-// import { Icon } from '@iconify/react';
-// import { Box, Chip, Divider, Stack, Typography, useTheme } from '@mui/material';
-// import MainCard from 'components/MainCard';
-// import ReusableTable from 'components/Table/ReusableTable';
-// import PropTypes from 'prop-types';
-// import { useCallback, useMemo } from 'react';
-
-// const PortfolioTable = ({ data: propData, portfolioCode }) => {
-//   const theme = useTheme();
-
-//   // Use provided data or empty array
-//   const data = useMemo(() => {
-//     return Array.isArray(propData) ? propData : [];
-//   }, [propData]);
-
-//   // Format number with comma separators
-//   const formatNumber = (value) => {
-//     if (value === null || value === undefined) return 'N/A';
-//     return new Intl.NumberFormat('en-US', {
-//       minimumFractionDigits: 2,
-//       maximumFractionDigits: 2
-//     }).format(value);
-//   };
-
-//   // Color code for market value difference using theme colors
-
-//   const getDiffColor = useCallback(
-//     (value) => {
-//       if (value === null || value === undefined) return 'inherit';
-//       if (value > 0) return theme.palette.success.main;
-//       if (value < 0) return theme.palette.error.main;
-//       return 'inherit';
-//     },
-//     [theme.palette]
-//   );
-
-//   const columns = useMemo(
-//     () => [
-//       {
-//         accessorKey: 'portfolioCode',
-//         header: 'Portfolio Code',
-//         size: 250
-//       },
-//       {
-//         accessorKey: 'assetClass',
-//         header: 'Asset Class',
-//         size: 250,
-//         Cell: ({ cell }) => {
-//           const value = cell.getValue();
-//           const isCash = value && value.toLowerCase().includes('cash');
-//           return (
-//             <Chip
-//               label={value || 'N/A'}
-//               variant="outlined"
-//               size="small"
-//               color={isCash ? 'success' : 'secondary'}
-//               icon={
-//                 <Icon
-//                   icon={isCash ? 'solar:wallet-money-bold-duotone' : 'solar:chart-square-bold-duotone'}
-//                   width={16}
-//                 />
-//               }
-//             />
-//           );
-//         }
-//       },
-//       {
-//         accessorKey: 'apxMarketValue',
-//         header: 'APX Market Value',
-//         size: 280,
-//         Cell: ({ cell }) => formatNumber(cell.getValue())
-//       },
-//       {
-//         accessorKey: 'brokerMarketValue',
-//         header: 'Broker Market Value',
-//         size: 280,
-//         Cell: ({ cell }) => formatNumber(cell.getValue())
-//       },
-//       {
-//         accessorKey: 'marketValueDiff',
-//         header: 'Market Value Diff',
-//         size: 260,
-//         Cell: ({ cell }) => {
-//           const value = cell.getValue();
-//           const isPositive = value > 0;
-//           const isZero = value === 0;
-
-//           return (
-//             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-//               {!isZero && (
-//                 <Icon
-//                   icon={isPositive ? 'solar:arrow-up-bold-duotone' : 'solar:arrow-down-bold-duotone'}
-//                   width={16}
-//                   style={{ color: getDiffColor(value) }}
-//                 />
-//               )}
-//               <Typography
-//                 variant="body2"
-//                 sx={{
-//                   color: getDiffColor(value),
-//                   fontWeight: 'bold',
-//                   fontFamily: 'monospace'
-//                 }}
-//               >
-//                 {formatNumber(value)}
-//               </Typography>
-//             </Box>
-//           );
-//         }
-//       }
-//     ],
-//     [getDiffColor]
-//   );
-
-//   const tableProps = {
-//     columns,
-//     data: data,
-//     initialState: {
-//       density: 'compact',
-//       pagination: { pageSize: 10, pageIndex: 0 },
-//       showColumnFilters: true,
-//       showGlobalFilter: true
-//     },
-
-//     enableRowSelection: false,
-//     manualPagination: true,
-//     manualFiltering: true,
-//     manualSorting: true
-//   };
-
-//   // Calculate summary stats
-//   const totalAPXValue = data.reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
-//   const totalBrokerValue = data.reduce((sum, row) => sum + (row.brokerMarketValue || 0), 0);
-//   const totalDiff = data.reduce((sum, row) => sum + (row.marketValueDiff || 0), 0);
-
-//   return (
-//     <MainCard sx={{ m: 0, p: 2 }} contentSX={{ p: '0 !important', m: '0 !important' }}>
-//       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-//         <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
-//           <Icon icon="solar:layers-bold-duotone" width={24} />
-//           Asset Class Summary
-//         </Typography>
-//         <Stack direction="row" spacing={1}>
-//           <Chip
-//             label={`${data.length} Classes`}
-//             size="small"
-//             variant="outlined"
-//             icon={<Icon icon="solar:document-text-bold-duotone" width={16} />}
-//           />
-//           <Chip label={portfolioCode} size="small" color="secondary" />
-//         </Stack>
-//       </Box>
-
-//       {/* Summary Cards */}
-//       <Box sx={{ mb: 3 }}>
-//         <Stack direction="row" spacing={2}>
-//           <Box
-//             sx={{
-//               p: 2,
-//               bgcolor: 'grey.100', // Use GIB Light Grey for backgrounds
-//               borderRadius: 1,
-//               flex: 1,
-//               border: `1px solid ${theme.palette.grey[200]}`
-//             }}
-//           >
-//             <Typography variant="caption" color="text.secondary">
-//               APX Total
-//             </Typography>
-//             <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
-//               {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(totalAPXValue)}
-//             </Typography>
-//           </Box>
-//           <Box
-//             sx={{
-//               p: 2,
-//               bgcolor: 'secondary.100', // Use GIB Yellow light variant for secondary info
-//               borderRadius: 1,
-//               flex: 1,
-//               border: `1px solid ${theme.palette.secondary.light}`
-//             }}
-//           >
-//             <Typography variant="caption" color="text.secondary">
-//               Broker Total
-//             </Typography>
-//             <Typography variant="h6" sx={{ fontWeight: 600, color: 'secondary.dark' }}>
-//               {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(totalBrokerValue)}
-//             </Typography>
-//           </Box>
-//           <Box
-//             sx={{
-//               p: 2,
-//               bgcolor: totalDiff >= 0 ? 'success.lighter' : 'error.lighter',
-//               borderRadius: 1,
-//               flex: 1,
-//               border: `1px solid ${totalDiff >= 0 ? theme.palette.success.light : theme.palette.error.light}`
-//             }}
-//           >
-//             <Typography variant="caption" color="text.secondary">
-//               Total Difference
-//             </Typography>
-//             <Typography
-//               variant="h6"
-//               sx={{
-//                 fontWeight: 600,
-//                 color: totalDiff >= 0 ? 'success.main' : 'error.main',
-//                 display: 'flex',
-//                 alignItems: 'center',
-//                 gap: 0.5
-//               }}
-//             >
-//               <Icon
-//                 icon={totalDiff >= 0 ? 'solar:arrow-up-bold-duotone' : 'solar:arrow-down-bold-duotone'}
-//                 width={16}
-//               />
-//               {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(Math.abs(totalDiff))}
-//             </Typography>
-//           </Box>
-//         </Stack>
-//       </Box>
-
-//       <Divider sx={{ my: 2, borderColor: 'divider' }} />
-//       <ReusableTable tableProps={tableProps} />
-//     </MainCard>
-//   );
-// };
-
-// PortfolioTable.propTypes = {
-//   data: PropTypes.array,
-//   portfolioCode: PropTypes.string
-// };
-
-// PortfolioTable.defaultProps = {
-//   data: []
-// };
-
-// export default PortfolioTable;
-
 import { Icon } from '@iconify/react';
-import { Box, Chip, Divider, Stack, Typography, useTheme } from '@mui/material';
+import { Box, Chip, Stack, Typography, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ReusableTable from 'components/Table/ReusableTable';
 import PropTypes from 'prop-types';
@@ -250,39 +13,35 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
     return Array.isArray(propData) ? propData : [];
   }, [propData]);
 
-  // Format number with comma separators
-  const formatNumber = (value) => {
+  // Format currency using SAR
+  const formatCurrency = (value) => {
     if (value === null || value === undefined) return 'N/A';
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('en-SA', {
+      style: 'currency',
+      currency: 'SAR',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(value);
   };
 
-  // Format currency
-  const formatCurrency = (value) => {
-    if (value === null || value === undefined) return 'N/A';
-    return new Intl.NumberFormat('en-SA', {
-      style: 'currency',
-      currency: 'SAR'
-    }).format(value);
-  };
-
-  // Color code for market value difference using theme colors
+  // Get color for difference values - using GIB theme colors
   const getDiffColor = useCallback(
     (value) => {
-      if (value === null || value === undefined) return 'inherit';
+      if (value === null || value === undefined) return theme.palette.primary.main;
       if (value > 0) return theme.palette.success.main;
       if (value < 0) return theme.palette.error.main;
-      return 'inherit';
+      return theme.palette.primary.main;
     },
     [theme.palette]
   );
 
-  // Calculate summary stats
-  const totalAPXValue = data.reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
-  const totalBrokerValue = data.reduce((sum, row) => sum + (row.brokerMarketValue || 0), 0);
-  const totalDiff = data.reduce((sum, row) => sum + (row.marketValueDiff || 0), 0);
+  // Calculate totals
+  const totals = useMemo(() => {
+    const apxTotal = data.reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
+    const brokerTotal = data.reduce((sum, row) => sum + (row.brokerMarketValue || 0), 0);
+    const diffTotal = data.reduce((sum, row) => sum + (row.marketValueDiff || 0), 0);
+    return { apxTotal, brokerTotal, diffTotal };
+  }, [data]);
 
   const columns = useMemo(
     () => [
@@ -290,13 +49,18 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
         accessorKey: 'portfolioCode',
         header: 'Portfolio Code',
         size: 250,
-        // Footer for portfolio code column
+        enableGrouping: true,
+        Cell: ({ cell }) => (
+          <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color: 'primary.main' }}>
+            {cell.getValue() || 'N/A'}
+          </Typography>
+        ),
         Footer: () => (
           <Typography
             variant="subtitle2"
             sx={{
               fontWeight: 'bold',
-              color: 'text.primary',
+              color: 'primary.main',
               display: 'flex',
               alignItems: 'center',
               gap: 1
@@ -306,11 +70,10 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
             TOTAL
           </Typography>
         ),
-        // AggregatedCell for grouping
         AggregatedCell: ({ cell, table }) => (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Icon icon="solar:folder-bold-duotone" width={16} />
-            <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1 }}>
+            <Icon icon="solar:folder-bold-duotone" width={16} style={{ color: theme.palette.secondary.main }} />
+            <Typography variant="subtitle2" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
               {cell.getValue()} ({table.getRowModel().rows.length} items)
             </Typography>
           </Box>
@@ -320,6 +83,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
         accessorKey: 'assetClass',
         header: 'Asset Class',
         size: 250,
+        enableGrouping: true,
         Cell: ({ cell }) => {
           const value = cell.getValue();
           const isCash = value && value.toLowerCase().includes('cash');
@@ -328,7 +92,12 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
               label={value || 'N/A'}
               variant="outlined"
               size="small"
-              color={isCash ? 'success' : 'secondary'}
+              sx={{
+                backgroundColor: isCash ? 'success.lighter' : 'secondary.lighter',
+                color: isCash ? 'success.main' : 'secondary.main',
+                borderColor: isCash ? 'success.main' : 'secondary.main',
+                fontWeight: 600
+              }}
               icon={
                 <Icon
                   icon={isCash ? 'solar:wallet-money-bold-duotone' : 'solar:chart-square-bold-duotone'}
@@ -341,20 +110,27 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
         Footer: () => (
           <Chip
             label={`${data.length} Classes`}
-            variant="outlined"
+            variant="filled"
             size="small"
-            color="primary"
+            sx={{
+              backgroundColor: 'secondary.main',
+              color: 'primary.contrastText',
+              fontWeight: 600
+            }}
             icon={<Icon icon="solar:layers-bold-duotone" width={16} />}
           />
         ),
-        // AggregatedCell for asset class grouping
         AggregatedCell: ({ cell, table }) => (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, py: 1 }}>
             <Chip
               label={`${cell.getValue()} (${table.getRowModel().rows.length})`}
               variant="filled"
               size="small"
-              color="secondary"
+              sx={{
+                backgroundColor: 'secondary.main',
+                color: 'primary.contrastText',
+                fontWeight: 600
+              }}
               icon={<Icon icon="solar:layers-bold-duotone" width={16} />}
             />
           </Box>
@@ -363,19 +139,23 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'apxMarketValue',
         header: 'APX Market Value',
-        size: 280,
-        Cell: ({ cell }) => formatNumber(cell.getValue()),
+        size: 250,
+        Cell: ({ cell }) => (
+          <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
+            {formatCurrency(cell.getValue())}
+          </Typography>
+        ),
         Footer: () => (
           <Box
             sx={{
               p: 1,
               backgroundColor: 'primary.lighter',
               borderRadius: 1,
-              border: `1px solid ${theme.palette.primary.light}`
+              border: `1px solid ${theme.palette.primary.main}`
             }}
           >
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-              Total APX Market Value
+            <Typography variant="caption" color="primary.main" sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+              Total APX Value
             </Typography>
             <Typography
               variant="subtitle2"
@@ -384,35 +164,30 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
                 color: 'primary.main',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0.5
+                gap: 0.5,
+                fontFamily: 'monospace'
               }}
             >
               <Icon icon="solar:chart-square-bold-duotone" width={14} />
-              {formatCurrency(totalAPXValue)}
+              {formatCurrency(totals.apxTotal)}
             </Typography>
           </Box>
         ),
-        // AggregatedCell for APX Market Value
-        AggregatedCell: ({ cell, table }) => {
+        AggregatedCell: ({ table }) => {
           const groupSum = table.getRowModel().rows.reduce((sum, row) => sum + (row.original.apxMarketValue || 0), 0);
-          const groupName = table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header;
-
           return (
             <Box sx={{ p: 1, backgroundColor: 'primary.50', borderRadius: 1 }}>
-              <Typography variant="caption" color="text.secondary">
-                Total APX {groupName}
+              <Typography variant="caption" color="primary.main" sx={{ fontWeight: 600 }}>
+                Group Total APX
               </Typography>
               <Typography
                 variant="subtitle2"
                 sx={{
                   fontWeight: 'bold',
                   color: 'primary.main',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5
+                  fontFamily: 'monospace'
                 }}
               >
-                <Icon icon="solar:calculator-bold-duotone" width={14} />
                 {formatCurrency(groupSum)}
               </Typography>
             </Box>
@@ -422,58 +197,57 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'brokerMarketValue',
         header: 'Broker Market Value',
-        size: 280,
-        Cell: ({ cell }) => formatNumber(cell.getValue()),
+        size: 250,
+        Cell: ({ cell }) => (
+          <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
+            {formatCurrency(cell.getValue())}
+          </Typography>
+        ),
         Footer: () => (
           <Box
             sx={{
               p: 1,
-              backgroundColor: 'secondary.lighter',
+              backgroundColor: 'tertiary.lighter',
               borderRadius: 1,
-              border: `1px solid ${theme.palette.secondary.light}`
+              border: `1px solid ${theme.palette.tertiary?.main || theme.palette.grey[500]}`
             }}
           >
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-              Total Broker Market Value
+            <Typography variant="caption" color="tertiary.main" sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+              Total Broker Value
             </Typography>
             <Typography
               variant="subtitle2"
               sx={{
                 fontWeight: 'bold',
-                color: 'secondary.main',
+                color: 'tertiary.main',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0.5
+                gap: 0.5,
+                fontFamily: 'monospace'
               }}
             >
               <Icon icon="solar:wallet-money-bold-duotone" width={14} />
-              {formatCurrency(totalBrokerValue)}
+              {formatCurrency(totals.brokerTotal)}
             </Typography>
           </Box>
         ),
-        // AggregatedCell for Broker Market Value
-        AggregatedCell: ({ cell, table }) => {
+        AggregatedCell: ({ table }) => {
           const groupSum = table
             .getRowModel()
             .rows.reduce((sum, row) => sum + (row.original.brokerMarketValue || 0), 0);
-          const groupName = table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header;
-
           return (
-            <Box sx={{ p: 1, backgroundColor: 'secondary.50', borderRadius: 1 }}>
-              <Typography variant="caption" color="text.secondary">
-                Total Broker {groupName}
+            <Box sx={{ p: 1, backgroundColor: 'tertiary.50', borderRadius: 1 }}>
+              <Typography variant="caption" color="tertiary.main" sx={{ fontWeight: 600 }}>
+                Group Total Broker
               </Typography>
               <Typography
                 variant="subtitle2"
                 sx={{
                   fontWeight: 'bold',
-                  color: 'secondary.main',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 0.5
+                  color: 'tertiary.main',
+                  fontFamily: 'monospace'
                 }}
               >
-                <Icon icon="solar:calculator-bold-duotone" width={14} />
                 {formatCurrency(groupSum)}
               </Typography>
             </Box>
@@ -483,7 +257,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'marketValueDiff',
         header: 'Market Value Diff',
-        size: 260,
+        size: 250,
         Cell: ({ cell }) => {
           const value = cell.getValue();
           const isPositive = value > 0;
@@ -506,7 +280,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
                   fontFamily: 'monospace'
                 }}
               >
-                {formatNumber(value)}
+                {formatCurrency(value)}
               </Typography>
             </Box>
           );
@@ -515,40 +289,37 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
           <Box
             sx={{
               p: 1,
-              backgroundColor: totalDiff >= 0 ? 'success.lighter' : 'error.lighter',
+              backgroundColor: totals.diffTotal >= 0 ? 'success.lighter' : 'error.lighter',
               borderRadius: 1,
-              border: `1px solid ${totalDiff >= 0 ? theme.palette.success.light : theme.palette.error.light}`
+              border: `1px solid ${totals.diffTotal >= 0 ? theme.palette.success.main : theme.palette.error.main}`
             }}
           >
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
-              Total Market Value Diff
+            <Typography variant="caption" sx={{ fontSize: '0.7rem', fontWeight: 600 }}>
+              Total Difference
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              {totalDiff !== 0 && (
+              {totals.diffTotal !== 0 && (
                 <Icon
-                  icon={totalDiff > 0 ? 'solar:arrow-up-bold-duotone' : 'solar:arrow-down-bold-duotone'}
+                  icon={totals.diffTotal > 0 ? 'solar:arrow-up-bold-duotone' : 'solar:arrow-down-bold-duotone'}
                   width={14}
-                  style={{ color: getDiffColor(totalDiff) }}
+                  style={{ color: getDiffColor(totals.diffTotal) }}
                 />
               )}
               <Typography
                 variant="subtitle2"
                 sx={{
-                  color: getDiffColor(totalDiff),
+                  color: getDiffColor(totals.diffTotal),
                   fontWeight: 'bold',
                   fontFamily: 'monospace'
                 }}
               >
-                {formatCurrency(Math.abs(totalDiff))}
+                {formatCurrency(Math.abs(totals.diffTotal))}
               </Typography>
             </Box>
           </Box>
         ),
-        // AggregatedCell for Market Value Difference
-        AggregatedCell: ({ cell, table }) => {
+        AggregatedCell: ({ table }) => {
           const groupSum = table.getRowModel().rows.reduce((sum, row) => sum + (row.original.marketValueDiff || 0), 0);
-          const groupName = table.getColumn(cell.row.groupingColumnId ?? '').columnDef.header;
-
           return (
             <Box
               sx={{
@@ -557,39 +328,30 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
                 borderRadius: 1
               }}
             >
-              <Typography variant="caption" color="text.secondary">
-                Total Diff {groupName}
+              <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                Group Difference
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                {groupSum !== 0 && (
-                  <Icon
-                    icon={groupSum > 0 ? 'solar:arrow-up-bold-duotone' : 'solar:arrow-down-bold-duotone'}
-                    width={14}
-                    style={{ color: getDiffColor(groupSum) }}
-                  />
-                )}
-                <Typography
-                  variant="subtitle2"
-                  sx={{
-                    color: getDiffColor(groupSum),
-                    fontWeight: 'bold',
-                    fontFamily: 'monospace'
-                  }}
-                >
-                  {formatCurrency(Math.abs(groupSum))}
-                </Typography>
-              </Box>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  color: getDiffColor(groupSum),
+                  fontWeight: 'bold',
+                  fontFamily: 'monospace'
+                }}
+              >
+                {formatCurrency(Math.abs(groupSum))}
+              </Typography>
             </Box>
           );
         }
       }
     ],
-    [getDiffColor, totalAPXValue, totalBrokerValue, totalDiff, data.length, theme.palette]
+    [theme.palette, totals, data.length, getDiffColor]
   );
 
   const tableProps = {
     columns,
-    data: data,
+    data,
     initialState: {
       density: 'compact',
       pagination: { pageSize: 10, pageIndex: 0 },
@@ -597,128 +359,62 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       showGlobalFilter: true
     },
     enableRowSelection: false,
-    manualPagination: true,
-    manualFiltering: true,
-    manualSorting: true,
-    enableStickyHeader: true,
-    enableStickyFooter: true,
-
-    // Enable footer
     enableColumnFooters: true,
-    // Enable grouping for AggregatedCell functionality
     enableGrouping: true,
-    // Footer styling
-    muiTableFooterRowProps: {
-      sx: {
-        backgroundColor: 'grey.50',
-        borderTop: `2px solid ${theme.palette.divider}`,
-        '& td': {
-          fontWeight: 'bold',
-          borderTop: `1px solid ${theme.palette.divider}`,
-          py: 2
-        }
-      }
-    },
-    // Grouping row styling for AggregatedCell
-    muiTableBodyRowProps: ({ row }) => ({
-      sx: row.getIsGrouped()
-        ? {
-            backgroundColor: 'grey.25',
-            fontWeight: 'bold',
-            '&:hover': {
-              backgroundColor: 'grey.100'
-            }
-          }
-        : {}
-    })
+    enableSorting: true,
+    enableFiltering: true
+    // Grouping row styling with GIB theme colors
+    // muiTableBodyRowProps: ({ row }) => ({
+    //   sx: row.getIsGrouped()
+    //     ? {
+    //         backgroundColor: 'secondary.50',
+    //         fontWeight: 'bold',
+    //         '&:hover': {
+    //           backgroundColor: 'secondary.100'
+    //         }
+    //       }
+    //     : {
+    //         '&:hover': {
+    //           backgroundColor: 'action.hover'
+    //         }
+    //       }
+    // })
   };
 
   return (
-    <MainCard sx={{ m: 0, p: 2 }} contentSX={{ p: '0 !important', m: '0 !important' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Icon icon="solar:layers-bold-duotone" width={24} />
-          Asset Class Summary
-        </Typography>
-        <Stack direction="row" spacing={1}>
-          <Chip
-            label={`${data.length} Classes`}
-            size="small"
-            variant="outlined"
-            icon={<Icon icon="solar:document-text-bold-duotone" width={16} />}
-          />
-          <Chip label={portfolioCode} size="small" color="secondary" />
-        </Stack>
-      </Box>
-
-      {/* Summary Cards */}
-      {/* <Box sx={{ mb: 3 }}>
-        <Stack direction="row" spacing={2}>
-          <Box
+    <MainCard
+      sx={{
+        m: 0,
+        p: 2
+      }}
+      contentSX={{ p: '0 !important', m: '0 !important' }}
+      title={
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography
+            variant="h6"
             sx={{
-              p: 2,
-              bgcolor: 'grey.100',
-              borderRadius: 1,
-              flex: 1,
-              border: `1px solid ${theme.palette.grey[200]}`
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              color: 'primary.main'
             }}
           >
-            <Typography variant="caption" color="text.secondary">
-              APX Total
-            </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
-              {formatCurrency(totalAPXValue)}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-              bgcolor: 'secondary.100',
-              borderRadius: 1,
-              flex: 1,
-              border: `1px solid ${theme.palette.secondary.light}`
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              Broker Total
-            </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: 'secondary.dark' }}>
-              {formatCurrency(totalBrokerValue)}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-              bgcolor: totalDiff >= 0 ? 'success.lighter' : 'error.lighter',
-              borderRadius: 1,
-              flex: 1,
-              border: `1px solid ${totalDiff >= 0 ? theme.palette.success.light : theme.palette.error.light}`
-            }}
-          >
-            <Typography variant="caption" color="text.secondary">
-              Total Difference
-            </Typography>
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 600,
-                color: totalDiff >= 0 ? 'success.main' : 'error.main',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5
-              }}
-            >
-              <Icon
-                icon={totalDiff >= 0 ? 'solar:arrow-up-bold-duotone' : 'solar:arrow-down-bold-duotone'}
-                width={16}
-              />
-              {formatCurrency(Math.abs(totalDiff))}
-            </Typography>
-          </Box>
-        </Stack>
-      </Box> */}
-
-      <Divider sx={{ my: 2, borderColor: 'divider' }} />
+            <Icon icon="solar:layers-bold-duotone" width={24} style={{ color: theme.palette.secondary.main }} />
+            Asset Class Summary
+          </Typography>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Chip
+              label={`${data.length} Classes`}
+              size="small"
+              variant="outlined"
+              icon={<Icon icon="solar:document-text-bold-duotone" width={16} />}
+            />
+            <Chip label={portfolioCode || 'All Portfolios'} size="small" />
+          </Stack>
+        </Box>
+      }
+    >
       <ReusableTable tableProps={tableProps} />
     </MainCard>
   );
@@ -730,7 +426,8 @@ PortfolioTable.propTypes = {
 };
 
 PortfolioTable.defaultProps = {
-  data: []
+  data: [],
+  portfolioCode: null
 };
 
 export default PortfolioTable;

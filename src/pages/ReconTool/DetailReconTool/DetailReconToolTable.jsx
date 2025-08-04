@@ -4,156 +4,42 @@ import MainCard from 'components/MainCard';
 import ReusableTable from 'components/Table/ReusableTable';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
+import mockData from './PortfolioHoldingsAnalysis/mockdata.json';
 import MetricCard from './ReconMetricsCards';
 
-// Mock data for reconciliation details - updated with real Saudi companies and GIB funds
-// Account numbers now correspond to actual portfolio codes for easy mapping
-const mockAccounts = [
-  {
-    id: 1,
-    account_number: 'DPM01',
-    account_name: 'GIB MENA ESG Equity Fund',
-    status: 'reconciled',
-    date: '2024-06-10',
-    amount: 14621719.88,
-    currency: 'SAR',
-    reconciled_by: 'Ahmad Al-Saud',
-    portfolio: 'ESG Investments',
-    location: 'Riyadh',
-    quantity: 12500,
-    security_symbol: 'GIBMESG',
-    security_name: 'GIB MENA ESG Equity Fund',
-    cash_balance: 178730.99
-  },
-  {
-    id: 2,
-    account_number: 'DPM07',
-    account_name: 'GIB Opportunistic MENA Equity Fund',
-    status: 'reconciled',
-    date: '2024-06-10',
-    amount: 62304291.5,
-    currency: 'SAR',
-    reconciled_by: 'Mohammed Al-Qahtani',
-    portfolio: 'Opportunistic Investments',
-    location: 'Riyadh',
-    quantity: 18500,
-    security_symbol: 'GIBOMEF',
-    security_name: 'GIB Opportunistic MENA Equity Fund',
-    cash_balance: 1249860.08
-  },
-  {
-    id: 3,
-    account_number: 'DPM16',
-    account_name: 'Saudi Aramco Portfolio',
-    status: 'unreconciled',
-    date: '2024-06-09',
-    amount: 20211097.81,
-    currency: 'SAR',
-    reconciled_by: '-',
-    portfolio: 'Saudi Equities',
-    location: 'Riyadh',
-    quantity: 25000,
-    security_symbol: '2222.SR',
-    security_name: 'Saudi Arabian Oil Co',
-    cash_balance: 53387.77
-  },
-  {
-    id: 4,
-    account_number: 'DPM34',
-    account_name: 'SABIC Portfolio',
-    status: 'reconciled',
-    date: '2024-06-10',
-    amount: 128452610.19,
-    currency: 'SAR',
-    reconciled_by: 'Fatima Al-Otaibi',
-    portfolio: 'Saudi Equities',
-    location: 'Riyadh',
-    quantity: 12500,
-    security_symbol: '2010.SR',
-    security_name: 'Saudi Basic Industries Corp',
-    cash_balance: 512818.39
-  },
-  {
-    id: 5,
-    account_number: 'DPM40',
-    account_name: 'Al Rajhi Bank Portfolio',
-    status: 'reconciled',
-    date: '2024-06-10',
-    amount: 43932954.81,
-    currency: 'SAR',
-    reconciled_by: 'Ali Al-Ghamdi',
-    portfolio: 'Saudi Banking',
-    location: 'Riyadh',
-    quantity: 17500,
-    security_symbol: '1120.SR',
-    security_name: 'Al Rajhi Banking & Investment Corp',
-    cash_balance: 460697.86
-  },
-  {
-    id: 6,
-    account_number: 'DPM41',
-    account_name: 'Saudi Telecom Portfolio',
-    status: 'unreconciled',
-    date: '2024-06-09',
-    amount: 25568380.49,
-    currency: 'SAR',
-    reconciled_by: '-',
-    portfolio: 'Saudi Telecom',
-    location: 'Riyadh',
-    quantity: 14500,
-    security_symbol: '7010.SR',
-    security_name: 'Saudi Telecom Company',
-    cash_balance: 144909.32
-  },
-  {
-    id: 7,
-    account_number: 'DPM42',
-    account_name: 'GIB Sukuk Fund',
-    status: 'reconciled',
-    date: '2024-06-10',
-    amount: 24112951.48,
-    currency: 'SAR',
-    reconciled_by: 'Khalid Al-Sharif',
-    portfolio: 'Fixed Income',
-    location: 'Riyadh',
-    quantity: 22500,
-    security_symbol: 'GIBSUK',
-    security_name: 'GIB Sukuk Fund',
-    cash_balance: 150146.54
-  },
-  {
-    id: 8,
-    account_number: 'DPM45',
-    account_name: 'Saudi National Bank Portfolio',
-    status: 'unreconciled',
-    date: '2024-06-09',
-    amount: 124193348.09,
-    currency: 'SAR',
-    reconciled_by: '-',
-    portfolio: 'Saudi Banking',
-    location: 'Riyadh',
-    quantity: 12800,
-    security_symbol: '1180.SR',
-    security_name: 'Saudi National Bank',
-    cash_balance: 8341503.49
-  },
-  {
-    id: 9,
-    account_number: 'DPM53',
-    account_name: 'ACWA Power Portfolio',
-    status: 'reconciled',
-    date: '2024-06-10',
-    amount: 8083789.33,
-    currency: 'SAR',
-    reconciled_by: 'Noura Al-Zahrani',
-    portfolio: 'Saudi Utilities',
-    location: 'Riyadh',
-    quantity: 9800,
-    security_symbol: '2082.SR',
-    security_name: 'ACWA Power Company',
-    cash_balance: 56591.84
-  }
-];
+// Generate account data from portfolio summary data
+const generateAccountData = () => {
+  const portfolioCodes = [...new Set(mockData.map((item) => item.portfolioCode))];
+  return portfolioCodes.map((portfolioCode, index) => {
+    const portfolioData = mockData.filter((item) => item.portfolioCode === portfolioCode);
+    const totalAmount = portfolioData.reduce((sum, item) => sum + (item.apxMarketValue || 0), 0);
+    const totalDiff = portfolioData.reduce((sum, item) => sum + Math.abs(item.marketValueDiff || 0), 0);
+    const isReconciled = totalDiff < 1000; // Threshold for reconciliation
+
+    // Get cash balance from CASH SAR entries
+    const cashEntry = portfolioData.find((item) => item.assetClass === 'CASH SAR');
+    const cashBalance = cashEntry ? cashEntry.apxMarketValue : 0;
+
+    return {
+      id: index + 1,
+      account_number: portfolioCode,
+      account_name: `Portfolio ${portfolioCode}`,
+      status: isReconciled ? 'reconciled' : 'unreconciled',
+      date: new Date().toISOString().split('T')[0],
+      amount: totalAmount,
+      currency: 'SAR',
+      reconciled_by: isReconciled ? 'System Auto-reconciled' : '-',
+      portfolio: `Portfolio ${portfolioCode}`,
+      location: 'Riyadh',
+      quantity: Math.floor(totalAmount / 100), // Estimated quantity
+      security_symbol: portfolioCode,
+      security_name: `Portfolio ${portfolioCode}`,
+      cash_balance: cashBalance
+    };
+  });
+};
+
+const mockAccounts = generateAccountData();
 
 export default function DetailReconToolTable() {
   const theme = useTheme();
@@ -232,7 +118,11 @@ export default function DetailReconToolTable() {
             <Button
               variant="text"
               color="secondary"
-              onClick={() => navigate(`/Portfolio-Holdings-Analysis?portfolio=${portfolioCode}`)}
+              onClick={() =>
+                navigate(
+                  `/Portfolio-Holdings-Analysis?portfolio=${portfolioCode}&status=${cell.row.original.status}&date=${cell.row.original.date}`
+                )
+              }
               sx={{
                 textDecoration: 'underline',
                 color: theme.palette.secondary.main,
@@ -357,13 +247,15 @@ export default function DetailReconToolTable() {
 
   // Table props configuration
   const tableProps = {
+    columns: columns,
+    data: mockAccounts,
     state: { columnFilters },
+    initialState: { showGlobalFilter: true },
     onColumnFiltersChange: setColumnFilters,
     enableFilters: true,
     enableColumnFilters: true,
     enableGlobalFilter: true,
     enableSorting: true,
-    initialState: {},
     manualFiltering: false
   };
 
@@ -412,12 +304,7 @@ export default function DetailReconToolTable() {
       </MainCard>
 
       <Card sx={{ mt: 3 }}>
-        <ReusableTable
-          columns={columns}
-          data={mockAccounts}
-          initialState={{ showGlobalFilter: true }}
-          tableProps={tableProps}
-        />
+        <ReusableTable tableProps={tableProps} />
       </Card>
     </Box>
   );

@@ -5,17 +5,7 @@ import PropTypes from 'prop-types';
 /**
  * MetricCard - A component for displaying metrics following GIB design system
  */
-const MetricCard = ({
-  title = '',
-  value = '',
-  subtitle = '',
-  icon = '',
-  color = '',
-  trend = '',
-  onClick = () => {},
-  isActive = false,
-  sx = {}
-}) => {
+const MetricCard = ({ title = '', value = '', subtitle = '', icon = '', color = '', trend = '', sx = {} }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
 

@@ -9,40 +9,90 @@ import PortfolioTableGroup from './PortfolioTableGroup';
 import mockData from './mockdata.json';
 import mockDataGroup from './mockdataGroup.json';
 
+// Reconciliation configuration
+const RECONCILIATION_CONFIG = {
+  THRESHOLD: 1.0, // SAR - difference threshold for reconciliation
+  TOLERANCE_PERCENTAGE: 0.01 // 1% tolerance for percentage-based reconciliation
+};
+
 export default function PortfolioHoldingsAnalysis() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const portfolioCode = searchParams.get('portfolio') || ''; // Default to DPM01
+  const status = searchParams.get('status') || '';
+  const date = searchParams.get('date') || '';
 
   // Filter data for the selected portfolio
-  const { filteredSummary, filteredGroup, metrics, hasData, portfolioStats } = useMemo(() => {
+  const { filteredSummary, filteredGroup, metrics, hasData, portfolioStats, accountStatus } = useMemo(() => {
     const summary = mockData.filter((row) => row.portfolioCode === portfolioCode);
     const group = mockDataGroup.filter((row) => row.portfolioCode === portfolioCode);
     const hasPortfolioData = summary.length > 0 || group.length > 0;
 
-    // Calculate advanced metrics
+    // Extract account info from portfolio data - determine status based on data reconciliation
+    const hasSignificantDifferences = group.some(
+      (row) => Math.abs(row.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
+    );
+
+    // Simple account info object based on portfolio data
+    const accountInfo = {
+      status: hasSignificantDifferences ? 'unreconciled' : 'reconciled',
+      reconciled_by: hasSignificantDifferences ? '-' : 'Auto-reconciled',
+      account_name: `Portfolio ${portfolioCode}`,
+      date: new Date().toISOString().split('T')[0]
+    };
+
+    // Calculate portfolio metrics
     const totalMarketValue = summary.reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
-    const totalBrokerValue = summary.reduce((sum, row) => sum + (row.brokerMarketValue || 0), 0);
-    const totalPositions = group.reduce((sum, row) => sum + (row.apxQuantity || 0), 0);
-    const totalCash = summary
-      .filter((row) => row.assetClass && row.assetClass.toLowerCase().includes('cash'))
-      .reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
-    // Calculate reconciliation status
-    const reconciled = group.filter((row) => Math.abs(row.marketValueDiff || 0) < 1).length;
-    const unreconciled = group.length - reconciled;
-    const reconciliationRate = group.length > 0 ? ((reconciled / group.length) * 100).toFixed(1) : 0;
+
+    // SIMPLIFIED RECONCILIATION LOGIC
+    // 1. Data-level reconciliation: Check for significant differences in positions
+    const positionsWithDifferences = group.filter(
+      (row) => Math.abs(row.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
+    ).length;
+    const reconciledPositions = group.length - positionsWithDifferences;
+    const dataReconciliationRate = group.length > 0 ? ((reconciledPositions / group.length) * 100).toFixed(1) : 100;
+
+    // 2. Account-level reconciliation: Official approval status
+    const isAccountApproved = accountInfo.status === 'reconciled';
+
+    // 3. Overall reconciliation status (both must be true for full reconciliation)
+    const hasDataDiscrepancies = positionsWithDifferences > 0;
+    const isFullyReconciled = isAccountApproved && !hasDataDiscrepancies;
+
+    // 4. Determine final status for display
+    let reconciledStatus, statusMessage;
+    if (isFullyReconciled) {
+      reconciledStatus = 'fully-reconciled';
+      statusMessage = 'Account approved and all data reconciled';
+    } else if (isAccountApproved && hasDataDiscrepancies) {
+      reconciledStatus = 'data-pending';
+      statusMessage = 'Account approved but data discrepancies exist';
+    } else if (!isAccountApproved && !hasDataDiscrepancies) {
+      reconciledStatus = 'approval-pending';
+      statusMessage = 'Data reconciled but account approval pending';
+    } else {
+      reconciledStatus = 'unreconciled';
+      statusMessage = 'Account approval and data reconciliation both pending';
+    }
 
     // Calculate total differences
     const totalMarketValueDiff = summary.reduce((sum, row) => sum + (row.marketValueDiff || 0), 0);
 
-    // Portfolio statistics
+    // Portfolio statistics with clear reconciliation logic
     const stats = {
       totalSecurities: group.length,
       uniqueSecurities: new Set(group.map((row) => row.symbol)).size,
       assetClasses: new Set(summary.map((row) => row.assetClass).filter(Boolean)).size,
-      reconciliationRate: parseFloat(reconciliationRate),
-      totalDifference: totalMarketValueDiff
+      dataReconciliationRate: parseFloat(dataReconciliationRate),
+      totalDifference: totalMarketValueDiff,
+      reconciledStatus,
+      statusMessage,
+      positionsWithDifferences,
+      reconciledPositions,
+      isAccountApproved,
+      hasDataDiscrepancies,
+      isFullyReconciled
     };
 
     const formatter = new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' });
@@ -51,7 +101,7 @@ export default function PortfolioHoldingsAnalysis() {
       {
         title: 'Portfolio Market Value',
         value: formatter.format(totalMarketValue),
-        subtitle: `APX: ${formatter.format(totalMarketValue)} | Broker: ${formatter.format(totalBrokerValue)}`,
+        subtitle: `Difference: ${formatter.format(Math.abs(totalMarketValueDiff))}`,
         icon: 'solar:money-bag-bold-duotone',
         color: theme.palette.secondary.main, // GIB Yellow - main brand color
         trend:
@@ -60,28 +110,32 @@ export default function PortfolioHoldingsAnalysis() {
             : `-${formatter.format(Math.abs(totalMarketValueDiff))}`
       },
       {
-        title: 'Reconciliation Status',
-        value: `${reconciliationRate}%`,
-        subtitle: `${reconciled} reconciled, ${unreconciled} pending`,
-        icon: reconciliationRate > 95 ? 'solar:check-circle-bold-duotone' : 'solar:danger-circle-bold-duotone',
-        color: reconciliationRate > 95 ? theme.palette.success.main : theme.palette.secondary.main, // Use GIB Yellow for warnings per guidelines
-        trend: `${stats.totalSecurities} positions`
+        title: 'Account Status',
+        value: isAccountApproved ? 'APPROVED' : 'PENDING',
+        subtitle: isAccountApproved ? `Approved by ${accountInfo.reconciled_by}` : 'Awaiting approval',
+        icon: isAccountApproved ? 'solar:shield-check-bold-duotone' : 'solar:shield-cross-bold-duotone',
+        color: isAccountApproved ? theme.palette.success.main : theme.palette.error.main,
+        trend: `Date: ${accountInfo.date}`
       },
       {
-        title: 'Total Positions',
-        value: totalPositions.toLocaleString(),
-        subtitle: `${stats.uniqueSecurities} unique securities`,
-        icon: 'solar:document-text-bold-duotone',
-        color: theme.palette.primary.main, // GIB Dark Grey for secondary information
-        trend: `${stats.assetClasses} asset classes`
+        title: 'Data Reconciliation',
+        value: `${dataReconciliationRate}%`,
+        subtitle: `${reconciledPositions} of ${group.length} positions match`,
+        icon: dataReconciliationRate >= 95 ? 'solar:check-circle-bold-duotone' : 'solar:danger-circle-bold-duotone',
+        color: dataReconciliationRate >= 95 ? theme.palette.success.main : theme.palette.secondary.main,
+        trend: positionsWithDifferences > 0 ? `${positionsWithDifferences} need review` : 'All positions match'
       },
       {
-        title: 'Cash Balance',
-        value: formatter.format(totalCash),
-        subtitle: totalCash >= 0 ? 'Available funds' : 'Overdraft position',
-        icon: 'solar:wallet-money-bold-duotone',
-        color: totalCash >= 0 ? theme.palette.success.main : theme.palette.error.main,
-        trend: `${((totalCash / totalMarketValue) * 100).toFixed(1)}% of portfolio`
+        title: 'Overall Status',
+        value: isFullyReconciled ? 'RECONCILED' : 'PENDING',
+        subtitle: statusMessage,
+        icon: isFullyReconciled ? 'solar:check-square-bold-duotone' : 'solar:danger-square-bold-duotone',
+        color: isFullyReconciled
+          ? theme.palette.success.main
+          : reconciledStatus === 'data-pending' || reconciledStatus === 'approval-pending'
+            ? theme.palette.secondary.main
+            : theme.palette.error.main,
+        trend: `${accountInfo.account_name}`
       }
     ];
 
@@ -90,7 +144,8 @@ export default function PortfolioHoldingsAnalysis() {
       filteredGroup: group,
       metrics: calculatedMetrics,
       hasData: hasPortfolioData,
-      portfolioStats: stats
+      portfolioStats: stats,
+      accountStatus: accountInfo
     };
   }, [portfolioCode, theme.palette]);
 
@@ -112,14 +167,75 @@ export default function PortfolioHoldingsAnalysis() {
         </Typography>
       </Breadcrumbs>
 
-      {/* Status Alert */}
-      {hasData && portfolioStats.reconciliationRate < 95 && (
-        <Alert severity="warning" sx={{ mb: 3 }} icon={<Icon icon="solar:danger-triangle-bold-duotone" />}>
-          <Typography variant="body2">
-            <strong>Reconciliation Required:</strong> {portfolioStats.reconciliationRate}% of positions are reconciled.
-            {100 - portfolioStats.reconciliationRate}% require attention.
-          </Typography>
-        </Alert>
+      {/* Clear Status Alerts */}
+      {hasData && (
+        <>
+          {/* Fully Reconciled - Success */}
+          {portfolioStats.reconciledStatus === 'fully-reconciled' && (
+            <Alert severity="success" sx={{ mb: 2 }} icon={<Icon icon="solar:check-circle-bold-duotone" />}>
+              <Typography variant="body2">
+                <strong>✅ Fully Reconciled</strong>
+                <br />
+                Account is approved and all position data matches within tolerance (±{
+                  RECONCILIATION_CONFIG.THRESHOLD
+                }{' '}
+                SAR).
+                <br />
+                <em>
+                  Approved by: {accountStatus.reconciled_by} | Date: {accountStatus.date}
+                </em>
+              </Typography>
+            </Alert>
+          )}
+
+          {/* Account Approved but Data Issues - Warning */}
+          {portfolioStats.reconciledStatus === 'data-pending' && (
+            <Alert severity="warning" sx={{ mb: 2 }} icon={<Icon icon="solar:danger-triangle-bold-duotone" />}>
+              <Typography variant="body2">
+                <strong>⚠️ Data Review Required</strong>
+                <br />
+                Account is approved by {accountStatus.reconciled_by}, but {portfolioStats.positionsWithDifferences}{' '}
+                positions have differences exceeding {RECONCILIATION_CONFIG.THRESHOLD} SAR.
+                <br />
+                <em>
+                  Data Match Rate: {portfolioStats.dataReconciliationRate}% | Next: Review and resolve position
+                  differences
+                </em>
+              </Typography>
+            </Alert>
+          )}
+
+          {/* Data Good but Account Not Approved - Info */}
+          {portfolioStats.reconciledStatus === 'approval-pending' && (
+            <Alert severity="info" sx={{ mb: 2 }} icon={<Icon icon="solar:shield-cross-bold-duotone" />}>
+              <Typography variant="body2">
+                <strong>📋 Approval Pending</strong>
+                <br />
+                All position data is reconciled ({portfolioStats.dataReconciliationRate}% match), but account requires
+                approval.
+                <br />
+                <em>Next: Contact reconciliation team for account approval | Last Update: {accountStatus.date}</em>
+              </Typography>
+            </Alert>
+          )}
+
+          {/* Both Account and Data Issues - Error */}
+          {portfolioStats.reconciledStatus === 'unreconciled' && (
+            <Alert severity="error" sx={{ mb: 2 }} icon={<Icon icon="solar:shield-cross-bold-duotone" />}>
+              <Typography variant="body2">
+                <strong>❌ Reconciliation Required</strong>
+                <br />
+                Account approval pending AND {portfolioStats.positionsWithDifferences} positions have data
+                discrepancies.
+                <br />
+                <em>
+                  Data Match: {portfolioStats.dataReconciliationRate}% | Next: Resolve data differences, then request
+                  approval
+                </em>
+              </Typography>
+            </Alert>
+          )}
+        </>
       )}
 
       {/* Header Section */}
@@ -129,7 +245,9 @@ export default function PortfolioHoldingsAnalysis() {
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
               Portfolio Holdings Analysis
             </Typography>
-            <Chip label={portfolioCode} color="secondary" variant="filled" size="small" sx={{ fontWeight: 600 }} />
+            <Chip label={portfolioCode} color="secondary" variant="filled" size="small" sx={{ fontWeight: 600 }} />-
+            <Chip label={status} color="secondary" variant="outlined" size="small" sx={{ fontWeight: 600 }} />-
+            <Chip label={date} color="secondary" variant="outlined" size="small" sx={{ fontWeight: 600 }} />
           </Box>
         }
         secondary={
@@ -147,22 +265,56 @@ export default function PortfolioHoldingsAnalysis() {
               size="small"
             />
             {hasData && (
-              <Chip
-                icon={
-                  <Icon
-                    icon={
-                      portfolioStats.reconciliationRate > 95
-                        ? 'solar:check-circle-bold-duotone'
-                        : 'solar:danger-circle-bold-duotone'
-                    }
-                    width={16}
-                  />
-                }
-                label={`${portfolioStats.reconciliationRate}% Reconciled`}
-                color={portfolioStats.reconciliationRate > 95 ? 'success' : 'secondary'}
-                variant="filled"
-                size="small"
-              />
+              <>
+                <Chip
+                  icon={
+                    <Icon
+                      icon={
+                        portfolioStats.isAccountApproved
+                          ? 'solar:shield-check-bold-duotone'
+                          : 'solar:shield-cross-bold-duotone'
+                      }
+                      width={16}
+                    />
+                  }
+                  label={portfolioStats.isAccountApproved ? 'Account Approved' : 'Account Pending'}
+                  color={portfolioStats.isAccountApproved ? 'success' : 'error'}
+                  variant="filled"
+                  size="small"
+                />
+                <Chip
+                  icon={
+                    <Icon
+                      icon={
+                        portfolioStats.dataReconciliationRate >= 95
+                          ? 'solar:check-circle-bold-duotone'
+                          : 'solar:danger-circle-bold-duotone'
+                      }
+                      width={16}
+                    />
+                  }
+                  label={`${portfolioStats.dataReconciliationRate}% Data Match`}
+                  color={portfolioStats.dataReconciliationRate >= 95 ? 'success' : 'secondary'}
+                  variant="outlined"
+                  size="small"
+                />
+                <Chip
+                  icon={
+                    <Icon
+                      icon={
+                        portfolioStats.isFullyReconciled
+                          ? 'solar:check-square-bold-duotone'
+                          : 'solar:danger-square-bold-duotone'
+                      }
+                      width={16}
+                    />
+                  }
+                  label={portfolioStats.isFullyReconciled ? 'Fully Reconciled' : 'Pending'}
+                  color={portfolioStats.isFullyReconciled ? 'success' : 'secondary'}
+                  variant={portfolioStats.isFullyReconciled ? 'filled' : 'outlined'}
+                  size="small"
+                />
+              </>
             )}
           </Stack>
         }
