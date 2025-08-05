@@ -47,13 +47,16 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
     () => [
       {
         accessorKey: 'portfolioCode',
-        header: 'Portfolio Code',
+        header: '📊 Portfolio Code',
         size: 250,
         enableGrouping: true,
         Cell: ({ cell }) => (
-          <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color: 'primary.main' }}>
-            {cell.getValue() || 'N/A'}
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Icon icon="solar:folder-bold-duotone" width={16} style={{ color: theme.palette.secondary.main }} />
+            <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color: 'primary.main' }}>
+              {cell.getValue() || 'N/A'}
+            </Typography>
+          </Box>
         ),
         Footer: () => (
           <Typography
@@ -81,7 +84,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'assetClass',
-        header: 'Asset Class',
+        header: '🏷️ Asset Class Type',
         size: 250,
         enableGrouping: true,
         Cell: ({ cell }) => {
@@ -138,7 +141,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'apxMarketValue',
-        header: 'APX Market Value',
+        header: '💼 APX Market Value (SAR)',
         size: 250,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
@@ -196,7 +199,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'brokerMarketValue',
-        header: 'Broker Market Value',
+        header: '🏦 Broker Market Value (SAR)',
         size: 250,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
@@ -256,8 +259,8 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'marketValueDiff',
-        header: 'Market Value Diff',
-        size: 250,
+        header: '⚖️ Market Value Difference (SAR)',
+        size: 280,
         Cell: ({ cell }) => {
           const value = cell.getValue();
           const isPositive = value > 0;
@@ -401,7 +404,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
             }}
           >
             <Icon icon="solar:layers-bold-duotone" width={24} style={{ color: theme.palette.secondary.main }} />
-            Asset Class Summary
+            Asset Class Summary - Reconciliation View
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
             <Chip

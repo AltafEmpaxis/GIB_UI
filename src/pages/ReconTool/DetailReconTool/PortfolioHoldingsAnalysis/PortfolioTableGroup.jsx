@@ -107,7 +107,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
     () => [
       {
         accessorKey: 'portfolioCode',
-        header: 'Portfolio Code',
+        header: '📊 Portfolio Code',
         size: 250,
         enableGrouping: true,
         enableSorting: true,
@@ -142,7 +142,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'assetClass',
-        header: 'Asset Class',
+        header: '🏷️ Asset Class',
         size: 250,
         enableGrouping: true,
         enableSorting: true,
@@ -205,7 +205,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'symbol',
-        header: 'Symbol',
+        header: '🔖 Security Symbol',
         size: 250,
         enableSorting: true,
         Cell: ({ cell }) => (
@@ -261,7 +261,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'securityName',
-        header: 'Security Name',
+        header: '🏢 Security Name',
         size: 250,
         enableSorting: true,
         Cell: ({ cell }) => (
@@ -287,7 +287,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'apxQuantity',
-        header: 'APX Quantity',
+        header: '📊 APX Quantity',
         size: 250,
         enableSorting: true,
         Cell: ({ cell, row }) => (
@@ -324,7 +324,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'brokerQuantity',
-        header: 'Broker Quantity',
+        header: '🏦 Broker Quantity',
         size: 250,
         enableSorting: true,
         Cell: ({ cell, row }) => (
@@ -364,7 +364,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'qtyDiff',
-        header: 'Qty Diff',
+        header: '⚖️ Quantity Difference',
         size: 250,
         enableSorting: true,
         Cell: ({ cell }) => {
@@ -424,7 +424,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'apxMarketValue',
-        header: 'APX Market Value',
+        header: '💼 APX Market Value (SAR)',
         size: 250,
         enableSorting: true,
         Cell: ({ cell }) => (
@@ -461,7 +461,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'brokerMarketValue',
-        header: 'Broker Market Value',
+        header: '🏦 Broker Market Value (SAR)',
         size: 250,
         enableSorting: true,
         Cell: ({ cell }) => (
@@ -503,8 +503,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'marketValueDiff',
-        header: 'Market Value Diff',
-        size: 250,
+        header: '⚖️ Market Value Difference (SAR)',
+        size: 280,
         enableSorting: true,
         Cell: ({ cell }) => {
           const value = cell.getValue();
@@ -767,7 +767,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
           }}
         >
           <Icon icon="solar:document-text-bold-duotone" width={24} style={{ color: theme.palette.secondary.main }} />
-          Portfolio Holdings Details
+          Detailed Position-by-Position Analysis
         </Typography>
         <Stack direction="row" spacing={1}>
           <Chip

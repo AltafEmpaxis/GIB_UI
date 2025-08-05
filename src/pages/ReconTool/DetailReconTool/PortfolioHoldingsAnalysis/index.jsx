@@ -29,55 +29,49 @@ export default function PortfolioHoldingsAnalysis() {
     const group = mockDataGroup.filter((row) => row.portfolioCode === portfolioCode);
     const hasPortfolioData = summary.length > 0 || group.length > 0;
 
-    // Extract account info from portfolio data - determine status based on data reconciliation
-    const hasSignificantDifferences = group.some(
-      (row) => Math.abs(row.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
-    );
+    // **RECONCILIATION LOGIC**: Check total market value differences from summary data
+    const totalMarketValueDiff = summary.reduce((sum, item) => sum + (item.marketValueDiff || 0), 0);
+
+    // Portfolio is RECONCILED if total difference is exactly zero (or very close to zero due to rounding)
+    const isReconciled = Math.abs(totalMarketValueDiff) < 0.01; // Tolerance for rounding errors
+
+    // Count positions with differences in detailed data for analysis
+    const positionsWithDiff = group.filter((row) => Math.abs(row.marketValueDiff || 0) > 0.01).length;
 
     // Simple account info object based on portfolio data
     const accountInfo = {
-      status: hasSignificantDifferences ? 'unreconciled' : 'reconciled',
-      reconciled_by: hasSignificantDifferences ? '-' : 'Auto-reconciled',
+      status: isReconciled ? 'reconciled' : 'unreconciled',
+      reconciled_by: isReconciled ? 'Auto-reconciled' : '-',
       account_name: `Portfolio ${portfolioCode}`,
-      date: new Date().toISOString().split('T')[0]
+      date: new Date().toISOString().split('T')[0],
+      total_difference: totalMarketValueDiff,
+      positions_with_diff: positionsWithDiff
     };
 
     // Calculate portfolio metrics
     const totalMarketValue = summary.reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
 
-    // SIMPLIFIED RECONCILIATION LOGIC
-    // 1. Data-level reconciliation: Check for significant differences in positions
-    const positionsWithDifferences = group.filter(
-      (row) => Math.abs(row.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
-    ).length;
-    const reconciledPositions = group.length - positionsWithDifferences;
+    // RECONCILIATION LOGIC BASED ON TOTAL DIFFERENCES
+    // 1. Data-level reconciliation: Check total market value difference
+    const reconciledPositions = group.length - positionsWithDiff;
     const dataReconciliationRate = group.length > 0 ? ((reconciledPositions / group.length) * 100).toFixed(1) : 100;
 
-    // 2. Account-level reconciliation: Official approval status
+    // 2. Account-level reconciliation: Based on total difference being zero
     const isAccountApproved = accountInfo.status === 'reconciled';
 
-    // 3. Overall reconciliation status (both must be true for full reconciliation)
-    const hasDataDiscrepancies = positionsWithDifferences > 0;
-    const isFullyReconciled = isAccountApproved && !hasDataDiscrepancies;
+    // 3. Overall reconciliation status
+    const hasDataDiscrepancies = !isReconciled;
+    const isFullyReconciled = isReconciled;
 
     // 4. Determine final status for display
     let reconciledStatus, statusMessage;
     if (isFullyReconciled) {
       reconciledStatus = 'fully-reconciled';
-      statusMessage = 'Account approved and all data reconciled';
-    } else if (isAccountApproved && hasDataDiscrepancies) {
-      reconciledStatus = 'data-pending';
-      statusMessage = 'Account approved but data discrepancies exist';
-    } else if (!isAccountApproved && !hasDataDiscrepancies) {
-      reconciledStatus = 'approval-pending';
-      statusMessage = 'Data reconciled but account approval pending';
+      statusMessage = 'All positions reconciled - Total difference is zero';
     } else {
       reconciledStatus = 'unreconciled';
-      statusMessage = 'Account approval and data reconciliation both pending';
+      statusMessage = `Portfolio unreconciled - Total difference: ${new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(totalMarketValueDiff)}`;
     }
-
-    // Calculate total differences
-    const totalMarketValueDiff = summary.reduce((sum, row) => sum + (row.marketValueDiff || 0), 0);
 
     // Portfolio statistics with clear reconciliation logic
     const stats = {
@@ -88,7 +82,7 @@ export default function PortfolioHoldingsAnalysis() {
       totalDifference: totalMarketValueDiff,
       reconciledStatus,
       statusMessage,
-      positionsWithDifferences,
+      positionsWithDifferences: positionsWithDiff,
       reconciledPositions,
       isAccountApproved,
       hasDataDiscrepancies,
@@ -123,7 +117,7 @@ export default function PortfolioHoldingsAnalysis() {
         subtitle: `${reconciledPositions} of ${group.length} positions match`,
         icon: dataReconciliationRate >= 95 ? 'solar:check-circle-bold-duotone' : 'solar:danger-circle-bold-duotone',
         color: dataReconciliationRate >= 95 ? theme.palette.success.main : theme.palette.secondary.main,
-        trend: positionsWithDifferences > 0 ? `${positionsWithDifferences} need review` : 'All positions match'
+        trend: positionsWithDiff > 0 ? `${positionsWithDiff} need review` : 'All positions match'
       },
       {
         title: 'Overall Status',
