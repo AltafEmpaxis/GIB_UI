@@ -5,7 +5,14 @@ import ReusableTable from 'components/Table/ReusableTable';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import mockData from './PortfolioHoldingsAnalysis/mockdata.json';
+import mockDataGroup from './PortfolioHoldingsAnalysis/mockdataGroup.json';
 import MetricCard from './ReconMetricsCards';
+
+// Reconciliation configuration - standardized across all components
+const RECONCILIATION_CONFIG = {
+  THRESHOLD: 1.0, // SAR - difference threshold for reconciliation
+  TOLERANCE: 0.01 // Tolerance for rounding errors
+};
 
 // Generate account data from portfolio summary data with proper reconciliation logic
 const generateAccountData = () => {
@@ -29,14 +36,17 @@ const generateAccountData = () => {
     const cashDiff = cashData.reduce((sum, item) => sum + (item.marketValueDiff || 0), 0);
 
     // Portfolio is RECONCILED if total difference is exactly zero (or very close to zero due to rounding)
-    const isReconciled = Math.abs(totalMarketValueDiff) < 0.01; // Tolerance for rounding errors
+    const isReconciled = Math.abs(totalMarketValueDiff) < RECONCILIATION_CONFIG.TOLERANCE;
 
     // Get cash balance from CASH SAR entries
     const cashEntry = portfolioData.find((item) => item.assetClass === 'CASH SAR');
     const cashBalance = cashEntry ? cashEntry.apxMarketValue : 0;
 
-    // Count positions with differences for analysis
-    const positionsWithDiff = portfolioData.filter((item) => Math.abs(item.marketValueDiff || 0) > 0.01).length;
+    // Count positions with differences for analysis (use detailed group data)
+    const portfolioGroupData = mockDataGroup.filter((item) => item.portfolioCode === portfolioCode);
+    const positionsWithDiff = portfolioGroupData.filter(
+      (item) => Math.abs(item.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
+    ).length;
 
     return {
       id: index + 1,
@@ -69,18 +79,18 @@ const generateAccountData = () => {
 const mockAccounts = generateAccountData();
 
 // Console log for debugging reconciliation logic
-console.log(
-  '📊 Reconciliation Analysis:',
-  mockAccounts.map((account) => ({
-    portfolio: account.account_number,
-    status: account.status,
-    totalDiff: account.total_difference,
-    equityDiff: account.equity_difference,
-    cashDiff: account.cash_difference,
-    positionsWithDiff: account.positions_with_diff,
-    details: account.reconciliation_details
-  }))
-);
+// console.log(
+//   '📊 Reconciliation Analysis:',
+//   mockAccounts.map((account) => ({
+//     portfolio: account.account_number,
+//     status: account.status,
+//     totalDiff: account.total_difference,
+//     equityDiff: account.equity_difference,
+//     cashDiff: account.cash_difference,
+//     positionsWithDiff: account.positions_with_diff,
+//     details: account.reconciliation_details
+//   }))
+// );
 
 export default function DetailReconToolTable() {
   const theme = useTheme();
@@ -149,8 +159,8 @@ export default function DetailReconToolTable() {
     () => [
       {
         accessorKey: 'account_number',
-        header: '📊 Portfolio Code',
-        size: 220,
+        header: 'Portfolio Code',
+        size: 250,
         enableColumnFilter: true,
         filterVariant: 'text',
         Cell: ({ cell }) => {
@@ -185,32 +195,20 @@ export default function DetailReconToolTable() {
         }
       },
       {
-        accessorKey: 'account_name',
-        header: '📁 Portfolio Name',
-        size: 300,
-        enableColumnFilter: true,
-        filterVariant: 'text',
-        Cell: ({ cell }) => (
-          <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
-            {cell.getValue()}
-          </Typography>
-        )
-      },
-      {
         accessorKey: 'status',
-        header: '⚖️ Reconciliation Status',
-        size: 380,
+        header: 'Reconciliation Status',
+        size: 200,
         filterVariant: 'select',
         filterSelectOptions: [
-          { text: '✅ Reconciled (All Match)', value: 'reconciled' },
-          { text: '❌ Unreconciled (Has Differences)', value: 'unreconciled' }
+          { label: '✅ Reconciled (All Match)', value: 'reconciled' },
+          { label: '❌ Unreconciled (Has Differences)', value: 'unreconciled' }
         ],
         Cell: ({ cell, row }) => {
           const isReconciled = cell.getValue() === 'reconciled';
           return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Chip
-                label={isReconciled ? '✅ RECONCILED' : '❌ UNRECONCILED'}
+                label={isReconciled ? 'RECONCILED' : 'UNRECONCILED'}
                 color={isReconciled ? 'success' : 'error'}
                 size="small"
                 variant="filled"
@@ -244,8 +242,8 @@ export default function DetailReconToolTable() {
       },
       {
         accessorKey: 'date',
-        header: '📅 Report Date',
-        size: 350,
+        header: 'Report Date',
+        size: 250,
         filterVariant: 'date',
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 500, fontFamily: 'monospace' }}>
@@ -254,46 +252,8 @@ export default function DetailReconToolTable() {
         )
       },
       {
-        accessorKey: 'quantity',
-        header: '📈 Total Shares',
-        size: 250,
-        filterVariant: 'range',
-        Cell: ({ cell }) => (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Icon icon="solar:chart-2-bold-duotone" width={14} style={{ color: theme.palette.info.main }} />
-            <Typography variant="body2" sx={{ fontWeight: 500, fontFamily: 'monospace' }}>
-              {Number(cell.getValue()).toLocaleString()}
-            </Typography>
-          </Box>
-        )
-      },
-      {
-        accessorKey: 'security_symbol',
-        header: '🏷️ Primary Symbol',
-        size: 350,
-        enableColumnFilter: true,
-        filterVariant: 'text',
-        Cell: ({ cell }) => (
-          <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color: 'primary.main' }}>
-            {cell.getValue()}
-          </Typography>
-        )
-      },
-      {
-        accessorKey: 'security_name',
-        header: '🏢 Primary Security',
-        size: 350,
-        enableColumnFilter: true,
-        filterVariant: 'text',
-        Cell: ({ cell }) => (
-          <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
-            {cell.getValue()}
-          </Typography>
-        )
-      },
-      {
         accessorKey: 'amount',
-        header: '💰 Total Market Value (SAR)',
+        header: 'Total Market Value',
         size: 350,
         filterVariant: 'range',
         Cell: ({ cell }) => (
@@ -307,7 +267,7 @@ export default function DetailReconToolTable() {
       },
       {
         accessorKey: 'cash_balance',
-        header: '💵 Available Cash (SAR)',
+        header: 'Available Cash',
         size: 350,
         filterVariant: 'range',
         Cell: ({ cell }) => (
@@ -320,49 +280,115 @@ export default function DetailReconToolTable() {
         )
       },
       {
-        accessorKey: 'portfolio',
-        header: '📂 Portfolio Group',
-        size: 250,
-        filterVariant: 'multi-select',
-        filterSelectOptions: [...new Set(mockAccounts.map((account) => account.portfolio))],
-        Cell: ({ cell }) => (
-          <Chip
-            label={cell.getValue()}
-            size="small"
-            variant="outlined"
-            sx={{
-              borderColor: 'secondary.main',
-              color: 'secondary.main',
-              fontWeight: 600
-            }}
-            icon={<Icon icon="solar:folder-bold-duotone" width={14} />}
-          />
-        )
+        accessorKey: 'equity_difference',
+        header: 'Equity Difference',
+        size: 350,
+        filterVariant: 'range',
+        Cell: ({ cell }) => {
+          const value = cell.getValue();
+          const isPositive = value > 0;
+          const isNegative = value < 0;
+          const color = isPositive
+            ? theme.palette.success.main
+            : isNegative
+              ? theme.palette.error.main
+              : theme.palette.text.secondary;
+
+          return (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Icon
+                icon={
+                  isPositive
+                    ? 'solar:arrow-up-bold-duotone'
+                    : isNegative
+                      ? 'solar:arrow-down-bold-duotone'
+                      : 'solar:minus-circle-bold-duotone'
+                }
+                width={14}
+                style={{ color }}
+              />
+              <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color }}>
+                {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(Math.abs(value))}
+              </Typography>
+            </Box>
+          );
+        }
       },
       {
-        accessorKey: 'reconciled_by',
-        header: '👤 Reconciled By',
-        size: 220,
-        Cell: ({ cell, row }) => (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {row.original.status === 'reconciled' ? (
-              <>
-                <Icon icon="solar:settings-bold-duotone" width={14} style={{ color: theme.palette.success.main }} />
-                <Typography variant="body2" sx={{ color: 'success.main', fontWeight: 500 }}>
-                  {cell.getValue()}
-                </Typography>
-              </>
-            ) : (
-              <Typography variant="body2" sx={{ color: 'text.secondary', fontStyle: 'italic' }}>
-                Pending Review
+        accessorKey: 'cash_difference',
+        header: 'Cash Difference',
+        size: 350,
+        filterVariant: 'range',
+        Cell: ({ cell }) => {
+          const value = cell.getValue();
+          const isPositive = value > 0;
+          const isNegative = value < 0;
+          const color = isPositive
+            ? theme.palette.success.main
+            : isNegative
+              ? theme.palette.error.main
+              : theme.palette.text.secondary;
+
+          return (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Icon
+                icon={
+                  isPositive
+                    ? 'solar:arrow-up-bold-duotone'
+                    : isNegative
+                      ? 'solar:arrow-down-bold-duotone'
+                      : 'solar:minus-circle-bold-duotone'
+                }
+                width={14}
+                style={{ color }}
+              />
+              <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color }}>
+                {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(Math.abs(value))}
               </Typography>
-            )}
-          </Box>
-        )
+            </Box>
+          );
+        }
+      },
+      {
+        accessorKey: 'total_difference',
+        header: 'Total Net Difference',
+        size: 350,
+        filterVariant: 'range',
+        Cell: ({ cell }) => {
+          const value = cell.getValue();
+          const isPositive = value > 0;
+          const isNegative = value < 0;
+          const color = isPositive
+            ? theme.palette.success.main
+            : isNegative
+              ? theme.palette.error.main
+              : theme.palette.text.secondary;
+
+          return (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Icon
+                icon={
+                  isPositive
+                    ? 'solar:trending-up-bold-duotone'
+                    : isNegative
+                      ? 'solar:trending-down-bold-duotone'
+                      : 'solar:check-circle-bold-duotone'
+                }
+                width={16}
+                style={{ color }}
+              />
+              <Typography variant="body2" sx={{ fontWeight: 700, fontFamily: 'monospace', color, fontSize: '0.9rem' }}>
+                {Math.abs(value) < 0.01
+                  ? 'MATCHED'
+                  : new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(value)}
+              </Typography>
+            </Box>
+          );
+        }
       },
       {
         accessorKey: 'reconciliation_details',
-        header: '📋 Reconciliation Summary',
+        header: 'Reconciliation Summary',
         size: 400,
         Cell: ({ cell, row }) => (
           <Box>
@@ -401,28 +427,6 @@ export default function DetailReconToolTable() {
             )}
           </Box>
         )
-      },
-      {
-        id: 'actions',
-        header: '🔧 Actions',
-        size: 150,
-        enableColumnFilter: false,
-        Cell: ({ row }) => (
-          <Button
-            variant="outlined"
-            size="small"
-            color="secondary"
-            startIcon={<Icon icon="solar:eye-bold-duotone" width="16" height="16" />}
-            title={`View detailed holdings for ${row.original.account_number}`}
-            onClick={() =>
-              navigate(
-                `/Portfolio-Holdings-Analysis?portfolio=${row.original.account_number}&status=${row.original.status}&date=${row.original.date}`
-              )
-            }
-          >
-            View Details
-          </Button>
-        )
       }
     ],
     [
@@ -430,30 +434,25 @@ export default function DetailReconToolTable() {
       theme.palette.secondary.main,
       theme.palette.error.main,
       theme.palette.info.main,
-      theme.palette.success.main
+      theme.palette.success.main,
+      theme.palette.text.secondary
     ]
   );
 
-  // Table props configuration with default filter set to unreconciled
+  // Table props configuration - showing all portfolios by default
   const tableProps = {
     columns: columns,
     data: mockAccounts,
     state: {
-      columnFilters: columnFilters.length > 0 ? columnFilters : [{ id: 'status', value: 'unreconciled' }]
+      columnFilters: columnFilters
     },
     initialState: {
       showGlobalFilter: true,
       showColumnFilters: true,
-      columnFilters: [
-        {
-          id: 'status',
-          value: 'unreconciled' // Default filter to show unreconciled accounts
-        }
-      ],
       sorting: [
         {
           id: 'status',
-          desc: false // Show unreconciled first
+          desc: true // Show reconciled first, then unreconciled
         }
       ]
     },
@@ -462,7 +461,8 @@ export default function DetailReconToolTable() {
     enableColumnFilters: true,
     enableGlobalFilter: true,
     enableSorting: true,
-    manualFiltering: false
+    manualFiltering: false,
+    enableColumnResizing: false
   };
 
   return (
@@ -492,7 +492,7 @@ export default function DetailReconToolTable() {
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
             Portfolio Reconciliation Summary
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             {metrics.map((card) => (
               <Grid item xs={12} sm={6} md={3} key={card.id}>
                 <MetricCard
@@ -511,27 +511,40 @@ export default function DetailReconToolTable() {
 
       {/* Help Banner explaining reconciliation and default filter */}
       <Alert
-        severity="info"
+        severity="warning"
         sx={{
-          mt: 3,
-          mb: 2,
-          '& .MuiAlert-icon': {
-            color: theme.palette.secondary.main
-          }
+          mt: 2,
+          mb: 2
         }}
-        icon={<Icon icon="solar:info-circle-bold-duotone" width={20} />}
       >
-        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           📊 Reconciliation Guide
         </Typography>
         <Typography variant="body2" sx={{ mb: 1 }}>
-          <strong>By default, showing UNRECONCILED portfolios</strong> - accounts that have differences between APX and
-          Broker systems requiring your attention.
+          <strong>Showing ALL portfolios</strong> - use filters to focus on specific reconciliation status or value
+          ranges.
         </Typography>
         <Typography variant="body2">
-          • ✅ <strong>Reconciled:</strong> All security positions match exactly between APX and Broker • ❌{' '}
-          <strong>Unreconciled:</strong> One or more securities have quantity/value differences • 🔍{' '}
-          <strong>Click Portfolio Code</strong> to view detailed position-by-position analysis
+          • ✅ <strong>Reconciled:</strong> Total portfolio difference &lt; {RECONCILIATION_CONFIG.TOLERANCE} SAR
+          (within tolerance)
+        </Typography>
+        <Typography variant="body2">
+          • ❌ <strong>Unreconciled:</strong> One or more positions have differences ≥ {RECONCILIATION_CONFIG.THRESHOLD}{' '}
+          SAR requiring review
+        </Typography>
+        <Typography variant="body2">
+          • 📊 <strong>Difference Columns:</strong> Show equity, cash, and total net differences for each portfolio
+        </Typography>
+        <Typography variant="body2">
+          • 🔍 <strong>Click Portfolio Code</strong> to view detailed position-by-position analysis with{' '}
+          {new Intl.NumberFormat().format(
+            Math.max(
+              ...mockAccounts.map(
+                (acc) => mockDataGroup.filter((item) => item.portfolioCode === acc.account_number).length
+              )
+            )
+          )}
+          positions max per portfolio
         </Typography>
       </Alert>
 

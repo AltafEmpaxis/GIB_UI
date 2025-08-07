@@ -47,8 +47,8 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
     () => [
       {
         accessorKey: 'portfolioCode',
-        header: '📊 Portfolio Code',
-        size: 250,
+        header: 'Portfolio Code',
+        size: 300,
         enableGrouping: true,
         Cell: ({ cell }) => (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -84,8 +84,8 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'assetClass',
-        header: '🏷️ Asset Class Type',
-        size: 250,
+        header: 'Asset Class Type',
+        size: 300,
         enableGrouping: true,
         Cell: ({ cell }) => {
           const value = cell.getValue();
@@ -141,8 +141,8 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'apxMarketValue',
-        header: '💼 APX Market Value (SAR)',
-        size: 250,
+        header: 'APX Market Value',
+        size: 350,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
             {formatCurrency(cell.getValue())}
@@ -199,8 +199,8 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'brokerMarketValue',
-        header: '🏦 Broker Market Value (SAR)',
-        size: 250,
+        header: 'Broker Market Value',
+        size: 350,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
             {formatCurrency(cell.getValue())}
@@ -259,8 +259,8 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'marketValueDiff',
-        header: '⚖️ Market Value Difference (SAR)',
-        size: 280,
+        header: 'Market Value Difference',
+        size: 350,
         Cell: ({ cell }) => {
           const value = cell.getValue();
           const isPositive = value > 0;
@@ -366,6 +366,7 @@ const PortfolioTable = ({ data: propData, portfolioCode }) => {
     enableGrouping: true,
     enableSorting: true,
     enableFiltering: true
+
     // Grouping row styling with GIB theme colors
     // muiTableBodyRowProps: ({ row }) => ({
     //   sx: row.getIsGrouped()

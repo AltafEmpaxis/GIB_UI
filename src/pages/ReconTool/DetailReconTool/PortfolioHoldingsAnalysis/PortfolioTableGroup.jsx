@@ -1,9 +1,15 @@
 import { Icon } from '@iconify/react';
-import { Box, Chip, Divider, Stack, Typography, useTheme } from '@mui/material';
+import { Alert, Box, Chip, Divider, Stack, Typography, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ReusableTable from 'components/Table/ReusableTable';
 import PropTypes from 'prop-types';
 import { useCallback, useMemo } from 'react';
+
+// Reconciliation configuration - standardized across all components
+const RECONCILIATION_CONFIG = {
+  THRESHOLD: 1.0, // SAR - difference threshold for reconciliation
+  TOLERANCE: 0.01 // Tolerance for rounding errors
+};
 
 const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
   const theme = useTheme();
@@ -14,25 +20,25 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
   }, [propData]);
 
   // Format number - simplified logic
-  const formatNumber = (value, assetClass) => {
+  const formatNumber = useCallback((value, assetClass) => {
     if (value === null || value === undefined) return assetClass === 'Cash' ? '' : 'N/A';
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(value);
-  };
+  }, []);
 
   // Format integer quantities
-  const formatInteger = (value, assetClass) => {
+  const formatInteger = useCallback((value, assetClass) => {
     if (value === null || value === undefined) return assetClass === 'Cash' ? '' : 'N/A';
     return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(value);
-  };
+  }, []);
 
   // Format currency using SAR
-  const formatCurrency = (value) => {
+  const formatCurrency = useCallback((value) => {
     if (value === null || value === undefined) return 'N/A';
     return new Intl.NumberFormat('en-SA', {
       style: 'currency',
@@ -40,7 +46,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     }).format(value);
-  };
+  }, []);
 
   // Get color for difference values - using GIB theme colors
   const getDiffColor = useCallback(
@@ -54,16 +60,16 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
   );
 
   // Format difference with proper sign
-  const formatDiff = (value, isInteger = false) => {
+  const formatDiff = useCallback((value, isInteger = false) => {
     if (value === null || value === undefined) return '';
     const sign = value > 0 ? '+' : value < 0 ? '−' : '';
     const formattedValue = isInteger
       ? new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.abs(value))
       : new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Math.abs(value));
     return sign + formattedValue;
-  };
+  }, []);
 
-  // Calculate totals - simplified
+  // Calculate totals and reconciliation stats - simplified
   const totals = useMemo(() => {
     const apxQty = data.reduce((sum, row) => sum + (row.apxQuantity || 0), 0);
     const brokerQty = data.reduce((sum, row) => sum + (row.brokerQuantity || 0), 0);
@@ -71,6 +77,13 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
     const apxMarketValue = data.reduce((sum, row) => sum + (row.apxMarketValue || 0), 0);
     const brokerMarketValue = data.reduce((sum, row) => sum + (row.brokerMarketValue || 0), 0);
     const marketValueDiff = data.reduce((sum, row) => sum + (row.marketValueDiff || 0), 0);
+
+    // Calculate reconciliation statistics
+    const positionsWithDifferences = data.filter(
+      (row) => Math.abs(row.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
+    ).length;
+    const reconciledPositions = data.length - positionsWithDifferences;
+    const reconciliationRate = data.length > 0 ? ((reconciledPositions / data.length) * 100).toFixed(1) : 100;
 
     // Calculate averages for prices (excluding null/undefined values)
     const validAPXPrices = data.filter((row) => row.apxPrice !== null && row.apxPrice !== undefined);
@@ -99,7 +112,10 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       marketValueDiff,
       avgAPXPrice,
       avgBrokerPrice,
-      avgPriceDiff
+      avgPriceDiff,
+      positionsWithDifferences,
+      reconciledPositions,
+      reconciliationRate
     };
   }, [data]);
 
@@ -107,8 +123,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
     () => [
       {
         accessorKey: 'portfolioCode',
-        header: '📊 Portfolio Code',
-        size: 250,
+        header: 'Portfolio Code',
+        size: 300,
         enableGrouping: true,
         enableSorting: true,
         Cell: ({ cell }) => (
@@ -142,8 +158,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'assetClass',
-        header: '🏷️ Asset Class',
-        size: 250,
+        header: 'Asset Class',
+        size: 300,
         enableGrouping: true,
         enableSorting: true,
         Cell: ({ cell }) => {
@@ -205,8 +221,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'symbol',
-        header: '🔖 Security Symbol',
-        size: 250,
+        header: 'Security Symbol',
+        size: 300,
         enableSorting: true,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace', color: 'primary.main' }}>
@@ -223,7 +239,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'secType',
         header: 'Sec Type',
-        size: 250,
+        size: 300,
         enableSorting: true,
         Cell: ({ cell }) => {
           const value = cell.getValue();
@@ -261,8 +277,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'securityName',
-        header: '🏢 Security Name',
-        size: 250,
+        header: 'Security Name',
+        size: 300,
         enableSorting: true,
         Cell: ({ cell }) => (
           <Typography
@@ -287,8 +303,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'apxQuantity',
-        header: '📊 APX Quantity',
-        size: 250,
+        header: 'APX Quantity',
+        size: 300,
         enableSorting: true,
         Cell: ({ cell, row }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
@@ -324,8 +340,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'brokerQuantity',
-        header: '🏦 Broker Quantity',
-        size: 250,
+        header: 'Broker Quantity',
+        size: 300,
         enableSorting: true,
         Cell: ({ cell, row }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
@@ -364,8 +380,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'qtyDiff',
-        header: '⚖️ Quantity Difference',
-        size: 250,
+        header: 'Quantity Difference',
+        size: 300,
         enableSorting: true,
         Cell: ({ cell }) => {
           const value = cell.getValue();
@@ -424,8 +440,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'apxMarketValue',
-        header: '💼 APX Market Value (SAR)',
-        size: 250,
+        header: 'APX Market Value',
+        size: 300,
         enableSorting: true,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
@@ -461,8 +477,8 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'brokerMarketValue',
-        header: '🏦 Broker Market Value (SAR)',
-        size: 250,
+        header: 'Broker Market Value',
+        size: 350,
         enableSorting: true,
         Cell: ({ cell }) => (
           <Typography variant="body2" sx={{ fontWeight: 600, fontFamily: 'monospace' }}>
@@ -503,22 +519,38 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       },
       {
         accessorKey: 'marketValueDiff',
-        header: '⚖️ Market Value Difference (SAR)',
-        size: 280,
+        header: 'Market Value Difference',
+        size: 350,
         enableSorting: true,
+        enableColumnFilter: true,
+        filterVariant: 'text', // Use text filter for custom filtering
+        filterFn: 'notEquals', // Set filter function to notEquals
         Cell: ({ cell }) => {
           const value = cell.getValue();
           return (
-            <Typography
-              variant="body2"
-              sx={{
-                color: getDiffColor(value),
-                fontWeight: 'bold',
-                fontFamily: 'monospace'
-              }}
-            >
-              {value === null || value === undefined ? '' : formatCurrency(value)}
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Icon
+                icon={
+                  value > 0
+                    ? 'solar:arrow-up-bold-duotone'
+                    : value < 0
+                      ? 'solar:arrow-down-bold-duotone'
+                      : 'solar:minus-circle-bold-duotone'
+                }
+                width={14}
+                style={{ color: getDiffColor(value) }}
+              />
+              <Typography
+                variant="body2"
+                sx={{
+                  color: getDiffColor(value),
+                  fontWeight: 'bold',
+                  fontFamily: 'monospace'
+                }}
+              >
+                {value === null || value === undefined ? 'N/A' : formatCurrency(value)}
+              </Typography>
+            </Box>
           );
         },
         Footer: () => (
@@ -568,7 +600,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'apxPrice',
         header: 'APX Price',
-        size: 250,
+        size: 350,
         enableSorting: true,
         Cell: ({ cell, row }) => formatNumber(cell.getValue(), row.original.assetClass),
         Footer: () => (
@@ -604,7 +636,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'brokerPrice',
         header: 'Broker Price',
-        size: 250,
+        size: 350,
         enableSorting: true,
         Cell: ({ cell, row }) => formatNumber(cell.getValue(), row.original.assetClass),
         Footer: () => (
@@ -640,7 +672,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       {
         accessorKey: 'priceDiff',
         header: 'Price Diff',
-        size: 250,
+        size: 350,
         enableSorting: true,
         Cell: ({ cell }) => {
           const value = cell.getValue();
@@ -702,7 +734,7 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
         }
       }
     ],
-    [theme.palette, totals, data.length, getDiffColor]
+    [theme.palette, totals, data.length, getDiffColor, formatCurrency, formatNumber, formatInteger, formatDiff]
   );
 
   const tableProps = {
@@ -720,7 +752,13 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
       showColumnFilters: true,
       showGlobalFilter: true,
       grouping: ['portfolioCode'],
-      expanded: true
+      expanded: true,
+      columnFilters: [
+        {
+          id: 'marketValueDiff',
+          value: 0 // Filter positions with differences >= threshold
+        }
+      ]
     },
     state: {
       isLoading: data.length === 0
@@ -792,6 +830,148 @@ const PortfolioTableGroup = ({ data: propData, portfolioCode }) => {
           />
         </Stack>
       </Box>
+
+      {/* Filter Information Alert */}
+      <Alert
+        severity="info"
+        sx={{
+          my: 2,
+          '& .MuiAlert-icon': {
+            color: theme.palette.secondary.main
+          }
+        }}
+        icon={<Icon icon="solar:filter-bold-duotone" width={20} />}
+      >
+        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+          📊 Filtered View: Positions Requiring Review (≥{RECONCILIATION_CONFIG.THRESHOLD} SAR difference)
+        </Typography>
+        <Typography variant="body2">
+          <strong>Showing positions with differences only.</strong> This helps you focus on reconciliation tasks. Clear
+          the "Market Value Difference" filter to see all positions including those that match exactly.
+        </Typography>
+      </Alert>
+
+      {/* Quick Reconciliation Stats */}
+      <Box sx={{ mb: 3 }}>
+        <Stack direction="row" spacing={2}>
+          <Box
+            sx={{
+              p: 1.5,
+              bgcolor: 'error.100',
+              borderRadius: 1,
+              flex: 1,
+              border: '1px solid',
+              borderColor: 'error.light'
+            }}
+          >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Icon icon="solar:danger-circle-bold-duotone" width={20} style={{ color: '#f44336' }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Unreconciled
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 600, color: 'error.main' }}>
+                  {totals.positionsWithDifferences}
+                </Typography>
+              </Box>
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              p: 1.5,
+              bgcolor: 'success.100',
+              borderRadius: 1,
+              flex: 1,
+              border: '1px solid',
+              borderColor: 'success.light'
+            }}
+          >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Icon icon="solar:check-circle-bold-duotone" width={20} style={{ color: '#4caf50' }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Reconciled
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
+                  {totals.reconciledPositions}
+                </Typography>
+              </Box>
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              p: 1.5,
+              bgcolor: 'secondary.100',
+              borderRadius: 1,
+              flex: 1,
+              border: '1px solid',
+              borderColor: 'secondary.light'
+            }}
+          >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Icon icon="solar:calculator-bold-duotone" width={20} style={{ color: theme.palette.secondary.main }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Net Difference
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 600,
+                    color: getDiffColor(totals.marketValueDiff),
+                    fontFamily: 'monospace'
+                  }}
+                >
+                  {formatCurrency(totals.marketValueDiff)}
+                </Typography>
+              </Box>
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              p: 1.5,
+              bgcolor: 'info.100',
+              borderRadius: 1,
+              flex: 1,
+              border: '1px solid',
+              borderColor: 'info.light'
+            }}
+          >
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Icon icon="solar:chart-2-bold-duotone" width={20} style={{ color: theme.palette.info.main }} />
+              <Box>
+                <Typography variant="caption" color="text.secondary">
+                  Match Rate
+                </Typography>
+                <Typography variant="h6" sx={{ fontWeight: 600, color: 'info.main' }}>
+                  {totals.reconciliationRate}%
+                </Typography>
+              </Box>
+            </Stack>
+          </Box>
+        </Stack>
+      </Box>
+
+      {/* Show Alert if there are unreconciled positions */}
+      {totals.positionsWithDifferences > 0 && (
+        <Alert
+          severity="warning"
+          sx={{
+            mb: 2,
+            '& .MuiAlert-icon': {
+              color: '#FFC72C'
+            }
+          }}
+          icon={<Icon icon="solar:danger-triangle-bold-duotone" width={20} />}
+        >
+          <Typography variant="body2">
+            <strong>⚠️ {totals.positionsWithDifferences} Position(s) Require Review</strong>
+            <br />
+            These positions have differences between APX and Broker systems. Review each position to determine if
+            adjustments are needed.
+          </Typography>
+        </Alert>
+      )}
 
       <Divider sx={{ my: 2, borderColor: 'secondary.main' }} />
       <ReusableTable tableProps={tableProps} />

@@ -9,10 +9,10 @@ import PortfolioTableGroup from './PortfolioTableGroup';
 import mockData from './mockdata.json';
 import mockDataGroup from './mockdataGroup.json';
 
-// Reconciliation configuration
+// Reconciliation configuration - standardized across all components
 const RECONCILIATION_CONFIG = {
   THRESHOLD: 1.0, // SAR - difference threshold for reconciliation
-  TOLERANCE_PERCENTAGE: 0.01 // 1% tolerance for percentage-based reconciliation
+  TOLERANCE: 0.01 // Tolerance for rounding errors
 };
 
 export default function PortfolioHoldingsAnalysis() {
@@ -33,10 +33,12 @@ export default function PortfolioHoldingsAnalysis() {
     const totalMarketValueDiff = summary.reduce((sum, item) => sum + (item.marketValueDiff || 0), 0);
 
     // Portfolio is RECONCILED if total difference is exactly zero (or very close to zero due to rounding)
-    const isReconciled = Math.abs(totalMarketValueDiff) < 0.01; // Tolerance for rounding errors
+    const isReconciled = Math.abs(totalMarketValueDiff) < RECONCILIATION_CONFIG.TOLERANCE;
 
     // Count positions with differences in detailed data for analysis
-    const positionsWithDiff = group.filter((row) => Math.abs(row.marketValueDiff || 0) > 0.01).length;
+    const positionsWithDiff = group.filter(
+      (row) => Math.abs(row.marketValueDiff || 0) >= RECONCILIATION_CONFIG.THRESHOLD
+    ).length;
 
     // Simple account info object based on portfolio data
     const accountInfo = {
@@ -168,15 +170,13 @@ export default function PortfolioHoldingsAnalysis() {
           {portfolioStats.reconciledStatus === 'fully-reconciled' && (
             <Alert severity="success" sx={{ mb: 2 }} icon={<Icon icon="solar:check-circle-bold-duotone" />}>
               <Typography variant="body2">
-                <strong>✅ Fully Reconciled</strong>
+                <strong>✅ Portfolio Fully Reconciled</strong>
                 <br />
-                Account is approved and all position data matches within tolerance (±{
-                  RECONCILIATION_CONFIG.THRESHOLD
-                }{' '}
-                SAR).
+                All positions match exactly between APX and Broker systems. Total difference is within tolerance (±
+                {RECONCILIATION_CONFIG.TOLERANCE} SAR).
                 <br />
                 <em>
-                  Approved by: {accountStatus.reconciled_by} | Date: {accountStatus.date}
+                  Status: {accountStatus.reconciled_by} | Date: {accountStatus.date}
                 </em>
               </Typography>
             </Alert>
@@ -217,14 +217,18 @@ export default function PortfolioHoldingsAnalysis() {
           {portfolioStats.reconciledStatus === 'unreconciled' && (
             <Alert severity="error" sx={{ mb: 2 }} icon={<Icon icon="solar:shield-cross-bold-duotone" />}>
               <Typography variant="body2">
-                <strong>❌ Reconciliation Required</strong>
+                <strong>❌ Portfolio Reconciliation Required</strong>
                 <br />
-                Account approval pending AND {portfolioStats.positionsWithDifferences} positions have data
-                discrepancies.
+                This portfolio has {portfolioStats.positionsWithDifferences} position(s) with differences ≥
+                {RECONCILIATION_CONFIG.THRESHOLD} SAR. Total net difference:{' '}
+                {new Intl.NumberFormat('en-SA', { style: 'currency', currency: 'SAR' }).format(
+                  Math.abs(portfolioStats.totalDifference)
+                )}
+                .
                 <br />
                 <em>
-                  Data Match: {portfolioStats.dataReconciliationRate}% | Next: Resolve data differences, then request
-                  approval
+                  Data Match Rate: {portfolioStats.dataReconciliationRate}% | Action Required: Review and resolve
+                  position differences
                 </em>
               </Typography>
             </Alert>
@@ -239,9 +243,25 @@ export default function PortfolioHoldingsAnalysis() {
             <Typography variant="h5" sx={{ fontWeight: 600 }}>
               Portfolio Holdings Analysis
             </Typography>
-            <Chip label={portfolioCode} color="secondary" variant="filled" size="small" sx={{ fontWeight: 600 }} />-
-            <Chip label={status} color="secondary" variant="outlined" size="small" sx={{ fontWeight: 600 }} />-
-            <Chip label={date} color="secondary" variant="outlined" size="small" sx={{ fontWeight: 600 }} />
+            <Chip label={portfolioCode} color="secondary" variant="filled" size="small" sx={{ fontWeight: 600 }} />
+            {status && (
+              <Chip
+                label={status === 'reconciled' ? '✅ Reconciled' : '❌ Unreconciled'}
+                color={status === 'reconciled' ? 'success' : 'error'}
+                variant="outlined"
+                size="small"
+                sx={{ fontWeight: 600 }}
+              />
+            )}
+            {date && (
+              <Chip
+                label={`Report: ${new Date(date).toLocaleDateString()}`}
+                color="info"
+                variant="outlined"
+                size="small"
+                sx={{ fontWeight: 600 }}
+              />
+            )}
           </Box>
         }
         secondary={

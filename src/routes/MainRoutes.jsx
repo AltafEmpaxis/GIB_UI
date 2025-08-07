@@ -4,7 +4,6 @@ import { Navigate } from 'react-router';
 // Components
 import Loadable from 'components/Loader/Loadable';
 import DashboardLayout from 'layout/Dashboard';
-import AuthGuard from 'routes/Guard/AuthGuard';
 
 // Lazy load components
 const Home = Loadable(lazy(() => import('pages/home')));
@@ -30,9 +29,9 @@ const UnderConstruction = Loadable(lazy(() => import('pages/UnderConstruction'))
 const MainRoutes = {
   path: '/',
   element: (
-    <AuthGuard>
-      <DashboardLayout />
-    </AuthGuard>
+    // <AuthGuard>
+    <DashboardLayout />
+    // </AuthGuard>
   ),
   children: [
     {
