@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { Box, Button, Chip, Grid, Paper, Typography, useTheme, LinearProgress } from '@mui/material';
+import { Box, Button, Chip, Grid, LinearProgress, Paper, Typography, useTheme } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import CustodianUploadAction from 'components/Upload/CustodianUploadAction';
 import NotificationBar from 'components/Upload/NotificationBar';
+import { useState } from 'react';
 import GIBStepper from './GIBStepper';
 import RawDataFilesTable from './RawDataFilesTable';
 
@@ -168,7 +168,7 @@ export default function CustodianFile() {
       case 0: // Select Files
         return (
           <Box sx={{ mt: 3 }}>
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
               {custodianFiles.map((custodian, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <CustodianUploadAction
@@ -199,7 +199,7 @@ export default function CustodianFile() {
               </Typography>
 
               {/* Files list with single progress indicator */}
-              <Grid container spacing={2} sx={{ mb: 3 }}>
+              <Grid container spacing={1} sx={{ mb: 3 }}>
                 {selectedFiles.map((file, index) => (
                   <Grid item xs={12} key={index}>
                     <Paper
@@ -345,7 +345,7 @@ export default function CustodianFile() {
             </Box>
 
             {/* File summary */}
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
               {selectedFiles.map((file, index) => (
                 <Grid item xs={12} md={6} key={index}>
                   <Paper
@@ -415,7 +415,7 @@ export default function CustodianFile() {
       <Paper
         elevation={0}
         sx={{
-          p: 3,
+          p: 1.5,
           mb: 3,
           borderRadius: 1,
           border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`

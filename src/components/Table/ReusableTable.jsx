@@ -6,8 +6,6 @@ import { MaterialReactTable, useMaterialReactTable } from 'material-react-table'
 import PropTypes from 'prop-types';
 import { memo } from 'react';
 
-import SimpleBar from 'components/@extended/SimpleBar';
-
 // Animation variants for icons
 const iconAnimation = {
   initial: {
@@ -175,15 +173,15 @@ const ReusableTable = ({ columns, data, initialState = {}, tableProps = {} }) =>
       }
     },
     muiTableContainerProps: {
-      component: SimpleBar,
+      // component: SimpleBar,
       sx: {
         maxHeight: '600px',
-        backgroundColor: baseBackgroundColor,
-        '&::-webkit-scrollbar': {
-          width: 8,
-          height: 8,
-          display: 'none'
-        }
+        backgroundColor: baseBackgroundColor
+        // '&::-webkit-scrollbar': {
+        //   width: 8,
+        //   height: 8,
+        //   display: 'none'
+        // }
         // '&::-webkit-scrollbar-track': {
         //   background: isDark ? alpha(theme.palette.grey[900], 0.4) : alpha(theme.palette.grey[200], 0.8)
         // },

@@ -13,17 +13,17 @@ import {
   useTheme
 } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
-import { A11y, Autoplay, EffectFade, Navigation, Pagination, Keyboard, Mousewheel } from 'swiper/modules';
+import { A11y, Autoplay, EffectFade, Keyboard, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import 'swiper/css/effect-fade';
 
-import { useRef, useState } from 'react';
 import { alpha } from '@mui/material/styles';
+import { useRef, useState } from 'react';
 
 // Slide data array
 const slides = [
@@ -346,7 +346,7 @@ const MissionVisionSlider = () => {
     >
       <Swiper
         ref={swiperRef}
-        modules={[EffectFade, Pagination, Navigation, Autoplay, A11y, Keyboard, Mousewheel]}
+        modules={[EffectFade, Pagination, Navigation, Autoplay, A11y, Keyboard]}
         effect="fade"
         fadeEffect={{ crossFade: true }}
         spaceBetween={0}
@@ -355,7 +355,7 @@ const MissionVisionSlider = () => {
         navigation={false} // Disable default navigation
         autoplay={{ delay: 6000, disableOnInteraction: false }}
         keyboard={{ enabled: true }}
-        mousewheel={{ invert: false }}
+        // mousewheel={{ invert: false }}
         speed={800}
         onSlideChange={handleSlideChange}
         onProgress={handleProgress}

@@ -176,7 +176,7 @@ const LatestNewsAndInsights = () => {
             height: '100%',
             objectFit: 'cover',
             transition: 'transform 0.3s ease-in-out',
-            '&:hover': { transform: 'scale(1.05)' },
+            // '&:hover': { transform: 'scale(1.05)' },
             display: 'block'
           }}
           onError={(e) => {

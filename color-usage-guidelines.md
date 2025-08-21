@@ -311,3 +311,44 @@ The following CSS variables are available for use in stylesheets:
 * Always use the colour specifications listed above to ensure GIB colours are correctly reproduced
 * Predominant colours on all publications should be taken from the primary colours
 * Additional colours can be supported by imagery and complementary design elements
+
+
+
+graph TD
+    subgraph "GIB Brand Colors"
+        A["Primary: Dark Grey<br/>#53565A<br/>Pantone Cool Gray 11C"] 
+        B["Secondary: GIB Yellow<br/>#FFC72C<br/>Pantone 123C"]
+        C["Tertiary: Medium Grey<br/>#A2AAAD<br/>Pantone 429C"]
+        D["Light Grey: #D9D9D6<br/>Pantone Cool Gray 1C"]
+    end
+    
+    subgraph "UI Element Color Combinations"
+        E["Primary Buttons<br/>Dark Grey bg + White text"] 
+        F["Secondary Buttons<br/>Yellow bg + Dark Grey text"]
+        G["AppBar Default<br/>White bg + Dark Grey text"]
+        H["AppBar Primary<br/>Dark Grey bg + White text"]
+        I["AppBar Secondary<br/>Yellow bg + Dark Grey text"]
+        J["Cards<br/>White bg + Dark Grey text<br/>Light Grey borders"]
+        K["Text Primary<br/>Dark Grey (#53565A)"]
+        L["Text Secondary<br/>Medium Grey (#A2AAAD)"]
+        M["Hover States<br/>Yellow with opacity variants"]
+        N["Focus States<br/>Yellow outline"]
+    end
+    
+    A --> E
+    A --> G
+    A --> H
+    A --> F
+    A --> I
+    A --> K
+    B --> F
+    B --> I
+    B --> M
+    B --> N
+    C --> L
+    D --> J
+    
+    style A fill:#53565A,color:#fff
+    style B fill:#FFC72C,color:#000
+    style C fill:#A2AAAD,color:#000
+    style D fill:#D9D9D6,color:#000

@@ -2,16 +2,16 @@ import { useState } from 'react';
 
 // material-ui
 import { Icon } from '@iconify/react';
-import { alpha, Avatar, Box, Card, CardContent, Chip, Grid, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Avatar, Card, Chip, Grid, Stack, Typography, useTheme } from '@mui/material';
 
 // project imports
 import MainCard from 'components/MainCard';
 import { GRID_SPACING } from 'config';
+import InternalUpdates from './InternalUpdates';
+import LatestNewsAndInsights from './LatestNewsAndInsights';
 import LeadershipCard from './LeadershipCard';
 import MissionVisionSlider from './MissionVisionSlider';
 import TadawulFeed from './TadawulFeed';
-import InternalUpdates from './InternalUpdates';
-import LatestNewsAndInsights from './LatestNewsAndInsights';
 
 // ==============================|| HOME PAGE ||============================== //
 
@@ -140,7 +140,7 @@ const Home = () => {
 
         {/* Latest News & Insights - Full width */}
         <Grid item xs={12} sx={{ mt: 3 }}>
-          <MainCard contentSX={{ p: { xs: 2, sm: 3 } }} color="secondary">
+          <MainCard contentSX={{ p: { xs: 2, sm: 3 } }}>
             <LatestNewsAndInsights />
           </MainCard>
         </Grid>
